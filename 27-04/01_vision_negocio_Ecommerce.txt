@@ -1,0 +1,67 @@
+INTEGRANTES: 
+Rodriguez Gonzales Abad Melani
+Vargas Sandoval Christian Bernardo
+
+NOMBRE DEL SISTEMA: UMSS Ecommerce
+
+PROBLEMA QUE RESUELVE:
+Los emprendedores universitarios gestionan sus ventas mediante canales no estructurados como WhatsApp e Instagram, lo que genera pérdida de pedidos, errores en la gestión de stock y falta de trazabilidad en las transacciones. Esto reduce la eficiencia operativa y disminuye la confianza en el proceso de compra.
+
+USUARIO PRINCIPAL #1: Emprendedor universitario
+- ¿Qué quiere lograr?
+Organizar su operación comercial, reducir errores y gestionar sus ventas de forma estructurada.
+
+- Tareas más importantes:
+  1. Crear y actualizar su catálogo de productos
+  2. Registrar y hacer seguimiento de pedidos
+  3. Validar pagos asociados a pedidos
+  4. Controlar disponibilidad de stock
+  5. Consultar métricas básicas de ventas
+
+USUARIO PRINCIPAL #2: Cliente universitario
+- ¿Qué quiere lograr?
+Comprar productos de forma rápida, clara y confiable.
+
+- Tareas más importantes:
+  1. Explorar productos disponibles
+  2. Buscar y comparar productos
+  3. Agregar productos al carrito
+  4. Realizar pedidos
+  5. Verificar el estado del pedido
+
+USUARIO PRINCIPAL #3: Administrador del sistema
+- ¿Qué quiere lograr?
+Supervisar el funcionamiento del sistema y asegurar la correcta operación del ecosistema comercial.
+
+- Tareas más importantes:
+  1. Monitorear la actividad de los emprendedores
+  2. Visualizar métricas globales del sistema
+  3. Gestionar usuarios y tiendas registradas
+  4. Detectar inconsistencias o problemas en pedidos
+  5. Generar reportes del desempeño del sistema
+
+¿QUÉ DEBE HACER EL SISTEMA?
+1. Permitir la gestión estructurada de catálogos por emprendedor
+2. Registrar pedidos automáticamente con identificador único
+3. Gestionar estados de pedido (pendiente, pagado, confirmado, entregado, cancelado)
+4. Asociar cada pedido a una transacción de pago
+5. Validar coherencia entre monto pagado y monto del pedido
+6. Actualizar el stock en función de pedidos confirmados
+7. Evitar la venta de productos sin disponibilidad
+8. Permitir al cliente visualizar el estado de su pedido
+9. Proporcionar al emprendedor control sobre su operación
+10. Proporcionar al administrador visibilidad del ecosistema completo
+
+REGLAS DE NEGOCIO IMPORTANTES:
+Un pedido solo puede confirmarse si existe un pago válido asociado
+El stock no puede ser negativo bajo ninguna circunstancia
+Cada pedido debe tener un identificador único y trazable
+El monto pagado debe coincidir exactamente con el total del pedido
+Un producto no puede ser vendido si no tiene stock disponible
+
+¿CÓMO SABRÍAMOS QUE FUNCIONA?
+Se reduce la pérdida de pedidos
+Los pedidos registrados coinciden con los pagos realizados
+No existen inconsistencias de stock
+Los usuarios completan compras sin necesidad de interacción manual
+El administrador puede monitorear la actividad del sistema en tiempo real

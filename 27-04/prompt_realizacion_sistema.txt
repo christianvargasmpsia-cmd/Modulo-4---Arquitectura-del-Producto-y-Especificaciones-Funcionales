@@ -1,0 +1,78 @@
+**Prompt para la Realización del Sistema UMSS Ecommerce**
+
+**Descripción General del Sistema:**  
+Desarrolla un sistema de ecommerce llamado "UMSS Ecommerce" que permita a emprendedores universitarios gestionar sus ventas de manera estructurada, reemplazando canales no estructurados como WhatsApp e Instagram. El sistema debe resolver problemas de pérdida de pedidos, errores en el stock y falta de trazabilidad, mejorando la eficiencia operativa y la confianza en las transacciones. Los usuarios principales son: emprendedores universitarios, clientes universitarios y administradores del sistema. El sistema debe ser web-based, con una interfaz intuitiva para cada tipo de usuario, y backend robusto para manejar lógica de negocio crítica.
+
+**Usuarios y Funcionalidades Principales:**  
+1. **Emprendedor Universitario:**  
+   - Gestionar catálogo de productos (crear, actualizar, eliminar).  
+   - Registrar y hacer seguimiento de pedidos.  
+   - Validar pagos asociados a pedidos.  
+   - Controlar disponibilidad de stock.  
+   - Consultar métricas básicas de ventas (e.g., pedidos diarios, ingresos).  
+
+2. **Cliente Universitario:**  
+   - Explorar y buscar productos disponibles.  
+   - Comparar productos y agregar al carrito.  
+   - Realizar pedidos con pago vía QR.  
+   - Verificar el estado del pedido en tiempo real.  
+
+3. **Administrador del Sistema:**  
+   - Monitorear actividad de emprendedores y tiendas.  
+   - Visualizar métricas globales (e.g., total de pedidos, usuarios activos).  
+   - Gestionar usuarios y tiendas registradas.  
+   - Detectar inconsistencias en pedidos (e.g., pagos no coincidentes).  
+   - Generar reportes de desempeño.  
+
+**Arquitectura y Tecnologías Sugeridas:**  
+- **Frontend:** React.js o Vue.js para interfaces responsivas, con componentes para catálogos, carritos y dashboards.  
+- **Backend:** Node.js con Express.js o Python con Flask/Django para APIs RESTful.  
+- **Base de Datos:** PostgreSQL o MongoDB para almacenar productos, pedidos, pagos y usuarios, con transacciones ACID para garantizar consistencia.  
+- **Autenticación:** JWT para sesiones seguras.  
+- **Pago:** Integración con un servicio de pago QR (e.g., simulado inicialmente, luego real como MercadoPago o similar).  
+- **Despliegue:** Docker para contenedores, con CI/CD básico.  
+- **Seguridad:** Validaciones de entrada, encriptación de datos sensibles y manejo de errores.  
+
+**Parte Más Difícil: Validación Consistente de Pedidos con Pago y Control de Stock**  
+Esta es la funcionalidad crítica que garantiza coherencia entre pedidos, pagos y stock. Un error aquí puede causar ventas sin stock, pagos no reconocidos o pedidos inválidos. Implementa lógica transaccional para evitar inconsistencias.
+
+**Escenario Concreto de Implementación:**  
+- **Actor:** Cliente universitario.  
+- **Flujo:**  
+  1. Cliente agrega productos al carrito y calcula total.  
+  2. Cliente realiza pago vía QR.  
+  3. Sistema registra pedido como "pendiente".  
+  4. Valida existencia y monto del pago.  
+  5. Verifica stock disponible.  
+  6. Confirma o rechaza pedido; si confirmado, descuenta stock.  
+
+**Reglas de Negocio Inquebrantables:**  
+1. Un pedido no se confirma sin validación de pago.  
+2. El monto pagado debe coincidir exactamente con el total del pedido.  
+3. Verificar stock antes de confirmar; no permitir stock negativo.  
+4. Un pedido no se procesa más de una vez (evitar duplicados).  
+5. Un pago no se asocia a más de un pedido.  
+6. Estados de pedido: pendiente, pagado, confirmado, entregado, cancelado.  
+
+**Caso de Prueba Específico:**  
+- **Entrada:** Producto "Polera UMSS" (precio: 50 Bs, cantidad: 3, stock: 2), pago QR de 150 Bs.  
+- **Salida Esperada:** Pedido registrado sí, estado "Rechazado" por stock insuficiente, stock restante 2, pago validado pero no aplicable.  
+
+**Métricas de Éxito y Pruebas:**  
+- Reducción de pérdida de pedidos (medir vs. métodos anteriores).  
+- Coincidencia entre pedidos y pagos (0% discrepancias).  
+- No inconsistencias de stock (validar con auditorías).  
+- Compras completadas sin intervención manual (tasa >95%).  
+- Monitoreo en tiempo real para administradores.  
+Implementa pruebas unitarias, de integración y end-to-end para la lógica de validación (e.g., usando Jest o Pytest). Incluye manejo de errores para rechazos automáticos.
+
+**Instrucciones de Implementación:**  
+- Comienza con un diagrama de arquitectura (usa Mermaid o similar).  
+- Desarrolla APIs para CRUD de productos, pedidos y pagos.  
+- Implementa la lógica de validación en el backend con transacciones de base de datos.  
+- Crea interfaces de usuario simples y funcionales.  
+- Asegura escalabilidad para múltiples emprendedores.  
+- Documenta el código y agrega un README con instrucciones de instalación y uso.  
+- Prioriza la parte difícil: valida con el caso de prueba antes de expandir.  
+
+Genera el código paso a paso, comenzando por la estructura del proyecto y la lógica crítica.
