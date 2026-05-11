@@ -10,8 +10,7 @@
 | Grupo | G1 |
 | Version | v1.0 |
 | Fecha | 11/05/2026 |
-| Product Manager | Rodriguez Gonzales Abad Melani |
-| Co-Autor | Vargas Sandoval Christian Bernardo |
+| Product Manager-Autor | Rodriguez Gonzales Abad Melani   Vargas Sandoval Christian Bernardo|
 | Revisores | Docente + Tech Lead + QA |
 | Estado | En revision |
 | BRD de referencia | BRD v2 UMSS Market |
