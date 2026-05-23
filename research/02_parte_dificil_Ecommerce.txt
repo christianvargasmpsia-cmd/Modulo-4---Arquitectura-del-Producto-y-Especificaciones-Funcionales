@@ -1,0 +1,61 @@
+INTEGRANTES: 
+Rodriguez Gonzales Abad Melani
+Vargas Sandoval Christian Bernardo
+
+NOMBRE DEL SISTEMA: UMSS Ecommerce
+
+PARTE DEL SISTEMA QUE CONSIDERAMOS MÁS DIFÍCIL:
+Validación consistente de pedidos con pago y control de stock
+
+¿POR QUÉ ES DIFÍCIL?
+Porque el sistema debe garantizar coherencia entre el pedido, el pago y la disponibilidad de productos. Un error en esta lógica puede generar ventas sin stock, pagos no reconocidos o pedidos inválidos, afectando directamente la operación del negocio y la confianza del usuario.
+
+ESCENARIO CONCRETO:
+- Actor: Cliente universitario
+- Punto de partida:
+El cliente selecciona productos disponibles y procede a realizar un pedido
+
+- Pasos que ocurren:
+  1. El cliente agrega productos al carrito
+  2. El sistema calcula el total del pedido
+  3. El cliente realiza el pago mediante QR
+  4. El sistema registra el pedido como pendiente
+  5. El sistema valida la existencia del pago
+  6. El sistema verifica que el monto pagado coincida con el total
+  7. El sistema verifica disponibilidad de stock
+  8. El sistema confirma o rechaza el pedido
+  9. En caso de confirmación, el sistema descuenta el stock
+
+- Resultado esperado:
+El pedido solo se confirma si el pago es válido y existe stock suficiente; en caso contrario, el pedido se rechaza sin afectar el stock.
+
+REGLAS / RESTRICCIONES QUE NO PUEDEN ROMPERSE:
+1. Un pedido no puede confirmarse sin validación de pago
+2. El monto pagado debe coincidir exactamente con el total del pedido
+3. El stock debe verificarse antes de confirmar el pedido
+4. El stock no puede ser negativo bajo ninguna circunstancia
+5. Un pedido no puede procesarse más de una vez
+6. Un pago no puede ser asociado a más de un pedido
+
+CASO DE PRUEBA CONCRETO:
+
+- DATOS DE ENTRADA:
+Producto: Polera UMSS
+Precio unitario: 50 Bs
+Cantidad solicitada: 3
+Stock disponible: 2
+Método de pago: QR
+Monto pagado: 150 Bs
+
+- DATOS DE SALIDA ESPERADOS:
+Pedido registrado: Sí
+Estado del pedido: Rechazado
+Motivo: Stock insuficiente
+Stock restante: 2
+Pago validado: Sí, pero no aplicable al pedido
+
+¿CÓMO MEDIRÍAMOS QUE FUNCIONA?
+No existen pedidos confirmados sin stock
+No existen pedidos confirmados con montos incorrectos
+El sistema rechaza automáticamente inconsistencias
+Los pedidos válidos se procesan correctamente sin intervención manual
