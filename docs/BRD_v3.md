@@ -1,4 +1,4 @@
-# BRD v2 — UMSS Market
+# BRD v3 — UMSS Market
 
 ---
 
@@ -8,13 +8,13 @@
 | ------------------ | -------------------------------------------------------------------------------------- |
 | Producto           | UMSS Market                                                                            |
 | Grupo              | —                                                                                      |
-| Versión            | v2.0                                                                                   |
-| Fecha              | 11/05/2026                                                                             |
+| Versión            | v3.0                                                                                   |
+| Fecha              | 23/05/2026                                                                             |
 | Sponsor de negocio | DTIC UMSS                                                                              |
 | Stakeholders       | Emprendedores universitarios, DTIC UMSS, Bienestar Estudiantil, Centros de Estudiantes |
 | Autores            | Rodriguez Gonzales Abad Melani, Vargas Sandoval Christian Bernardo                     |
 | Revisores          | Docente                                                                                |
-| Estado             | Draft                                                                                  |
+| Estado             | Iterative Evolution                                                                                  |
 
 ---
 
@@ -323,22 +323,34 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 
 ---
 
-# 11. Requerimientos de Negocio
+## 11. Capacidades de Negocio
+| ID | Capacidad | Descripción |
+|---|---|---|
+| BC-01 | Gestión de tiendas | Administración de emprendimientos y unidades comerciales |
+| BC-02 | Gestión de catálogo | Registro y mantenimiento de productos |
+| BC-03 | Procesamiento de pedidos | Gestión del ciclo de vida de órdenes |
+| BC-04 | Validación de pagos | Confirmación y trazabilidad de pagos digitales |
+| BC-05 | Gestión de inventario | Control y sincronización de stock |
+| BC-06 | Notificaciones | Comunicación automática de estados y eventos |
+| BC-07 | Gestión administrativa | Monitoreo y auditoría operacional |
+| BC-08 | Gestión de usuarios | Administración de consumidores y operadores |
 
-| ID     | Requerimiento                      | Prioridad |
-| ------ | ---------------------------------- | --------- |
-| BR-001 | Registro validado de emprendedores | Must      |
-| BR-002 | Generación QR dinámico             | Must      |
-| BR-003 | Stock en tiempo real               | Must      |
-| BR-004 | Gestión de pedidos                 | Must      |
-| BR-005 | Dashboard vendedor                 | Should    |
-| BR-006 | Notificaciones automáticas         | Should    |
-| BR-007 | Historial transacciones            | Must      |
-| BR-008 | Sistema de calificaciones          | Could     |
-| BRD-OPS-001 | Trazabilidad operacional de pedidos | Should | Permitir auditoría y monitoreo operacional de procesos críticos. | Cada pedido deberá registrar historial completo de eventos y cambios de estado. |
+# 12. Requerimientos de Negocio
+
+| ID | Requerimiento | Prioridad | Descripción |
+|---|---|---|---|
+| BR-001 | Registro validado de emprendedores | Must | Permitir registro seguro de vendedores universitarios. |
+| BR-002 | Generación QR dinámico | Must | Generar pagos QR asociados a pedidos específicos. |
+| BR-003 | Stock en tiempo real | Must | Mantener sincronización automática de inventario. |
+| BR-004 | Gestión de pedidos | Must | Administrar ciclo completo de órdenes. |
+| BR-005 | Dashboard vendedor | Should | Visualizar métricas y operaciones comerciales. |
+| BR-006 | Notificaciones automáticas | Should | Informar eventos relevantes a usuarios. |
+| BR-007 | Historial transacciones | Must | Mantener trazabilidad histórica de operaciones. |
+| BR-008 | Sistema de calificaciones | Could | Permitir valoración de tiendas y productos. |
+| BRD-OPS-001 | Trazabilidad operacional de pedidos | Should | Registrar historial completo de eventos y cambios de estado para auditoría operacional. |
 ---
 
-# 12. Reglas de Negocio
+# 13. Reglas de Negocio
 
 | ID    | Regla                                                |
 | ----- | ---------------------------------------------------- |
@@ -350,7 +362,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 
 ---
 
-# 13. Restricciones Técnicas
+# 14. Restricciones Técnicas
 
 * Arquitectura multi-tenant.
 * Compatible con dispositivos móviles.
@@ -361,7 +373,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 
 ---
 
-# 14. Dependencias
+# 15. Dependencias
 
 * API bancaria QR.
 * Sistema de identidad universitaria.
@@ -370,7 +382,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 
 ---
 
-# 15. Riesgos
+# 16. Riesgos
 
 | Riesgo              | Impacto | Mitigación                   |
 | ------------------- | ------- | ---------------------------- |
@@ -382,7 +394,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 | Complejidad de integración distribuida | Media | Alta | Aplicar arquitectura incremental, pruebas evolutivas y desacoplamiento por dominios funcionales. |
 ---
 
-# 16. Beneficios Esperados
+# 17. Beneficios Esperados
 
 ## Operativos
 
@@ -408,7 +420,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 
 ---
 
-# 17. Criterios de Éxito
+# 18. Criterios de Éxito
 
 El proyecto será exitoso si:
 
@@ -420,7 +432,7 @@ El proyecto será exitoso si:
 
 ---
 
-# 18. Trazabilidad
+# 19. Trazabilidad
 
 | BRD    | PRD          | FSD           |
 | ------ | ------------ | ------------- |
@@ -431,7 +443,20 @@ El proyecto será exitoso si:
 
 ---
 
-# 19. Arquitectura General de Alto Nivel
+## 20. Estrategia AI-assisted
+La evolución documental y arquitectónica del proyecto incorpora un enfoque AI-assisted basado en generación incremental de especificaciones, trazabilidad documental y automatización parcial de procesos de diseño arquitectónico.
+
+El repositorio integra prompts estructurados, skills reutilizables y workflows documentales alineados a metodologías AI-SDLC para facilitar procesos de:
+
+- refinamiento funcional
+- diseño arquitectónico
+- especificación técnica
+- validación documental
+- trazabilidad evolutiva
+
+Este enfoque permite mantener consistencia incremental entre necesidades de negocio, arquitectura objetivo y artefactos técnicos derivados.
+
+# 21. Arquitectura General de Alto Nivel
 
 ```text
 Frontend Web (Angular)
@@ -445,35 +470,13 @@ Integración Banco QR
 
 ---
 
-# 20. Registro de Cambios
+# 22. Registro de Cambios
 
 | Versión | Fecha      | Cambio                             |
 | ------- | ---------- | ---------------------------------- |
 | v0.1    | 30/04/2026 | Documento inicial                  |
 | v2.0    | 11/05/2026 | Refinamiento estructural y técnico |
 
-## 21. Capacidades de negocio
 
-| ID | Capacidad | Descripción |
-|---|---|---|
-| BC-01 | Gestión de tiendas | Administración de emprendimientos y unidades comerciales |
-| BC-02 | Gestión de catálogo | Registro y mantenimiento de productos |
-| BC-03 | Procesamiento de pedidos | Gestión del ciclo de vida de órdenes |
-| BC-04 | Validación de pagos | Confirmación y trazabilidad de pagos digitales |
-| BC-05 | Gestión de inventario | Control y sincronización de stock |
-| BC-06 | Notificaciones | Comunicación automática de estados y eventos |
-| BC-07 | Gestión administrativa | Monitoreo y auditoría operacional |
-| BC-08 | Gestión de usuarios | Administración de consumidores y operadores |
 
-## 19. Estrategia AI-assisted
-La evolución documental y arquitectónica del proyecto incorpora un enfoque AI-assisted basado en generación incremental de especificaciones, trazabilidad documental y automatización parcial de procesos de diseño arquitectónico.
-
-El repositorio integra prompts estructurados, skills reutilizables y workflows documentales alineados a metodologías AI-SDLC para facilitar procesos de:
-
-- refinamiento funcional
-- diseño arquitectónico
-- especificación técnica
-- validación documental
-- trazabilidad evolutiva
-
-Este enfoque permite mantener consistencia incremental entre necesidades de negocio, arquitectura objetivo y artefactos técnicos derivados.
+ 
