@@ -81,17 +81,17 @@ La evolución del sistema contempla integración progresiva de capacidades funci
 
 ## 2.2 Visión Arquitectónica del Producto
 
-UMSS Market evoluciona como una plataforma digital modular orientada a capacidades de negocio desacopladas y escalables, permitiendo la integración progresiva de servicios comerciales, pagos digitales, notificaciones y procesos operacionales distribuidos.
+UMSS Market evoluciona como una plataforma digital modular orientada a capacidades de negocio desacopladas y escalables, permitiendo la integración progresiva de servicios comerciales, pagos digitales, notificaciones y procesos operacionales desacoplados.
 
-La arquitectura funcional del producto contempla separación incremental de dominios, integración basada en eventos y evolución independiente de capacidades funcionales alineadas al crecimiento del ecosistema universitario.
+La arquitectura funcional del producto contempla separación incremental de dominios, mecanismos desacoplados de comunicación funcional y evolución independiente de capacidades funcionales alineadas al crecimiento del ecosistema universitario.
 
 El enfoque arquitectónico prioriza:
 
 - modularidad funcional
 - trazabilidad operacional
-- resiliencia
-- observabilidad
-- integración distribuida
+- resiliencia funcional
+- monitoreo operacional
+- integración desacoplada
 - evolución incremental
 - consistencia operacional
 
@@ -110,10 +110,10 @@ La arquitectura funcional del producto se encuentra organizada mediante capacida
 | PC-02 | Gestión de Tiendas | Permitir operación de emprendimientos universitarios |
 | PC-03 | Gestión de Catálogo | Administrar productos, categorías y disponibilidad |
 | PC-04 | Gestión de Pedidos | Coordinar ciclo de vida completo de órdenes |
-| PC-05 | Gestión de Pagos | Validar pagos QR y sincronización transaccional |
-| PC-06 | Gestión de Inventario | Mantener consistencia y sincronización de stock |
+| PC-05 | Gestión de Pagos | Validar pagos QR y validación y sincronización operacional |
+| PC-06 | Gestión de Inventario | Mantener disponibilidad y actualización operativa de inventario |
 | PC-07 | Gestión de Notificaciones | Informar eventos y cambios de estado relevantes |
-| PC-08 | Observabilidad Operacional | Permitir monitoreo, trazabilidad y auditoría |
+| PC-08 | Monitoreo y Trazabilidad Operacional | Permitir monitoreo, trazabilidad y auditoría |
 | PC-09 | Gestión Administrativa | Supervisar operación global del ecosistema |
 
 ---
@@ -130,7 +130,7 @@ Este modelo permite:
 - escalabilidad progresiva del ecosistema
 - soporte para crecimiento distribuido de servicios
 
-La separación funcional establecida servirá como base para futuras decisiones arquitectónicas relacionadas con bounded contexts, integración basada en eventos y arquitectura distribuida.
+La separación funcional establecida servirá como base para futuras decisiones arquitectónicas relacionadas con bounded contexts, mecanismos desacoplados de comunicación funcional y arquitectura distribuida.
 ---
 
 # 4. Alcance (Scope)
@@ -232,13 +232,13 @@ La incorporación de eventos funcionales busca:
 - facilitar integración distribuida
 - permitir observabilidad de procesos críticos
 - reducir dependencias síncronas entre componentes
-# 6. Observabilidad y Trazabilidad Operacional
+# 7. Observabilidad y Trazabilidad Operacional
 
 El producto deberá incorporar mecanismos de observabilidad funcional orientados al monitoreo de procesos críticos, auditoría operacional y trazabilidad distribuida de eventos relevantes dentro del ecosistema UMSS Market.
 
 La estrategia de observabilidad permitirá identificar fallos operacionales, inconsistencias transaccionales y estados críticos asociados a pagos, pedidos, sincronización de stock y notificaciones.
 
-## 6.1 Objetivos de Observabilidad
+## 7.1 Objetivos de Observabilidad
 
 La solución deberá permitir:
 
@@ -253,7 +253,7 @@ La solución deberá permitir:
 
 ---
 
-## 6.2 Eventos Operacionales Trazables
+## 7.2 Eventos Operacionales Trazables
 
 | Evento Operacional | Objetivo |
 |---|---|
@@ -266,14 +266,14 @@ La solución deberá permitir:
 
 ---
 
-## 6.3 Estrategia Evolutiva de Observabilidad
+## 7.3 Estrategia Evolutiva de Observabilidad
 
 La evolución del producto contempla incorporación progresiva de capacidades de monitoreo distribuido y trazabilidad operacional alineadas a arquitecturas modernas orientadas a eventos.
 
 Este enfoque permitirá fortalecer resiliencia, auditoría y soporte operacional del ecosistema conforme aumente la complejidad funcional de la plataforma. 
 ---
 
-# 7. User Stories
+# 8. User Stories
 
 | ID | Historia | Prioridad |
 |---|---|---|
@@ -288,7 +288,7 @@ Este enfoque permitirá fortalecer resiliencia, auditoría y soporte operacional
 
 ---
 
-# 8. Criterios Gherkin
+# 9. Criterios Gherkin
 
 ```gherkin
 Escenario: Login exitoso
@@ -314,7 +314,7 @@ Entonces el stock disminuye automaticamente
 
 ---
 
-# 9. Priorizacion
+# 10. Priorizacion
 
 ## MoSCoW
 
@@ -335,7 +335,7 @@ Entonces el stock disminuye automaticamente
 
 ---
 
-# 10. Requerimientos Funcionales
+# 11. Requerimientos Funcionales
 
 | ID | Requisito | Prioridad |
 |---|---|---|
@@ -345,18 +345,6 @@ Entonces el stock disminuye automaticamente
 | PRD-REQ-004 | El sistema debe sincronizar stock | Must |
 | PRD-REQ-005 | El sistema debe generar pedidos | Must |
 | PRD-REQ-006 | El sistema debe generar QR dinamico | Must |
-
----
-# 11. Eventos Funcionales Relevantes
-
-| Evento | Descripción |
-|---|---|
-| pedido_creado | Orden generada por consumidor |
-| pago_confirmado | Pago QR validado |
-| stock_actualizado | Inventario sincronizado |
-| pedido_preparado | Pedido listo |
-| pedido_entregado | Entrega completada |
-| notificacion_generada | Comunicación emitida |
 
 ---
 # 12. Requerimientos No Funcionales
@@ -371,7 +359,7 @@ Entonces el stock disminuye automaticamente
 ---
 # 13. Estrategia AI-Native y AI-Assisted
 
-El proceso evolutivo del producto incorpora mecanismos AI-assisted orientados a refinamiento funcional, generación incremental de documentación y soporte arquitectónico basado en workflows agénticos.
+El proceso evolutivo del producto incorpora mecanismos AI-assisted orientados a refinamiento funcional, generación incremental de documentación y soporte arquitectónico basado en workflows AI-assisted.
 
 El ecosistema documental integra prompts estructurados, skills especializados y procesos AI-SDLC para facilitar:
 
@@ -398,7 +386,7 @@ El ecosistema documental integra prompts estructurados, skills especializados y 
 |---|---|---|
 | Baja adopcion | Alta | Campanas universitarias |
 | Fallos QR | Critico | Retry + fallback |
-| Errores stock | Alta | Transacciones ACID |
+| Errores stock | Alta | Validaciones operacionales y sincronización incremental |
 
 ---
 
@@ -417,7 +405,7 @@ El ecosistema documental integra prompts estructurados, skills especializados y 
 | Version | Fecha | Cambio |
 |---|---|---|
 | v1.0 | 11/05/2026 | Creacion inicial PRD |
-
+| v2.0 | 23/05/2026 | Consolidación funcional, capacidades desacopladas y evolución arquitectónica incremental del producto. |
 ---
 
 # Checklist

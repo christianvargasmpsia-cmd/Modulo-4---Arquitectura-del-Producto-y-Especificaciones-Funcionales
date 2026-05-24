@@ -44,7 +44,7 @@ La solución ofrece ventajas competitivas asociadas a:
 
 - validación de identidad universitaria
 - reducción de fraudes y suplantaciones
-- sincronización automática de stock
+- actualización automatizada de disponibilidad de productos
 - pagos QR integrados
 - trazabilidad completa de pedidos
 - monitoreo administrativo
@@ -66,8 +66,8 @@ La estrategia de crecimiento considera:
 - integración incremental de servicios
 - automatización progresiva de procesos operativos
 - soporte para múltiples actores comerciales
-- desacoplamiento funcional entre dominios
-- evolución arquitectónica orientada a escalabilidad y resiliencia
+- separación modular de capacidades operativas
+- evolución progresiva de capacidades operativas y tecnológicass
 ---
 
 ## 3. Análisis de Clientes (Segmentación)
@@ -185,3 +185,4 @@ Este enfoque permite mantener consistencia evolutiva entre objetivos estratégic
 | :--- | :--- | :--- | :--- |
 | v0.1 | 10/05/2026 | Rodriguez / Vargas | Versión inicial del borrador. |
 | v1.0 | 11/05/2026 | Rodriguez / Vargas | Versión final con análisis de FB Marketplace e insights de horarios. |
+| v2.0 | 23/05/2026 | Rodriguez / Vargas | Consolidación estratégica del mercado, evolución escalable del ecosistema y alineación AI-assisted del producto. |

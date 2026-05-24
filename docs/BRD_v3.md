@@ -45,7 +45,7 @@ El sistema centralizará:
 * Publicación de productos.
 * Gestión de pedidos.
 * Validación automática mediante QR dinámico.
-* Sincronización de stock en tiempo real.
+* Sincronización automatizada de stock.
 * Descubrimiento de negocios universitarios.
 
 ---
@@ -197,7 +197,7 @@ La solución deberá permitir:
 - tolerancia a fallos
 - evolución independiente de servicios
 
-La arquitectura objetivo considera principios modernos de Event-Driven Architecture (EDA), Domain-Driven Design (DDD) y diseño modular orientado a microservicios.
+La arquitectura objetivo considera principios modernos de Event-Driven Architecture (EDA), Domain-Driven Design (DDD) y diseño modular desacoplado orientado a evolución distribuida.
 
 # 4. Usuarios Objetivo
 
@@ -341,7 +341,7 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 |---|---|---|---|
 | BR-001 | Registro validado de emprendedores | Must | Permitir registro seguro de vendedores universitarios. |
 | BR-002 | Generación QR dinámico | Must | Generar pagos QR asociados a pedidos específicos. |
-| BR-003 | Stock en tiempo real | Must | Mantener sincronización automática de inventario. |
+| BR-003 | Sincronización automatizada de stock | Must | Mantener sincronización automática de inventario. |
 | BR-004 | Gestión de pedidos | Must | Administrar ciclo completo de órdenes. |
 | BR-005 | Dashboard vendedor | Should | Visualizar métricas y operaciones comerciales. |
 | BR-006 | Notificaciones automáticas | Should | Informar eventos relevantes a usuarios. |
@@ -389,9 +389,9 @@ La arquitectura objetivo considera principios modernos de Event-Driven Architect
 | Baja adopción       | Alta    | Campañas internas            |
 | Fallos API banco    | Crítico | Retry y validación fallback  |
 | Sobrecarga sistema  | Media   | Escalabilidad cloud          |
-| Stock inconsistente | Alta    | Sincronización transaccional |
+| Stock inconsistente | Alta    |  Procesos de validación y sincronización incremental |
 | Fraude QR           | Crítico | Validación segura            |
-| Complejidad de integración distribuida | Media | Alta | Aplicar arquitectura incremental, pruebas evolutivas y desacoplamiento por dominios funcionales. |
+| Complejidad de integración distribuida | Alta | Aplicar arquitectura incremental, pruebas evolutivas y desacoplamiento por dominios funcionales. |
 ---
 
 # 17. Beneficios Esperados
@@ -455,28 +455,39 @@ El repositorio integra prompts estructurados, skills reutilizables y workflows d
 - trazabilidad evolutiva
 
 Este enfoque permite mantener consistencia incremental entre necesidades de negocio, arquitectura objetivo y artefactos técnicos derivados.
+# 21. Alcance arquitectónico actual
 
-# 21. Arquitectura General de Alto Nivel
+La arquitectura distribuida descrita en el presente documento representa la arquitectura objetivo evolutiva propuesta para UMSS Market.
+
+El alcance actual del proyecto se enfoca principalmente en modelado arquitectónico, especificación funcional, trazabilidad documental y diseño conceptual orientado a evolución incremental del ecosistema.
+
+# 22. Arquitectura General de Alto Nivel
 
 ```text
 Frontend Web (Angular)
         ↓
-REST API Backend (Go)
+API & Application Layer (Go)
         ↓
-PostgreSQL Database
+Dominios funcionales desacoplados
+• Gestión de pedidos
+• Validación de pagos
+• Gestión de inventario
+• Notificaciones
+• Gestión administrativa
         ↓
-Integración Banco QR
+Persistencia e integraciones externas
+(PostgreSQL | API Banco QR | Servicios externos)
 ```
 
 ---
 
-# 22. Registro de Cambios
+# 23. Registro de Cambios
 
-| Versión | Fecha      | Cambio                             |
-| ------- | ---------- | ---------------------------------- |
-| v0.1    | 30/04/2026 | Documento inicial                  |
-| v2.0    | 11/05/2026 | Refinamiento estructural y técnico |
-
-
+| Versión | Fecha | Autor | Cambio |
+|---|---|---|---|
+| v0.1 | 27/04/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Creación inicial del BRD y definición preliminar del problema de negocio. |
+| v1.0 | 30/04/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Incorporación de objetivos de negocio, stakeholders y alcance funcional inicial. |
+| v2.0 | 11/05/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Refinamiento estructural, capacidades de negocio y alineación arquitectónica inicial. |
+| v3.0 | 23/05/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Consolidación arquitectónica, trazabilidad funcional, enfoque AI-assisted y fortalecimiento del modelo operativo distribuido. |
 
  

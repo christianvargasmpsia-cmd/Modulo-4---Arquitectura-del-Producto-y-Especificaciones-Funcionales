@@ -1,19 +1,37 @@
 # UMSS Market
 ## AI-Native Product Architecture & Functional Specifications
 ## 1. Introducción
-UMSS Market es una plataforma ecommerce orientada a la gestión digital de productos, pedidos, pagos y operaciones comerciales dentro del ecosistema universitario de la Universidad Mayor de San Simón.
+UMSS Market es un marketplace universitario multi-tenant diseñado para digitalizar y estructurar operativamente los emprendimientos estudiantiles de la Universidad Mayor de San Simón (UMSS).
+
+La plataforma busca resolver la informalidad operativa presente en procesos comerciales gestionados actualmente mediante WhatsApp, redes sociales y mecanismos manuales de coordinación, integrando catálogo digital, pagos QR, gestión de pedidos y trazabilidad operativa dentro de un ecosistema centralizado.
 
 El proyecto evoluciona bajo un enfoque AI-Native Engineering, integrando arquitectura distribuida, documentación evolutiva, decisiones arquitectónicas trazables y flujos de especificación funcional alineados a metodologías modernas de ingeniería de software asistida por inteligencia artificial.
 
 Este repositorio concentra la arquitectura documental, especificaciones funcionales, decisiones arquitectónicas, prompts especializados, artefactos AI-assisted y diagramas asociados al ciclo de vida arquitectónico del sistema.
 
-## 2. Objetivo del módulo
+## 2. Problema identificado
+
+Actualmente muchos emprendimientos universitarios operan mediante herramientas no diseñadas para comercio digital estructurado, como WhatsApp, Instagram y procesos manuales de validación de pagos.
+
+Esto genera:
+
+- pérdida de pedidos
+- desorganización operativa
+- alta carga cognitiva
+- falta de trazabilidad
+- control manual de inventario
+- baja escalabilidad
+- dependencia operativa del usuario
+
+UMSS Market surge como una propuesta de digitalización estructurada orientada a transformar el ecosistema emprendedor universitario mediante automatización y centralización operativa.
+
+## 3. Objetivo del módulo
 El objetivo de este módulo consiste en construir la arquitectura funcional y documental del sistema UMSS Market mediante un enfoque AI-SDLC, integrando procesos de modelado de negocio, especificación de producto, diseño arquitectónico, documentación técnica y generación asistida por inteligencia artificial.
 
 La estructura del repositorio busca mantener trazabilidad entre necesidades de negocio, capacidades funcionales, decisiones arquitectónicas y artefactos técnicos derivados durante el ciclo evolutivo del producto.
 
-## 3. Contexto del sistema
-UMSS Market opera como una plataforma ecommerce multiusuario orientada a consumidores, administradores y unidades comerciales universitarias.
+## 4. Contexto del sistema
+UMSS Market opera como un marketplace universitario multi-tenant orientado a consumidores, emprendedores estudiantiles y capacidades administrativas institucionales.
 
 El sistema contempla procesos asociados a:
 
@@ -27,8 +45,8 @@ El sistema contempla procesos asociados a:
 
 Debido al crecimiento funcional esperado, el sistema requiere una arquitectura desacoplada, resiliente y evolutiva que permita escalar capacidades de negocio de forma independiente.
 
-## 4. Arquitectura objetivo
-La arquitectura objetivo del sistema se encuentra alineada a principios de arquitectura distribuida moderna, microservicios orientados a eventos y patrones de integración asíncrona.
+## 5. Arquitectura objetivo
+La arquitectura objetivo del sistema se encuentra alineada a principios de arquitectura distribuida moderna, capacidades distribuidas orientadas a eventos y patrones de integración asíncrona.
 
 El enfoque arquitectónico prioriza:
 
@@ -43,7 +61,7 @@ El enfoque arquitectónico prioriza:
 
 La solución arquitectónica incorpora principios de Clean Architecture, Domain-Driven Design (DDD) y Event-Driven Architecture (EDA) como base estructural del ecosistema.
 
-## 5. Arquitectura documental
+## 6. Arquitectura documental
 La arquitectura documental del proyecto sigue un enfoque incremental y trazable alineado al ciclo AI-SDLC planteado durante el módulo.
 
 El flujo documental implementado contempla la evolución de los siguientes artefactos:
@@ -52,7 +70,7 @@ El flujo documental implementado contempla la evolución de los siguientes artef
 BRD → MRD → PRD → ADR → FSD → DTI → POC 
 ```
 
-## 6. Estructura del repositorio
+## 7. Estructura del repositorio
 El repositorio se organiza siguiendo separación de responsabilidades entre documentación funcional, arquitectura, prompts, evidencias y artefactos AI-assisted.
 
 ```text
@@ -71,7 +89,7 @@ poc/
 research/
 ```
 
-## 7. Documentos principales
+## 8. Documentos principales
 | Documento | Propósito |
 |---|---|
 | BRD | Definición de necesidades de negocio |
@@ -82,8 +100,10 @@ research/
 | DTI | Documento técnico inicial |
 | POC | Validaciones técnicas y prototipos |
 
-## 8. Arquitectura distribuida
-La arquitectura distribuida propuesta adopta principios de Event-Driven Architecture (EDA) y microservicios desacoplados mediante comunicación asíncrona.
+## 9. Arquitectura distribuida
+La arquitectura objetivo propuesta para UMSS Market adopta principios de arquitectura distribuida moderna orientada a evolución incremental.
+
+El diseño arquitectónico contempla microservicios desacoplados, integración asíncrona y patrones Event-Driven como base evolutiva para futuras implementaciones escalables del sistema.
 
 La solución busca minimizar dependencias rígidas entre componentes, facilitando:
 
@@ -96,7 +116,7 @@ La solución busca minimizar dependencias rígidas entre componentes, facilitand
 
 Se consideran patrones modernos como Saga Pattern, mensajería basada en eventos y bounded contexts derivados de capacidades de negocio.
 
-## 9. AI-native engineering
+## 10. AI-native engineering
 El proyecto incorpora un enfoque AI-Native Engineering basado en prompts estructurados, documentación asistida por IA y especialización funcional mediante skills reutilizables.
 
 La estrategia implementa:
@@ -104,13 +124,13 @@ La estrategia implementa:
 - generación asistida de documentación
 - prompts como contratos funcionales
 - arquitectura guiada por IA
-- workflows agénticos
+- workflows AI-assisted
 - trazabilidad evolutiva
 - automatización documental incremental
 
 Los prompts y skills contenidos en el repositorio funcionan como artefactos operacionales para procesos de diseño arquitectónico, validación funcional y especificación técnica.
 
-## 10. Diagramas
+## 11. Diagramas
 El repositorio incorpora diagramas arquitectónicos orientados a modelar:
 
 - contexto del sistema
@@ -123,7 +143,7 @@ El repositorio incorpora diagramas arquitectónicos orientados a modelar:
 
 Los diagramas se desarrollan utilizando Mermaid como mecanismo declarativo de documentación arquitectónica.
 
-## 11. ADRs
+## 12. ADRs
 Los Architecture Decision Records (ADR) documentan las decisiones arquitectónicas relevantes adoptadas durante el diseño evolutivo del sistema.
 
 Cada ADR registra:
@@ -138,7 +158,7 @@ Cada ADR registra:
 
 Este enfoque permite mantener trazabilidad sobre la evolución técnica y funcional de la solución.
 
-## 12. Prompts y Skills
+## 13. Prompts y Skills
 El ecosistema documental incorpora prompts especializados y skills reutilizables orientados a automatizar tareas de análisis arquitectónico, especificación funcional y diseño distribuido.
 
 Los skills implementan responsabilidades específicas como:
@@ -152,7 +172,7 @@ Los skills implementan responsabilidades específicas como:
 
 Este enfoque permite construir workflows AI-assisted alineados a metodologías modernas de ingeniería de software.
 
-## 13. Flujo documental
+## 14. Flujo documental
 El flujo documental del proyecto sigue una evolución incremental desde necesidades de negocio hasta especificaciones funcionales y decisiones arquitectónicas.
 
 ```text
@@ -172,7 +192,13 @@ DTI
    ↓
 POC
 ```
-## 14. Tecnologías
+## 16. Alcance actual
+
+El presente repositorio se enfoca principalmente en arquitectura funcional, especificaciones del producto, modelado distribuido, documentación evolutiva y validación conceptual del ecosistema UMSS Market.
+
+Las capacidades distribuidas descritas representan la arquitectura objetivo propuesta para futuras implementaciones incrementales del sistema.
+
+## 17. Tecnologías y enfoques arquitectónicos
 Las tecnologías y herramientas utilizadas dentro del proceso documental y arquitectónico incluyen:
 
 - Markdown
@@ -184,9 +210,9 @@ Las tecnologías y herramientas utilizadas dentro del proceso documental y arqui
 - Clean Architecture
 - Domain-Driven Design
 - AI-assisted engineering
-- Agentic workflows
+- workflows AI-assisted
 
-## 15. Estado actual
+## 18. Estado actual
 El proyecto se encuentra en evolución incremental bajo un enfoque AI-SDLC, integrando refinamiento continuo de arquitectura, documentación funcional y automatización asistida por inteligencia artificial.
 
 Las iteraciones actuales contemplan mejoras progresivas sobre:
@@ -197,4 +223,4 @@ Las iteraciones actuales contemplan mejoras progresivas sobre:
 - observabilidad
 - resiliencia
 - integración async
-- workflows agénticos
+- workflows AI-assisted
