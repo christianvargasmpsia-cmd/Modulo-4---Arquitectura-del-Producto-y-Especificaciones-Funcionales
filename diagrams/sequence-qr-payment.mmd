@@ -1,0 +1,69 @@
+%%{init: {"theme": "default"}}%%
+sequenceDiagram
+    actor Customer as Cliente UMSS
+    participant PWA as React PWA
+    participant GW as API Gateway
+    participant OrderSvc as Order Service
+    participant PaySvc as Payment Service
+    participant InvSvc as Inventory Service
+    participant QRBank as API Bancaria QR
+    participant Bus as RabbitMQ
+    participant RealtimeGW as Realtime Gateway
+
+    %% ============================================
+    %% FASE 1: Crear pedido y verificar stock
+    %% ============================================
+    Customer->>PWA: Confirmar compra
+    PWA->>GW: POST /api/v1/orders (JWT Bearer)
+    GW->>OrderSvc: Crear pedido (validado)
+    OrderSvc->>InvSvc: GET /internal/stock/{product_id}?qty=N
+    InvSvc->>InvSvc: Reserva optimista Redis TTL=300s
+    InvSvc-->>OrderSvc: 200 OK — stock disponible
+
+    %% ============================================
+    %% FASE 2: Generar QR de pago (evento)
+    %% ============================================
+    OrderSvc->>Bus: Publish ORDER_CREATED {order_id, total, correlationId}
+    Bus->>PaySvc: ORDER_CREATED
+    PaySvc->>QRBank: POST /qr/generate {amount, currency, reference, callback_url}
+    QRBank-->>PaySvc: {qr_url, qr_id, expires_in: 300}
+    PaySvc->>Bus: Publish PAYMENT_PENDING {order_id, qr_url, expires_at}
+    Bus->>OrderSvc: PAYMENT_PENDING → estado QR_GENERADO
+    Bus->>RealtimeGW: PAYMENT_PENDING
+    RealtimeGW-->>PWA: WebSocket push {qr_url, expires_in: 300}
+    PWA-->>Customer: Mostrar QR para escanear (countdown 5 min)
+
+    %% ============================================
+    %% FASE 3: Pago del cliente (webhook bancario)
+    %% ============================================
+    Note over Customer,QRBank: El cliente escanea el QR con su app bancaria móvil
+    QRBank->>PaySvc: POST /webhooks/payment {webhook_ref, amount, qr_id, hmac_sha256}
+    PaySvc->>PaySvc: 1. Validar firma HMAC-SHA256
+    PaySvc->>PaySvc: 2. Verificar idempotencia (webhook_ref único en DB)
+    PaySvc->>PaySvc: 3. Verificar monto == Pedido.total (exacto)
+    PaySvc-->>QRBank: HTTP 200 OK (siempre — incluso duplicado)
+
+    %% ============================================
+    %% FASE 4: Confirmación distribuida (Saga)
+    %% ============================================
+    PaySvc->>Bus: Publish PAYMENT_CONFIRMED {order_id, webhook_ref, correlationId}
+    Bus->>InvSvc: PAYMENT_CONFIRMED
+    InvSvc->>InvSvc: UPDATE stock SET qty = qty - N WHERE qty >= N (atómico)
+    InvSvc->>Bus: Publish STOCK_RESERVED {order_id, product_id, qty}
+    Bus->>OrderSvc: STOCK_RESERVED
+    OrderSvc->>OrderSvc: Estado → CONFIRMADO
+    OrderSvc->>Bus: Publish ORDER_CONFIRMED {order_id, correlationId}
+    Bus->>RealtimeGW: ORDER_CONFIRMED
+    RealtimeGW-->>PWA: WebSocket push ORDER_CONFIRMED
+    PWA-->>Customer: "¡Pedido confirmado! 🎉"
+
+    %% ============================================
+    %% ALTERNATIVA: TTL expirado (compensación)
+    %% ============================================
+    Note over InvSvc,Bus: Si TTL 300s expira antes del pago
+    InvSvc->>Bus: Publish STOCK_RELEASED {order_id, product_id}
+    Bus->>OrderSvc: STOCK_RELEASED → estado CANCELADO
+    OrderSvc->>Bus: Publish ORDER_CANCELLED
+    Bus->>RealtimeGW: ORDER_CANCELLED
+    RealtimeGW-->>PWA: WebSocket push ORDER_CANCELLED
+    PWA-->>Customer: "QR expirado — pedido cancelado"

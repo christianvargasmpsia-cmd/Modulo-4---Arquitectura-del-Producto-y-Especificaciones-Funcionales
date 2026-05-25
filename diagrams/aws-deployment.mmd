@@ -1,0 +1,94 @@
+%%{init: {"theme": "default"}}%%
+flowchart TB
+
+    %% ============================================
+    %% AWS Deployment — UMSS Market
+    %% Cloud: AWS us-east-1 (Multi-AZ)
+    %% Compute: ECS Fargate
+    %% ============================================
+
+    subgraph Internet["🌐 Internet"]
+        Client["Mobile / PWA\nCliente UMSS"]
+        BankApp["App Bancaria Móvil\nQR Payment"]
+    end
+
+    subgraph AWS["☁️ AWS — us-east-1 (Multi-AZ)"]
+
+        subgraph EdgeLayer["Edge & Seguridad"]
+            CF["CloudFront CDN\n+ S3 (PWA estática)"]
+            WAF["AWS WAF\nRate Limiting · DDoS · Bot"]
+            ALB["Application Load Balancer\nSSL Termination · Path Routing"]
+        end
+
+        subgraph ECS["ECS Fargate — Cluster de Microservicios"]
+            direction TB
+            GW_SVC["api-gateway\nFastAPI · JWT · Rate Limit\n2 tasks"]
+
+            subgraph BusinessServices["Servicios de Negocio"]
+                OS_T["order-service\n2 tasks"]
+                PS_T["payment-service\n2 tasks"]
+                IS_T["inventory-service\n2 tasks"]
+                CS_T["catalog-service\n2 tasks"]
+                NS_T["notification-service\n1 task"]
+                RGW_T["realtime-gateway\nWebSocket · 2 tasks"]
+            end
+        end
+
+        subgraph DataLayer["Capa de Datos (Managed Services)"]
+            RDS[("RDS PostgreSQL 16\nMulti-AZ · Automated Backups")]
+            REDIS_EC[("ElastiCache Redis 7\nCluster Mode · 3 shards")]
+            MQ_AMQ[("Amazon MQ\nRabbitMQ 3.13 · Multi-AZ")]
+        end
+
+        subgraph Ops["Observabilidad & Seguridad"]
+            CW["CloudWatch\nLogs · Metrics · Alarms"]
+            SM["Secrets Manager\nDB creds · API Keys · HMAC secrets"]
+            ECR["ECR\nContainer Registry"]
+            IAM["IAM Roles\nECS Task Roles"]
+        end
+
+        subgraph ExtSystems["Sistemas Externos (fuera de AWS)"]
+            QRBankExt["API Bancaria QR\n(HTTPS)"]
+            SIISExt["SIIS UMSS\n(HTTPS)"]
+            FCMExt["Google FCM\n(HTTPS)"]
+        end
+    end
+
+    %% Flujo de tráfico web
+    Client -->|HTTPS| CF
+    Client -->|HTTPS /api| WAF
+    WAF --> ALB
+    ALB --> GW_SVC
+    CF -->|assets estáticos| Client
+
+    %% Webhook bancario
+    BankApp -->|Pago QR| QRBankExt
+    QRBankExt -->|POST /webhooks/payment (HMAC)| ALB
+
+    %% Gateway → Servicios
+    GW_SVC --> OS_T
+    GW_SVC --> PS_T
+    GW_SVC --> IS_T
+    GW_SVC --> CS_T
+    GW_SVC --> RGW_T
+
+    %% Servicios → Datos
+    OS_T & PS_T & IS_T & CS_T --> RDS
+    IS_T --> REDIS_EC
+    OS_T & PS_T & IS_T & NS_T & RGW_T --> MQ_AMQ
+
+    %% Servicios → Externos
+    PS_T -->|QR generate + webhook| QRBankExt
+    GW_SVC -->|Validar RU| SIISExt
+    NS_T -->|Push notifications| FCMExt
+
+    %% Operaciones
+    ECS -->|Logs / Metrics| CW
+    ECS -->|Leer secrets| SM
+    ECR -->|Pull images| ECS
+    IAM -->|Task roles| ECS
+
+    %% Estilos
+    style DataLayer fill:#e8f5e9,stroke:#4CAF50,stroke-width:2px
+    style EdgeLayer fill:#e3f2fd,stroke:#2196F3,stroke-width:2px
+    style Ops fill:#fce4ec,stroke:#E91E63,stroke-width:2px

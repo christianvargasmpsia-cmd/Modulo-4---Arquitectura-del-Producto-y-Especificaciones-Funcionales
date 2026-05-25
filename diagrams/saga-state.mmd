@@ -1,0 +1,34 @@
+%%{init: {"theme": "default"}}%%
+stateDiagram-v2
+
+    %% ============================================
+    %% Saga de Pedido — UMSS Market
+    %% Patrón: Coreografía (ADR-0002)
+    %% ============================================
+
+    [*] --> PENDIENTE : POST /orders\n→ ORDER_CREATED publicado
+
+    %% Camino feliz
+    PENDIENTE --> QR_GENERADO : PAYMENT_PENDING\n(QR emitido por payment-service)
+
+    QR_GENERADO --> PAGO_CONFIRMADO : PAYMENT_CONFIRMED\n(webhook bancario válido:\nHMAC ✓ · idempotencia ✓ · monto exacto ✓)
+
+    PAGO_CONFIRMADO --> STOCK_RESERVADO : STOCK_RESERVED\n(descuento atómico en PostgreSQL)
+
+    STOCK_RESERVADO --> CONFIRMADO : ORDER_CONFIRMED\n(notificación + WebSocket)
+
+    CONFIRMADO --> [*]
+
+    %% Caminos de compensación (Saga rollback)
+    PENDIENTE --> CANCELADO : Error de stock\no timeout inicial
+
+    QR_GENERADO --> CANCELADO : TTL 300s expirado\n→ STOCK_RELEASED (compensación)
+
+    PAGO_CONFIRMADO --> REEMBOLSO_PENDIENTE : PAYMENT_FAILED\n(error post-confirmación)
+
+    STOCK_RESERVADO --> REEMBOLSO_PENDIENTE : Error crítico\npost-reserva
+
+    REEMBOLSO_PENDIENTE --> REEMBOLSADO : Reembolso procesado\npor payment-service
+
+    CANCELADO --> [*]
+    REEMBOLSADO --> [*]

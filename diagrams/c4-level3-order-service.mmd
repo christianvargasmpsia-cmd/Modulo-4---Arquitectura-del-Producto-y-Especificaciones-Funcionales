@@ -1,0 +1,68 @@
+%%{init: {"theme": "default"}}%%
+flowchart TB
+
+    %% ====================================
+    %% C4 Nivel 3 — Componentes Internos del Order Service
+    %% ====================================
+
+    subgraph DrivingAdapters["Adaptadores de Entrada (Driving)"]
+        direction LR
+        OrderAPI["OrderAPI\nFastAPI Router\nAdapter/In/HTTP"]
+        EventConsumer["EventConsumer\naio-pika Consumer\nAdapter/In/AMQP"]
+    end
+
+    subgraph Core["Order Service — Núcleo Hexagonal"]
+        direction TB
+
+        subgraph ApplicationLayer["Capa de Aplicación"]
+            CreateOrderUC["CreateOrderUseCase"]
+            CancelOrderUC["CancelOrderUseCase"]
+            ConfirmOrderUC["ConfirmOrderUseCase"]
+            SagaCoordinator["SagaCoordinator\n(coreografía de eventos)"]
+        end
+
+        subgraph DomainLayer["Capa de Dominio — puro Python"]
+            OrderAgg["Order\nAggregate Root"]
+            OrderItem["OrderItem\nEntity"]
+            OrderStatus["OrderStatus\nValue Object\nPENDIENTE·QR_GENERADO·CONFIRMADO·CANCELADO"]
+            DomainEvts["Domain Events\nOrderCreated · OrderConfirmed\nOrderCancelled"]
+        end
+    end
+
+    subgraph DrivenAdapters["Adaptadores de Salida (Driven)"]
+        direction LR
+        OrderRepo["OrderRepository\nSQLAlchemy\nAdapter/Out/PostgreSQL"]
+        EventPub["EventPublisher\naio-pika\nAdapter/Out/AMQP"]
+        OrderCache["OrderCache\nRedis TTL\nAdapter/Out/Redis"]
+    end
+
+    subgraph Infrastructure["Infraestructura"]
+        RabbitMQ[("RabbitMQ\nEvent Bus")]
+        PostgreSQL[("PostgreSQL\norders DB")]
+        Redis[("Redis\nTTL locks")]
+    end
+
+    %% Flujo de entrada
+    OrderAPI --> CreateOrderUC
+    OrderAPI --> CancelOrderUC
+    EventConsumer --> ConfirmOrderUC
+    EventConsumer --> SagaCoordinator
+
+    %% Flujo de dominio
+    CreateOrderUC --> OrderAgg
+    CancelOrderUC --> OrderAgg
+    ConfirmOrderUC --> OrderAgg
+    OrderAgg --> OrderItem
+    OrderAgg --> OrderStatus
+    OrderAgg --> DomainEvts
+    SagaCoordinator --> EventPub
+
+    %% Flujo de salida
+    CreateOrderUC --> OrderRepo
+    CreateOrderUC --> OrderCache
+    ConfirmOrderUC --> OrderRepo
+
+    %% Infraestructura
+    OrderRepo --> PostgreSQL
+    EventPub --> RabbitMQ
+    OrderCache --> Redis

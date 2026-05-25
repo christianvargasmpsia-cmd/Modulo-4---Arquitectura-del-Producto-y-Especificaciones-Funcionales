@@ -1,0 +1,65 @@
+%%{init: {"theme": "default"}}%%
+flowchart LR
+
+    %% ============================================
+    %% Arquitectura Hexagonal — UMSS Market
+    %% Patrón: Ports & Adapters (ADR-0003)
+    %% Aplica a cada microservicio (ej. order-service)
+    %% ============================================
+
+    subgraph DrivingAdapters["⬅ Adaptadores de Entrada (Driving / Primary)"]
+        direction TB
+        REST["FastAPI Router\nREST / HTTP"]
+        AMQP_IN["RabbitMQ Consumer\naio-pika (AMQP)"]
+        WS_IN["WebSocket Handler\nStarlette"]
+    end
+
+    subgraph Hexagon["🔷 NÚCLEO — Independiente de toda infraestructura"]
+        direction TB
+
+        subgraph ApplicationLayer["Capa de Aplicación"]
+            direction LR
+            InputPorts["«Input Ports»\nICreateOrderUseCase\nICancelOrderUseCase\nIConfirmOrderUseCase"]
+            UseCases["Use Cases\n(Comandos y Queries)\nCreateOrder · CancelOrder\nConfirmOrder · GetOrder"]
+            OutputPorts["«Output Ports»\nIOrderRepository\nIEventPublisher\nIStockService\nIPaymentService"]
+        end
+
+        subgraph DomainLayer["Capa de Dominio — puro Python (sin imports de framework)"]
+            direction TB
+            Aggregates["Aggregates\nOrder · Payment\nProduct · User"]
+            ValueObjects["Value Objects\nMoney · QRCode\nRU · OrderStatus"]
+            DomainEvents["Domain Events\nOrderCreated\nOrderConfirmed\nOrderCancelled"]
+        end
+
+        InputPorts --> UseCases
+        UseCases --> DomainLayer
+        UseCases --> OutputPorts
+    end
+
+    subgraph DrivenAdapters["Adaptadores de Salida (Driven / Secondary) ➡"]
+        direction TB
+        PG["PostgreSQL\nSQLAlchemy Repo"]
+        REDIS_A["Redis\nCache Adapter\n(TTL locks)"]
+        AMQP_OUT["RabbitMQ Publisher\naio-pika (AMQP)"]
+        BANK_HTTP["API Bancaria QR\naiohttp Client"]
+        SIIS_HTTP["SIIS UMSS\naiohttp Client"]
+        FCM_A["FCM\nPush Adapter"]
+    end
+
+    %% Conexiones: Driving → Ports
+    REST --> InputPorts
+    AMQP_IN --> InputPorts
+    WS_IN --> InputPorts
+
+    %% Conexiones: Output Ports → Driven
+    OutputPorts --> PG
+    OutputPorts --> REDIS_A
+    OutputPorts --> AMQP_OUT
+    OutputPorts --> BANK_HTTP
+    OutputPorts --> SIIS_HTTP
+    OutputPorts --> FCM_A
+
+    %% Estilos
+    style Hexagon fill:#e8f4fd,stroke:#2196F3,stroke-width:2px
+    style DomainLayer fill:#fff3e0,stroke:#FF9800,stroke-width:2px
+    style ApplicationLayer fill:#f3e5f5,stroke:#9C27B0,stroke-width:2px
