@@ -1,0 +1,63 @@
+flowchart TB
+
+    %% ====================================
+    %% ACTORES
+    %% ====================================
+
+    Customer[Cliente UMSS]
+    Seller[Vendedor]
+    Admin[Administrador]
+
+    %% ====================================
+    %% SISTEMA PRINCIPAL
+    %% ====================================
+
+    UMSSMarket[UMSS Market Platform]
+
+    %% ====================================
+    %% SISTEMAS EXTERNOS
+    %% ====================================
+
+    QRBank[QR Payment Provider]
+    NotificationProvider[Notification Provider]
+    WebSocketClients[Realtime Connected Clients]
+
+    %% ====================================
+    %% INTERACCIONES USUARIO
+    %% ====================================
+
+    Customer -->|Compra productos| UMSSMarket
+
+    Seller -->|Gestiona catálogo y stock| UMSSMarket
+
+    Admin -->|Administra plataforma| UMSSMarket
+
+    %% ====================================
+    %% INTEGRACIONES EXTERNAS
+    %% ====================================
+
+    UMSSMarket -->|Validación de pagos QR| QRBank
+
+    UMSSMarket -->|Envía notificaciones| NotificationProvider
+
+    UMSSMarket -->|Actualizaciones realtime| WebSocketClients
+
+    %% ====================================
+    %% CAPACIDADES PRINCIPALES
+    %% ====================================
+
+    Cap1[Gestión de pedidos]
+    Cap2[Pagos QR]
+    Cap3[Gestión de stock]
+    Cap4[Actualización realtime]
+    Cap5[Arquitectura Event-Driven]
+    Cap6[Coordinación Saga]
+    Cap7[AI-assisted validation]
+
+    UMSSMarket --- Cap1
+    UMSSMarket --- Cap2
+    UMSSMarket --- Cap3
+    UMSSMarket --- Cap4
+    UMSSMarket --- Cap5
+    UMSSMarket --- Cap6
+    UMSSMarket --- Cap7

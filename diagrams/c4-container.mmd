@@ -1,0 +1,120 @@
+flowchart TB
+
+    %% =========================
+    %% ACTORES
+    %% =========================
+
+    User[Cliente UMSS]
+    Admin[Administrador]
+
+    %% =========================
+    %% FRONTEND
+    %% =========================
+
+    Frontend[Frontend Web Angular]
+
+    %% =========================
+    %% API GATEWAY
+    %% =========================
+
+    APIGateway[API Backend Gateway]
+
+    %% =========================
+    %% CORE SERVICES
+    %% =========================
+
+    OrderService[Order Service]
+    PaymentService[Payment Service]
+    InventoryService[Inventory Service]
+    CatalogService[Catalog Service]
+    NotificationService[Notification Service]
+    RealtimeGateway[Realtime Gateway]
+
+    %% =========================
+    %% DATABASE
+    %% =========================
+
+    PostgreSQL[(PostgreSQL Database)]
+
+    %% =========================
+    %% EVENT BUS
+    %% =========================
+
+    EventBus[(Event Bus)]
+
+    %% =========================
+    %% EXTERNAL SYSTEMS
+    %% =========================
+
+    QRBank[QR Payment Integration]
+
+    %% =========================
+    %% USER INTERACTION
+    %% =========================
+
+    User --> Frontend
+    Admin --> Frontend
+
+    %% =========================
+    %% FRONTEND TO BACKEND
+    %% =========================
+
+    Frontend --> APIGateway
+
+    %% =========================
+    %% API TO SERVICES
+    %% =========================
+
+    APIGateway --> OrderService
+    APIGateway --> PaymentService
+    APIGateway --> CatalogService
+
+    %% =========================
+    %% DATABASE CONNECTIONS
+    %% =========================
+
+    OrderService --> PostgreSQL
+    PaymentService --> PostgreSQL
+    InventoryService --> PostgreSQL
+    CatalogService --> PostgreSQL
+    NotificationService --> PostgreSQL
+
+    %% =========================
+    %% EVENT-DRIVEN COMMUNICATION
+    %% =========================
+
+    OrderService --> EventBus
+    PaymentService --> EventBus
+    InventoryService --> EventBus
+    NotificationService --> EventBus
+    CatalogService --> EventBus
+
+    %% =========================
+    %% EVENT CONSUMERS
+    %% =========================
+
+    EventBus --> PaymentService
+    EventBus --> InventoryService
+    EventBus --> NotificationService
+    EventBus --> RealtimeGateway
+
+    %% =========================
+    %% REALTIME COMMUNICATION
+    %% =========================
+
+    RealtimeGateway --> Frontend
+
+    %% =========================
+    %% EXTERNAL PAYMENT
+    %% =========================
+
+    PaymentService --> QRBank
+
+    %% =========================
+    %% SAGA FLOW NOTES
+    %% =========================
+
+    OrderService -. ORDER_CREATED .-> EventBus
+    PaymentService -. PAYMENT_CONFIRMED .-> EventBus
+    InventoryService -. STOCK_RESERVED .-> EventBus
+    NotificationService -. ORDER_CONFIRMED .-> EventBus

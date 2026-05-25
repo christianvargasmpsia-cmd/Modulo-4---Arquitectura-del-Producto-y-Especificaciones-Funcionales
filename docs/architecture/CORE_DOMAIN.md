@@ -2,7 +2,7 @@
 
 ## 2.1 Dominio Core
 
-El dominio core de UMSS Market es la gestión de emprendimientos universitarios mediante un marketplace centralizado que permite publicar productos, gestionar pedidos y procesar compras digitales.
+El dominio core de UMSS Market es la gestión de emprendimientos universitarios mediante una plataforma marketplace que permite publicar productos, gestionar inventario, coordinar pedidos y procesar compras digitales.
 
 ---
 
@@ -12,7 +12,7 @@ El dominio core de UMSS Market es la gestión de emprendimientos universitarios 
 |---|---|
 | Emprendedor | Usuario autorizado que administra una tienda dentro del marketplace |
 | Producto | Artículo publicado para venta dentro de una tienda |
-| Pedido | Transacción generada por la compra de productos |
+| Pedido | Proceso operacional que coordina la compra, validación de pago y actualización de stock. |
 
 ---
 
@@ -23,6 +23,7 @@ Siguiendo los principios de Clean Architecture de Robert C. Martin:
 - el dominio debe permanecer independiente de frameworks
 - las reglas de negocio no deben depender de infraestructura
 - la lógica core debe estar aislada de detalles externos
+- La arquitectura también prioriza comunicación desacoplada mediante eventos operacionales distribuidos.
 
 El sistema prioriza la separación entre:
 
@@ -39,7 +40,7 @@ La Dependency Rule establece que las dependencias deben apuntar hacia adentro, h
 
 En UMSS Market:
 
-- Angular depende del backend
+- La capa de presentación consume capacidades expuestas por servicios de aplicación desacoplados del dominio.
 - el backend depende del dominio
 - el dominio no depende de frameworks
 - el core no depende de PostgreSQL ni APIs externas
@@ -57,6 +58,9 @@ Ejemplos:
 | Pago QR | Banco QR API |
 | Notificaciones | SMTP Service |
 | Persistencia | PostgreSQL Repository |
-| Autenticación | JWT Adapter |
+| Autenticación | Authentication Adapter |
+| Actualizaciones realtime | WebSocket Gateway |
 
 Esto permitirá cambiar tecnologías sin afectar las reglas de negocio del sistema.
+
+La arquitectura también incorpora mecanismos AI-assisted para trazabilidad documental y validación funcional dentro del AI-SDLC definido para el proyecto.

@@ -1,0 +1,91 @@
+flowchart TD
+
+    %% ====================================
+    %% INICIO DEL FLUJO
+    %% ====================================
+
+    A[Cliente crea pedido]
+
+    %% ====================================
+    %% CREACION PEDIDO
+    %% ====================================
+
+    A --> B[ORDER_CREATED]
+
+    B --> C[Payment Service genera QR]
+
+    %% ====================================
+    %% PAGO PENDIENTE
+    %% ====================================
+
+    C --> D[PAYMENT_PENDING]
+
+    D --> E[Cliente realiza pago QR]
+
+    %% ====================================
+    %% VALIDACION PAGO
+    %% ====================================
+
+    E --> F{Pago confirmado?}
+
+    %% ====================================
+    %% PAGO EXITOSO
+    %% ====================================
+
+    F -->|SI| G[PAYMENT_CONFIRMED]
+
+    G --> H[Inventory Service reserva stock]
+
+    H --> I{Stock disponible?}
+
+    %% ====================================
+    %% STOCK EXITOSO
+    %% ====================================
+
+    I -->|SI| J[STOCK_RESERVED]
+
+    J --> K[ORDER_CONFIRMED]
+
+    K --> L[Realtime Gateway publica actualización]
+
+    L --> M[REALTIME_UPDATE_SENT]
+
+    M --> N[Notification Service notifica usuario]
+
+    N --> O[NOTIFICATION_SENT]
+
+    O --> P[Pedido completado]
+
+    %% ====================================
+    %% FALLO DE STOCK
+    %% ====================================
+
+    I -->|NO| Q[STOCK_RELEASED]
+
+    Q --> R[ORDER_CANCELLED]
+
+    R --> S[Notificar cancelación]
+
+    %% ====================================
+    %% FALLO DE PAGO
+    %% ====================================
+
+    F -->|NO| T[PAYMENT_FAILED]
+
+    T --> U[ORDER_CANCELLED]
+
+    U --> V[Liberar recursos operacionales]
+
+    V --> W[Notification Service notifica fallo]
+
+    %% ====================================
+    %% EVENTOS SAGA
+    %% ====================================
+
+    classDef success fill:#d4edda,stroke:#155724,color:#155724
+    classDef failure fill:#f8d7da,stroke:#721c24,color:#721c24
+    classDef process fill:#d1ecf1,stroke:#0c5460,color:#0c5460
+
+    class G,J,K,M,O success
+    class T,R,U,W,Q failure
+    class B,C,D,H,L,N process

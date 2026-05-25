@@ -25,7 +25,7 @@ se identificaron flujos candidatos para aplicar:
 
 | Patrón | Objetivo |
 |---|---|
-| Saga Pattern | Coordinar transacciones distribuidas |
+| Saga Pattern | Coordinar procesos distribuidos mediante compensaciones |
 | Outbox Pattern | Garantizar publicación consistente de eventos |
 | CQRS | Separar comandos y consultas |
 
@@ -57,107 +57,189 @@ Cuando un comprador realiza un pago QR, el sistema debe validar el pago mediante
 | CQRS | Lecturas separadas de estado pagos |
 
 ---
+## Flujo
+
+```text
+Cliente genera QR
+↓
+Proveedor QR procesa validación de pago
+↓
+Webhook confirma pago
+↓
+Payment Service publica PAYMENT_CONFIRMED
+↓
+Event Bus propaga evento
+↓
+Order Service actualiza pedido
+↓
+Notification Service envía notificación
+```
+
+### Evento candidato
+
+```text
+PAYMENT_CONFIRMED
+```
+
+### Beneficios
+
+- consistencia eventual
+- desacoplamiento
+- resiliencia ante fallos
+- recuperación operacional controlada
+
+---
+
+# 3.4 Flujo asíncrono #2 — Creación de pedido e inventario
+
+## Descripción
+
+Al crear un pedido, el sistema debe validar stock y actualizar inventario sin bloquear toda la operación.
+
+---
+
+## Componentes involucrados
+
+- Order Service
+- Inventory Service
+- Product Service
+
+---
+
+## Patrones aplicables
+
+| Patrón | Aplicación |
+|---|---|
+| Saga Pattern | Coordinación pedido-stock |
+| Outbox Pattern | Publicación evento ORDER_CREATED |
+| CQRS | Consultas optimizadas de catálogo |
+
+---
 
 ## Flujo
 
 ```text
-Cliente → Generar QR
-↓
-Banco procesa pago
-↓
-Webhook confirma pago
-↓
-Order Service actualiza pedido
-↓
-Notification Service envía correo
-
-Evento candidato
-PaymentConfirmed
-Beneficios
-consistencia eventual
-desacoplamiento
-resiliencia ante fallos
-recuperación automática
-3.4 Flujo asíncrono #2 — Creación de pedido e inventario
-Descripción
-
-Al crear un pedido, el sistema debe validar stock y actualizar inventario sin bloquear toda la operación.
-
-Componentes involucrados
-Order Service
-Inventory Service
-Product Service
-Patrones aplicables
-Patrón	Aplicación
-Saga Pattern	Coordinación pedido-stock
-Outbox Pattern	Publicación evento OrderCreated
-CQRS	Consultas optimizadas catálogo
-Flujo
 Cliente crea pedido
 ↓
 Order Service genera pedido
 ↓
+Order Service publica ORDER_CREATED
+↓
+Event Bus propaga evento
+↓
 Inventory Service reserva stock
 ↓
-Sistema confirma disponibilidad
+Inventory Service confirma reserva de stock
 ↓
 Pedido queda aprobado
-Evento candidato
-OrderCreated
-Beneficios
-reducción bloqueo transaccional
-mejor escalabilidad
-desacoplamiento inventario
-tolerancia a fallos
-3.5 Flujo asíncrono #3 — Notificaciones y correos
-Descripción
+```
+
+### Evento candidato
+
+```text
+ORDER_CREATED
+```
+
+### Beneficios
+
+- reducción de bloqueo transaccional
+- mejor escalabilidad
+- desacoplamiento de inventario
+- tolerancia a fallos
+
+---
+
+# 3.5 Flujo asíncrono #3 — Notificaciones y actualizaciones realtime
+
+## Descripción
 
 El envío de correos y notificaciones no debe bloquear procesos críticos del sistema.
 
-Componentes involucrados
-Notification Service
-SMTP Service
-Reservation Service
-Order Service
-Patrones aplicables
-Patrón	Aplicación
-Outbox Pattern	Garantizar envío consistente
-CQRS	Consultas optimizadas historial
-Saga Pattern	Coordinación estados críticos
-Flujo
+Realtime Gateway propaga actualizaciones operacionales mediante WebSockets hacia clientes conectados, permitiendo sincronización en tiempo real sin acoplar directamente los módulos funcionales.
+
+---
+
+## Componentes involucrados
+
+- Notification Service
+- SMTP Service
+- Realtime Gateway
+- Order Service
+
+---
+
+## Patrones aplicables
+
+| Patrón | Aplicación |
+|---|---|
+| Outbox Pattern | Garantizar envío consistente |
+| CQRS | Consultas optimizadas de historial |
+| Saga Pattern | Coordinación de estados críticos |
+
+---
+
+## Flujo
+
+```text
 Pedido confirmado
 ↓
-Evento NotificationRequested
+Order Service publica NOTIFICATION_REQUESTED
+↓
+Event Bus propaga evento
 ↓
 Notification Service consume evento
 ↓
 SMTP envía correo
 ↓
+Realtime Gateway publica actualización
+↓
 Sistema registra entrega
-Evento candidato
-NotificationRequested
-Beneficios
-desacoplamiento SMTP
-menor latencia
-mayor resiliencia
-retry automático
-3.6 Relación con Clean Architecture
+```
+
+### Evento candidato
+
+```text
+NOTIFICATION_REQUESTED
+```
+
+### Beneficios
+
+- desacoplamiento SMTP
+- menor latencia operacional
+- mayor resiliencia
+- reintentos controlados
+- sincronización realtime
+
+---
+
+# 3.6 Relación con Clean Architecture
 
 Los flujos asíncronos respetan la Dependency Rule:
 
-el dominio no depende del broker
-eventos son abstraídos mediante puertos
-adaptadores implementan mensajería
-infraestructura permanece desacoplada
-3.7 Riesgos arquitectónicos
-Riesgo	Mitigación
-Duplicación eventos	Idempotencia
-Eventos perdidos	Outbox Pattern
-Inconsistencia temporal	Saga compensation
-Latencia procesamiento	Retry + Queue
-3.8 Próximos pasos
-Definir broker de eventos
-Elaborar ADR Event-Driven
-Diseñar Event Contracts
-Definir compensating transactions
-Diseñar arquitectura CQRS detallada
+- los eventos son publicados mediante abstracciones desacopladas
+- el dominio no depende directamente del broker de eventos
+- los eventos son abstraídos mediante puertos
+- los adaptadores implementan mecanismos de mensajería
+- la infraestructura permanece desacoplada del dominio
+
+---
+
+# 3.7 Riesgos arquitectónicos
+
+| Riesgo | Mitigación |
+|---|---|
+| Duplicación de eventos | Consumo idempotente |
+| Eventos perdidos | Outbox Pattern |
+| Inconsistencia temporal | Compensaciones Saga |
+| Latencia de procesamiento | Reintentos controlados y colas de eventos |
+
+---
+
+# 3.8 Próximos pasos
+
+- evaluar mecanismo de propagación de eventos compatible con despliegue incremental
+- elaborar ADR Event-Driven
+- diseñar contratos de eventos
+- definir compensaciones operacionales
+- diseñar estrategia CQRS detallada
+
