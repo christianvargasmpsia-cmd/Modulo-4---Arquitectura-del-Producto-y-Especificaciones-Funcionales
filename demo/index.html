@@ -3,80 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UMSS Market - Distributed Saga Demo</title>
+  <title>UMSS Market — Distributed Saga Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<header>
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="logo">🛒</span>
+      <div>
+        <h1>UMSS Market</h1>
+        <span class="header-subtitle">Arquitectura Distribuida · Saga Pattern · Event-Driven</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="badge">G1 · Release 2.0.0</span>
+      <span class="badge badge-tech">FastAPI · RabbitMQ · Redis · PostgreSQL</span>
+    </div>
+  </div>
+</header>
+
 <div class="container">
 
+  <!-- LEFT PANEL -->
   <div class="left-panel">
 
-    <h1>UMSS Market</h1>
-    <p class="subtitle">Arquitectura Distribuida Event-Driven</p>
-
     <div class="product-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="product-img">
-
+      <div class="product-badge">Stock: <span id="stockCount">10</span> unidades</div>
+      <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="product-img" alt="Hamburguesa">
       <h2>Hamburguesa Clásica</h2>
-      <p>Bs. 25</p>
-
-      <button id="buyBtn">Comprar Ahora</button>
+      <p class="price">Bs. 25.00</p>
+      <div class="btn-group">
+        <button id="buyBtn" class="btn-primary">⚡ Comprar Ahora</button>
+        <button id="failBtn" class="btn-danger">💥 Simular Fallo de Pago</button>
+      </div>
     </div>
 
     <div class="qr-container hidden" id="qrContainer">
-      <h3>QR de Pago</h3>
-
-      <img
-        src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=UMSS-MARKET-PAYMENT"
-        class="qr-img"
-      >
-
-      <p>Esperando confirmación bancaria...</p>
+      <h3>🔳 QR de Pago Dinámico</h3>
+      <div class="qr-timer-ring">
+        <svg viewBox="0 0 100 100" class="timer-svg">
+          <circle cx="50" cy="50" r="45" class="timer-bg"/>
+          <circle cx="50" cy="50" r="45" class="timer-fill" id="timerCircle"/>
+        </svg>
+        <div class="timer-text">
+          <span id="timerCount">15</span>
+          <small>seg</small>
+        </div>
+      </div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=UMSS-MARKET-ORD-001-Bs25.00" class="qr-img" alt="QR Pago">
+      <p class="qr-note">TTL: 300 s (demo: 15 s) · HMAC-SHA256 validado</p>
     </div>
 
     <div class="status-box">
       <h3>Estado del Pedido</h3>
-      <div id="orderStatus">PENDIENTE</div>
+      <div id="orderStatus" class="status-pending">⏳ PENDIENTE</div>
+    </div>
+
+    <div class="invariants-box">
+      <h3>Invariantes del Dominio</h3>
+      <ul>
+        <li id="inv-stock">✅ Stock ≥ 0 (atómico)</li>
+        <li id="inv-idempotency">✅ Idempotencia de pagos</li>
+        <li id="inv-hmac">✅ HMAC-SHA256 en webhooks</li>
+        <li id="inv-ttl">✅ QR TTL = 300 s</li>
+        <li id="inv-amount">✅ Monto exacto</li>
+      </ul>
     </div>
 
   </div>
 
+  <!-- RIGHT PANEL -->
   <div class="right-panel">
 
-    <h2>Arquitectura Distribuida</h2>
+    <!-- Saga Progress Steps -->
+    <div class="saga-steps">
+      <div class="saga-step" id="step1"><div class="step-dot"></div><span>Pedido</span></div>
+      <div class="saga-line" id="line1"></div>
+      <div class="saga-step" id="step2"><div class="step-dot"></div><span>QR / Pago</span></div>
+      <div class="saga-line" id="line2"></div>
+      <div class="saga-step" id="step3"><div class="step-dot"></div><span>Confirmación</span></div>
+      <div class="saga-line" id="line3"></div>
+      <div class="saga-step" id="step4"><div class="step-dot"></div><span>Inventario</span></div>
+      <div class="saga-line" id="line4"></div>
+      <div class="saga-step" id="step5"><div class="step-dot"></div><span>Notificación</span></div>
+    </div>
 
+    <!-- Microservices -->
     <div class="services-grid">
 
       <div class="service" id="orderService">
-        📦
-        <span>ORDER SERVICE</span>
+        <div class="service-icon">📦</div>
+        <span class="service-name">Order Service</span>
+        <span class="service-detail">Ciclo de vida del pedido</span>
       </div>
 
       <div class="service" id="paymentService">
-        💳
-        <span>PAYMENT SERVICE</span>
+        <div class="service-icon">💳</div>
+        <span class="service-name">Payment Service</span>
+        <span class="service-detail">QR dinámico + webhook</span>
       </div>
 
       <div class="service" id="eventBus">
-        📨
-        <span>EVENT BUS</span>
+        <div class="service-icon">📨</div>
+        <span class="service-name">Event Bus</span>
+        <span class="service-detail">RabbitMQ · Pub/Sub</span>
       </div>
 
       <div class="service" id="inventoryService">
-        🏪
-        <span>INVENTORY SERVICE</span>
+        <div class="service-icon">🏪</div>
+        <span class="service-name">Inventory Service</span>
+        <span class="service-detail">Stock atómico · Redis</span>
       </div>
 
       <div class="service" id="notificationService">
-        🔔
-        <span>NOTIFICATION SERVICE</span>
+        <div class="service-icon">🔔</div>
+        <span class="service-name">Notification Service</span>
+        <span class="service-detail">Push FCM · Email</span>
       </div>
 
     </div>
 
+    <!-- Event Log -->
     <div class="events-panel">
-      <h3>Eventos del Sistema</h3>
+      <div class="events-header">
+        <h3>📋 Event Log del Sistema</h3>
+        <button id="clearBtn" class="btn-clear">Limpiar</button>
+      </div>
       <div id="events"></div>
     </div>
 
@@ -85,6 +141,5 @@
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>

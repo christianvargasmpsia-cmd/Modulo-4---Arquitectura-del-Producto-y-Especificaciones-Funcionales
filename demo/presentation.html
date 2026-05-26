@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMSS Market — Defensa Final G1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #090e1a;
+      --card:   #111827;
+      --card2:  #1a2236;
+      --border: #1e3a5f;
+      --green:  #22c55e;
+      --blue:   #3b82f6;
+      --yellow: #facc15;
+      --red:    #ef4444;
+      --purple: #a855f7;
+      --orange: #f97316;
+      --cyan:   #06b6d4;
+      --muted:  #64748b;
+      --light:  #94a3b8;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+      width:100%; height:100%;
+      font-family:'Inter', Arial, sans-serif;
+      background:var(--bg); color:white;
+      overflow:hidden;
+    }
+
+    /* ── NAV DOTS ── */
+    .nav-dots {
+      position:fixed; top:14px; left:50%; transform:translateX(-50%);
+      display:flex; gap:7px; z-index:1000;
+    }
+    .nav-dot {
+      width:8px; height:8px; border-radius:50%;
+      background:#1e3a5f; cursor:pointer; transition:all .3s;
+    }
+    .nav-dot.active { background:var(--blue); box-shadow:0 0 8px var(--blue); width:22px; border-radius:4px; }
+
+    /* ── ARROWS ── */
+    .nav-arrows {
+      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+      display:flex; align-items:center; gap:16px; z-index:1000;
+      background:rgba(17,24,39,.85); padding:8px 18px; border-radius:40px;
+      border:1px solid var(--border); backdrop-filter:blur(12px);
+    }
+    .nav-btn {
+      background:none; border:1px solid var(--border); color:var(--light);
+      width:34px; height:34px; border-radius:50%; cursor:pointer;
+      font-size:15px; transition:all .2s; display:flex; align-items:center; justify-content:center;
+    }
+    .nav-btn:hover { background:var(--card2); color:white; }
+    .nav-btn:disabled { opacity:.3; cursor:not-allowed; }
+    .slide-counter { font-size:12px; color:var(--muted); min-width:46px; text-align:center; }
+
+    /* ── SLIDE ENGINE ── */
+    .slides-wrap { width:100%; height:100%; position:relative; }
+    .slide {
+      position:absolute; inset:0;
+      padding:56px 80px 72px;
+      display:flex; flex-direction:column; justify-content:center;
+      opacity:0; pointer-events:none;
+      transform:translateX(50px);
+      transition:opacity .45s ease, transform .45s ease;
+    }
+    .slide.active  { opacity:1; pointer-events:all; transform:translateX(0); }
+    .slide.prev    { transform:translateX(-50px); }
+
+    /* ── COMMON TYPOGRAPHY ── */
+    .lbl {
+      font-size:10px; font-weight:700; text-transform:uppercase;
+      letter-spacing:2px; color:var(--blue); margin-bottom:10px;
+    }
+    .h2 { font-size:38px; font-weight:900; line-height:1.1; margin-bottom:28px; }
+    .grad-green { background:linear-gradient(90deg,var(--green),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .grad-red   { background:linear-gradient(90deg,#f87171,#ef4444);          -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+    /* ── PILLS ── */
+    .pill { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; border:1px solid; }
+    .pb  { color:#93c5fd; border-color:rgba(147,197,253,.3); background:rgba(147,197,253,.08); }
+    .pg  { color:#4ade80; border-color:rgba(74,222,128,.3);  background:rgba(74,222,128,.08); }
+    .pp  { color:#c084fc; border-color:rgba(192,132,252,.3); background:rgba(192,132,252,.08); }
+    .py  { color:#fbbf24; border-color:rgba(251,191,36,.3);  background:rgba(251,191,36,.08); }
+    .pc  { color:#22d3ee; border-color:rgba(34,211,238,.3);  background:rgba(34,211,238,.08); }
+    .pr  { color:#f87171; border-color:rgba(248,113,113,.3); background:rgba(248,113,113,.08); }
+    .po  { color:#fb923c; border-color:rgba(251,146,60,.3);  background:rgba(251,146,60,.08); }
+
+    /* card base */
+    .card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:16px; padding:20px;
+    }
+    .top-bar { position:absolute; top:0; left:0; right:0; height:3px; border-radius:16px 16px 0 0; }
+
+    /* ══════════════════════════════════════
+       SLIDE 1 — PORTADA
+    ══════════════════════════════════════ */
+    #s1 {
+      background:linear-gradient(135deg,#090e1a 0%,#0f1729 45%,#1a0938 100%);
+      align-items:center; text-align:center;
+    }
+    #s1 .logo { font-size:72px; margin-bottom:14px; }
+    #s1 h1 {
+      font-size:68px; font-weight:900;
+      background:linear-gradient(135deg,#60a5fa,#a855f7,#ec4899);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      margin-bottom:6px;
+    }
+    #s1 .tagline { font-size:17px; color:var(--light); margin-bottom:28px; }
+    .authors-row { display:flex; gap:18px; justify-content:center; margin-bottom:26px; }
+    .author-card {
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      padding:11px 20px; border-radius:12px;
+    }
+    .author-card .name { font-size:13px; font-weight:700; }
+    .author-card .role { font-size:10px; color:var(--muted); }
+    .pills-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+
+    /* ══════════════════════════════════════
+       SLIDE 2 — PROBLEMA
+    ══════════════════════════════════════ */
+    #s2 .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:start; }
+    .prob-list { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .prob-list li {
+      display:flex; align-items:flex-start; gap:12px; padding:11px 14px;
+      background:rgba(239,68,68,.07); border-left:3px solid var(--red);
+      border-radius:0 10px 10px 0; font-size:14px; color:var(--light);
+    }
+    .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .stat-card { background:linear-gradient(145deg,var(--card),var(--card2)); border:1px solid var(--border); border-radius:16px; padding:20px; text-align:center; }
+    .stat-num {
+      font-size:38px; font-weight:900;
+      background:linear-gradient(135deg,#f87171,#ef4444);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .stat-lbl { font-size:11px; color:var(--light); margin-top:4px; }
+
+    /* ══════════════════════════════════════
+       SLIDE 3 — SOLUCIÓN
+    ══════════════════════════════════════ */
+    .actors-row { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:22px; }
+    .actor-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:20px;
+      padding:26px 18px; text-align:center; position:relative; overflow:hidden;
+    }
+    .actor-card .top-bar-a { position:absolute; top:0; left:0; right:0; height:3px; }
+    .actor-card.blue  .top-bar-a { background:linear-gradient(90deg,var(--blue),var(--cyan)); }
+    .actor-card.green .top-bar-a { background:linear-gradient(90deg,var(--green),var(--cyan)); }
+    .actor-card.purple .top-bar-a { background:linear-gradient(90deg,var(--purple),#ec4899); }
+    .actor-icon { font-size:36px; margin-bottom:10px; }
+    .actor-name { font-size:15px; font-weight:800; margin-bottom:7px; }
+    .actor-desc { font-size:12px; color:var(--light); line-height:1.5; }
+    .value-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .val-card {
+      background:rgba(34,197,94,.07); border:1px solid rgba(34,197,94,.2);
+      border-radius:14px; padding:16px; text-align:center;
+    }
+    .val-icon { font-size:22px; margin-bottom:8px; }
+    .val-txt { font-size:12px; color:var(--light); font-weight:600; line-height:1.4; }
+
+    /* ══════════════════════════════════════
+       SLIDE 4 — ARQUITECTURA
+    ══════════════════════════════════════ */
+    #s4 .grid2 { display:grid; grid-template-columns:1fr 1.4fr; gap:28px; align-items:start; }
+    .c4-box-wrap { background:linear-gradient(145deg,var(--card),var(--card2)); border:1px solid var(--border); border-radius:18px; padding:22px; }
+    .c4-sec-lbl { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:700; margin-bottom:14px; }
+    .c4-row { display:flex; justify-content:center; gap:10px; }
+    .c4-box { border-radius:10px; padding:9px 13px; text-align:center; font-size:11px; font-weight:700; }
+    .c4-person { background:rgba(59,130,246,.12); border:1px solid rgba(59,130,246,.35); color:#93c5fd; }
+    .c4-system { background:rgba(34,197,94,.12); border:2px solid rgba(34,197,94,.45); color:#86efac; font-size:12px; padding:12px 20px; }
+    .c4-ext    { background:rgba(168,85,247,.1);  border:1px solid rgba(168,85,247,.3); color:#d8b4fe; font-size:10px; }
+    .c4-arr { display:flex; justify-content:center; color:var(--muted); font-size:16px; margin:6px 0; }
+    .stack-list { display:flex; flex-direction:column; gap:9px; }
+    .stack-item {
+      display:flex; align-items:center; gap:12px;
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:12px; padding:11px 14px;
+    }
+    .si-icon { font-size:20px; }
+    .si-name { font-size:13px; font-weight:700; }
+    .si-desc { font-size:10px; color:var(--muted); }
+
+    /* ══════════════════════════════════════
+       SLIDE 5 — ADRs
+    ══════════════════════════════════════ */
+    .adrs-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .adr-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:18px; padding:22px;
+    }
+    .adr-num { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+    .adr-title { font-size:16px; font-weight:800; margin:6px 0 4px; }
+    .adr-badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; margin-bottom:14px; }
+    .badge-ok   { background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.3); }
+    .badge-prop { background:rgba(250,204,21,.1);  color:var(--yellow); border:1px solid rgba(250,204,21,.3); }
+    .adr-sec { margin-bottom:11px; }
+    .adr-sec-lbl { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:1px; margin-bottom:5px; }
+    .adr-sec p { font-size:12px; color:var(--light); line-height:1.5; }
+    .cons-list { list-style:none; }
+    .cons-list li { font-size:12px; color:var(--light); padding:2px 0 2px 16px; position:relative; }
+    .cons-list li::before { content:'+'; position:absolute; left:0; color:var(--green); font-weight:700; }
+    .cons-list li.con::before { content:'−'; color:var(--red); }
+
+    /* ══════════════════════════════════════
+       SLIDE 6 — MICROSERVICIOS + EVENTOS
+    ══════════════════════════════════════ */
+    #s6 .grid2 { display:grid; grid-template-columns:1fr 1.4fr; gap:28px; align-items:start; }
+    .ms-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+    .ms-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:12px; padding:14px 10px; text-align:center;
+    }
+    .ms-icon { font-size:22px; margin-bottom:6px; }
+    .ms-name { font-size:10px; font-weight:700; text-transform:uppercase; color:var(--light); }
+    .ms-tech { font-size:9px; color:var(--muted); margin-top:2px; }
+    .inv-box {
+      padding:12px 14px; background:rgba(34,197,94,.06); border:1px solid rgba(34,197,94,.2);
+      border-radius:10px;
+    }
+    .inv-box .lbl2 { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:700; margin-bottom:6px; }
+    .inv-box p { font-size:11px; color:var(--light); line-height:1.9; }
+    .ev-table { width:100%; border-collapse:collapse; }
+    .ev-table th { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); padding:7px 11px; text-align:left; border-bottom:1px solid var(--border); }
+    .ev-table td { font-size:12px; padding:7px 11px; border-bottom:1px solid rgba(30,58,95,.5); }
+    .ev-table tr:last-child td { border-bottom:none; }
+    .ev-name { color:var(--yellow); font-weight:700; font-family:'Courier New',monospace; }
+    .ev-prod { color:var(--blue); font-family:'Courier New',monospace; font-size:11px; }
+    .ev-cons { color:var(--green); font-family:'Courier New',monospace; font-size:11px; }
+
+    /* ══════════════════════════════════════
+       SLIDE 7 — DEMO INTERACTIVA
+    ══════════════════════════════════════ */
+    #s7 { padding:44px 36px 60px; }
+    #s7 .demo-wrap {
+      flex:1; min-height:0;
+      border-radius:14px; overflow:hidden;
+      border:1px solid var(--border); margin-top:12px;
+    }
+    #s7 iframe { width:100%; height:100%; border:none; display:block; }
+
+    /* ══════════════════════════════════════
+       SLIDE 8 — AI-SDLC
+    ══════════════════════════════════════ */
+    #s8 .grid2 { display:grid; grid-template-columns:3fr 2fr; gap:28px; align-items:start; }
+    .agents-table { width:100%; border-collapse:collapse; }
+    .agents-table th { font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); padding:7px 12px; text-align:left; border-bottom:1px solid var(--border); }
+    .agents-table td { font-size:12px; padding:9px 12px; border-bottom:1px solid rgba(30,58,95,.5); }
+    .agents-table tr:last-child td { border-bottom:none; }
+    .ag-name  { color:#93c5fd; font-family:'Courier New',monospace; font-weight:700; }
+    .ag-phase { color:var(--yellow); }
+    .ag-out   { color:var(--light); }
+    .contracts { display:flex; flex-direction:column; gap:10px; }
+    .contract-card { background:linear-gradient(145deg,var(--card),var(--card2)); border:1px solid var(--border); border-radius:12px; padding:14px; }
+    .ct-id   { font-size:11px; font-weight:800; color:var(--blue); font-family:'Courier New',monospace; margin-bottom:4px; }
+    .ct-desc { font-size:12px; color:var(--light); line-height:1.4; }
+    .agents-note {
+      margin-top:12px; padding:11px 14px;
+      background:rgba(59,130,246,.07); border:1px solid rgba(59,130,246,.2);
+      border-radius:10px; font-size:11px; color:var(--light); line-height:1.6;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 9 — KPIs & ROADMAP
+    ══════════════════════════════════════ */
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+    .kpi-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:18px;
+      padding:20px 14px; text-align:center; position:relative; overflow:hidden;
+    }
+    .kpi-card .top-bar { border-radius:18px 18px 0 0; }
+    .kpi-k1 .top-bar { background:linear-gradient(90deg,var(--green),var(--cyan)); }
+    .kpi-k2 .top-bar { background:linear-gradient(90deg,var(--blue),var(--purple)); }
+    .kpi-k3 .top-bar { background:linear-gradient(90deg,var(--yellow),var(--orange)); }
+    .kpi-k4 .top-bar { background:linear-gradient(90deg,var(--purple),#ec4899); }
+    .kpi-val { font-size:34px; font-weight:900; margin-bottom:6px; }
+    .kpi-k1 .kpi-val { color:var(--green); }
+    .kpi-k2 .kpi-val { color:var(--blue); }
+    .kpi-k3 .kpi-val { color:var(--yellow); }
+    .kpi-k4 .kpi-val { color:var(--purple); }
+    .kpi-lbl  { font-size:12px; color:var(--light); font-weight:600; }
+    .kpi-meta { font-size:10px; color:var(--muted); margin-top:3px; }
+    .kpi-bar  { height:4px; background:#1e3a5f; border-radius:2px; margin-top:10px; overflow:hidden; }
+    .kpi-bar-fill { height:100%; border-radius:2px; transition:width 1.6s ease; width:0; }
+    .kpi-k1 .kpi-bar-fill { background:linear-gradient(90deg,var(--green),var(--cyan)); }
+    .kpi-k2 .kpi-bar-fill { background:linear-gradient(90deg,var(--blue),var(--purple)); }
+    .kpi-k3 .kpi-bar-fill { background:linear-gradient(90deg,var(--yellow),var(--orange)); }
+    .kpi-k4 .kpi-bar-fill { background:linear-gradient(90deg,var(--purple),#ec4899); }
+
+    .rm-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .rm-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:14px; padding:16px;
+    }
+    .rm-card.current { border-color:rgba(34,197,94,.4); }
+    .rm-ver   { font-size:12px; font-weight:800; color:var(--blue); margin-bottom:4px; }
+    .rm-card.current .rm-ver { color:var(--green); }
+    .rm-title { font-size:13px; font-weight:700; margin-bottom:8px; }
+    .rm-items { list-style:none; }
+    .rm-items li { font-size:11px; color:var(--light); padding:2px 0 2px 13px; position:relative; }
+    .rm-items li::before { content:'·'; position:absolute; left:0; color:var(--blue); font-weight:700; }
+  </style>
+</head>
+<body>
+
+<!-- Nav dots -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<div class="slides-wrap">
+
+  <!-- ══ SLIDE 1 ══ PORTADA ══════════════════════════════════════════════ -->
+  <section class="slide" id="s1">
+    <div class="logo">🛒</div>
+    <h1>UMSS Market</h1>
+    <p class="tagline">Marketplace Universitario · Arquitectura Distribuida · Event-Driven · Saga Pattern</p>
+    <div class="authors-row">
+      <div class="author-card">
+        <div class="name">Rodriguez Gonzales Abad Melani</div>
+        <div class="role">Grupo G1 · Co-Autora</div>
+      </div>
+      <div class="author-card">
+        <div class="name">Vargas Sandoval Christian Bernardo</div>
+        <div class="role">Grupo G1 · Co-Autor</div>
+      </div>
+    </div>
+    <div style="font-size:12px; color:var(--muted); margin-bottom:22px;">
+      Maestría en Ingeniería de Software · Módulo 4 — Arquitectura del Producto y Especificaciones Funcionales · Mayo 2026
+    </div>
+    <div class="pills-row">
+      <span class="pill pb">Python 3.12 · FastAPI</span>
+      <span class="pill pg">React 18 · PWA</span>
+      <span class="pill py">PostgreSQL 16</span>
+      <span class="pill pr">Redis 7</span>
+      <span class="pill po">RabbitMQ 3.13</span>
+      <span class="pill pc">AWS ECS Fargate</span>
+      <span class="pill pp">AI-SDLC</span>
+    </div>
+    <div style="margin-top:22px; font-size:12px; color:var(--muted);">⌨ Usa ← → para navegar · Espacio para avanzar</div>
+  </section>
+
+  <!-- ══ SLIDE 2 ══ PROBLEMA ══════════════════════════════════════════════ -->
+  <section class="slide" id="s2">
+    <div class="lbl">El Problema</div>
+    <h2 class="h2">El comercio universitario es <span class="grad-red">informal y riesgoso</span></h2>
+    <div class="grid2">
+      <div>
+        <ul class="prob-list">
+          <li><span>💬</span><span>El <strong>70%</strong> de las ventas se gestionan por WhatsApp — sin trazabilidad ni seguridad</span></li>
+          <li><span>💸</span><span>Pagos falsos — comprobantes adulterados sin validación automática del banco</span></li>
+          <li><span>📦</span><span>Pérdida de pedidos — sin sistema centralizado de confirmación ni estado</span></li>
+          <li><span>📊</span><span>Sin control de stock — sobreventas y conflictos entre pedidos concurrentes</span></li>
+          <li><span>🔓</span><span>Anonimato total — cualquier persona puede vender sin verificación de identidad</span></li>
+          <li><span>⏳</span><span>Tiempo de compra promedio: <strong style="color:var(--red)">3 minutos 40 segundos</strong></span></li>
+        </ul>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num">80K</div>
+          <div class="stat-lbl">usuarios potenciales en la UMSS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">70%</div>
+          <div class="stat-lbl">ventas sin sistema formal</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3:40</div>
+          <div class="stat-lbl">minutos por transacción actual</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0%</div>
+          <div class="stat-lbl">trazabilidad transaccional hoy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 3 ══ SOLUCIÓN ══════════════════════════════════════════════ -->
+  <section class="slide" id="s3">
+    <div class="lbl">La Solución</div>
+    <h2 class="h2" style="font-size:34px;">UMSS Market — <span class="grad-green">Marketplace con identidad verificada</span></h2>
+    <div class="actors-row">
+      <div class="actor-card blue">
+        <div class="top-bar-a"></div>
+        <div class="actor-icon">👨‍🎓</div>
+        <div class="actor-name">Estudiante Comprador</div>
+        <div class="actor-desc">Descubre productos universitarios, realiza pedidos seguros con QR dinámico y recibe confirmación automática en menos de 60 segundos</div>
+      </div>
+      <div class="actor-card green">
+        <div class="top-bar-a"></div>
+        <div class="actor-icon">🏪</div>
+        <div class="actor-name">Emprendedor Universitario</div>
+        <div class="actor-desc">Gestiona tienda multi-tenant, catálogo y stock. Recibe pagos automáticos validados sin intervención manual. Dashboard de ventas en tiempo real</div>
+      </div>
+      <div class="actor-card purple">
+        <div class="top-bar-a"></div>
+        <div class="actor-icon">🎓</div>
+        <div class="actor-name">Administrador UMSS</div>
+        <div class="actor-desc">Aprueba tiendas verificando RU activo en SIIS. Supervisa actividad comercial del campus y audita transacciones con trazabilidad completa</div>
+      </div>
+    </div>
+    <div class="value-row">
+      <div class="val-card">
+        <div class="val-icon">🔐</div>
+        <div class="val-txt">Identidad verificada con Registro Universitario (SIIS UMSS)</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">⚡</div>
+        <div class="val-txt">Pago QR dinámico automático — sin validación manual</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">📡</div>
+        <div class="val-txt">Stock sincronizado en tiempo real — 0% sobreventas</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">🔔</div>
+        <div class="val-txt">Notificaciones push automáticas de estado de pedido</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 4 ══ ARQUITECTURA ══════════════════════════════════════════ -->
+  <section class="slide" id="s4">
+    <div class="lbl">Arquitectura del Sistema</div>
+    <h2 class="h2" style="font-size:34px;">C4 Nivel 1 (Contexto) + Stack Tecnológico</h2>
+    <div class="grid2">
+      <div class="c4-box-wrap">
+        <div class="c4-sec-lbl">C4 — Nivel 1 (System Context)</div>
+        <div class="c4-row">
+          <div class="c4-box c4-person">👨‍🎓<br>Comprador</div>
+          <div class="c4-box c4-person">🏪<br>Vendedor</div>
+          <div class="c4-box c4-person">🎓<br>Admin</div>
+        </div>
+        <div class="c4-arr">↓ ↓ ↓</div>
+        <div class="c4-row">
+          <div class="c4-box c4-system">🛒 UMSS Market<br><small style="font-weight:400;color:#86efac80;">Marketplace multi-tenant · FastAPI + React 18 + PostgreSQL</small></div>
+        </div>
+        <div class="c4-arr">↓ ↓ ↓</div>
+        <div class="c4-row">
+          <div class="c4-box c4-ext">🏦 API Bancaria QR<br>QR Interoperable</div>
+          <div class="c4-box c4-ext">🎓 SIIS UMSS<br>Validación RU</div>
+          <div class="c4-box c4-ext">📱 FCM / Push<br>Notificaciones</div>
+        </div>
+      </div>
+      <div class="stack-list">
+        <div class="stack-item">
+          <span class="si-icon">⚙️</span>
+          <div style="flex:1">
+            <div class="si-name">Backend · Python 3.12 + FastAPI</div>
+            <div class="si-desc">6 microservicios · SQLAlchemy 2.0 · asyncio · aio-pika</div>
+          </div>
+          <span class="pill pb">Backend</span>
+        </div>
+        <div class="stack-item">
+          <span class="si-icon">📱</span>
+          <div style="flex:1">
+            <div class="si-name">Frontend · React 18 (PWA)</div>
+            <div class="si-desc">Mobile-first · Zustand · WebSocket realtime</div>
+          </div>
+          <span class="pill pc">Frontend</span>
+        </div>
+        <div class="stack-item">
+          <span class="si-icon">🗄️</span>
+          <div style="flex:1">
+            <div class="si-name">Base de Datos · PostgreSQL 16</div>
+            <div class="si-desc">Multi-AZ · Automated Backups · RDS Managed</div>
+          </div>
+          <span class="pill py">DB</span>
+        </div>
+        <div class="stack-item">
+          <span class="si-icon">⚡</span>
+          <div style="flex:1">
+            <div class="si-name">Cache · Redis 7</div>
+            <div class="si-desc">Reserva atómica de stock · Session · ElastiCache</div>
+          </div>
+          <span class="pill pr">Cache</span>
+        </div>
+        <div class="stack-item">
+          <span class="si-icon">📨</span>
+          <div style="flex:1">
+            <div class="si-name">Mensajería · RabbitMQ 3.13</div>
+            <div class="si-desc">Event-Driven · Pub/Sub · Amazon MQ Multi-AZ</div>
+          </div>
+          <span class="pill po">Messaging</span>
+        </div>
+        <div class="stack-item">
+          <span class="si-icon">☁️</span>
+          <div style="flex:1">
+            <div class="si-name">Cloud · AWS ECS Fargate (us-east-1)</div>
+            <div class="si-desc">Multi-AZ · ECR · CloudWatch · Secrets Manager · WAF</div>
+          </div>
+          <span class="pill pp">Cloud</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 5 ══ ADRs ══════════════════════════════════════════════════ -->
+  <section class="slide" id="s5">
+    <div class="lbl">Decisiones Arquitectónicas</div>
+    <h2 class="h2" style="font-size:34px;">Architecture Decision Records (ADRs)</h2>
+    <div class="adrs-grid">
+
+      <div class="adr-card">
+        <div class="adr-num">ADR-0001</div>
+        <div class="adr-title">Arquitectura Orientada a Eventos</div>
+        <span class="adr-badge badge-ok">✅ Aceptada</span>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Contexto</div>
+          <p>Múltiples módulos críticos (pedidos, pagos, stock, notificaciones) necesitan coordinación desacoplada sin bloqueo síncrono ante alta concurrencia.</p>
+        </div>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Decisión</div>
+          <p>RabbitMQ como Event Bus central. Pub/Sub para coordinación asíncrona entre microservicios con correlationId obligatorio.</p>
+        </div>
+        <ul class="cons-list">
+          <li>Desacoplamiento total entre servicios</li>
+          <li>Resiliencia ante fallos parciales</li>
+          <li>Trazabilidad con correlationId</li>
+          <li class="con">Mayor complejidad operacional</li>
+        </ul>
+      </div>
+
+      <div class="adr-card">
+        <div class="adr-num">ADR-0002</div>
+        <div class="adr-title">Saga Pattern — Coreografía</div>
+        <span class="adr-badge badge-prop">📋 Propuesta</span>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Contexto</div>
+          <p>El flujo pedido → pago → stock → notificación requiere transacciones distribuidas con compensación automática ante fallos parciales.</p>
+        </div>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Decisión</div>
+          <p>Saga por Coreografía: cada servicio reacciona a eventos del bus y emite compensaciones. Sin coordinador central (sin SPOF).</p>
+        </div>
+        <ul class="cons-list">
+          <li>Consistencia eventual garantizada</li>
+          <li>Compensación automática ante fallo</li>
+          <li>Sin Single Point of Failure</li>
+          <li class="con">Debugging distribuido más complejo</li>
+        </ul>
+      </div>
+
+      <div class="adr-card">
+        <div class="adr-num">ADR-0003</div>
+        <div class="adr-title">Arquitectura Hexagonal (Ports &amp; Adapters)</div>
+        <span class="adr-badge badge-ok">✅ Aceptada</span>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Contexto</div>
+          <p>La lógica de dominio (stock, pagos, pedidos) debe estar aislada de implementaciones de infraestructura (DB, API bancaria, MQ).</p>
+        </div>
+        <div class="adr-sec">
+          <div class="adr-sec-lbl">Decisión</div>
+          <p>Ports &amp; Adapters: núcleo de dominio puro sin dependencias externas. Adapters intercambiables en infraestructura.</p>
+        </div>
+        <ul class="cons-list">
+          <li>Dominio 100% testeable sin mocks</li>
+          <li>Intercambiabilidad de infraestructura</li>
+          <li>Cumple SOLID &amp; Clean Architecture</li>
+          <li class="con">Más abstracciones en la capa inicial</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 6 ══ MICROSERVICIOS + EVENTOS ═══════════════════════════════ -->
+  <section class="slide" id="s6">
+    <div class="lbl">Microservicios &amp; Eventos del Sistema</div>
+    <h2 class="h2" style="font-size:34px;">6 Servicios Independientes · 8 Eventos de Dominio</h2>
+    <div class="grid2">
+      <div>
+        <div class="ms-grid">
+          <div class="ms-card"><div class="ms-icon">📦</div><div class="ms-name">Order Service</div><div class="ms-tech">FastAPI · PostgreSQL · Saga Coord.</div></div>
+          <div class="ms-card"><div class="ms-icon">💳</div><div class="ms-name">Payment Service</div><div class="ms-tech">QR Dinámico · Webhook · Idempotencia</div></div>
+          <div class="ms-card"><div class="ms-icon">🏪</div><div class="ms-name">Inventory Service</div><div class="ms-tech">Stock Atómico · Redis Lock</div></div>
+          <div class="ms-card"><div class="ms-icon">📋</div><div class="ms-name">Catalog Service</div><div class="ms-tech">Multi-tenant · Productos</div></div>
+          <div class="ms-card"><div class="ms-icon">🔔</div><div class="ms-name">Notification Service</div><div class="ms-tech">FCM · Email · Push</div></div>
+          <div class="ms-card"><div class="ms-icon">📡</div><div class="ms-name">Realtime Gateway</div><div class="ms-tech">WebSocket · Live Updates</div></div>
+        </div>
+        <div class="inv-box">
+          <div class="lbl2">Invariantes del Dominio (no negociables)</div>
+          <p>
+            ✅ Stock ≥ 0 (UPDATE atómico) &nbsp;·&nbsp; ✅ Idempotencia de pagos (webhook_ref único)<br>
+            ✅ HMAC-SHA256 en webhooks &nbsp;·&nbsp; ✅ QR TTL = 300 s &nbsp;·&nbsp; ✅ Monto exacto<br>
+            ✅ RU activo validado en SIIS &nbsp;·&nbsp; ✅ Secrets en AWS Secrets Manager
+          </p>
+        </div>
+      </div>
+      <div>
+        <table class="ev-table">
+          <thead>
+            <tr><th>Evento</th><th>Productor</th><th>Consumidor(es)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="ev-name">ORDER_CREATED</td><td class="ev-prod">order-svc</td><td class="ev-cons">payment-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_PENDING</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_CONFIRMED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">inventory-svc, order-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_FAILED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">STOCK_RESERVED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">STOCK_RELEASED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">ORDER_CONFIRMED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc, realtime-gw</td></tr>
+            <tr><td class="ev-name">ORDER_CANCELLED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 7 ══ DEMO INTERACTIVA ══════════════════════════════════════ -->
+  <section class="slide" id="s7">
+    <div class="lbl">Demo Interactiva</div>
+    <h2 class="h2" style="font-size:26px; margin-bottom:6px;">Flujo Saga en vivo: Comprar → QR → Pago → Stock → Notificación</h2>
+    <div class="demo-wrap">
+      <iframe id="demoFrame" src=""></iframe>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 8 ══ AI-SDLC ═══════════════════════════════════════════════ -->
+  <section class="slide" id="s8">
+    <div class="lbl">AI-SDLC</div>
+    <h2 class="h2" style="font-size:34px;">Inteligencia Artificial en el Ciclo de Desarrollo</h2>
+    <div class="grid2">
+      <div>
+        <p style="font-size:13px; color:var(--light); margin-bottom:12px;">
+          5 agentes IA especializados integrados en el proceso de desarrollo — <strong>no en runtime</strong>. El producto UMSS Market usa IA en la cadena de construcción, no como agentes autónomos en producción.
+        </p>
+        <table class="agents-table">
+          <thead>
+            <tr><th>Agente</th><th>Fase SDLC</th><th>Output generado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="ag-name">dti-author</td><td class="ag-phase">Diseño / Docs</td><td class="ag-out">Secciones del DTI + frontmatter YAML</td></tr>
+            <tr><td class="ag-name">c4-architect</td><td class="ag-phase">Diseño</td><td class="ag-out">Diagramas C4 N1/N2/N3 en Mermaid</td></tr>
+            <tr><td class="ag-name">poc-runner</td><td class="ag-phase">Validación</td><td class="ag-out">Scaffold de POC + log pass/fail</td></tr>
+            <tr><td class="ag-name">fsd-validator</td><td class="ag-phase">Especificación</td><td class="ag-out">Contratos funcionales PR-FSD-001/002/003</td></tr>
+            <tr><td class="ag-name">auditor</td><td class="ag-phase">Revisión</td><td class="ag-out">Reporte de gaps BRD↔PRD↔FSD↔DTI</td></tr>
+          </tbody>
+        </table>
+        <div class="agents-note">
+          📄 <strong>AGENTS.md</strong> sincronizado con <strong>DTI.md</strong> en el mismo commit — declara invariantes, restricciones y skills para todos los agentes del repositorio. Regla: ningún agente puede violar los invariantes del dominio.
+        </div>
+      </div>
+      <div class="contracts">
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:700; margin-bottom:6px;">Contratos Funcionales IA</div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-001</div>
+          <div class="ct-desc">Validación de confirmación de pago QR: HMAC-SHA256 + monto exacto + idempotencia (webhook_ref único)</div>
+        </div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-002</div>
+          <div class="ct-desc">Validación de disponibilidad y reserva atómica de stock: UPDATE WHERE stock >= cantidad + Redis distributed lock</div>
+        </div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-003</div>
+          <div class="ct-desc">Coordinación de eventos distribuidos: ORDER_CREATED → PAYMENT_CONFIRMED → STOCK_RESERVED con correlationId</div>
+        </div>
+        <div style="margin-top:10px; padding:11px; background:rgba(168,85,247,.08); border:1px solid rgba(168,85,247,.2); border-radius:10px; font-size:11px; color:var(--light);">
+          🔑 Trazabilidad completa: BRD v3 → MRD v2 → PRD v2 → FSD v2 → DTI v2 → AGENTS.md → PR-FSD-001/002/003
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 9 ══ KPIs & ROADMAP ════════════════════════════════════════ -->
+  <section class="slide" id="s9">
+    <div class="lbl">KPIs &amp; Roadmap</div>
+    <h2 class="h2" style="font-size:34px; margin-bottom:20px;">Métricas de Éxito &amp; Evolución del Producto</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-k1">
+        <div class="top-bar"></div>
+        <div class="kpi-val">≥ 95%</div>
+        <div class="kpi-lbl">Pedidos pagados y entregados exitosamente</div>
+        <div class="kpi-meta">North Star Metric</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="95"></div></div>
+      </div>
+      <div class="kpi-card kpi-k2">
+        <div class="top-bar"></div>
+        <div class="kpi-val">&gt; 98%</div>
+        <div class="kpi-lbl">Tasa de éxito de pagos QR automáticos</div>
+        <div class="kpi-meta">KPI-1 · Payment Service</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="98"></div></div>
+      </div>
+      <div class="kpi-card kpi-k3">
+        <div class="top-bar"></div>
+        <div class="kpi-val">&lt; 60 s</div>
+        <div class="kpi-lbl">Tiempo de ciclo de compra (actual: 3:40 min)</div>
+        <div class="kpi-meta">KPI-2 · Reducción del 74%</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="74"></div></div>
+      </div>
+      <div class="kpi-card kpi-k4">
+        <div class="top-bar"></div>
+        <div class="kpi-val">0%</div>
+        <div class="kpi-lbl">Pedidos confirmados sin stock físico real</div>
+        <div class="kpi-meta">KPI-3 · Invariante de dominio</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="100"></div></div>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-card current">
+        <div class="rm-ver">v2.0.0 ← HOY</div>
+        <div class="rm-title">Arquitectura Base</div>
+        <ul class="rm-items">
+          <li>DTI · FSD v2 · ADRs · AGENTS.md</li>
+          <li>Diagramas C4 N1/N2/N3</li>
+          <li>Event Catalog · Saga State</li>
+          <li>Contratos IA PR-FSD-001/002/003</li>
+          <li>POC-01 · POC-02</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v3.0.0</div>
+        <div class="rm-title">Implementación Core</div>
+        <ul class="rm-items">
+          <li>6 microservicios FastAPI</li>
+          <li>RabbitMQ + Saga coreografía</li>
+          <li>API Bancaria QR + SIIS</li>
+          <li>Tests unitarios pytest</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v4.0.0</div>
+        <div class="rm-title">Frontend + Integración</div>
+        <ul class="rm-items">
+          <li>React 18 PWA mobile-first</li>
+          <li>Dashboard vendedor</li>
+          <li>WebSocket realtime</li>
+          <li>Load testing k6</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v5.0.0</div>
+        <div class="rm-title">Producción AWS</div>
+        <ul class="rm-items">
+          <li>ECS Fargate deployment</li>
+          <li>CI/CD GitHub Actions + ECR</li>
+          <li>CloudWatch observabilidad</li>
+          <li>Piloto campus UMSS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /slides-wrap -->
+
+<!-- Navigation arrows -->
+<nav class="nav-arrows">
+  <button class="nav-btn" id="prevBtn">←</button>
+  <span class="slide-counter" id="counter">1 / 9</span>
+  <button class="nav-btn" id="nextBtn">→</button>
+</nav>
+
+<script>
+  const TOTAL  = 9;
+  let current  = 0;
+  let demoLoaded = false;
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('navDots');
+  const counterEl = document.getElementById('counter');
+  const prevBtn   = document.getElementById('prevBtn');
+  const nextBtn   = document.getElementById('nextBtn');
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'nav-dot';
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx) {
+    const prev = slides[current];
+    prev.classList.remove('active');
+    prev.classList.add('prev');
+    setTimeout(() => prev.classList.remove('prev'), 500);
+
+    current = idx;
+    slides[current].classList.add('active');
+
+    // Update dots
+    dotsEl.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+
+    counterEl.textContent = (current + 1) + ' / ' + TOTAL;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === TOTAL - 1;
+
+    // Lazy-load demo iframe (slide index 6 = slide 7)
+    if (current === 6 && !demoLoaded) {
+      document.getElementById('demoFrame').src = 'index.html';
+      demoLoaded = true;
+    }
+
+    // Animate KPI bars (slide index 8 = slide 9)
+    if (current === 8) {
+      setTimeout(() => {
+        document.querySelectorAll('.kpi-bar-fill').forEach(b => {
+          b.style.width = b.dataset.w + '%';
+        });
+      }, 350);
+    }
+  }
+
+  function navigate(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < TOTAL) goTo(next);
+  }
+
+  prevBtn.onclick = () => navigate(-1);
+  nextBtn.onclick = () => navigate(1);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ')  { e.preventDefault(); navigate(1);  }
+    if (e.key === 'ArrowLeft')                    { e.preventDefault(); navigate(-1); }
+    if (e.key === 'Home')                         { e.preventDefault(); goTo(0); }
+    if (e.key === 'End')                          { e.preventDefault(); goTo(TOTAL - 1); }
+  });
+
+  // Start on slide 1
+  goTo(0);
+</script>
+</body>
+</html>
