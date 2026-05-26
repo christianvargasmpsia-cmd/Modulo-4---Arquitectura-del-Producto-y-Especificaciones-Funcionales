@@ -116,4 +116,4 @@ tareas de Vargas incluyen el cierre del release y la integración técnica compl
 | 7 | Roadmap técnico multi-módulo | ✅ |
 | 8 | FSD v2 completo | ✅ |
 | 9 | Aportes individuales documentados | ✅ |
-| 10 | Branch release/2.0.0 creado | 🔜 pendiente git |
+| 10 | Branch release/2.0.0 creado | ✅ |

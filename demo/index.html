@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMSS Market - Distributed Saga Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="left-panel">
+
+    <h1>UMSS Market</h1>
+    <p class="subtitle">Arquitectura Distribuida Event-Driven</p>
+
+    <div class="product-card">
+      <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="product-img">
+
+      <h2>Hamburguesa Clásica</h2>
+      <p>Bs. 25</p>
+
+      <button id="buyBtn">Comprar Ahora</button>
+    </div>
+
+    <div class="qr-container hidden" id="qrContainer">
+      <h3>QR de Pago</h3>
+
+      <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=UMSS-MARKET-PAYMENT"
+        class="qr-img"
+      >
+
+      <p>Esperando confirmación bancaria...</p>
+    </div>
+
+    <div class="status-box">
+      <h3>Estado del Pedido</h3>
+      <div id="orderStatus">PENDIENTE</div>
+    </div>
+
+  </div>
+
+  <div class="right-panel">
+
+    <h2>Arquitectura Distribuida</h2>
+
+    <div class="services-grid">
+
+      <div class="service" id="orderService">
+        📦
+        <span>ORDER SERVICE</span>
+      </div>
+
+      <div class="service" id="paymentService">
+        💳
+        <span>PAYMENT SERVICE</span>
+      </div>
+
+      <div class="service" id="eventBus">
+        📨
+        <span>EVENT BUS</span>
+      </div>
+
+      <div class="service" id="inventoryService">
+        🏪
+        <span>INVENTORY SERVICE</span>
+      </div>
+
+      <div class="service" id="notificationService">
+        🔔
+        <span>NOTIFICATION SERVICE</span>
+      </div>
+
+    </div>
+
+    <div class="events-panel">
+      <h3>Eventos del Sistema</h3>
+      <div id="events"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
