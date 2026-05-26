@@ -63,7 +63,7 @@ flowchart TB
 
     %% Webhook bancario
     BankApp -->|Pago QR| QRBankExt
-    QRBankExt -->|POST /webhooks/payment (HMAC)| ALB
+    QRBankExt -->|"POST /webhooks/payment (HMAC)"| ALB
 
     %% Gateway → Servicios
     GW_SVC --> OS_T
