@@ -1259,88 +1259,94 @@ flowchart TB
 
   // Mermaid init — render all diagrams on page load
   mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+
+  function initDiagramZoom() {
+    document.querySelectorAll('.diag-pane, .diag-single').forEach(function(container) {
+      var pre = container.querySelector('pre.mermaid');
+      if (!pre) return;
+      var svg = pre.querySelector('svg');
+      if (!svg) return;
+
+      // Get intrinsic dimensions from viewBox (most reliable in Mermaid v10)
+      var vb   = svg.viewBox ? svg.viewBox.baseVal : null;
+      var svgW = (vb && vb.width  > 0) ? vb.width  : (parseFloat(svg.getAttribute('width'))  || 900);
+      var svgH = (vb && vb.height > 0) ? vb.height : (parseFloat(svg.getAttribute('height')) || 600);
+      svg.setAttribute('width',  svgW);
+      svg.setAttribute('height', svgH);
+      svg.style.display = 'block';
+
+      // Move SVG OUT of <pre> directly into container via transform wrapper
+      var wrap = document.createElement('div');
+      wrap.className = 'diag-svg-wrap';
+      wrap.appendChild(svg);
+      pre.style.display = 'none';          // hide now-empty <pre>
+      container.insertBefore(wrap, container.firstChild);
+
+      var sc = 1, tx = 0, ty = 0;
+
+      function applyT() {
+        wrap.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sc + ')';
+      }
+
+      function fitToContainer() {
+        var cw = container.clientWidth  || 800;
+        var ch = container.clientHeight || 500;
+        sc = Math.min(cw / svgW, ch / svgH) * 0.90;
+        tx = (cw - svgW * sc) / 2;
+        ty = (ch - svgH * sc) / 2;
+        applyT();
+      }
+      fitToContainer();
+
+      // Wheel — zoom towards cursor
+      container.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var f = e.deltaY < 0 ? 1.12 : 0.9;
+        var r = container.getBoundingClientRect();
+        var mx = e.clientX - r.left;
+        var my = e.clientY - r.top;
+        sc = Math.max(0.1, Math.min(8, sc * f));
+        tx = mx - (mx - tx) * f;
+        ty = my - (my - ty) * f;
+        applyT();
+      }, { passive: false });
+
+      // Drag — pan
+      var dragging = false, ox = 0, oy = 0;
+      container.addEventListener('mousedown', function(e) {
+        if (e.button !== 0) return;
+        dragging = true; ox = e.clientX - tx; oy = e.clientY - ty;
+        container.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        tx = e.clientX - ox; ty = e.clientY - oy;
+        applyT();
+      });
+      window.addEventListener('mouseup', function() {
+        if (dragging) { dragging = false; container.style.cursor = 'grab'; }
+      });
+
+      // Reset button + hint
+      var resetBtn = document.createElement('button');
+      resetBtn.className = 'diag-reset-btn';
+      resetBtn.textContent = '⟳ Reset';
+      resetBtn.addEventListener('click', function(e) { e.stopPropagation(); fitToContainer(); });
+      var hint = document.createElement('div');
+      hint.className = 'diag-zoom-hint';
+      hint.textContent = 'Scroll: zoom · Drag: mover';
+      container.appendChild(resetBtn);
+      container.appendChild(hint);
+
+      container.addEventListener('dblclick', function(e) { e.stopPropagation(); fitToContainer(); });
+    });
+  }
+
   window.addEventListener('load', function() {
     mermaid.run({ querySelector: '.mermaid' }).then(function() {
-      document.querySelectorAll('.diag-pane, .diag-single').forEach(function(container) {
-        var svg = container.querySelector('.mermaid svg');
-        if (!svg) return;
-
-        // Read natural SVG size
-        var vb   = svg.viewBox.baseVal;
-        var svgW = parseFloat(svg.getAttribute('width'))  || (vb && vb.width)  || 900;
-        var svgH = parseFloat(svg.getAttribute('height')) || (vb && vb.height) || 600;
-        svg.setAttribute('width',  svgW);
-        svg.setAttribute('height', svgH);
-
-        // Wrap SVG in transform div (container is already position:absolute or position:relative)
-        var wrap = document.createElement('div');
-        wrap.className = 'diag-svg-wrap';
-        svg.parentNode.insertBefore(wrap, svg);
-        wrap.appendChild(svg);
-
-        var sc = 1, tx = 0, ty = 0;
-
-        function applyT() {
-          wrap.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sc + ')';
-        }
-
-        function fitToContainer() {
-          var cw = container.clientWidth;
-          var ch = container.clientHeight;
-          if (!cw || !ch) { cw = 800; ch = 500; }
-          sc = Math.min(cw / svgW, ch / svgH) * 0.92;
-          tx = (cw - svgW * sc) / 2;
-          ty = (ch - svgH * sc) / 2;
-          applyT();
-        }
-        // Defer fit so layout is fully painted
-        setTimeout(fitToContainer, 50);
-
-        // Wheel — zoom towards cursor
-        container.addEventListener('wheel', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          var factor = e.deltaY < 0 ? 1.12 : 0.9;
-          var rect = container.getBoundingClientRect();
-          var mx = e.clientX - rect.left;
-          var my = e.clientY - rect.top;
-          tx = mx - (mx - tx) * factor;
-          ty = my - (my - ty) * factor;
-          sc = Math.max(0.1, Math.min(8, sc * factor));
-          applyT();
-        }, { passive: false });
-
-        // Drag — pan
-        var dragging = false, ox = 0, oy = 0;
-        container.addEventListener('mousedown', function(e) {
-          if (e.button !== 0) return;
-          dragging = true; ox = e.clientX - tx; oy = e.clientY - ty;
-          container.style.cursor = 'grabbing';
-          e.preventDefault();
-        });
-        window.addEventListener('mousemove', function(e) {
-          if (!dragging) return;
-          tx = e.clientX - ox; ty = e.clientY - oy;
-          applyT();
-        });
-        window.addEventListener('mouseup', function() {
-          if (dragging) { dragging = false; container.style.cursor = 'grab'; }
-        });
-
-        // Reset button + hint
-        var resetBtn = document.createElement('button');
-        resetBtn.className = 'diag-reset-btn';
-        resetBtn.textContent = '⟳ Reset';
-        resetBtn.addEventListener('click', function(e) { e.stopPropagation(); fitToContainer(); });
-        var hint = document.createElement('div');
-        hint.className = 'diag-zoom-hint';
-        hint.textContent = 'Scroll: zoom · Drag: mover';
-        container.appendChild(resetBtn);
-        container.appendChild(hint);
-
-        // Double-click to reset
-        container.addEventListener('dblclick', function(e) { e.stopPropagation(); fitToContainer(); });
-      });
+      requestAnimationFrame(function() { setTimeout(initDiagramZoom, 80); });
     });
   });
 </script>
