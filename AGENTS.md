@@ -60,10 +60,10 @@ testing:
 ├── AGENTS.md                    ← este archivo
 ├── docs/
 │   ├── DTI.md                   ← contrato técnico principal
-│   ├── FSD_v2.md                ← especificación funcional
-│   ├── PRD_v2.md                ← requerimientos de producto
-│   ├── MRD_v2.md                ← requerimientos de mercado
-│   ├── BRD_v3.md                ← requerimientos de negocio
+│   ├── fsd/FSD_vFinal.md                ← especificación funcional
+│   ├── prd/PRD_vFinal.md                ← requerimientos de producto
+│   ├── mrd/MRD_vFinal.md                ← requerimientos de mercado
+│   ├── brd/BRD_vFinal.md                ← requerimientos de negocio
 │   ├── PROMPT_MAPPINGS_v1.md   ← trazabilidad de prompts
 │   ├── PR-FSD-001.md            ← contrato IA: validación pago QR
 │   ├── PR-FSD-002.md            ← contrato IA: validación stock

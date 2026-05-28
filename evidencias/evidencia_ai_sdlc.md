@@ -40,9 +40,9 @@ flowchart TD
 
 | Artefacto generado | Prompt utilizado | Archivo de evidencia | Modelo |
 |---|---|---|---|
-| `docs/BRD_v3.md` | BRD refinado con restricciones institucionales | `prompts/PRD_PROMPT.md` (base) | Sonnet |
-| `docs/PRD_v2.md` | `prompts/PRD_PROMPT.md` — US + criterios aceptación | `prompts/PRD_PROMPT.md` | Sonnet |
-| `docs/FSD_v2.md` | `prompts/FSD_PROMPT.md` — UC + flows + NFRs | `prompts/FSD_PROMPT.md` | Sonnet |
+| `docs/brd/BRD_vFinal.md` | BRD refinado con restricciones institucionales | `prompts/PRD_PROMPT.md` (base) | Sonnet |
+| `docs/prd/PRD_vFinal.md` | `prompts/PRD_PROMPT.md` — US + criterios aceptación | `prompts/PRD_PROMPT.md` | Sonnet |
+| `docs/fsd/FSD_vFinal.md` | `prompts/FSD_PROMPT.md` — UC + flows + NFRs | `prompts/FSD_PROMPT.md` | Sonnet |
 | `docs/adr/ADR-0001.md` | `prompts/ADR_PROMPT.md` — EDA pattern | `prompts/ADR_PROMPT.md` | Sonnet |
 | `docs/adr/ADR-0002.md` | `prompts/ADR_PROMPT.md` — Saga Coreografía | `prompts/ADR_PROMPT.md` | Sonnet |
 | `docs/adr/ADR-0003.md` | `prompts/ADR_PROMPT.md` — Hexagonal | `prompts/ADR_PROMPT.md` | Sonnet |
@@ -62,7 +62,7 @@ flowchart TD
 
 ## 4.1 Etapa BRD → PRD
 
-**Artefactos**: `BRD_v3.md` → `PRD_v2.md`
+**Artefactos**: `BRD_vFinal.md` → `PRD_vFinal.md`
 
 **Prompt inicial** (genérico, v1):
 ```text
@@ -77,7 +77,7 @@ Crea un PRD para una plataforma de ecommerce universitario.
 **Prompt mejorado** (v2 — usando `prompts/PRD_PROMPT.md`):
 ```text
 Eres un Product Manager con experiencia en plataformas universitarias bolivianas.
-Basándote en el BRD_v3.md (BR-001 a BR-008), genera un PRD con:
+Basándote en el BRD_vFinal.md (BR-001 a BR-008), genera un PRD con:
 - 8 User Stories en formato "Como [rol] quiero [acción] para [beneficio]"
 - Criterios de aceptación Given/When/Then para cada US
 - Restricciones: RU activo SIIS, correo @umss.edu.bo, pagos QR BCB

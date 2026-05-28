@@ -15,10 +15,10 @@ stack:
 repo: "<url-repositorio-grupo>"
 agents_md: "/AGENTS.md"
 artefactos_relacionados:
-  brd: "docs/BRD_v3.md"
-  mrd: "docs/MRD_v2.md"
-  prd: "docs/PRD_v2.md"
-  fsd: "docs/FSD_v2.md"
+  brd: "docs/brd/BRD_vFinal.md"
+  mrd: "docs/mrd/MRD_vFinal.md"
+  prd: "docs/prd/PRD_vFinal.md"
+  fsd: "docs/fsd/FSD_vFinal.md"
   prompt_mapping: "docs/PROMPT_MAPPINGS_v1.md"
 adrs_vigentes:
   - "docs/adr/ADR-0001-event-driven-architecture.md"
@@ -51,7 +51,7 @@ release_objetivo: "release/2.0.0"
 | Stakeholders | DTIC UMSS, Emprendedores universitarios, Bienestar Estudiantil |
 | Estado | Aprobado |
 | Repositorio | `<url-repositorio-grupo>` |
-| Enlace al BRD | `docs/BRD_v3.md` |
+| Enlace al BRD | `docs/` |
 | Enlace al MRD | `docs/MRD_v2.md` |
 | Enlace al PRD | `docs/PRD_v2.md` |
 | Enlace al FSD | `docs/FSD_v2.md` |
