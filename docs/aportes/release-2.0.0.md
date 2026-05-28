@@ -15,7 +15,7 @@
 | Fecha de cierre | 28/05/2026 |
 | Integrantes del grupo (n) | Rodriguez Gonzales Abad Melani, Vargas Sandoval Christian Bernardo (n = 2) |
 | Branch del release | release/2.0.0 |
-| Commit de cierre (HEAD) | — |
+| Commit de cierre (HEAD) | 28e7148  |
 
 ---
 
