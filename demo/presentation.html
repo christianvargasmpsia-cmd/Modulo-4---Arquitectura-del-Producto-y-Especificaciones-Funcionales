@@ -6,6 +6,7 @@
   <title>UMSS Market — Defensa Final G1</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
     :root {
       --bg:     #090e1a;
@@ -304,6 +305,49 @@
     .rm-items { list-style:none; }
     .rm-items li { font-size:11px; color:var(--light); padding:2px 0 2px 13px; position:relative; }
     .rm-items li::before { content:'·'; position:absolute; left:0; color:var(--blue); font-weight:700; }
+
+    /* ══ DIAGRAM SLIDES ══ */
+    .slide.diag-slide { padding:40px 56px 65px; }
+    .diag-header { flex-shrink:0; margin-bottom:4px; }
+    .diag-tabs { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    .diag-tab {
+      padding:5px 15px; border-radius:20px; font-size:11px; font-weight:700;
+      border:1px solid var(--border); cursor:pointer; color:var(--muted);
+      background:transparent; font-family:inherit; transition:all .2s;
+    }
+    .diag-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
+    .diag-panes { flex:1; min-height:0; position:relative; margin-top:10px; }
+    .diag-pane {
+      position:absolute; inset:0;
+      background:linear-gradient(145deg,#070c18,var(--card));
+      border:1px solid var(--border); border-radius:16px;
+      padding:0; overflow:hidden;
+      opacity:0; pointer-events:none; transition:opacity .3s;
+      cursor:grab; user-select:none;
+    }
+    .diag-pane:active  { cursor:grabbing; }
+    .diag-pane.active  { opacity:1; pointer-events:all; }
+    .diag-single {
+      flex:1; min-height:0; margin-top:10px; position:relative;
+      background:linear-gradient(145deg,#070c18,var(--card));
+      border:1px solid var(--border); border-radius:16px;
+      padding:0; overflow:hidden;
+      cursor:grab; user-select:none;
+    }
+    .diag-single:active { cursor:grabbing; }
+    .diag-svg-wrap { position:absolute; top:0; left:0; transform-origin:0 0; }
+    .diag-svg-wrap svg { display:block; }
+    .diag-zoom-hint {
+      position:absolute; bottom:8px; right:12px;
+      font-size:10px; color:var(--muted); pointer-events:none; z-index:2;
+    }
+    .diag-reset-btn {
+      position:absolute; bottom:8px; left:12px; z-index:2;
+      background:rgba(59,130,246,.15); border:1px solid var(--border);
+      color:var(--light); font-size:10px; font-family:inherit; font-weight:600;
+      padding:3px 10px; border-radius:10px; cursor:pointer; transition:all .2s;
+    }
+    .diag-reset-btn:hover { background:rgba(59,130,246,.35); color:white; }
   </style>
 </head>
 <body>
@@ -745,6 +789,387 @@
     </div>
   </section>
 
+
+  <!-- ══ SLIDE 10 ══ C4 CONTEXT + CONTAINER ═══════════════════════════════ -->
+  <section class="slide diag-slide" id="s10">
+    <div class="diag-header">
+      <div class="lbl">Diagramas C4</div>
+      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Contexto del Sistema &amp; Contenedores</h2>
+      <div class="diag-tabs">
+        <button class="diag-tab active" onclick="switchTab('s10',0)">C4 N1 — Contexto del Sistema</button>
+        <button class="diag-tab"        onclick="switchTab('s10',1)">C4 N2 — Contenedores</button>
+      </div>
+    </div>
+    <div class="diag-panes">
+      <div class="diag-pane active">
+        <pre class="mermaid">
+flowchart TB
+    Customer["👤 Cliente UMSS\nEstudiante comprador"]
+    Seller["👤 Emprendedor\nEstudiante vendedor"]
+    Admin["👤 Administrador UMSS"]
+    UMSSMarket["🛒 UMSS Market\nMarketplace universitario multi-tenant\nPython/FastAPI · React 18 · PostgreSQL"]
+    QRBank["🏦 API Bancaria QR\nGeneración y validación de pagos QR"]
+    SIIS["🎓 SIIS UMSS\nValidación de Registro Universitario"]
+    FCM["📱 Google FCM\nNotificaciones Push"]
+    Customer -->|Compra productos · realiza pagos QR| UMSSMarket
+    Seller -->|Gestiona tienda · catálogo · stock| UMSSMarket
+    Admin -->|Aprueba tiendas · audita transacciones| UMSSMarket
+    UMSSMarket -->|Genera y valida QR dinámico| QRBank
+    UMSSMarket -->|Verifica RU activo del usuario| SIIS
+    UMSSMarket -->|Envía alertas de estado de pedido| FCM
+        </pre>
+      </div>
+      <div class="diag-pane">
+        <pre class="mermaid">
+flowchart TB
+    User["👤 Cliente UMSS"]
+    Admin["👤 Administrador"]
+    Frontend["React 18 PWA\nMobile-first · Zustand"]
+    APIGateway["API Gateway\nFastAPI · JWT · Rate Limit"]
+    OrderSvc["Order Service\nFastAPI · Saga Coord."]
+    PaySvc["Payment Service\nQR Dinámico · Webhook"]
+    InvSvc["Inventory Service\nStock Atómico · Redis"]
+    CatSvc["Catalog Service\nMulti-tenant"]
+    NotifSvc["Notification Service\nFCM · Email"]
+    RtGW["Realtime Gateway\nWebSocket"]
+    PG[("PostgreSQL 16\nRDS Multi-AZ")]
+    Redis[("Redis 7\nElastiCache")]
+    MQ[("RabbitMQ 3.13\nAmazon MQ")]
+    QRBank["API Bancaria QR"]
+    SIIS["SIIS UMSS"]
+    User --> Frontend
+    Admin --> Frontend
+    Frontend --> APIGateway
+    APIGateway --> OrderSvc
+    APIGateway --> PaySvc
+    APIGateway --> CatSvc
+    APIGateway --> SIIS
+    OrderSvc --> PG
+    PaySvc --> PG
+    InvSvc --> PG
+    CatSvc --> PG
+    InvSvc --> Redis
+    OrderSvc --> MQ
+    PaySvc --> MQ
+    InvSvc --> MQ
+    NotifSvc --> MQ
+    RtGW --> MQ
+    RtGW --> Frontend
+    PaySvc --> QRBank
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 11 ══ HEXAGONAL + C4 N3 ════════════════════════════════════ -->
+  <section class="slide diag-slide" id="s11">
+    <div class="diag-header">
+      <div class="lbl">Patrones de Arquitectura</div>
+      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Hexagonal (Ports &amp; Adapters) · C4 Nivel 3 — Order Service</h2>
+      <div class="diag-tabs">
+        <button class="diag-tab active" onclick="switchTab('s11',0)">Arquitectura Hexagonal</button>
+        <button class="diag-tab"        onclick="switchTab('s11',1)">C4 N3 — Order Service</button>
+      </div>
+    </div>
+    <div class="diag-panes">
+      <div class="diag-pane active">
+        <pre class="mermaid">
+%%{init: {"theme": "dark"}}%%
+flowchart LR
+    subgraph DrivingAdapters["Adaptadores de Entrada (Driving)"]
+        direction TB
+        REST["FastAPI Router\nREST / HTTP"]
+        AMQP_IN["RabbitMQ Consumer\naio-pika AMQP"]
+        WS_IN["WebSocket Handler\nStarlette"]
+    end
+    subgraph Hexagon["NUCLEO — Independiente de infraestructura"]
+        direction TB
+        subgraph AppLayer["Capa de Aplicación"]
+            direction LR
+            InPorts["Input Ports\nICreateOrderUseCase\nICancelOrderUseCase\nIConfirmOrderUseCase"]
+            UseCases["Use Cases\nCreateOrder · CancelOrder\nConfirmOrder · GetOrder"]
+            OutPorts["Output Ports\nIOrderRepository\nIEventPublisher\nIStockService"]
+        end
+        subgraph DomainLayer["Capa de Dominio — puro Python sin framework"]
+            direction TB
+            Agg["Aggregates\nOrder · Payment · Product · User"]
+            VO["Value Objects\nMoney · QRCode · RU · OrderStatus"]
+            DE["Domain Events\nOrderCreated · OrderConfirmed · OrderCancelled"]
+        end
+        InPorts --> UseCases
+        UseCases --> DomainLayer
+        UseCases --> OutPorts
+    end
+    subgraph DrivenAdapters["Adaptadores de Salida (Driven)"]
+        direction TB
+        PG["PostgreSQL\nSQLAlchemy Repo"]
+        REDIS_A["Redis Cache\nTTL locks"]
+        AMQP_OUT["RabbitMQ Publisher\naio-pika AMQP"]
+        BANK["API Bancaria QR\naiohttp Client"]
+        SIIS_A["SIIS UMSS\naiohttp Client"]
+        FCM_A["FCM Push Adapter"]
+    end
+    REST --> InPorts
+    AMQP_IN --> InPorts
+    WS_IN --> InPorts
+    OutPorts --> PG
+    OutPorts --> REDIS_A
+    OutPorts --> AMQP_OUT
+    OutPorts --> BANK
+    OutPorts --> SIIS_A
+    OutPorts --> FCM_A
+        </pre>
+      </div>
+      <div class="diag-pane">
+        <pre class="mermaid">
+%%{init: {"theme": "dark"}}%%
+flowchart TB
+    subgraph Driving["Adaptadores de Entrada"]
+        direction LR
+        OrderAPI["OrderAPI\nFastAPI Router"]
+        EvtConsumer["EventConsumer\naio-pika Consumer"]
+    end
+    subgraph Core["Order Service — Nucleo Hexagonal"]
+        direction TB
+        subgraph AppL["Capa de Aplicación"]
+            CreateUC["CreateOrderUseCase"]
+            CancelUC["CancelOrderUseCase"]
+            ConfirmUC["ConfirmOrderUseCase"]
+            SagaCoord["SagaCoordinator\ncoreografía de eventos"]
+        end
+        subgraph DomainL["Capa de Dominio — puro Python"]
+            OAgg["Order Aggregate Root"]
+            OItem["OrderItem Entity"]
+            OStatus["OrderStatus Value Object\nPENDIENTE · QR_GENERADO · CONFIRMADO · CANCELADO"]
+            DEvts["Domain Events\nOrderCreated · OrderConfirmed · OrderCancelled"]
+        end
+    end
+    subgraph Driven["Adaptadores de Salida"]
+        direction LR
+        Repo["OrderRepository\nSQLAlchemy PostgreSQL"]
+        EvtPub["EventPublisher\naio-pika RabbitMQ"]
+        Cache["OrderCache\nRedis TTL"]
+    end
+    subgraph Infra["Infraestructura"]
+        RMQ[("RabbitMQ Event Bus")]
+        PSQL[("PostgreSQL orders DB")]
+        RDS[("Redis TTL locks")]
+    end
+    OrderAPI --> CreateUC
+    OrderAPI --> CancelUC
+    EvtConsumer --> ConfirmUC
+    EvtConsumer --> SagaCoord
+    CreateUC --> OAgg
+    CancelUC --> OAgg
+    ConfirmUC --> OAgg
+    OAgg --> OItem
+    OAgg --> OStatus
+    OAgg --> DEvts
+    SagaCoord --> EvtPub
+    CreateUC --> Repo
+    CreateUC --> Cache
+    ConfirmUC --> Repo
+    Repo --> PSQL
+    EvtPub --> RMQ
+    Cache --> RDS
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 12 ══ EVENT FLOW + SAGA STATE ══════════════════════════════ -->
+  <section class="slide diag-slide" id="s12">
+    <div class="diag-header">
+      <div class="lbl">Flujos Event-Driven</div>
+      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Event Flow del Sistema · Saga State Machine</h2>
+      <div class="diag-tabs">
+        <button class="diag-tab active" onclick="switchTab('s12',0)">Event Flow</button>
+        <button class="diag-tab"        onclick="switchTab('s12',1)">Saga State Machine (ADR-0002)</button>
+      </div>
+    </div>
+    <div class="diag-panes">
+      <div class="diag-pane active">
+        <pre class="mermaid">
+flowchart TD
+    A["Cliente crea pedido"] --> B["ORDER_CREATED"]
+    B --> C["Payment Service genera QR"]
+    C --> D["PAYMENT_PENDING"]
+    D --> E["Cliente realiza pago QR"]
+    E --> F{"Pago confirmado?"}
+    F -->|SI| G["PAYMENT_CONFIRMED"]
+    G --> H["Inventory Service reserva stock"]
+    H --> I{"Stock disponible?"}
+    I -->|SI| J["STOCK_RESERVED"]
+    J --> K["ORDER_CONFIRMED"]
+    K --> L["Realtime Gateway actualiza cliente"]
+    L --> M["NOTIFICATION_SENT"]
+    M --> N["Pedido completado ✅"]
+    I -->|NO| Q["STOCK_RELEASED — compensación"]
+    Q --> R["ORDER_CANCELLED"]
+    R --> S["Notificar cancelación"]
+    F -->|NO| T["PAYMENT_FAILED"]
+    T --> U["ORDER_CANCELLED — compensación"]
+    U --> V["Liberar recursos · Notificar fallo"]
+    classDef success fill:#14532d,stroke:#22c55e,color:#bbf7d0
+    classDef failure fill:#7f1d1d,stroke:#ef4444,color:#fecaca
+    classDef process fill:#1e3a5f,stroke:#3b82f6,color:#bfdbfe
+    class G,J,K,N success
+    class T,R,U,V,Q failure
+    class B,C,D,H,L,M process
+        </pre>
+      </div>
+      <div class="diag-pane">
+        <pre class="mermaid">
+%%{init: {"theme": "dark"}}%%
+stateDiagram-v2
+    [*] --> PENDIENTE : POST /orders\nORDER_CREATED publicado
+    PENDIENTE --> QR_GENERADO : PAYMENT_PENDING\nQR emitido · TTL 300s iniciado
+    QR_GENERADO --> PAGO_CONFIRMADO : PAYMENT_CONFIRMED\nHMAC válido · monto exacto · idempotencia OK
+    PAGO_CONFIRMADO --> STOCK_RESERVADO : STOCK_RESERVED\nUPDATE atómico en PostgreSQL
+    STOCK_RESERVADO --> CONFIRMADO : ORDER_CONFIRMED\nNotificación push + WebSocket
+    CONFIRMADO --> [*]
+    PENDIENTE --> CANCELADO : Error de stock\no timeout inicial
+    QR_GENERADO --> CANCELADO : TTL 300s expirado\nSTOCK_RELEASED — compensación
+    PAGO_CONFIRMADO --> REEMBOLSO_PENDIENTE : PAYMENT_FAILED\nerror post-confirmación
+    STOCK_RESERVADO --> REEMBOLSO_PENDIENTE : Error crítico\npost-reserva
+    REEMBOLSO_PENDIENTE --> REEMBOLSADO : Reembolso procesado\npor payment-service
+    CANCELADO --> [*]
+    REEMBOLSADO --> [*]
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 13 ══ SEQUENCE QR PAYMENT ══════════════════════════════════ -->
+  <section class="slide diag-slide" id="s13">
+    <div class="diag-header">
+      <div class="lbl">Diagrama de Secuencia</div>
+      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Flujo Completo: Pago QR Dinámico con Saga (Coreografía)</h2>
+    </div>
+    <div class="diag-single">
+      <pre class="mermaid">
+%%{init: {"theme": "dark"}}%%
+sequenceDiagram
+    actor Customer as Cliente UMSS
+    participant PWA as React PWA
+    participant GW as API Gateway
+    participant OrderSvc as Order Service
+    participant PaySvc as Payment Service
+    participant InvSvc as Inventory Service
+    participant QRBank as API Bancaria QR
+    participant Bus as RabbitMQ
+    Customer->>PWA: Confirmar compra
+    PWA->>GW: POST /api/v1/orders (JWT Bearer)
+    GW->>OrderSvc: Crear pedido
+    OrderSvc->>InvSvc: GET /internal/stock/{product_id}
+    InvSvc->>InvSvc: Reserva optimista Redis TTL=300s
+    InvSvc-->>OrderSvc: 200 OK stock disponible
+    OrderSvc->>Bus: Publish ORDER_CREATED {order_id, total, correlationId}
+    Bus->>PaySvc: ORDER_CREATED
+    PaySvc->>QRBank: POST /qr/generate {amount, reference, callback_url}
+    QRBank-->>PaySvc: qr_url · qr_id · expires_in=300
+    PaySvc->>Bus: Publish PAYMENT_PENDING {order_id, qr_url}
+    Bus->>OrderSvc: PAYMENT_PENDING → estado QR_GENERADO
+    PWA-->>Customer: Mostrar QR countdown 5 min
+    Note over Customer,QRBank: Cliente escanea QR con su app bancaria móvil
+    QRBank->>PaySvc: POST /webhooks/payment {webhook_ref, amount, hmac_sha256}
+    PaySvc->>PaySvc: 1. Validar firma HMAC-SHA256
+    PaySvc->>PaySvc: 2. Verificar idempotencia webhook_ref único
+    PaySvc->>PaySvc: 3. Verificar monto == Pedido.total exacto
+    PaySvc-->>QRBank: HTTP 200 OK
+    PaySvc->>Bus: Publish PAYMENT_CONFIRMED {order_id, correlationId}
+    Bus->>InvSvc: PAYMENT_CONFIRMED
+    InvSvc->>InvSvc: UPDATE qty = qty - N WHERE qty >= N (atómico)
+    InvSvc->>Bus: Publish STOCK_RESERVED {order_id, qty}
+    Bus->>OrderSvc: STOCK_RESERVED → estado CONFIRMADO
+    OrderSvc->>Bus: Publish ORDER_CONFIRMED {order_id}
+    PWA-->>Customer: Pedido confirmado!
+    Note over InvSvc,Bus: Compensación: si TTL 300s expira antes del pago
+    InvSvc->>Bus: Publish STOCK_RELEASED
+    Bus->>OrderSvc: STOCK_RELEASED → estado CANCELADO
+    PWA-->>Customer: QR expirado — pedido cancelado
+      </pre>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 14 ══ AWS DEPLOYMENT ════════════════════════════════════════ -->
+  <section class="slide diag-slide" id="s14">
+    <div class="diag-header">
+      <div class="lbl">Infraestructura Cloud</div>
+      <h2 class="h2" style="font-size:26px;margin-bottom:0;">AWS Deployment — ECS Fargate · Multi-AZ · us-east-1</h2>
+    </div>
+    <div class="diag-single">
+      <pre class="mermaid">
+%%{init: {"theme": "dark"}}%%
+flowchart TB
+    subgraph Internet["Internet"]
+        Client["Mobile / PWA\nCliente UMSS"]
+        BankApp["App Bancaria Movil\nQR Payment"]
+    end
+    subgraph AWS["AWS us-east-1 Multi-AZ"]
+        subgraph EdgeLayer["Edge &amp; Seguridad"]
+            CF["CloudFront CDN\nS3 PWA estatica"]
+            WAF["AWS WAF\nRate Limiting · DDoS · Bot"]
+            ALB["Application Load Balancer\nSSL Termination · Path Routing"]
+        end
+        subgraph ECS["ECS Fargate — Cluster de Microservicios"]
+            GW_SVC["api-gateway\nFastAPI · JWT · Rate Limit · 2 tasks"]
+            subgraph BusinessServices["Servicios de Negocio"]
+                OS_T["order-service · 2 tasks"]
+                PS_T["payment-service · 2 tasks"]
+                IS_T["inventory-service · 2 tasks"]
+                CS_T["catalog-service · 2 tasks"]
+                NS_T["notification-service · 1 task"]
+                RGW_T["realtime-gateway WebSocket · 2 tasks"]
+            end
+        end
+        subgraph DataLayer["Capa de Datos"]
+            RDS[("RDS PostgreSQL 16\nMulti-AZ · Automated Backups")]
+            REDIS_EC[("ElastiCache Redis 7\nCluster Mode · 3 shards")]
+            MQ_AMQ[("Amazon MQ\nRabbitMQ 3.13 · Multi-AZ")]
+        end
+        subgraph Ops["Observabilidad &amp; Seguridad"]
+            CW["CloudWatch\nLogs · Metrics · Alarms"]
+            SM["Secrets Manager\nDB creds · API Keys · HMAC"]
+            ECR["ECR\nContainer Registry"]
+        end
+        subgraph Ext["Sistemas Externos"]
+            QRBankExt["API Bancaria QR HTTPS"]
+            SIISExt["SIIS UMSS HTTPS"]
+            FCMExt["Google FCM HTTPS"]
+        end
+    end
+    Client -->|HTTPS| CF
+    Client -->|HTTPS /api| WAF
+    WAF --> ALB
+    ALB --> GW_SVC
+    BankApp -->|Pago QR| QRBankExt
+    QRBankExt -->|"POST /webhooks/payment HMAC-SHA256"| ALB
+    GW_SVC --> OS_T
+    GW_SVC --> PS_T
+    GW_SVC --> IS_T
+    GW_SVC --> CS_T
+    GW_SVC --> RGW_T
+    OS_T --> RDS
+    PS_T --> RDS
+    IS_T --> RDS
+    CS_T --> RDS
+    IS_T --> REDIS_EC
+    OS_T --> MQ_AMQ
+    PS_T --> MQ_AMQ
+    IS_T --> MQ_AMQ
+    NS_T --> MQ_AMQ
+    RGW_T --> MQ_AMQ
+    PS_T -->|QR generate + webhook| QRBankExt
+    GW_SVC -->|Validar RU| SIISExt
+    NS_T -->|Push notifications| FCMExt
+    ECS -->|Logs / Metrics| CW
+    ECS -->|Leer secrets| SM
+    ECR -->|Pull images| ECS
+      </pre>
+    </div>
+  </section>
+
 </div><!-- /slides-wrap -->
 
 <!-- Navigation arrows -->
@@ -755,7 +1180,7 @@
 </nav>
 
 <script>
-  const TOTAL  = 9;
+  const TOTAL  = 14;
   let current  = 0;
   let demoLoaded = false;
 
@@ -822,8 +1247,102 @@
     if (e.key === 'End')                          { e.preventDefault(); goTo(TOTAL - 1); }
   });
 
+  // Diagram tab switcher
+  function switchTab(slideId, idx) {
+    var s = document.getElementById(slideId);
+    s.querySelectorAll('.diag-tab').forEach(function(t, i) { t.classList.toggle('active', i === idx); });
+    s.querySelectorAll('.diag-pane').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  }
+
   // Start on slide 1
   goTo(0);
+
+  // Mermaid init — render all diagrams on page load
+  mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
+  window.addEventListener('load', function() {
+    mermaid.run({ querySelector: '.mermaid' }).then(function() {
+      document.querySelectorAll('.diag-pane, .diag-single').forEach(function(container) {
+        var svg = container.querySelector('.mermaid svg');
+        if (!svg) return;
+
+        // Read natural SVG size
+        var vb   = svg.viewBox.baseVal;
+        var svgW = parseFloat(svg.getAttribute('width'))  || (vb && vb.width)  || 900;
+        var svgH = parseFloat(svg.getAttribute('height')) || (vb && vb.height) || 600;
+        svg.setAttribute('width',  svgW);
+        svg.setAttribute('height', svgH);
+
+        // Wrap SVG in transform div (container is already position:absolute or position:relative)
+        var wrap = document.createElement('div');
+        wrap.className = 'diag-svg-wrap';
+        svg.parentNode.insertBefore(wrap, svg);
+        wrap.appendChild(svg);
+
+        var sc = 1, tx = 0, ty = 0;
+
+        function applyT() {
+          wrap.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sc + ')';
+        }
+
+        function fitToContainer() {
+          var cw = container.clientWidth;
+          var ch = container.clientHeight;
+          if (!cw || !ch) { cw = 800; ch = 500; }
+          sc = Math.min(cw / svgW, ch / svgH) * 0.92;
+          tx = (cw - svgW * sc) / 2;
+          ty = (ch - svgH * sc) / 2;
+          applyT();
+        }
+        // Defer fit so layout is fully painted
+        setTimeout(fitToContainer, 50);
+
+        // Wheel — zoom towards cursor
+        container.addEventListener('wheel', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var factor = e.deltaY < 0 ? 1.12 : 0.9;
+          var rect = container.getBoundingClientRect();
+          var mx = e.clientX - rect.left;
+          var my = e.clientY - rect.top;
+          tx = mx - (mx - tx) * factor;
+          ty = my - (my - ty) * factor;
+          sc = Math.max(0.1, Math.min(8, sc * factor));
+          applyT();
+        }, { passive: false });
+
+        // Drag — pan
+        var dragging = false, ox = 0, oy = 0;
+        container.addEventListener('mousedown', function(e) {
+          if (e.button !== 0) return;
+          dragging = true; ox = e.clientX - tx; oy = e.clientY - ty;
+          container.style.cursor = 'grabbing';
+          e.preventDefault();
+        });
+        window.addEventListener('mousemove', function(e) {
+          if (!dragging) return;
+          tx = e.clientX - ox; ty = e.clientY - oy;
+          applyT();
+        });
+        window.addEventListener('mouseup', function() {
+          if (dragging) { dragging = false; container.style.cursor = 'grab'; }
+        });
+
+        // Reset button + hint
+        var resetBtn = document.createElement('button');
+        resetBtn.className = 'diag-reset-btn';
+        resetBtn.textContent = '⟳ Reset';
+        resetBtn.addEventListener('click', function(e) { e.stopPropagation(); fitToContainer(); });
+        var hint = document.createElement('div');
+        hint.className = 'diag-zoom-hint';
+        hint.textContent = 'Scroll: zoom · Drag: mover';
+        container.appendChild(resetBtn);
+        container.appendChild(hint);
+
+        // Double-click to reset
+        container.addEventListener('dblclick', function(e) { e.stopPropagation(); fitToContainer(); });
+      });
+    });
+  });
 </script>
 </body>
 </html>
