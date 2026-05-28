@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -306,6 +306,55 @@
     .rm-items li { font-size:11px; color:var(--light); padding:2px 0 2px 13px; position:relative; }
     .rm-items li::before { content:'·'; position:absolute; left:0; color:var(--blue); font-weight:700; }
 
+    /* ══ TRAZABILIDAD ══ */
+    .traz-chain { display:flex; align-items:center; gap:0; margin:14px 0 16px; flex-wrap:wrap; }
+    .traz-node {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:10px;
+      padding:8px 12px; text-align:center; min-width:76px;
+    }
+    .traz-node.highlight { border-color:rgba(59,130,246,.5); background:rgba(59,130,246,.08); }
+    .traz-node .tn-id  { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+    .traz-node .tn-ver { font-size:12px; font-weight:900; color:var(--blue); margin:2px 0; }
+    .traz-node .tn-lbl { font-size:9px; color:var(--light); line-height:1.3; }
+    .traz-arrow { font-size:16px; color:var(--border); padding:0 3px; align-self:center; }
+    .traz-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .traz-section {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:14px; padding:14px;
+    }
+    .traz-section-title { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; }
+    .traz-row { display:flex; align-items:flex-start; gap:10px; padding:5px 0; border-bottom:1px solid rgba(30,58,95,.4); }
+    .traz-row:last-child { border-bottom:none; }
+    .traz-prompt-id { font-size:10px; font-weight:800; color:var(--yellow); font-family:'Courier New',monospace; min-width:90px; flex-shrink:0; }
+    .traz-prompt-lbl { font-size:11px; color:var(--light); line-height:1.4; }
+    .traz-prompt-refs { font-size:10px; color:var(--muted); margin-top:1px; font-family:'Courier New',monospace; }
+    .guardrail-row { display:flex; gap:8px; align-items:center; padding:4px 0; }
+    .gr-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:8px; background:rgba(34,197,94,.12); color:var(--green); border:1px solid rgba(34,197,94,.3); white-space:nowrap; }
+    .gr-text { font-size:11px; color:var(--light); }
+
+    /* ══ POCs ══ */
+    .poc-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:8px; }
+    .poc-card {
+      background:linear-gradient(145deg,var(--card),var(--card2));
+      border:1px solid var(--border); border-radius:18px; padding:20px;
+      display:flex; flex-direction:column; gap:9px;
+    }
+    .poc-header { display:flex; align-items:center; gap:10px; }
+    .poc-id { font-size:11px; font-weight:800; color:var(--blue); font-family:'Courier New',monospace; background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.3); border-radius:8px; padding:3px 10px; }
+    .poc-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:8px; background:rgba(34,197,94,.1); color:var(--green); border:1px solid rgba(34,197,94,.3); }
+    .poc-title { font-size:14px; font-weight:800; }
+    .poc-hyp { font-size:11px; color:var(--light); line-height:1.5; padding:7px 11px; background:rgba(59,130,246,.06); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; }
+    .poc-metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+    .poc-metric { text-align:center; padding:7px 4px; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:10px; }
+    .poc-metric-val { font-size:17px; font-weight:900; color:var(--green); }
+    .poc-metric-lbl { font-size:9px; color:var(--muted); margin-top:2px; }
+    .poc-lessons { list-style:none; }
+    .poc-lessons li { font-size:11px; color:var(--light); padding:2px 0 2px 16px; position:relative; line-height:1.4; }
+    .poc-lessons li::before { content:'→'; position:absolute; left:0; color:var(--blue); font-weight:700; }
+    .poc-lessons li strong { color:var(--yellow); }
+    .poc-verdict { font-size:11px; font-weight:700; padding:7px 12px; border-radius:10px; background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.25); color:var(--green); text-align:center; }
+
     /* ══ DIAGRAM SLIDES ══ */
     .slide.diag-slide { padding:40px 56px 65px; }
     .diag-header { flex-shrink:0; margin-bottom:4px; }
@@ -376,8 +425,8 @@
       Maestría en Ingeniería de Software · Módulo 4 — Arquitectura del Producto y Especificaciones Funcionales · Mayo 2026
     </div>
     <div class="pills-row">
-      <span class="pill pb">Python 3.12 · FastAPI</span>
-      <span class="pill pg">React 18 · PWA</span>
+      <span class="pill pb">Go · Gin</span>
+      <span class="pill pg">Angular · PWA</span>
       <span class="pill py">PostgreSQL 16</span>
       <span class="pill pr">Redis 7</span>
       <span class="pill po">RabbitMQ 3.13</span>
@@ -481,7 +530,7 @@
         </div>
         <div class="c4-arr">↓ ↓ ↓</div>
         <div class="c4-row">
-          <div class="c4-box c4-system">🛒 UMSS Market<br><small style="font-weight:400;color:#86efac80;">Marketplace multi-tenant · FastAPI + React 18 + PostgreSQL</small></div>
+          <div class="c4-box c4-system">🛒 UMSS Market<br><small style="font-weight:400;color:#86efac80;">Marketplace multi-tenant · Go/Gin + Angular + PostgreSQL</small></div>
         </div>
         <div class="c4-arr">↓ ↓ ↓</div>
         <div class="c4-row">
@@ -494,16 +543,16 @@
         <div class="stack-item">
           <span class="si-icon">⚙️</span>
           <div style="flex:1">
-            <div class="si-name">Backend · Python 3.12 + FastAPI</div>
-            <div class="si-desc">6 microservicios · SQLAlchemy 2.0 · asyncio · aio-pika</div>
+            <div class="si-name">Backend · Go (Gin Framework)</div>
+            <div class="si-desc">6 microservicios · GORM · goroutines · amqp091-go</div>
           </div>
           <span class="pill pb">Backend</span>
         </div>
         <div class="stack-item">
           <span class="si-icon">📱</span>
           <div style="flex:1">
-            <div class="si-name">Frontend · React 18 (PWA)</div>
-            <div class="si-desc">Mobile-first · Zustand · WebSocket realtime</div>
+            <div class="si-name">Frontend · Angular (PWA)</div>
+            <div class="si-desc">Mobile-first · NgRx · WebSocket realtime</div>
           </div>
           <span class="pill pc">Frontend</span>
         </div>
@@ -538,6 +587,280 @@
             <div class="si-desc">Multi-AZ · ECR · CloudWatch · Secrets Manager · WAF</div>
           </div>
           <span class="pill pp">Cloud</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 6 ══ MICROSERVICIOS + EVENTOS ═══════════════════════════════ -->
+  <section class="slide" id="s6">
+    <div class="lbl">Microservicios &amp; Eventos del Sistema</div>
+    <h2 class="h2" style="font-size:34px;">6 Servicios Independientes · 8 Eventos de Dominio</h2>
+    <div class="grid2">
+      <div>
+        <div class="ms-grid">
+          <div class="ms-card"><div class="ms-icon">📦</div><div class="ms-name">Order Service</div><div class="ms-tech">Go/Gin · PostgreSQL · Saga Coord.</div></div>
+          <div class="ms-card"><div class="ms-icon">💳</div><div class="ms-name">Payment Service</div><div class="ms-tech">QR Dinámico · Webhook · Idempotencia</div></div>
+          <div class="ms-card"><div class="ms-icon">🏪</div><div class="ms-name">Inventory Service</div><div class="ms-tech">Stock Atómico · Redis Lock</div></div>
+          <div class="ms-card"><div class="ms-icon">📋</div><div class="ms-name">Catalog Service</div><div class="ms-tech">Multi-tenant · Productos</div></div>
+          <div class="ms-card"><div class="ms-icon">🔔</div><div class="ms-name">Notification Service</div><div class="ms-tech">FCM · Email · Push</div></div>
+          <div class="ms-card"><div class="ms-icon">📡</div><div class="ms-name">Realtime Gateway</div><div class="ms-tech">WebSocket · Live Updates</div></div>
+        </div>
+        <div class="inv-box">
+          <div class="lbl2">Invariantes del Dominio (no negociables)</div>
+          <p>
+            ✅ Stock ≥ 0 (UPDATE atómico) &nbsp;·&nbsp; ✅ Idempotencia de pagos (webhook_ref único)<br>
+            ✅ HMAC-SHA256 en webhooks &nbsp;·&nbsp; ✅ QR TTL = 300 s &nbsp;·&nbsp; ✅ Monto exacto<br>
+            ✅ RU activo validado en SIIS &nbsp;·&nbsp; ✅ Secrets en AWS Secrets Manager
+          </p>
+        </div>
+      </div>
+      <div>
+        <table class="ev-table">
+          <thead>
+            <tr><th>Evento</th><th>Productor</th><th>Consumidor(es)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="ev-name">ORDER_CREATED</td><td class="ev-prod">order-svc</td><td class="ev-cons">payment-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_PENDING</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_CONFIRMED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">inventory-svc, order-svc</td></tr>
+            <tr><td class="ev-name">PAYMENT_FAILED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">STOCK_RESERVED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">STOCK_RELEASED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
+            <tr><td class="ev-name">ORDER_CONFIRMED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc, realtime-gw</td></tr>
+            <tr><td class="ev-name">ORDER_CANCELLED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 9 ══ KPIs & ROADMAP ════════════════════════════════════════ -->
+  <section class="slide" id="s9">
+    <div class="lbl">KPIs &amp; Roadmap</div>
+    <h2 class="h2" style="font-size:34px; margin-bottom:20px;">Métricas de Éxito &amp; Evolución del Producto</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-k1">
+        <div class="top-bar"></div>
+        <div class="kpi-val">≥ 95%</div>
+        <div class="kpi-lbl">Pedidos pagados y entregados exitosamente</div>
+        <div class="kpi-meta">North Star Metric</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="95"></div></div>
+      </div>
+      <div class="kpi-card kpi-k2">
+        <div class="top-bar"></div>
+        <div class="kpi-val">&gt; 98%</div>
+        <div class="kpi-lbl">Tasa de éxito de pagos QR automáticos</div>
+        <div class="kpi-meta">KPI-1 · Payment Service</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="98"></div></div>
+      </div>
+      <div class="kpi-card kpi-k3">
+        <div class="top-bar"></div>
+        <div class="kpi-val">&lt; 60 s</div>
+        <div class="kpi-lbl">Tiempo de ciclo de compra (actual: 3:40 min)</div>
+        <div class="kpi-meta">KPI-2 · Reducción del 74%</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="74"></div></div>
+      </div>
+      <div class="kpi-card kpi-k4">
+        <div class="top-bar"></div>
+        <div class="kpi-val">0%</div>
+        <div class="kpi-lbl">Pedidos confirmados sin stock físico real</div>
+        <div class="kpi-meta">KPI-3 · Invariante de dominio</div>
+        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="100"></div></div>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-card current">
+        <div class="rm-ver">v2.0.0 ← HOY</div>
+        <div class="rm-title">Arquitectura Base</div>
+        <ul class="rm-items">
+          <li>DTI · FSD v2 · ADRs · AGENTS.md</li>
+          <li>Diagramas C4 N1/N2/N3</li>
+          <li>Event Catalog · Saga State</li>
+          <li>Contratos IA PR-FSD-001/002/003</li>
+          <li>POC-01 · POC-02</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v3.0.0</div>
+        <div class="rm-title">Implementación Core</div>
+        <ul class="rm-items">
+          <li>6 microservicios Go/Gin</li>
+          <li>RabbitMQ + Saga coreografía</li>
+          <li>API Bancaria QR + SIIS</li>
+          <li>Tests unitarios pytest</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v4.0.0</div>
+        <div class="rm-title">Frontend + Integración</div>
+        <ul class="rm-items">
+          <li>Angular PWA mobile-first</li>
+          <li>Dashboard vendedor</li>
+          <li>WebSocket realtime</li>
+          <li>Load testing k6</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-ver">v5.0.0</div>
+        <div class="rm-title">Producción AWS</div>
+        <ul class="rm-items">
+          <li>ECS Fargate deployment</li>
+          <li>CI/CD GitHub Actions + ECR</li>
+          <li>CloudWatch observabilidad</li>
+          <li>Piloto campus UMSS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══ SLIDE TRAZABILIDAD ══════════════════════════════════════════════ -->
+  <section class="slide" id="s-traz">
+    <div class="lbl">Trazabilidad de Artefactos</div>
+    <h2 class="h2" style="font-size:27px;margin-bottom:8px;">Cadena de Trazabilidad — <span class="grad-green">BRD → DTI → Contratos IA</span></h2>
+
+    <div class="traz-chain">
+      <div class="traz-node">
+        <div class="tn-id">Negocio</div>
+        <div class="tn-ver">BRD v3</div>
+        <div class="tn-lbl">Requisitos<br>de negocio</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node">
+        <div class="tn-id">Mercado</div>
+        <div class="tn-ver">MRD v2</div>
+        <div class="tn-lbl">Segmento<br>y usuarios</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node">
+        <div class="tn-id">Producto</div>
+        <div class="tn-ver">PRD v2</div>
+        <div class="tn-lbl">Funcionalidades<br>y epics</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node">
+        <div class="tn-id">Funcional</div>
+        <div class="tn-ver">FSD v2</div>
+        <div class="tn-lbl">Casos de uso<br>y flujos</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node highlight">
+        <div class="tn-id">Técnico</div>
+        <div class="tn-ver">DTI v2</div>
+        <div class="tn-lbl">Stack, ADRs<br>e invariantes</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node highlight">
+        <div class="tn-id">Agentes IA</div>
+        <div class="tn-ver">AGENTS.md</div>
+        <div class="tn-lbl">Skills, guardrails<br>y restricciones</div>
+      </div>
+      <div class="traz-arrow">→</div>
+      <div class="traz-node highlight">
+        <div class="tn-id">Contratos IA</div>
+        <div class="tn-ver">PR-FSD</div>
+        <div class="tn-lbl">001 · 002 · 003<br>validación automática</div>
+      </div>
+    </div>
+
+    <div class="traz-grid">
+      <div class="traz-section">
+        <div class="traz-section-title">Prompt Mappings — PROMPT_MAPPINGS_v1.md</div>
+        <div class="traz-row">
+          <div>
+            <div class="traz-prompt-id">PROMPT-001</div>
+            <div class="traz-prompt-lbl">Generación QR dinámico — monto exacto, TTL 300 s, unicidad de pedido</div>
+            <div class="traz-prompt-refs">BRD: BR-002 · PRD: PRD-PAY-01 · FSD: UC-001</div>
+          </div>
+        </div>
+        <div class="traz-row">
+          <div>
+            <div class="traz-prompt-id">PROMPT-002</div>
+            <div class="traz-prompt-lbl">Validación RU universitario contra SIIS UMSS — registro bloqueante</div>
+            <div class="traz-prompt-refs">BRD: BR-001 · PRD: PRD-AUTH-01 · FSD: UC-002</div>
+          </div>
+        </div>
+        <div class="traz-row">
+          <div>
+            <div class="traz-prompt-id">PR-FSD-001</div>
+            <div class="traz-prompt-lbl">Contrato IA: webhook bancario HMAC-SHA256 + idempotencia + monto exacto</div>
+            <div class="traz-prompt-refs">payment-service · INV-002 INV-003 INV-005</div>
+          </div>
+        </div>
+        <div class="traz-row">
+          <div>
+            <div class="traz-prompt-id">PR-FSD-002</div>
+            <div class="traz-prompt-lbl">Contrato IA: reserva atómica de stock — UPDATE WHERE stock &gt;= N</div>
+            <div class="traz-prompt-refs">inventory-service · INV-001</div>
+          </div>
+        </div>
+        <div class="traz-row">
+          <div>
+            <div class="traz-prompt-id">PR-FSD-003</div>
+            <div class="traz-prompt-lbl">Contrato IA: coordinación eventos distribuidos con correlationId</div>
+            <div class="traz-prompt-refs">order-service · 8 eventos del sistema · ADR-0001</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="traz-section">
+        <div class="traz-section-title">Guardrails de IA — AGENTS.md (7 invariantes no negociables)</div>
+        <div class="guardrail-row"><span class="gr-badge">INV-001</span><span class="gr-text">Stock &ge; 0 siempre — UPDATE atómico con WHERE qty &ge; N</span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-002</span><span class="gr-text">Idempotencia de pagos — índice único en <code style="color:var(--blue)">webhook_ref</code></span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-003</span><span class="gr-text">QR TTL = exactamente 300 s → cancelación automática al expirar</span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-004</span><span class="gr-text">RU activo obligatorio — validado en SIIS antes del registro</span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-005</span><span class="gr-text">Monto exacto del webhook == <code style="color:var(--blue)">Pedido.total</code></span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-006</span><span class="gr-text">Secretos solo en AWS Secrets Manager — nunca hardcodeados</span></div>
+        <div class="guardrail-row"><span class="gr-badge">INV-007</span><span class="gr-text">HMAC-SHA256 validado en todo webhook entrante</span></div>
+        <div style="margin-top:10px; padding:9px 12px; background:rgba(168,85,247,.07); border:1px solid rgba(168,85,247,.2); border-radius:10px; font-size:11px; color:var(--light);">
+          📌 <strong>AGENTS.md</strong> y <strong>DTI.md</strong> se actualizan en el <em>mismo commit</em> ante cualquier cambio arquitectónico — garantía de sincronía entre documentación e implementación.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 8 ══ AI-SDLC ═══════════════════════════════════════════════ -->
+  <section class="slide" id="s8">
+    <div class="lbl">AI-SDLC</div>
+    <h2 class="h2" style="font-size:34px;">Inteligencia Artificial en el Ciclo de Desarrollo</h2>
+    <div class="grid2">
+      <div>
+        <p style="font-size:13px; color:var(--light); margin-bottom:12px;">
+          5 agentes IA especializados integrados en el proceso de desarrollo — <strong>no en runtime</strong>. El producto UMSS Market usa IA en la cadena de construcción, no como agentes autónomos en producción.
+        </p>
+        <table class="agents-table">
+          <thead>
+            <tr><th>Agente</th><th>Fase SDLC</th><th>Output generado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="ag-name">dti-author</td><td class="ag-phase">Diseño / Docs</td><td class="ag-out">Secciones del DTI + frontmatter YAML</td></tr>
+            <tr><td class="ag-name">c4-architect</td><td class="ag-phase">Diseño</td><td class="ag-out">Diagramas C4 N1/N2/N3 en Mermaid</td></tr>
+            <tr><td class="ag-name">poc-runner</td><td class="ag-phase">Validación</td><td class="ag-out">Scaffold de POC + log pass/fail</td></tr>
+            <tr><td class="ag-name">fsd-validator</td><td class="ag-phase">Especificación</td><td class="ag-out">Contratos funcionales PR-FSD-001/002/003</td></tr>
+            <tr><td class="ag-name">auditor</td><td class="ag-phase">Revisión</td><td class="ag-out">Reporte de gaps BRD↔PRD↔FSD↔DTI</td></tr>
+          </tbody>
+        </table>
+        <div class="agents-note">
+          📄 <strong>AGENTS.md</strong> sincronizado con <strong>DTI.md</strong> en el mismo commit — declara invariantes, restricciones y skills para todos los agentes del repositorio. Regla: ningún agente puede violar los invariantes del dominio.
+        </div>
+      </div>
+      <div class="contracts">
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:700; margin-bottom:6px;">Contratos Funcionales IA</div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-001</div>
+          <div class="ct-desc">Validación de confirmación de pago QR: HMAC-SHA256 + monto exacto + idempotencia (webhook_ref único)</div>
+        </div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-002</div>
+          <div class="ct-desc">Validación de disponibilidad y reserva atómica de stock: UPDATE WHERE stock >= cantidad + Redis distributed lock</div>
+        </div>
+        <div class="contract-card">
+          <div class="ct-id">PR-FSD-003</div>
+          <div class="ct-desc">Coordinación de eventos distribuidos: ORDER_CREATED → PAYMENT_CONFIRMED → STOCK_RESERVED con correlationId</div>
+        </div>
+        <div style="margin-top:10px; padding:11px; background:rgba(168,85,247,.08); border:1px solid rgba(168,85,247,.2); border-radius:10px; font-size:11px; color:var(--light);">
+          🔑 Trazabilidad completa: BRD v3 → MRD v2 → PRD v2 → FSD v2 → DTI v2 → AGENTS.md → PR-FSD-001/002/003
         </div>
       </div>
     </div>
@@ -612,564 +935,60 @@
     </div>
   </section>
 
-  <!-- ══ SLIDE 6 ══ MICROSERVICIOS + EVENTOS ═══════════════════════════════ -->
-  <section class="slide" id="s6">
-    <div class="lbl">Microservicios &amp; Eventos del Sistema</div>
-    <h2 class="h2" style="font-size:34px;">6 Servicios Independientes · 8 Eventos de Dominio</h2>
-    <div class="grid2">
-      <div>
-        <div class="ms-grid">
-          <div class="ms-card"><div class="ms-icon">📦</div><div class="ms-name">Order Service</div><div class="ms-tech">FastAPI · PostgreSQL · Saga Coord.</div></div>
-          <div class="ms-card"><div class="ms-icon">💳</div><div class="ms-name">Payment Service</div><div class="ms-tech">QR Dinámico · Webhook · Idempotencia</div></div>
-          <div class="ms-card"><div class="ms-icon">🏪</div><div class="ms-name">Inventory Service</div><div class="ms-tech">Stock Atómico · Redis Lock</div></div>
-          <div class="ms-card"><div class="ms-icon">📋</div><div class="ms-name">Catalog Service</div><div class="ms-tech">Multi-tenant · Productos</div></div>
-          <div class="ms-card"><div class="ms-icon">🔔</div><div class="ms-name">Notification Service</div><div class="ms-tech">FCM · Email · Push</div></div>
-          <div class="ms-card"><div class="ms-icon">📡</div><div class="ms-name">Realtime Gateway</div><div class="ms-tech">WebSocket · Live Updates</div></div>
-        </div>
-        <div class="inv-box">
-          <div class="lbl2">Invariantes del Dominio (no negociables)</div>
-          <p>
-            ✅ Stock ≥ 0 (UPDATE atómico) &nbsp;·&nbsp; ✅ Idempotencia de pagos (webhook_ref único)<br>
-            ✅ HMAC-SHA256 en webhooks &nbsp;·&nbsp; ✅ QR TTL = 300 s &nbsp;·&nbsp; ✅ Monto exacto<br>
-            ✅ RU activo validado en SIIS &nbsp;·&nbsp; ✅ Secrets en AWS Secrets Manager
-          </p>
-        </div>
-      </div>
-      <div>
-        <table class="ev-table">
-          <thead>
-            <tr><th>Evento</th><th>Productor</th><th>Consumidor(es)</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="ev-name">ORDER_CREATED</td><td class="ev-prod">order-svc</td><td class="ev-cons">payment-svc</td></tr>
-            <tr><td class="ev-name">PAYMENT_PENDING</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
-            <tr><td class="ev-name">PAYMENT_CONFIRMED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">inventory-svc, order-svc</td></tr>
-            <tr><td class="ev-name">PAYMENT_FAILED</td><td class="ev-prod">payment-svc</td><td class="ev-cons">order-svc</td></tr>
-            <tr><td class="ev-name">STOCK_RESERVED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
-            <tr><td class="ev-name">STOCK_RELEASED</td><td class="ev-prod">inventory-svc</td><td class="ev-cons">order-svc</td></tr>
-            <tr><td class="ev-name">ORDER_CONFIRMED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc, realtime-gw</td></tr>
-            <tr><td class="ev-name">ORDER_CANCELLED</td><td class="ev-prod">order-svc</td><td class="ev-cons">notification-svc</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+  <!-- ══ SLIDE POCs ═══════════════════════════════════════════════════════ -->
+  <section class="slide" id="s-poc">
+    <div class="lbl">Validación Técnica</div>
+    <h2 class="h2" style="font-size:27px;margin-bottom:10px;">Proof of Concepts — <span class="grad-green">Hipótesis Validadas Antes del Stack</span></h2>
+    <div class="poc-grid">
 
-  <!-- ══ SLIDE 7 ══ DEMO INTERACTIVA ══════════════════════════════════════ -->
-  <section class="slide" id="s7">
-    <div class="lbl">Demo Interactiva</div>
-    <h2 class="h2" style="font-size:26px; margin-bottom:6px;">Flujo Saga en vivo: Comprar → QR → Pago → Stock → Notificación</h2>
-    <div class="demo-wrap">
-      <iframe id="demoFrame" src=""></iframe>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 8 ══ AI-SDLC ═══════════════════════════════════════════════ -->
-  <section class="slide" id="s8">
-    <div class="lbl">AI-SDLC</div>
-    <h2 class="h2" style="font-size:34px;">Inteligencia Artificial en el Ciclo de Desarrollo</h2>
-    <div class="grid2">
-      <div>
-        <p style="font-size:13px; color:var(--light); margin-bottom:12px;">
-          5 agentes IA especializados integrados en el proceso de desarrollo — <strong>no en runtime</strong>. El producto UMSS Market usa IA en la cadena de construcción, no como agentes autónomos en producción.
-        </p>
-        <table class="agents-table">
-          <thead>
-            <tr><th>Agente</th><th>Fase SDLC</th><th>Output generado</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="ag-name">dti-author</td><td class="ag-phase">Diseño / Docs</td><td class="ag-out">Secciones del DTI + frontmatter YAML</td></tr>
-            <tr><td class="ag-name">c4-architect</td><td class="ag-phase">Diseño</td><td class="ag-out">Diagramas C4 N1/N2/N3 en Mermaid</td></tr>
-            <tr><td class="ag-name">poc-runner</td><td class="ag-phase">Validación</td><td class="ag-out">Scaffold de POC + log pass/fail</td></tr>
-            <tr><td class="ag-name">fsd-validator</td><td class="ag-phase">Especificación</td><td class="ag-out">Contratos funcionales PR-FSD-001/002/003</td></tr>
-            <tr><td class="ag-name">auditor</td><td class="ag-phase">Revisión</td><td class="ag-out">Reporte de gaps BRD↔PRD↔FSD↔DTI</td></tr>
-          </tbody>
-        </table>
-        <div class="agents-note">
-          📄 <strong>AGENTS.md</strong> sincronizado con <strong>DTI.md</strong> en el mismo commit — declara invariantes, restricciones y skills para todos los agentes del repositorio. Regla: ningún agente puede violar los invariantes del dominio.
+      <div class="poc-card">
+        <div class="poc-header">
+          <span class="poc-id">POC-01</span>
+          <span class="poc-badge">✅ Superado · 30/04/2026</span>
         </div>
-      </div>
-      <div class="contracts">
-        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); font-weight:700; margin-bottom:6px;">Contratos Funcionales IA</div>
-        <div class="contract-card">
-          <div class="ct-id">PR-FSD-001</div>
-          <div class="ct-desc">Validación de confirmación de pago QR: HMAC-SHA256 + monto exacto + idempotencia (webhook_ref único)</div>
+        <div class="poc-title">Lógica Core del Dominio — CLI Go puro</div>
+        <div class="poc-hyp">"Los invariantes del dominio (stock &ge; 0, monto exacto, RU requerido) pueden implementarse en Go puro sin ningún framework externo."</div>
+        <div class="poc-metrics">
+          <div class="poc-metric"><div class="poc-metric-val">5/5</div><div class="poc-metric-lbl">invariantes validados</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">0</div><div class="poc-metric-lbl">dependencias externas</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">✅</div><div class="poc-metric-lbl">flujo end-to-end</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">✅</div><div class="poc-metric-lbl">error path ok</div></div>
         </div>
-        <div class="contract-card">
-          <div class="ct-id">PR-FSD-002</div>
-          <div class="ct-desc">Validación de disponibilidad y reserva atómica de stock: UPDATE WHERE stock >= cantidad + Redis distributed lock</div>
-        </div>
-        <div class="contract-card">
-          <div class="ct-id">PR-FSD-003</div>
-          <div class="ct-desc">Coordinación de eventos distribuidos: ORDER_CREATED → PAYMENT_CONFIRMED → STOCK_RESERVED con correlationId</div>
-        </div>
-        <div style="margin-top:10px; padding:11px; background:rgba(168,85,247,.08); border:1px solid rgba(168,85,247,.2); border-radius:10px; font-size:11px; color:var(--light);">
-          🔑 Trazabilidad completa: BRD v3 → MRD v2 → PRD v2 → FSD v2 → DTI v2 → AGENTS.md → PR-FSD-001/002/003
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 9 ══ KPIs & ROADMAP ════════════════════════════════════════ -->
-  <section class="slide" id="s9">
-    <div class="lbl">KPIs &amp; Roadmap</div>
-    <h2 class="h2" style="font-size:34px; margin-bottom:20px;">Métricas de Éxito &amp; Evolución del Producto</h2>
-    <div class="kpi-grid">
-      <div class="kpi-card kpi-k1">
-        <div class="top-bar"></div>
-        <div class="kpi-val">≥ 95%</div>
-        <div class="kpi-lbl">Pedidos pagados y entregados exitosamente</div>
-        <div class="kpi-meta">North Star Metric</div>
-        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="95"></div></div>
-      </div>
-      <div class="kpi-card kpi-k2">
-        <div class="top-bar"></div>
-        <div class="kpi-val">&gt; 98%</div>
-        <div class="kpi-lbl">Tasa de éxito de pagos QR automáticos</div>
-        <div class="kpi-meta">KPI-1 · Payment Service</div>
-        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="98"></div></div>
-      </div>
-      <div class="kpi-card kpi-k3">
-        <div class="top-bar"></div>
-        <div class="kpi-val">&lt; 60 s</div>
-        <div class="kpi-lbl">Tiempo de ciclo de compra (actual: 3:40 min)</div>
-        <div class="kpi-meta">KPI-2 · Reducción del 74%</div>
-        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="74"></div></div>
-      </div>
-      <div class="kpi-card kpi-k4">
-        <div class="top-bar"></div>
-        <div class="kpi-val">0%</div>
-        <div class="kpi-lbl">Pedidos confirmados sin stock físico real</div>
-        <div class="kpi-meta">KPI-3 · Invariante de dominio</div>
-        <div class="kpi-bar"><div class="kpi-bar-fill" data-w="100"></div></div>
-      </div>
-    </div>
-    <div class="rm-row">
-      <div class="rm-card current">
-        <div class="rm-ver">v2.0.0 ← HOY</div>
-        <div class="rm-title">Arquitectura Base</div>
-        <ul class="rm-items">
-          <li>DTI · FSD v2 · ADRs · AGENTS.md</li>
-          <li>Diagramas C4 N1/N2/N3</li>
-          <li>Event Catalog · Saga State</li>
-          <li>Contratos IA PR-FSD-001/002/003</li>
-          <li>POC-01 · POC-02</li>
+        <ul class="poc-lessons">
+          <li><strong>L2</strong> — Montos con <code style="color:var(--blue)">float</code> generan errores de precisión → usar <code style="color:var(--green)">Decimal</code> (INV-005)</li>
+          <li><strong>L3</strong> — Stock en memoria con locks confirma necesidad de UPDATE atómico SQL (INV-001)</li>
+          <li><strong>L5</strong> — Dominio aislado de infraestructura → validó <strong>ADR-0003 Hexagonal</strong></li>
+          <li><strong>L4</strong> — Estados del pedido = máquina de estados formal → motivó <code style="color:var(--blue)">saga-state.mmd</code></li>
         </ul>
+        <div class="poc-verdict">SUPERADO — lógica de dominio viable antes del stack completo</div>
       </div>
-      <div class="rm-card">
-        <div class="rm-ver">v3.0.0</div>
-        <div class="rm-title">Implementación Core</div>
-        <ul class="rm-items">
-          <li>6 microservicios FastAPI</li>
-          <li>RabbitMQ + Saga coreografía</li>
-          <li>API Bancaria QR + SIIS</li>
-          <li>Tests unitarios pytest</li>
+
+      <div class="poc-card">
+        <div class="poc-header">
+          <span class="poc-id">POC-02</span>
+          <span class="poc-badge">✅ Superado · 11/05/2026</span>
+        </div>
+        <div class="poc-title">Flujo UX de Pago QR — Frontend HTML/JS</div>
+        <div class="poc-hyp">"Un usuario universitario sin experiencia en pagos QR puede completar el flujo en menos de 60 segundos, guiado únicamente por la interfaz."</div>
+        <div class="poc-metrics">
+          <div class="poc-metric"><div class="poc-metric-val">38s</div><div class="poc-metric-lbl">tiempo promedio compra</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">4/5</div><div class="poc-metric-lbl">sin asistencia</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">4.2/5</div><div class="poc-metric-lbl">satisfacción UX</div></div>
+          <div class="poc-metric"><div class="poc-metric-val">5/5</div><div class="poc-metric-lbl">entendieron countdown</div></div>
+        </div>
+        <ul class="poc-lessons">
+          <li><strong>L1</strong> — Countdown &gt; 48px necesario → definido en FSD §UI con color cambiante</li>
+          <li><strong>L3</strong> — Usuarios esperan confirmación &lt; 3s → motivó <strong>WebSocket realtime-gateway</strong></li>
+          <li><strong>L2</strong> — "QR expirado" debe ofrecer reintentar → flujo de compensación en Saga (ADR-0002)</li>
+          <li><strong>L4</strong> — Mínimo 2 pasos (carrito + QR) → validó <strong>Angular PWA + NgRx</strong></li>
         </ul>
+        <div class="poc-verdict">SUPERADO — flujo QR viable · hipótesis de usabilidad confirmada (38 s &lt; 60 s)</div>
       </div>
-      <div class="rm-card">
-        <div class="rm-ver">v4.0.0</div>
-        <div class="rm-title">Frontend + Integración</div>
-        <ul class="rm-items">
-          <li>React 18 PWA mobile-first</li>
-          <li>Dashboard vendedor</li>
-          <li>WebSocket realtime</li>
-          <li>Load testing k6</li>
-        </ul>
-      </div>
-      <div class="rm-card">
-        <div class="rm-ver">v5.0.0</div>
-        <div class="rm-title">Producción AWS</div>
-        <ul class="rm-items">
-          <li>ECS Fargate deployment</li>
-          <li>CI/CD GitHub Actions + ECR</li>
-          <li>CloudWatch observabilidad</li>
-          <li>Piloto campus UMSS</li>
-        </ul>
-      </div>
+
     </div>
   </section>
 
 
-  <!-- ══ SLIDE 10 ══ C4 CONTEXT + CONTAINER ═══════════════════════════════ -->
-  <section class="slide diag-slide" id="s10">
-    <div class="diag-header">
-      <div class="lbl">Diagramas C4</div>
-      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Contexto del Sistema &amp; Contenedores</h2>
-      <div class="diag-tabs">
-        <button class="diag-tab active" onclick="switchTab('s10',0)">C4 N1 — Contexto del Sistema</button>
-        <button class="diag-tab"        onclick="switchTab('s10',1)">C4 N2 — Contenedores</button>
-      </div>
-    </div>
-    <div class="diag-panes">
-      <div class="diag-pane active">
-        <pre class="mermaid">
-flowchart TB
-    Customer["👤 Cliente UMSS\nEstudiante comprador"]
-    Seller["👤 Emprendedor\nEstudiante vendedor"]
-    Admin["👤 Administrador UMSS"]
-    UMSSMarket["🛒 UMSS Market\nMarketplace universitario multi-tenant\nPython/FastAPI · React 18 · PostgreSQL"]
-    QRBank["🏦 API Bancaria QR\nGeneración y validación de pagos QR"]
-    SIIS["🎓 SIIS UMSS\nValidación de Registro Universitario"]
-    FCM["📱 Google FCM\nNotificaciones Push"]
-    Customer -->|Compra productos · realiza pagos QR| UMSSMarket
-    Seller -->|Gestiona tienda · catálogo · stock| UMSSMarket
-    Admin -->|Aprueba tiendas · audita transacciones| UMSSMarket
-    UMSSMarket -->|Genera y valida QR dinámico| QRBank
-    UMSSMarket -->|Verifica RU activo del usuario| SIIS
-    UMSSMarket -->|Envía alertas de estado de pedido| FCM
-        </pre>
-      </div>
-      <div class="diag-pane">
-        <pre class="mermaid">
-flowchart TB
-    User["👤 Cliente UMSS"]
-    Admin["👤 Administrador"]
-    Frontend["React 18 PWA\nMobile-first · Zustand"]
-    APIGateway["API Gateway\nFastAPI · JWT · Rate Limit"]
-    OrderSvc["Order Service\nFastAPI · Saga Coord."]
-    PaySvc["Payment Service\nQR Dinámico · Webhook"]
-    InvSvc["Inventory Service\nStock Atómico · Redis"]
-    CatSvc["Catalog Service\nMulti-tenant"]
-    NotifSvc["Notification Service\nFCM · Email"]
-    RtGW["Realtime Gateway\nWebSocket"]
-    PG[("PostgreSQL 16\nRDS Multi-AZ")]
-    Redis[("Redis 7\nElastiCache")]
-    MQ[("RabbitMQ 3.13\nAmazon MQ")]
-    QRBank["API Bancaria QR"]
-    SIIS["SIIS UMSS"]
-    User --> Frontend
-    Admin --> Frontend
-    Frontend --> APIGateway
-    APIGateway --> OrderSvc
-    APIGateway --> PaySvc
-    APIGateway --> CatSvc
-    APIGateway --> SIIS
-    OrderSvc --> PG
-    PaySvc --> PG
-    InvSvc --> PG
-    CatSvc --> PG
-    InvSvc --> Redis
-    OrderSvc --> MQ
-    PaySvc --> MQ
-    InvSvc --> MQ
-    NotifSvc --> MQ
-    RtGW --> MQ
-    RtGW --> Frontend
-    PaySvc --> QRBank
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 11 ══ HEXAGONAL + C4 N3 ════════════════════════════════════ -->
-  <section class="slide diag-slide" id="s11">
-    <div class="diag-header">
-      <div class="lbl">Patrones de Arquitectura</div>
-      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Hexagonal (Ports &amp; Adapters) · C4 Nivel 3 — Order Service</h2>
-      <div class="diag-tabs">
-        <button class="diag-tab active" onclick="switchTab('s11',0)">Arquitectura Hexagonal</button>
-        <button class="diag-tab"        onclick="switchTab('s11',1)">C4 N3 — Order Service</button>
-      </div>
-    </div>
-    <div class="diag-panes">
-      <div class="diag-pane active">
-        <pre class="mermaid">
-%%{init: {"theme": "dark"}}%%
-flowchart LR
-    subgraph DrivingAdapters["Adaptadores de Entrada (Driving)"]
-        direction TB
-        REST["FastAPI Router\nREST / HTTP"]
-        AMQP_IN["RabbitMQ Consumer\naio-pika AMQP"]
-        WS_IN["WebSocket Handler\nStarlette"]
-    end
-    subgraph Hexagon["NUCLEO — Independiente de infraestructura"]
-        direction TB
-        subgraph AppLayer["Capa de Aplicación"]
-            direction LR
-            InPorts["Input Ports\nICreateOrderUseCase\nICancelOrderUseCase\nIConfirmOrderUseCase"]
-            UseCases["Use Cases\nCreateOrder · CancelOrder\nConfirmOrder · GetOrder"]
-            OutPorts["Output Ports\nIOrderRepository\nIEventPublisher\nIStockService"]
-        end
-        subgraph DomainLayer["Capa de Dominio — puro Python sin framework"]
-            direction TB
-            Agg["Aggregates\nOrder · Payment · Product · User"]
-            VO["Value Objects\nMoney · QRCode · RU · OrderStatus"]
-            DE["Domain Events\nOrderCreated · OrderConfirmed · OrderCancelled"]
-        end
-        InPorts --> UseCases
-        UseCases --> DomainLayer
-        UseCases --> OutPorts
-    end
-    subgraph DrivenAdapters["Adaptadores de Salida (Driven)"]
-        direction TB
-        PG["PostgreSQL\nSQLAlchemy Repo"]
-        REDIS_A["Redis Cache\nTTL locks"]
-        AMQP_OUT["RabbitMQ Publisher\naio-pika AMQP"]
-        BANK["API Bancaria QR\naiohttp Client"]
-        SIIS_A["SIIS UMSS\naiohttp Client"]
-        FCM_A["FCM Push Adapter"]
-    end
-    REST --> InPorts
-    AMQP_IN --> InPorts
-    WS_IN --> InPorts
-    OutPorts --> PG
-    OutPorts --> REDIS_A
-    OutPorts --> AMQP_OUT
-    OutPorts --> BANK
-    OutPorts --> SIIS_A
-    OutPorts --> FCM_A
-        </pre>
-      </div>
-      <div class="diag-pane">
-        <pre class="mermaid">
-%%{init: {"theme": "dark"}}%%
-flowchart TB
-    subgraph Driving["Adaptadores de Entrada"]
-        direction LR
-        OrderAPI["OrderAPI\nFastAPI Router"]
-        EvtConsumer["EventConsumer\naio-pika Consumer"]
-    end
-    subgraph Core["Order Service — Nucleo Hexagonal"]
-        direction TB
-        subgraph AppL["Capa de Aplicación"]
-            CreateUC["CreateOrderUseCase"]
-            CancelUC["CancelOrderUseCase"]
-            ConfirmUC["ConfirmOrderUseCase"]
-            SagaCoord["SagaCoordinator\ncoreografía de eventos"]
-        end
-        subgraph DomainL["Capa de Dominio — puro Python"]
-            OAgg["Order Aggregate Root"]
-            OItem["OrderItem Entity"]
-            OStatus["OrderStatus Value Object\nPENDIENTE · QR_GENERADO · CONFIRMADO · CANCELADO"]
-            DEvts["Domain Events\nOrderCreated · OrderConfirmed · OrderCancelled"]
-        end
-    end
-    subgraph Driven["Adaptadores de Salida"]
-        direction LR
-        Repo["OrderRepository\nSQLAlchemy PostgreSQL"]
-        EvtPub["EventPublisher\naio-pika RabbitMQ"]
-        Cache["OrderCache\nRedis TTL"]
-    end
-    subgraph Infra["Infraestructura"]
-        RMQ[("RabbitMQ Event Bus")]
-        PSQL[("PostgreSQL orders DB")]
-        RDS[("Redis TTL locks")]
-    end
-    OrderAPI --> CreateUC
-    OrderAPI --> CancelUC
-    EvtConsumer --> ConfirmUC
-    EvtConsumer --> SagaCoord
-    CreateUC --> OAgg
-    CancelUC --> OAgg
-    ConfirmUC --> OAgg
-    OAgg --> OItem
-    OAgg --> OStatus
-    OAgg --> DEvts
-    SagaCoord --> EvtPub
-    CreateUC --> Repo
-    CreateUC --> Cache
-    ConfirmUC --> Repo
-    Repo --> PSQL
-    EvtPub --> RMQ
-    Cache --> RDS
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 12 ══ EVENT FLOW + SAGA STATE ══════════════════════════════ -->
-  <section class="slide diag-slide" id="s12">
-    <div class="diag-header">
-      <div class="lbl">Flujos Event-Driven</div>
-      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Event Flow del Sistema · Saga State Machine</h2>
-      <div class="diag-tabs">
-        <button class="diag-tab active" onclick="switchTab('s12',0)">Event Flow</button>
-        <button class="diag-tab"        onclick="switchTab('s12',1)">Saga State Machine (ADR-0002)</button>
-      </div>
-    </div>
-    <div class="diag-panes">
-      <div class="diag-pane active">
-        <pre class="mermaid">
-flowchart TD
-    A["Cliente crea pedido"] --> B["ORDER_CREATED"]
-    B --> C["Payment Service genera QR"]
-    C --> D["PAYMENT_PENDING"]
-    D --> E["Cliente realiza pago QR"]
-    E --> F{"Pago confirmado?"}
-    F -->|SI| G["PAYMENT_CONFIRMED"]
-    G --> H["Inventory Service reserva stock"]
-    H --> I{"Stock disponible?"}
-    I -->|SI| J["STOCK_RESERVED"]
-    J --> K["ORDER_CONFIRMED"]
-    K --> L["Realtime Gateway actualiza cliente"]
-    L --> M["NOTIFICATION_SENT"]
-    M --> N["Pedido completado ✅"]
-    I -->|NO| Q["STOCK_RELEASED — compensación"]
-    Q --> R["ORDER_CANCELLED"]
-    R --> S["Notificar cancelación"]
-    F -->|NO| T["PAYMENT_FAILED"]
-    T --> U["ORDER_CANCELLED — compensación"]
-    U --> V["Liberar recursos · Notificar fallo"]
-    classDef success fill:#14532d,stroke:#22c55e,color:#bbf7d0
-    classDef failure fill:#7f1d1d,stroke:#ef4444,color:#fecaca
-    classDef process fill:#1e3a5f,stroke:#3b82f6,color:#bfdbfe
-    class G,J,K,N success
-    class T,R,U,V,Q failure
-    class B,C,D,H,L,M process
-        </pre>
-      </div>
-      <div class="diag-pane">
-        <pre class="mermaid">
-%%{init: {"theme": "dark"}}%%
-stateDiagram-v2
-    [*] --> PENDIENTE : POST /orders\nORDER_CREATED publicado
-    PENDIENTE --> QR_GENERADO : PAYMENT_PENDING\nQR emitido · TTL 300s iniciado
-    QR_GENERADO --> PAGO_CONFIRMADO : PAYMENT_CONFIRMED\nHMAC válido · monto exacto · idempotencia OK
-    PAGO_CONFIRMADO --> STOCK_RESERVADO : STOCK_RESERVED\nUPDATE atómico en PostgreSQL
-    STOCK_RESERVADO --> CONFIRMADO : ORDER_CONFIRMED\nNotificación push + WebSocket
-    CONFIRMADO --> [*]
-    PENDIENTE --> CANCELADO : Error de stock\no timeout inicial
-    QR_GENERADO --> CANCELADO : TTL 300s expirado\nSTOCK_RELEASED — compensación
-    PAGO_CONFIRMADO --> REEMBOLSO_PENDIENTE : PAYMENT_FAILED\nerror post-confirmación
-    STOCK_RESERVADO --> REEMBOLSO_PENDIENTE : Error crítico\npost-reserva
-    REEMBOLSO_PENDIENTE --> REEMBOLSADO : Reembolso procesado\npor payment-service
-    CANCELADO --> [*]
-    REEMBOLSADO --> [*]
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 13 ══ SEQUENCE QR PAYMENT ══════════════════════════════════ -->
-  <section class="slide diag-slide" id="s13">
-    <div class="diag-header">
-      <div class="lbl">Diagrama de Secuencia</div>
-      <h2 class="h2" style="font-size:26px;margin-bottom:0;">Flujo Completo: Pago QR Dinámico con Saga (Coreografía)</h2>
-    </div>
-    <div class="diag-single">
-      <pre class="mermaid">
-%%{init: {"theme": "dark"}}%%
-sequenceDiagram
-    actor Customer as Cliente UMSS
-    participant PWA as React PWA
-    participant GW as API Gateway
-    participant OrderSvc as Order Service
-    participant PaySvc as Payment Service
-    participant InvSvc as Inventory Service
-    participant QRBank as API Bancaria QR
-    participant Bus as RabbitMQ
-    Customer->>PWA: Confirmar compra
-    PWA->>GW: POST /api/v1/orders (JWT Bearer)
-    GW->>OrderSvc: Crear pedido
-    OrderSvc->>InvSvc: GET /internal/stock/{product_id}
-    InvSvc->>InvSvc: Reserva optimista Redis TTL=300s
-    InvSvc-->>OrderSvc: 200 OK stock disponible
-    OrderSvc->>Bus: Publish ORDER_CREATED {order_id, total, correlationId}
-    Bus->>PaySvc: ORDER_CREATED
-    PaySvc->>QRBank: POST /qr/generate {amount, reference, callback_url}
-    QRBank-->>PaySvc: qr_url · qr_id · expires_in=300
-    PaySvc->>Bus: Publish PAYMENT_PENDING {order_id, qr_url}
-    Bus->>OrderSvc: PAYMENT_PENDING → estado QR_GENERADO
-    PWA-->>Customer: Mostrar QR countdown 5 min
-    Note over Customer,QRBank: Cliente escanea QR con su app bancaria móvil
-    QRBank->>PaySvc: POST /webhooks/payment {webhook_ref, amount, hmac_sha256}
-    PaySvc->>PaySvc: 1. Validar firma HMAC-SHA256
-    PaySvc->>PaySvc: 2. Verificar idempotencia webhook_ref único
-    PaySvc->>PaySvc: 3. Verificar monto == Pedido.total exacto
-    PaySvc-->>QRBank: HTTP 200 OK
-    PaySvc->>Bus: Publish PAYMENT_CONFIRMED {order_id, correlationId}
-    Bus->>InvSvc: PAYMENT_CONFIRMED
-    InvSvc->>InvSvc: UPDATE qty = qty - N WHERE qty >= N (atómico)
-    InvSvc->>Bus: Publish STOCK_RESERVED {order_id, qty}
-    Bus->>OrderSvc: STOCK_RESERVED → estado CONFIRMADO
-    OrderSvc->>Bus: Publish ORDER_CONFIRMED {order_id}
-    PWA-->>Customer: Pedido confirmado!
-    Note over InvSvc,Bus: Compensación: si TTL 300s expira antes del pago
-    InvSvc->>Bus: Publish STOCK_RELEASED
-    Bus->>OrderSvc: STOCK_RELEASED → estado CANCELADO
-    PWA-->>Customer: QR expirado — pedido cancelado
-      </pre>
-    </div>
-  </section>
-
-  <!-- ══ SLIDE 14 ══ AWS DEPLOYMENT ════════════════════════════════════════ -->
-  <section class="slide diag-slide" id="s14">
-    <div class="diag-header">
-      <div class="lbl">Infraestructura Cloud</div>
-      <h2 class="h2" style="font-size:26px;margin-bottom:0;">AWS Deployment — ECS Fargate · Multi-AZ · us-east-1</h2>
-    </div>
-    <div class="diag-single">
-      <pre class="mermaid">
-%%{init: {"theme": "dark"}}%%
-flowchart TB
-    subgraph Internet["Internet"]
-        Client["Mobile / PWA\nCliente UMSS"]
-        BankApp["App Bancaria Movil\nQR Payment"]
-    end
-    subgraph AWS["AWS us-east-1 Multi-AZ"]
-        subgraph EdgeLayer["Edge &amp; Seguridad"]
-            CF["CloudFront CDN\nS3 PWA estatica"]
-            WAF["AWS WAF\nRate Limiting · DDoS · Bot"]
-            ALB["Application Load Balancer\nSSL Termination · Path Routing"]
-        end
-        subgraph ECS["ECS Fargate — Cluster de Microservicios"]
-            GW_SVC["api-gateway\nFastAPI · JWT · Rate Limit · 2 tasks"]
-            subgraph BusinessServices["Servicios de Negocio"]
-                OS_T["order-service · 2 tasks"]
-                PS_T["payment-service · 2 tasks"]
-                IS_T["inventory-service · 2 tasks"]
-                CS_T["catalog-service · 2 tasks"]
-                NS_T["notification-service · 1 task"]
-                RGW_T["realtime-gateway WebSocket · 2 tasks"]
-            end
-        end
-        subgraph DataLayer["Capa de Datos"]
-            RDS[("RDS PostgreSQL 16\nMulti-AZ · Automated Backups")]
-            REDIS_EC[("ElastiCache Redis 7\nCluster Mode · 3 shards")]
-            MQ_AMQ[("Amazon MQ\nRabbitMQ 3.13 · Multi-AZ")]
-        end
-        subgraph Ops["Observabilidad &amp; Seguridad"]
-            CW["CloudWatch\nLogs · Metrics · Alarms"]
-            SM["Secrets Manager\nDB creds · API Keys · HMAC"]
-            ECR["ECR\nContainer Registry"]
-        end
-        subgraph Ext["Sistemas Externos"]
-            QRBankExt["API Bancaria QR HTTPS"]
-            SIISExt["SIIS UMSS HTTPS"]
-            FCMExt["Google FCM HTTPS"]
-        end
-    end
-    Client -->|HTTPS| CF
-    Client -->|HTTPS /api| WAF
-    WAF --> ALB
-    ALB --> GW_SVC
-    BankApp -->|Pago QR| QRBankExt
-    QRBankExt -->|"POST /webhooks/payment HMAC-SHA256"| ALB
-    GW_SVC --> OS_T
-    GW_SVC --> PS_T
-    GW_SVC --> IS_T
-    GW_SVC --> CS_T
-    GW_SVC --> RGW_T
-    OS_T --> RDS
-    PS_T --> RDS
-    IS_T --> RDS
-    CS_T --> RDS
-    IS_T --> REDIS_EC
-    OS_T --> MQ_AMQ
-    PS_T --> MQ_AMQ
-    IS_T --> MQ_AMQ
-    NS_T --> MQ_AMQ
-    RGW_T --> MQ_AMQ
-    PS_T -->|QR generate + webhook| QRBankExt
-    GW_SVC -->|Validar RU| SIISExt
-    NS_T -->|Push notifications| FCMExt
-    ECS -->|Logs / Metrics| CW
-    ECS -->|Leer secrets| SM
-    ECR -->|Pull images| ECS
-      </pre>
-    </div>
-  </section>
- 
    <!-- ══ SLIDE 15 ══ PORTADA ════════════════════════════════════════ -->
  <section class="slide" id="s15"
   style="
@@ -1348,7 +1167,7 @@ flowchart TB
           color:white;
           box-shadow:0 0 18px rgba(0,255,255,.08);
         ">
-        FastAPI
+        Go/Gin
       </span>
 
       <span
@@ -1667,7 +1486,7 @@ Estudiante vendedor"]
 
     UMSSMarket["🛒 UMSS Market
 Marketplace universitario multi-tenant
-Python/FastAPI · React 18 · PostgreSQL"]
+Go/Gin · Angular · PostgreSQL"]
 
     QRBank["🏦 API Bancaria QR
 Generación y validación de pagos QR"]
@@ -1702,14 +1521,14 @@ flowchart TB
 
     Admin["👤 Administrador"]
 
-    Frontend["React 18 PWA
-Mobile-first · Zustand"]
+    Frontend["Angular PWA
+Mobile-first · NgRx"]
 
     APIGateway["API Gateway
-FastAPI · JWT · Rate Limit"]
+Go/Gin · JWT · Rate Limit"]
 
     OrderSvc["Order Service
-FastAPI · Saga Coord."]
+Go/Gin · Saga Coord."]
 
     PaySvc["Payment Service
 QR Dinámico · Webhook"]
@@ -1808,11 +1627,11 @@ flowchart LR
     subgraph DrivingAdapters["Adaptadores de Entrada (Driving)"]
         direction TB
 
-        REST["FastAPI Router
+        REST["Gin Router
 REST / HTTP"]
 
         AMQP_IN["RabbitMQ Consumer
-aio-pika AMQP"]
+amqp091-go AMQP"]
 
         WS_IN["WebSocket Handler
 Starlette"]
@@ -1839,7 +1658,7 @@ IEventPublisher
 IStockService"]
         end
 
-        subgraph DomainLayer["Capa de Dominio — puro Python sin framework"]
+        subgraph DomainLayer["Capa de Dominio — Go puro sin framework"]
             direction TB
 
             Agg["Aggregates
@@ -1862,13 +1681,13 @@ OrderCreated · OrderConfirmed · OrderCancelled"]
         direction TB
 
         PG["PostgreSQL
-SQLAlchemy Repo"]
+GORM Repo"]
 
         REDIS_A["Redis Cache
 TTL locks"]
 
         AMQP_OUT["RabbitMQ Publisher
-aio-pika AMQP"]
+amqp091-go AMQP"]
 
         BANK["API Bancaria QR
 aiohttp Client"]
@@ -1904,10 +1723,10 @@ flowchart TB
         direction LR
 
         OrderAPI["OrderAPI
-FastAPI Router"]
+Gin Router"]
 
         EvtConsumer["EventConsumer
-aio-pika Consumer"]
+amqp091-go Consumer"]
     end
 
     subgraph Core["Order Service — Nucleo Hexagonal"]
@@ -1926,7 +1745,7 @@ coreografía de eventos"]
 
         end
 
-        subgraph DomainL["Capa de Dominio — puro Python"]
+        subgraph DomainL["Capa de Dominio — Go puro"]
 
             OAgg["Order Aggregate Root"]
 
@@ -1945,10 +1764,10 @@ OrderCreated · OrderConfirmed · OrderCancelled"]
         direction LR
 
         Repo["OrderRepository
-SQLAlchemy PostgreSQL"]
+GORM PostgreSQL"]
 
         EvtPub["EventPublisher
-aio-pika RabbitMQ"]
+amqp091-go RabbitMQ"]
 
         Cache["OrderCache
 Redis TTL"]
@@ -2160,7 +1979,7 @@ sequenceDiagram
 
     actor Customer as Cliente UMSS
 
-    participant PWA as React PWA
+    participant PWA as Angular PWA
     participant GW as API Gateway
     participant OrderSvc as Order Service
     participant PaySvc as Payment Service
@@ -2282,7 +2101,7 @@ SSL Termination · Path Routing"]
         subgraph ECS["ECS Fargate — Cluster de Microservicios"]
 
             GW_SVC["api-gateway
-FastAPI · JWT · Rate Limit · 2 tasks"]
+Go/Gin · JWT · Rate Limit · 2 tasks"]
 
             subgraph BusinessServices["Servicios de Negocio"]
 
@@ -3183,7 +3002,7 @@ Container Registry"]
 </nav>
 
 <script>
-  const TOTAL  = 25;
+  const TOTAL  = 21;
   let current  = 0;
   let demoLoaded = false;
 
@@ -3225,7 +3044,7 @@ Container Registry"]
       demoLoaded = true;
     }
 
-    // Animate KPI bars (slide index 8 = slide 9)
+    // Animate KPI bars (slide index 5 = slide 6)
     if (current === 8) {
       setTimeout(() => {
         document.querySelectorAll('.kpi-bar-fill').forEach(b => {
