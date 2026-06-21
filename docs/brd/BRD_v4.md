@@ -1,0 +1,499 @@
+# BRD v4 — UMSS Market
+
+---
+
+# 0. Metadatos
+
+| Campo              | Valor                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| Producto           | UMSS Market                                                                            |
+| Grupo              | —                                                                                      |
+| Versión            | v4.0                                                                                   |
+| Fecha              | 21/06/2026                                                                             |
+| Sponsor de negocio | DTIC UMSS                                                                              |
+| Stakeholders       | Emprendedores universitarios, DTIC UMSS, Bienestar Estudiantil, Centros de Estudiantes |
+| Autores            | Rodriguez Gonzales Abad Melani, Vargas Sandoval Christian Bernardo                     |
+| Revisores          | Docente                                                                                |
+| Estado             | Iterative Evolution                                                                                  |
+
+---
+
+# 1. Resumen Ejecutivo
+
+## Problema
+
+Actualmente el comercio dentro de la Universidad Mayor de San Simón se realiza de manera informal y descentralizada mediante grupos de WhatsApp, mensajes directos y redes sociales. Esto provoca:
+
+* Falta de control de stock.
+* Validaciones manuales de pagos QR.
+* Pérdida de pedidos.
+* Baja trazabilidad de ventas.
+* Demoras en confirmación de compras.
+* Escasa visibilidad de emprendimientos universitarios.
+
+Además, los vendedores deben revisar manualmente comprobantes y extractos bancarios, generando errores, fraudes y pérdida de tiempo operativo.
+
+---
+
+## Propuesta
+
+UMSS Market propone una plataforma Marketplace Multi-tenant orientada exclusivamente a la comunidad universitaria UMSS.
+
+El sistema centralizará:
+
+* Gestión de tiendas.
+* Publicación de productos y servicios.
+* Gestión de pedidos.
+* Validación automática mediante QR dinámico.
+* Sincronización automatizada de stock.
+* Descubrimiento de negocios universitarios.
+
+---
+
+## Valor Esperado
+
+* Reducción total de validaciones manuales.
+* Reducción de tiempos de compra.
+* Mejora de experiencia de estudiantes.
+* Mayor formalización del ecosistema emprendedor universitario.
+* Mayor seguridad en pagos digitales.
+* Comercialización de productos y servicios universitarios.
+* Escalabilidad para nuevos modelos de negocio.
+---
+
+## KPIs Principales
+
+| KPI                             | Meta              |
+| ------------------------------- | ----------------- |
+| Tasa de éxito de pagos          | >98%              |
+| Tiempo promedio de confirmación | <2 min            |
+| Pedidos completados             | >90%              |
+| Tiendas activas primer semestre | >50               |
+| Tiempo promedio de compra       | Reducción del 60% |
+
+---
+
+# 2. Contexto del Negocio
+
+## Organización
+
+Universidad Mayor de San Simón (UMSS).
+
+---
+
+## Unidad Impactada
+
+* Emprendedores estudiantiles.
+* Bienestar estudiantil.
+* DTIC UMSS.
+* Centros facultativos.
+* Comunidad universitaria.
+
+---
+
+## Procesos de Negocio Impactados
+
+* Gestión de ventas.
+* Validación de pagos.
+* Administración de inventario.
+* Publicidad de emprendimientos.
+* Gestión logística de entrega.
+* Gestión de servicios universitarios.
+
+---
+
+## Estrategia Institucional
+
+El proyecto se alinea con:
+
+* Digitalización universitaria.
+* Impulso al emprendimiento joven.
+* Formalización de servicios digitales.
+* Integración tecnológica institucional.
+
+---
+
+### 2.1 Visión estratégica institucional
+
+El proyecto UMSS Market se alinea a las iniciativas de transformación digital impulsadas por la Universidad Mayor de San Simón, promoviendo mecanismos de formalización comercial, digitalización operativa y fortalecimiento del ecosistema emprendedor universitario.
+
+La solución busca consolidar una plataforma tecnológica institucional capaz de integrar capacidades comerciales, pagos digitales, trazabilidad operativa y gestión distribuida de servicios dentro del entorno universitario.
+
+La evolución del sistema contempla un enfoque incremental orientado a sostenibilidad tecnológica, interoperabilidad futura y escalabilidad funcional alineada al crecimiento operativo del ecosistema universitario.
+
+# 3. Problema y Oportunidad
+
+## 3.1 Problema Actual
+
+Actualmente los estudiantes emprendedores administran ventas manualmente.
+
+Esto genera:
+
+### Falta de trazabilidad
+
+No existe historial centralizado de ventas.
+
+### Inseguridad en pagos
+
+Los comprobantes QR pueden falsificarse.
+
+### Quiebre de stock
+
+Los productos continúan apareciendo disponibles aunque ya no existan.
+
+### Baja visibilidad
+
+Los estudiantes desconocen emprendimientos fuera de su facultad.
+
+### Procesos lentos
+
+La confirmación manual retrasa pedidos y entregas.
+
+---
+
+## Evidencia
+
+Según entrevistas realizadas:
+
+* El tiempo promedio de compra supera los 3 minutos.
+* Los vendedores pierden pedidos entre conversaciones.
+* Los estudiantes abandonan compras por falta de confirmación inmediata.
+
+---
+
+## 3.2 Oportunidad
+
+### Valor Estratégico
+
+Creación de un ecosistema digital universitario centralizado.
+
+### Valor Operativo
+
+Automatización de procesos repetitivos y reducción de errores.
+
+### Valor Económico
+
+Posibilidad futura de:
+
+* Comisiones.
+* Publicidad interna.
+* Servicios premium.
+
+### Ventana Tecnológica
+
+Crecimiento acelerado del uso de pagos QR en Bolivia.
+
+---
+
+### 3.3 Impacto arquitectónico esperado
+
+El crecimiento funcional y operativo esperado para UMSS Market requiere una arquitectura tecnológica desacoplada, resiliente y evolutiva, capaz de soportar procesos concurrentes asociados a pagos, pedidos, notificaciones, inventario y gestión comercial.
+
+La solución deberá permitir:
+
+- escalabilidad incremental
+- integración distribuida
+- separación por capacidades de negocio
+- observabilidad operacional
+- tolerancia a fallos
+- evolución independiente de servicios
+
+La arquitectura objetivo considera principios modernos de Event-Driven Architecture (EDA), Domain-Driven Design (DDD) y diseño modular desacoplado orientado a evolución distribuida.
+
+# 4. Usuarios Objetivo
+
+## 4.1 Persona Principal — Emprendedor Estudiante
+
+| Atributo  | Valor                                           |
+| --------- | ----------------------------------------------- |
+| Rol       | Vendedor o prestador de servicios universitarios                          |
+| Contexto  | Vende entre clases                              |
+| Necesidad | Gestionar pedidos rápidamente                   |
+| Dolores   | Perder mensajes, pagos falsos, stock incorrecto |
+| Objetivo  | Organizar y escalar su negocio                  |
+
+---
+
+## 4.2 Persona Secundaria — Estudiante Comprador
+
+| Atributo  | Valor                                      |
+| --------- | ------------------------------------------ |
+| Rol       | Comprador universitario                    |
+| Contexto  | Compra dentro del campus                   |
+| Necesidad | Comprar rápido y seguro                    |
+| Dolores   | Esperar validaciones, falta de información |
+| Objetivo  | Comprar fácilmente y retirar rápido        |
+
+---
+
+## 4.3 Persona Administrativa
+
+| Atributo  | Valor                          |
+| --------- | ------------------------------ |
+| Rol       | Administrador UMSS             |
+| Necesidad | Supervisar actividad comercial |
+| Objetivo  | Garantizar seguridad y control |
+
+---
+
+# 5. Propuesta de Valor
+
+| Eje         | Contenido                                       |
+| ----------- | ----------------------------------------------- |
+| Para quién  | Comunidad universitaria UMSS                    |
+| Problema    | Comercio informal y fragmentado                 |
+| Solución    | Marketplace universitario para comercialización de productos y servicios mediante pagos QR dinámicos. |
+| Beneficio   | Seguridad, rapidez y control                    |
+| Diferencial | Integración institucional y stock sincronizado  |
+
+---
+
+# 6. Scope Funcional Resumido
+
+## En alcance
+
+* Registro de emprendedores.
+* Gestión de tiendas.
+* Gestión de publicaciones.
+* Gestión de productos.
+* Gestión de servicios.
+* Gestión de stock para productos físicos.
+* Pedidos digitales.
+* Pagos QR dinámicos.
+* Dashboard administrativo.
+* Historial de transacciones.
+* Notificaciones automáticas.
+* Sistema multi-sucursal.
+
+---
+
+## Fuera de alcance
+
+* Delivery externo.
+* Integración con tarjetas internacionales.
+* Marketplace público fuera de UMSS.
+* IA avanzada en primera versión.
+
+---
+
+# 7. Panorama Competitivo
+
+| Competidor           | Tipo                 | Fortaleza      | Debilidad        |
+| -------------------- | -------------------- | -------------- | ---------------- |
+| WhatsApp             | Alternativa informal | Popular        | Caótico          |
+| Facebook Marketplace | Marketplace general  | Alcance masivo | No especializado |
+| PedidosYa            | Delivery formal      | Logística      | Altas comisiones |
+| Ventas QR manuales   | Alternativa directa  | Simplicidad    | Validación lenta |
+
+---
+
+# 8. Business Model Canvas
+
+| Bloque             | Elementos                         |
+| ------------------ | --------------------------------- |
+| Segmentos          | Emprendedores, prestadores de servicios y estudiantes.       |
+| Propuesta de valor | Marketplace seguro y automatizado |
+| Canales            | Web app y redes sociales          |
+| Relación           | Self-service y soporte digital    |
+| Ingresos           | Comisiones y publicidad           |
+| Recursos           | Plataforma y servidores           |
+| Actividades        | Desarrollo y soporte              |
+| Socios             | Bancos y DTIC                     |
+| Costos             | Infraestructura y mantenimiento   |
+
+---
+
+# 9. Objetivos SMART
+
+| ID    | Objetivo                    | Métrica            |
+| ----- | --------------------------- | ------------------ |
+| BO-01 | Digitalizar emprendimientos | 50 tiendas activas |
+| BO-02 | Reducir errores de stock    | <3% errores        |
+| BO-03 | Reducir validación manual   | >90% automática    |
+| BO-04 | Mejorar experiencia usuario | NPS >4/5           |
+
+---
+
+# 10. Stakeholders
+
+| Stakeholder   | Interés         | RACI |
+| ------------- | --------------- | ---- |
+| Rectorado     | Estratégico     | A    |
+| DTIC          | Infraestructura | C    |
+| Equipo Dev    | Desarrollo      | R    |
+| Emprendedores | Operativo       | C    |
+| Estudiantes   | Usuario final   | I    |
+
+---
+
+## 11. Capacidades de Negocio
+| ID | Capacidad | Descripción |
+|---|---|---|
+| BC-01 | Gestión de tiendas | Administración de emprendimientos y unidades comerciales |
+| BC-02 | Gestión de catálogo | Registro y mantenimiento de publicaciones (productos y servicios)|
+| BC-03 | Procesamiento de pedidos | Gestión del ciclo de vida de órdenes |
+| BC-04 | Validación de pagos | Confirmación y trazabilidad de pagos digitales |
+| BC-05 | Gestión de inventario | Control y sincronización de stock |
+| BC-06 | Notificaciones | Comunicación automática de estados y eventos |
+| BC-07 | Gestión administrativa | Monitoreo y auditoría operacional |
+| BC-08 | Gestión de usuarios | Administración de consumidores y operadores |
+
+# 12. Requerimientos de Negocio
+
+| ID | Requerimiento | Prioridad | Descripción |
+|---|---|---|---|
+| BR-001 | Registro validado de emprendedores | Must | Permitir registro seguro de vendedores universitarios. |
+| BR-002 | Generación QR dinámico | Must | Generar pagos QR asociados a pedidos específicos. |
+| BR-003 | Sincronización automatizada de stock para productos físicos.| Must | Mantener sincronización automática de inventario. |
+|BR-003A | Gestión de servicios universitarios | Should | Permitir la publicación y comercialización de servicios universitarios mediante el marketplace.|
+| BR-004 | Gestión de pedidos | Must | Administrar ciclo completo de órdenes. |
+| BR-005 | Dashboard vendedor | Should | Visualizar métricas y operaciones comerciales. |
+| BR-006 | Notificaciones automáticas | Should | Informar eventos relevantes a usuarios. |
+| BR-007 | Historial transacciones | Must | Mantener trazabilidad histórica de operaciones. |
+| BR-008 | Sistema de calificaciones | Could | Permitir valoración de tiendas y productos. |
+| BRD-OPS-001 | Trazabilidad operacional de pedidos | Should | Registrar historial completo de eventos y cambios de estado para auditoría operacional. |
+---
+
+# 13. Reglas de Negocio
+
+| ID    | Regla                                                 |
+| ----- | ------------------------------------------------------|
+| RB-01 | Todo pedido requiere pago previo                      |
+| RB-02 | El QR debe contener monto exacto                      |
+| RB-03 | Un QR solo puede asociarse a un pedido                |
+| RB-04 | El stock disminuye automáticamente tras confirmación  |
+| RB-05 | Solo usuarios UMSS pueden registrarse                 |
+| RB-06 | Toda publicación debe pertenecer a una tienda activa. |
+| RB-07 | Una publicación puede ser de tipo PRODUCTO o SERVICIO.|
+| RB-08 | Solo los productos físicos manejan stock.             |
+---
+
+# 14. Restricciones Técnicas
+
+* Arquitectura multi-tenant.
+* Compatible con dispositivos móviles.
+* API REST.
+* Base de datos relacional.
+* Integración con QR bancario.
+* Soporte responsive.
+
+---
+
+# 15. Dependencias
+
+* API bancaria QR.
+* Sistema de identidad universitaria.
+* Infraestructura cloud.
+* Servicios de notificaciones.
+
+---
+
+# 16. Riesgos
+
+| Riesgo              | Impacto | Mitigación                   |
+| ------------------- | ------- | ---------------------------- |
+| Baja adopción       | Alta    | Campañas internas            |
+| Fallos API banco    | Crítico | Retry y validación fallback  |
+| Sobrecarga sistema  | Media   | Escalabilidad cloud          |
+| Stock inconsistente | Alta    |  Procesos de validación y sincronización incremental |
+| Fraude QR           | Crítico | Validación segura            |
+| Complejidad de integración distribuida | Alta | Aplicar arquitectura incremental, pruebas evolutivas y desacoplamiento por dominios funcionales. |
+---
+
+# 17. Beneficios Esperados
+
+## Operativos
+
+* Reducción de trabajo manual.
+* Menos errores.
+* Mejor control.
+
+---
+
+## Estratégicos
+
+* Ecosistema digital universitario.
+* Formalización comercial.
+* Datos centralizados.
+
+---
+
+## Económicos
+
+* Potencial monetización.
+* Reducción de pérdidas.
+* Mayor eficiencia operativa.
+
+---
+
+# 18. Criterios de Éxito
+
+El proyecto será exitoso si:
+
+* Más del 90% de pagos se validan automáticamente.
+* Existen al menos 50 tiendas activas.
+* El sistema reduce significativamente errores de stock.
+* Los usuarios califican el sistema positivamente.
+* La plataforma logra estabilidad operativa.
+
+---
+
+# 19. Trazabilidad
+
+| BRD    | PRD          | FSD           |
+| ------ | ------------ | ------------- |
+| BR-001 | PRD-AUTH-01  | FSD-AUTH      |
+| BR-002 | PRD-PAY-01   | FSD-PAY       |
+| BR-003 | PRD-STOCK-01 | FSD-INVENTORY |
+| BR-004 | PRD-ORDER-01 | FSD-ORDERS    |
+
+---
+
+## 20. Estrategia AI-assisted
+La evolución documental y arquitectónica del proyecto incorpora un enfoque AI-assisted basado en generación incremental de especificaciones, trazabilidad documental y automatización parcial de procesos de diseño arquitectónico.
+
+El repositorio integra prompts estructurados, skills reutilizables y workflows documentales alineados a metodologías AI-SDLC para facilitar procesos de:
+
+- refinamiento funcional
+- diseño arquitectónico
+- especificación técnica
+- validación documental
+- trazabilidad evolutiva
+
+Este enfoque permite mantener consistencia incremental entre necesidades de negocio, arquitectura objetivo y artefactos técnicos derivados.
+# 21. Alcance arquitectónico actual
+
+La arquitectura distribuida descrita en el presente documento representa la arquitectura objetivo evolutiva propuesta para UMSS Market.
+
+El alcance actual del proyecto se enfoca principalmente en modelado arquitectónico, especificación funcional, trazabilidad documental y diseño conceptual orientado a evolución incremental del ecosistema.
+
+# 22. Arquitectura General de Alto Nivel
+
+```text
+Frontend Web (Angular)
+        ↓
+API & Application Layer (Go)
+        ↓
+Dominios funcionales desacoplados
+• Gestión de pedidos
+• Validación de pagos
+• Gestión de inventario
+• Gestión de catálogo
+• Notificaciones
+• Gestión administrativa
+        ↓
+Persistencia e integraciones externas
+(PostgreSQL | API Banco QR | Servicios externos)
+```
+
+---
+
+# # 23. Registro de Cambios
+
+| Versión | Fecha      | Autor                                                               | Cambio                                                                                                                                                                                                                                                                               |
+| ------- | ---------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| v0.1    | 27/04/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Creación inicial del BRD y definición preliminar del problema de negocio.                                                                                                                                                                                                            |
+| v1.0    | 30/04/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Incorporación de objetivos de negocio, stakeholders y alcance funcional inicial.                                                                                                                                                                                                     |
+| v2.0    | 11/05/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Refinamiento estructural, capacidades de negocio y alineación arquitectónica inicial.                                                                                                                                                                                                |
+| v3.0    | 23/05/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Consolidación arquitectónica, trazabilidad funcional, enfoque AI-assisted y fortalecimiento del modelo operativo distribuido.                                                                                                                                                        |
+| v4.0    | 21/06/2026 | Rodriguez Gonzales Abad Melani / Vargas Sandoval Christian Bernardo | Evolución del modelo de negocio hacia un Marketplace universitario de productos y servicios. Actualización de capacidades de catálogo, alcance funcional, requerimientos de negocio, reglas de negocio y propuesta de valor para soportar publicaciones de tipo PRODUCTO y SERVICIO. |

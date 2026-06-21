@@ -1,8 +1,26 @@
+# PR-FSD-001 — Contrato Funcional IA para Validación Operacional de Confirmación de Pagos QR
+
+## 0. Metadatos
+
+| Campo        | Valor                                                                         |
+| ------------ | ----------------------------------------------------------------------------- |
+| Documento    | PR-FSD-001                                                                    |
+| Nombre       | Contrato Funcional IA para Validación Operacional de Confirmación de Pagos QR |
+| Versión      | v2.0                                                                          |
+| Fecha        | 21/06/2026                                                                    |
+| Estado       | Aprobado                                                                      |
+| Proyecto     | UMSS Market                                                                   |
+| Relación BRD | BRD v4                                                                        |
+| Relación PRD | PRD v3                                                                        |
+| Relación FSD | FSD v3                                                                        |
+
+---
+
 ## 1. Objetivo
 
 Formalizar un contrato funcional IA para validar respuestas operacionales asociadas al flujo de confirmación de pagos QR dentro del ecosistema UMSS Market.
 
-Este contrato IA forma parte del flujo AI-assisted utilizado para mejorar consistencia operacional, trazabilidad funcional y validación estructurada de eventos asociados a pagos digitales.
+Este contrato forma parte del flujo AI-assisted utilizado para mejorar la consistencia operacional, trazabilidad funcional y validación estructurada de eventos asociados a pagos digitales, pedidos y publicaciones.
 
 ---
 
@@ -10,23 +28,24 @@ Este contrato IA forma parte del flujo AI-assisted utilizado para mejorar consis
 
 Relacionado con:
 
-- UC-001 Compra mediante QR
-- UC-002 Confirmación operacional de pago
-- Validación de webhooks bancarios
-- Consistencia operacional entre pago, pedido y stock
+* UC-001 Compra mediante QR.
+* Confirmación operacional de pago.
+* Validación de webhooks bancarios.
+* Consistencia operacional entre pago, pedido y publicación.
+* Prevención de reprocesamiento de eventos.
 
-Documentos relacionados:
+### Documentos relacionados
 
-- BRD_v3
-- MRD_v2
-- PRD_v2
-- FSD_v2
+* BRD_v4
+* MRD_vFinal
+* PRD_v3
+* FSD_v3
 
 ---
 
 ## 3. Entrada esperada
 
-El contrato IA debe recibir información estructurada asociada al evento de pago:
+El contrato IA debe recibir información estructurada asociada al evento de pago.
 
 ```json
 {
@@ -43,7 +62,7 @@ El contrato IA debe recibir información estructurada asociada al evento de pago
 
 ## 4. Salida esperada
 
-El contrato IA debe responder utilizando JSON estructurado:
+El contrato IA debe responder utilizando JSON estructurado.
 
 ```json
 {
@@ -58,12 +77,14 @@ El contrato IA debe responder utilizando JSON estructurado:
 
 ## 5. Reglas operacionales
 
-- Validar unicidad de `webhook_ref`
-- Validar coincidencia de monto y pedido
-- Rechazar respuestas incompletas
-- Mantener trazabilidad operacional
-- Evitar reprocesamiento de eventos duplicados
-- Generar respuestas estructuradas y determinísticas
+* Validar unicidad de `webhook_ref`.
+* Validar coincidencia entre monto pagado y pedido registrado.
+* Rechazar respuestas incompletas.
+* Mantener trazabilidad operacional.
+* Evitar reprocesamiento de eventos duplicados.
+* Mantener consistencia entre pago, pedido y publicación.
+* Generar respuestas estructuradas y determinísticas.
+* Validar que el estado del pago sea compatible con el estado actual del pedido.
 
 ---
 
@@ -71,44 +92,57 @@ El contrato IA debe responder utilizando JSON estructurado:
 
 El contrato IA:
 
-- no modifica datos persistentes
-- no ejecuta operaciones bancarias reales
-- no reemplaza validaciones críticas del backend
-- requiere validación operacional humana en casos ambiguos
+* No modifica datos persistentes.
+* No ejecuta operaciones bancarias reales.
+* No reemplaza validaciones críticas implementadas en backend.
+* No confirma pagos directamente.
+* No modifica estados de pedidos.
+* Requiere validación operacional humana en casos ambiguos.
 
 ---
 
 ## 7. Riesgos asociados
 
-| Riesgo | Mitigación |
-|---|---|
-| Eventos duplicados | Validación idempotente |
-| Respuestas inconsistentes | Validación estructural |
-| Ambigüedad operacional | Escalamiento manual |
-| Datos incompletos | Rechazo automático |
+| Riesgo                    | Mitigación                           |
+| ------------------------- | ------------------------------------ |
+| Eventos duplicados        | Validación idempotente               |
+| Respuestas inconsistentes | Validación estructural               |
+| Ambigüedad operacional    | Escalamiento manual                  |
+| Datos incompletos         | Rechazo automático                   |
+| Monto inconsistente       | Comparación contra pedido registrado |
+| Reprocesamiento de pagos  | Control de idempotencia              |
 
 ---
 
 ## 8. Trazabilidad documental
 
-| Documento | Relación |
-|---|---|
-| BRD_v3 | Digitalización operativa |
-| MRD_v2 | Validación y confianza |
-| PRD_v2 | Gestión de pagos |
-| FSD_v2 | UC-001 / UC-002 |
+| Documento  | Relación                  |
+| ---------- | ------------------------- |
+| BRD_v4     | Marketplace universitario |
+| MRD_vFinal | Validación y confianza    |
+| PRD_v3     | Gestión de pagos          |
+| FSD_v3     | UC-001                    |
 
 ---
 
 ## 9. Integración AI-SDLC
 
-Este contrato funcional IA forma parte del flujo AI-assisted utilizado para automatización documental, validación operacional y soporte de consistencia funcional dentro de UMSS Market.
+Este contrato funcional IA forma parte del flujo AI-assisted utilizado para:
+
+* Validación operacional.
+* Automatización documental.
+* Soporte de consistencia funcional.
+* Verificación de eventos de pago.
+* Prevención de errores de procesamiento.
 
 ---
 
 ## 10. Registro de cambios
 
-| Versión | Fecha | Cambio |
-|---|---|---|
-| v1.0 | 24/05/2026 | Creación inicial del contrato funcional IA |
+| Versión | Fecha      | Cambio                                                                                                                                                                                                 |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| v1.0    | 24/05/2026 | Creación inicial del contrato funcional IA para validación de pagos QR.                                                                                                                                |
+| v2.0    | 21/06/2026 | Actualización de trazabilidad documental, alineación con BRD v4, PRD v3 y FSD v3. Incorporación de validaciones operacionales orientadas a publicaciones y consistencia entre pago, pedido y catálogo. |
 
+```
+```

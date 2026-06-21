@@ -1,8 +1,26 @@
+# PR-FSD-002 — Contrato Funcional IA para Publicación y Gestión de Productos y Servicios
+
+## 0. Metadatos
+
+| Campo        | Valor                                                                     |
+| ------------ | ------------------------------------------------------------------------- |
+| Documento    | PR-FSD-002                                                                |
+| Nombre       | Contrato Funcional IA para Publicación y Gestión de Productos y Servicios |
+| Versión      | v2.0                                                                      |
+| Fecha        | 21/06/2026                                                                |
+| Estado       | Aprobado                                                                  |
+| Proyecto     | UMSS Market                                                               |
+| Relación BRD | BRD v4                                                                    |
+| Relación PRD | PRD v3                                                                    |
+| Relación FSD | FSD-UC-002                                                                |
+
+---
+
 ## 1. Objetivo
 
-Formalizar un contrato funcional IA para validar consistencia operacional y disponibilidad de stock dentro del ecosistema UMSS Market.
+Formalizar un contrato funcional IA para validar publicaciones realizadas por emprendedores universitarios dentro del marketplace UMSS Market.
 
-Este contrato IA forma parte del flujo AI-assisted utilizado para mejorar control operacional de concurrencia, trazabilidad funcional y validación estructurada de eventos asociados a inventario.
+El contrato tiene como objetivo verificar la consistencia funcional de publicaciones de tipo PRODUCTO y SERVICIO antes de que sean visibles para compradores.
 
 ---
 
@@ -10,31 +28,35 @@ Este contrato IA forma parte del flujo AI-assisted utilizado para mejorar contro
 
 Relacionado con:
 
-- UC-001 Compra mediante QR
-- UC-003 Validación de disponibilidad de productos
-- Gestión operacional de inventario
-- Consistencia operacional entre stock, pedido y pago
+* UC-002 Publicación y Gestión de Productos y Servicios.
+* Gestión de catálogo.
+* Gestión de emprendimientos universitarios.
+* Gestión de disponibilidad y comercialización.
 
-Documentos relacionados:
+### Documentos relacionados
 
-- BRD_v3
-- MRD_v2
-- PRD_v2
-- FSD_v2
+* BRD_v4
+* PRD_v3
+* FSD_v3
 
 ---
 
 ## 3. Entrada esperada
 
-El contrato IA debe recibir información estructurada asociada a disponibilidad de stock:
+El contrato IA debe recibir información estructurada asociada a una nueva publicación.
 
 ```json
 {
-  "product_id": "UUID",
-  "available_stock": 12,
-  "requested_quantity": 2,
-  "reservation_status": "PENDING",
-  "timestamp": "ISO-8601"
+  "tipo": "PRODUCTO",
+  "nombre": "Brownie Artesanal",
+  "descripcion": "Brownie elaborado de forma artesanal",
+  "precio": 12.50,
+  "stock": 20,
+  "modalidad_cobro": null,
+  "puntos_entrega_ids": [
+    "PE-001",
+    "PE-002"
+  ]
 }
 ```
 
@@ -42,14 +64,12 @@ El contrato IA debe recibir información estructurada asociada a disponibilidad 
 
 ## 4. Salida esperada
 
-El contrato IA debe responder utilizando JSON estructurado:
-
 ```json
 {
-  "validacion_operacional": true,
-  "stock_disponible": true,
-  "inconsistencias_detectadas": [],
-  "accion_recomendada": "RESERVAR_STOCK"
+  "validacion_publicacion": true,
+  "errores": [],
+  "advertencias": [],
+  "estado": "PUBLICABLE"
 }
 ```
 
@@ -57,12 +77,29 @@ El contrato IA debe responder utilizando JSON estructurado:
 
 ## 5. Reglas operacionales
 
-- Validar disponibilidad antes de confirmar pedido
-- Evitar reservas duplicadas
-- Mantener consistencia operacional del inventario
-- Validar cantidades negativas o inconsistentes
-- Mantener trazabilidad funcional
-- Generar respuestas estructuradas y determinísticas
+### Para PRODUCTO
+
+* nombre obligatorio
+* descripción obligatoria
+* precio mayor a 0
+* stock obligatorio
+* stock mínimo igual a 1
+* al menos un punto de entrega
+
+### Para SERVICIO
+
+* nombre obligatorio
+* descripción obligatoria
+* precio mayor a 0
+* modalidad de cobro obligatoria
+* al menos un punto de encuentro o coordinación
+
+### Reglas generales
+
+* La publicación debe pertenecer a una tienda activa.
+* No se permiten nombres vacíos.
+* No se permiten precios negativos.
+* La publicación debe ser consistente antes de ser publicada.
 
 ---
 
@@ -70,44 +107,55 @@ El contrato IA debe responder utilizando JSON estructurado:
 
 El contrato IA:
 
-- no modifica directamente inventario persistente
-- no ejecuta operaciones críticas de base de datos
-- no reemplaza validaciones operacionales del backend
-- requiere validación humana en conflictos ambiguos
+* No publica directamente la información.
+* No modifica registros persistentes.
+* No ejecuta operaciones sobre base de datos.
+* No reemplaza validaciones implementadas en backend.
+* Solo genera recomendaciones y validaciones funcionales.
 
 ---
 
 ## 7. Riesgos asociados
 
-| Riesgo | Mitigación |
-|---|---|
-| Conflictos concurrentes de stock | Control operacional de concurrencia |
-| Stock inconsistente | Validación estructural |
-| Reservas duplicadas | Validación idempotente |
-| Datos incompletos | Rechazo automático |
+| Riesgo                             | Mitigación             |
+| ---------------------------------- | ---------------------- |
+| Información incompleta             | Validación estructural |
+| Precio inválido                    | Regla funcional        |
+| Stock inconsistente                | Validación de negocio  |
+| Servicio sin modalidad de cobro    | Validación obligatoria |
+| Publicación sin punto de encuentro | Rechazo automático     |
 
 ---
 
 ## 8. Trazabilidad documental
 
-| Documento | Relación |
-|---|---|
-| BRD_v3 | Gestión operacional |
-| MRD_v2 | Confianza y disponibilidad |
-| PRD_v2 | Gestión de inventario |
-| FSD_v2 | UC-001 / UC-003 |
+| Documento | Relación                  |
+| --------- | ------------------------- |
+| BRD_v4    | Marketplace universitario |
+| PRD_v3    | Gestión de publicaciones  |
+| FSD_v3    | UC-002                    |
 
 ---
 
 ## 9. Integración AI-SDLC
 
-Este contrato funcional IA forma parte del flujo AI-assisted utilizado para validación operacional y soporte de consistencia funcional del inventario dentro de UMSS Market.
+Este contrato forma parte del flujo AI-assisted utilizado para validar publicaciones antes de su activación dentro del marketplace.
+
+Permite mejorar:
+
+* Calidad de datos.
+* Consistencia funcional.
+* Cumplimiento de reglas de negocio.
+* Trazabilidad documental.
 
 ---
 
 ## 10. Registro de cambios
 
-| Versión | Fecha | Cambio |
-|---|---|---|
-| v1.0 | 24/05/2026 | Creación inicial del contrato funcional IA |
+| Versión | Fecha      | Cambio                                                                                                                                                                                      |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| v1.0    | 24/05/2026 | Creación inicial para validación de productos.                                                                                                                                              |
+| v2.0    | 21/06/2026 | Evolución hacia modelo unificado PUBLICACION para soportar productos y servicios. Incorporación de modalidad de cobro, validaciones diferenciadas y alineación con BRD v4, PRD v3 y FSD v3. |
 
+```
+```
