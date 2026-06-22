@@ -488,6 +488,65 @@ Implementar la creación y consulta de publicaciones para productos y servicios.
 | Código    | CreatePublicationUseCase |
 | Release   | 3.0.0                    |
 
+---
+
+# PROMPT-008 — Catálogo Marketplace Spring Boot
+
+## Objetivo
+
+Implementar el Catálogo Marketplace con búsqueda y filtrado de publicaciones, detalle de publicación enriquecido y perfil público de tienda. Feature 3 — FSD-UC-004.
+
+## Input
+
+```json
+{
+  "texto": "brownie",
+  "tipo": "PRODUCTO",
+  "precioMin": 5.00,
+  "precioMax": 30.00,
+  "storeId": "uuid-tienda"
+}
+```
+
+## Output esperado
+
+```json
+[
+  {
+    "id": "uuid",
+    "nombre": "Brownie Artesanal",
+    "precio": 10.50,
+    "tipo": "PRODUCTO",
+    "stock": 15,
+    "nombreTienda": "El Rincón Dulce",
+    "activa": true
+  }
+]
+```
+
+## Reglas
+
+- Solo publicaciones activas (`activa = true`).
+- Filtros opcionales, sin filtros devuelve catálogo completo.
+- Búsqueda case-insensitive.
+- `precioMin > precioMax` → HTTP 400.
+- Publicación inactiva en detalle → HTTP 404.
+- Tienda inexistente → HTTP 404.
+- Cobertura mínima de tests: 90% (JaCoCo).
+
+## Trazabilidad
+
+| Documento | ID                                                   |
+| --------- | ---------------------------------------------------- |
+| DD        | DD-UC-003                                            |
+| Prompt    | PR-IMPL-003                                          |
+| FSD       | FSD-UC-004                                           |
+| Tasks     | T-011, T-011A                                        |
+| Código    | SearchCatalogUseCase, GetPublicationDetailUseCase, GetStorePublicProfileUseCase |
+| Release   | 3.0.0                                                |
+
+---
+
 # 4. Riesgos Generales
 
 | Riesgo                              | Impacto | Mitigación                                        |

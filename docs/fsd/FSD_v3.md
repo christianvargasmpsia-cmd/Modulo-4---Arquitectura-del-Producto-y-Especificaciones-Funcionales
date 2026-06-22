@@ -100,6 +100,12 @@ El sistema sirve a tres actores principales: emprendedores universitarios que ne
 | `T-008` | Sistema de notificaciones push por cambio de estado | `FSD-UC-001`, `FSD-UC-002` | `T-007` | — | pendiente |
 | `T-009` | Dashboard del vendedor: métricas y listado de pedidos | `FSD-UC-002` | `T-007` | — | pendiente |
 | `T-010` | Panel de administración UMSS: auditoría y supervisión | `FSD-UC-003` | `T-002`, `T-007` | — | pendiente |
+| `T-003A` | Endpoint `POST /auth/refresh` — emisión de Refresh Token con rotación | `FSD-UC-003` | `T-003` | — | pendiente |
+| `T-004B` | Gestión de imágenes por publicación (subida, almacenamiento, máx. 3 imágenes, placeholder si falla) | `FSD-UC-002` | `T-004` | — | pendiente |
+| `T-011` | Catálogo Marketplace: `GET /publicaciones` con filtros por categoría, tipo, precio y búsqueda por texto | `FSD-UC-004` | `T-004` | — | pendiente |
+| `T-011A` | Ver detalle de publicación (`GET /publicaciones/{id}`) y perfil público de tienda (`GET /tiendas/{id}`) | `FSD-UC-004` | `T-011` | — | pendiente |
+| `T-012` | Gestión de Carrito: `POST /carrito/items`, `DELETE /carrito/items/{id}`, validación de stock en tiempo real | `FSD-UC-001` | `T-004` | — | pendiente |
+| `T-010A` | Flujo de aprobación/suspensión de tiendas por Admin: `PATCH /admin/tiendas/{id}/estado` con notificación al emprendedor | `FSD-UC-003` | `T-010` | — | pendiente |
 
 ---
 

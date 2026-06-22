@@ -205,6 +205,18 @@ Los agentes que generen o validen código relacionado con los flujos críticos d
 - Reducir el cost de bcrypt por debajo de 12
 - Generar código que permita `stock < 0`
 - Ignorar el campo `correlationId` en eventos del sistema
+- Generar código de producción sin tests asociados que cubran al menos el **90%** de las líneas del feature
+
+---
+
+## Reglas de calidad de código
+
+| Regla | Valor mínimo | Herramienta | Scope |
+|-------|-------------|-------------|-------|
+| Cobertura de líneas (line coverage) | **90%** | JaCoCo (Java), pytest-cov (Python) | Por feature implementado |
+| Cobertura de ramas (branch coverage) | **80%** | JaCoCo | Por feature implementado |
+
+Los agentes deben generar tests unitarios y de integración para **todo código nuevo** de forma que JaCoCo reporte ≥ 90% de cobertura de líneas sobre las clases del feature. Si el reporte de cobertura no alcanza el umbral, el agente debe agregar casos de prueba adicionales antes de considerar el feature completo.
 
 ---
 

@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import bo.umss.market.umss_market_api.application.dto.CatalogFilterRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationResponse;
+import bo.umss.market.umss_market_api.application.dto.PublicationSummaryResponse;
 import bo.umss.market.umss_market_api.application.usecases.CreatePublicationUseCase;
-import bo.umss.market.umss_market_api.application.usecases.GetAllPublicationsUseCase;
 import bo.umss.market.umss_market_api.application.usecases.GetPublicationByIdUseCase;
+import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
 import bo.umss.market.umss_market_api.domain.model.Publication;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,7 @@ public class PublicationController {
 
     private final CreatePublicationUseCase createPublicationUseCase;
 
-    private final GetAllPublicationsUseCase getAllPublicationsUseCase;
+    private final SearchCatalogUseCase searchCatalogUseCase;
 
     private final GetPublicationByIdUseCase getPublicationByIdUseCase;
 
@@ -35,10 +37,10 @@ public class PublicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Publication>> findAll() {
+    public ResponseEntity<List<PublicationSummaryResponse>> search(
+            @ModelAttribute CatalogFilterRequest filter) {
 
-        return ResponseEntity.ok(
-                getAllPublicationsUseCase.execute());
+        return ResponseEntity.ok(searchCatalogUseCase.execute(filter));
     }
 
     @GetMapping("/{id}")

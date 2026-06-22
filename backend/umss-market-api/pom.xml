@@ -91,6 +91,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -148,29 +153,58 @@
 				</executions>
 			</plugin>
 			<plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.12</version>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
 
-    <executions>
+					<!-- instrumenta las clases antes de los tests -->
+					<execution>
+						<id>prepare-agent</id>
+						<goals><goal>prepare-agent</goal></goals>
+					</execution>
 
-        <execution>
-            <goals>
-                <goal>prepare-agent</goal>
-            </goals>
-        </execution>
+					<!-- verifica cobertura al final de los tests -->
+					<execution>
+						<id>check</id>
+						<phase>verify</phase>
+						<goals><goal>check</goal></goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.90</minimum>
+										</limit>
+										<limit>
+											<counter>BRANCH</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.80</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+							<!-- excluir clases que no son dominio ni lógica -->
+							<excludes>
+								<exclude>bo/umss/market/umss_market_api/UmssMarketApiApplication.class</exclude>
+								<exclude>bo/umss/market/umss_market_api/infrastructure/persistence/**</exclude>
+								<exclude>bo/umss/market/umss_market_api/infrastructure/adapters/**</exclude>
+							</excludes>
+						</configuration>
+					</execution>
 
-        <execution>
-            <id>report</id>
-            <phase>test</phase>
+					<!-- genera el reporte HTML -->
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals><goal>report</goal></goals>
+					</execution>
 
-            <goals>
-                <goal>report</goal>
-            </goals>
-        </execution>
-
-    </executions>
-</plugin>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

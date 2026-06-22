@@ -1,11 +1,35 @@
 package bo.umss.market.umss_market_api.infrastructure.persistence.repositories;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import bo.umss.market.umss_market_api.domain.enums.PublicationType;
 import bo.umss.market.umss_market_api.infrastructure.persistence.entities.PublicationEntity;
 
 public interface JpaPublicationRepository
         extends JpaRepository<PublicationEntity, UUID> {
+
+    @Query("""
+            SELECT p FROM PublicationEntity p
+            WHERE p.activa = true
+              AND (:storeId IS NULL OR p.storeId = :storeId)
+              AND (:tipo IS NULL OR p.tipo = :tipo)
+              AND (:precioMin IS NULL OR p.precio >= :precioMin)
+              AND (:precioMax IS NULL OR p.precio <= :precioMax)
+              AND (:textoBusqueda IS NULL
+                   OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :textoBusqueda, '%'))
+                   OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :textoBusqueda, '%')))
+            ORDER BY p.createdAt DESC
+            """)
+    List<PublicationEntity> findByFilters(
+            @Param("textoBusqueda") String textoBusqueda,
+            @Param("tipo") PublicationType tipo,
+            @Param("precioMin") BigDecimal precioMin,
+            @Param("precioMax") BigDecimal precioMax,
+            @Param("storeId") UUID storeId);
 }

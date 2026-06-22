@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import bo.umss.market.umss_market_api.domain.model.CatalogFilter;
 import bo.umss.market.umss_market_api.domain.model.Publication;
 import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
 import bo.umss.market.umss_market_api.infrastructure.persistence.mappers.PublicationMapper;
@@ -41,5 +42,19 @@ public class JpaPublicationRepositoryAdapter
 
         return repository.findById(id)
                 .map(PublicationMapper::toDomain);
+    }
+
+    @Override
+    public List<Publication> findByFilters(CatalogFilter filter) {
+
+        return repository.findByFilters(
+                filter.getTextoBusqueda(),
+                filter.getTipo(),
+                filter.getPrecioMin(),
+                filter.getPrecioMax(),
+                filter.getStoreId())
+                .stream()
+                .map(PublicationMapper::toDomain)
+                .toList();
     }
 }
