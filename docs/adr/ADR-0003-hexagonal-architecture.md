@@ -1,133 +1,315 @@
 ---
+
 id: ADR-0003
-título: Arquitectura Hexagonal (Ports & Adapters) en cada microservicio
+título: Arquitectura Hexagonal (Ports & Adapters)
 estado: Aceptada
-fecha: 24/05/2026
+fecha: 21/06/2026
 autores:
-  - Rodriguez Gonzales Abad Melani
-  - Vargas Sandoval Christian Bernardo
-supercede: —
-relacionados:
-  - ADR-0001-event-driven-architecture.md
-  - ADR-0002-saga-pattern.md
+
+* Rodriguez Gonzales Abad Melani
+* Vargas Sandoval Christian Bernardo
+  supercede: —
+  relacionados:
+* ADR-0001-event-driven-architecture.md
+* ADR-0002-saga-pattern.md
+
 ---
 
-# ADR-0003 — Arquitectura Hexagonal / Clean Architecture en cada microservicio
+# ADR-0003 — Arquitectura Hexagonal (Ports & Adapters)
 
 ## Contexto
 
-El sistema UMSS Market está compuesto por 6 microservicios independientes (order-service, payment-service, inventory-service, catalog-service, notification-service, realtime-gateway). Cada servicio encapsula una bounded context con lógica de negocio crítica y reglas de dominio no negociables.
+UMSS Market es un marketplace universitario que permite a estudiantes emprendedores publicar productos y servicios dentro de una plataforma digital.
 
-El equipo identificó los siguientes problemas con un enfoque de capas clásico (Layered Architecture):
+El backend será implementado utilizando Java 21, Spring Boot 3 y PostgreSQL, siguiendo una arquitectura que garantice:
 
-1. **Mezcla de responsabilidades**: modelos SQLAlchemy usados directamente como entidades de dominio, mezclando persistencia y lógica de negocio.
-2. **Tests lentos y frágiles**: para testear un caso de uso se requería instanciar la base de datos completa.
-3. **Acoplamiento a frameworks**: lógica de negocio dentro de routers FastAPI, haciendo el dominio dependiente del framework.
-4. **Dificultad para validar invariantes**: las reglas críticas (stock >= 0, idempotencia de pagos, HMAC) estaban dispersas en múltiples capas.
+* Separación de responsabilidades.
+* Independencia del dominio respecto a frameworks.
+* Facilidad de pruebas unitarias.
+* Mantenibilidad.
+* Escalabilidad futura.
+* Evolución controlada del sistema.
 
-El proyecto necesita una arquitectura que:
-- Aísle completamente el dominio de cualquier infraestructura externa.
-- Permita testear los casos de uso con mocks simples de los puertos de salida.
-- Facilite el intercambio de adaptadores (ej. PostgreSQL → Aurora) sin tocar el dominio.
-- Garantice que los invariantes del dominio sean la única fuente de verdad.
+Durante el análisis arquitectónico se identificaron los siguientes riesgos de una arquitectura tradicional basada únicamente en capas:
+
+1. Acoplamiento entre lógica de negocio e infraestructura.
+2. Dependencia excesiva de Spring Framework dentro del dominio.
+3. Dificultad para realizar pruebas unitarias aisladas.
+4. Complejidad para sustituir mecanismos de persistencia.
+5. Riesgo de dispersión de reglas de negocio.
+
+El proyecto requiere una arquitectura que mantenga el dominio como núcleo del sistema y permita que los cambios tecnológicos tengan impacto mínimo sobre la lógica de negocio.
+
+---
 
 ## Decisión
 
-Se adopta la **Arquitectura Hexagonal (Ports & Adapters)** de Alistair Cockburn como patrón estructural interno para cada microservicio, complementado con principios de Clean Architecture de Robert C. Martin para la organización de capas.
+Se adopta la Arquitectura Hexagonal (Ports & Adapters) como patrón estructural principal para el backend de UMSS Market.
 
-### Regla de dependencia (estricta)
+La Arquitectura Hexagonal será complementada con principios de Clean Architecture para mantener una clara separación entre:
 
+* Dominio
+* Casos de uso
+* Adaptadores
+* Infraestructura
+
+---
+
+## Regla de Dependencia
+
+Las dependencias deben apuntar siempre hacia el dominio.
+
+```text
+Infrastructure → Application → Domain
 ```
-Infraestructura → Aplicación → Dominio
-```
 
-Las dependencias solo pueden apuntar hacia adentro. El dominio no importa nada de FastAPI, SQLAlchemy, aio-pika, Redis ni ningún framework.
+La capa Domain:
 
-### Estructura canónica por servicio
+* No conoce Spring Boot.
+* No conoce JPA.
+* No conoce PostgreSQL.
+* No conoce Controladores REST.
+* No conoce DTOs.
 
-```
-<service-name>/
-├── domain/                     # Puro Python — cero imports de framework
-│   ├── aggregates/             # Order, Payment, Product, User
-│   ├── entities/               # OrderItem, ProductVariant
-│   ├── value_objects/          # Money, QRCode, RU, OrderStatus, CorrelationId
-│   ├── events/                 # Domain events (dataclasses inmutables)
-│   └── ports/
-│       ├── input/              # Interfaces de los casos de uso (ABC)
-│       └── output/             # IOrderRepository, IEventPublisher, IStockService
+El dominio únicamente contiene reglas de negocio.
+
+---
+
+## Estructura Canónica
+
+```text
+src/main/java
+
+bo.umss.market.umss_market_api
+
+├── application
+│   ├── dto
+│   ├── services
+│   └── usecases
 │
-├── application/                # Orquesta dominio; NO importa infraestructura
-│   ├── commands/               # CreateOrder, CancelOrder, ConfirmOrder
-│   ├── queries/                # GetOrder, ListOrdersByUser
-│   └── services/               # Saga coordinator (coreografía)
+├── domain
+│   ├── enums
+│   ├── exceptions
+│   ├── model
+│   └── ports
 │
-└── infrastructure/             # Implementaciones concretas de los puertos
-    ├── adapters/
-    │   ├── in/                 # FastAPI routers, RabbitMQ consumers, WebSocket
-    │   └── out/                # SQLAlchemy repos, aio-pika publishers, HTTP clients
-    └── config/                 # Dependency Injection container, settings
+├── infrastructure
+│   ├── adapters
+│   ├── config
+│   ├── controllers
+│   └── persistence
+│       ├── entities
+│       ├── mappers
+│       └── repositories
+│
+└── shared
 ```
 
-### Puertos y adaptadores por servicio (resumen)
+---
 
-| Puerto de Salida | Adaptador concreto | Servicio(s) |
-|---|---|---|
-| `IOrderRepository` | `SQLAlchemyOrderRepo` | order-service |
-| `IPaymentRepository` | `SQLAlchemyPaymentRepo` | payment-service |
-| `IProductRepository` | `SQLAlchemyProductRepo` | inventory-service, catalog-service |
-| `IEventPublisher` | `RabbitMQPublisher` (aio-pika) | todos los servicios |
-| `IStockLock` | `RedisStockLock` | inventory-service |
-| `IQRGateway` | `BancoAPIHTTPAdapter` | payment-service |
-| `IIdentityValidator` | `SIISHTTPAdapter` | order-service (registro) |
-| `INotificationSender` | `FCMHTTPAdapter` | notification-service |
+## Responsabilidades por Capa
+
+### Domain
+
+Contiene:
+
+* Entidades de negocio.
+* Enumeraciones.
+* Excepciones de dominio.
+* Interfaces de repositorio (Ports).
+
+Ejemplos:
+
+```text
+User
+Store
+Publication
+
+UserRepositoryPort
+StoreRepositoryPort
+PublicationRepositoryPort
+```
+
+No puede contener:
+
+* Anotaciones Spring.
+* Anotaciones JPA.
+* Código SQL.
+* Dependencias externas.
+
+---
+
+### Application
+
+Contiene:
+
+* Casos de uso.
+* Servicios de aplicación.
+* DTOs.
+
+Ejemplos:
+
+```text
+RegisterEntrepreneurUseCase
+LoginUseCase
+CreatePublicationUseCase
+UpdatePublicationUseCase
+```
+
+Responsabilidad:
+
+Orquestar reglas de negocio utilizando los puertos definidos por el dominio.
+
+---
+
+### Infrastructure
+
+Contiene implementaciones concretas.
+
+Ejemplos:
+
+```text
+AuthController
+
+UserEntity
+StoreEntity
+PublicationEntity
+
+JpaUserRepository
+JpaStoreRepository
+JpaPublicationRepository
+```
+
+Responsabilidad:
+
+Conectar el sistema con tecnologías externas.
+
+---
+
+## Puertos y Adaptadores
+
+### Puertos de Salida
+
+```text
+UserRepositoryPort
+StoreRepositoryPort
+PublicationRepositoryPort
+PointDeliveryRepositoryPort
+```
+
+### Adaptadores de Persistencia
+
+```text
+JpaUserRepositoryAdapter
+JpaStoreRepositoryAdapter
+JpaPublicationRepositoryAdapter
+JpaPointDeliveryRepositoryAdapter
+```
+
+### Adaptadores de Entrada
+
+```text
+AuthController
+StoreController
+PublicationController
+```
+
+---
 
 ## Consecuencias
 
 ### Positivas
 
-- Los invariantes del dominio (stock >= 0, idempotencia de `webhook_ref`, HMAC) se validan en la capa de dominio, independiente del adaptador de entrada.
-- Los casos de uso son testeables con mocks de los puertos de salida, sin base de datos real (tests unitarios rápidos < 50ms).
-- El intercambio de infraestructura (ej. Redis → Memcached para locks) no afecta el dominio ni los casos de uso.
-- Facilita el cumplimiento de los contratos funcionales IA `PR-FSD-001`, `PR-FSD-002` y `PR-FSD-003`, ya que la lógica de validación vive en el dominio y es observable de forma aislada.
-- La arquitectura es coherente con ADR-0001 (los eventos de dominio son publicados por adaptadores de salida) y ADR-0002 (el Saga Coordinator es un servicio de aplicación).
+* Dominio desacoplado de Spring Boot.
+* Facilidad para pruebas unitarias.
+* Reemplazo sencillo de infraestructura.
+* Mayor mantenibilidad.
+* Organización clara del proyecto.
+* Evolución controlada de la lógica de negocio.
 
 ### Negativas
 
-- Mayor cantidad de archivos y abstracciones iniciales.
-- Curva de aprendizaje para desarrolladores nuevos en el patrón.
-- Riesgo de over-engineering en servicios simples como `catalog-service` (mitigado: se permite simplificar los puertos en servicios CRUD sin lógica compleja).
+* Mayor cantidad de clases.
+* Curva de aprendizaje inicial.
+* Más código de configuración.
 
 ### Neutrales
 
-- La API pública REST y los eventos AMQP no cambian con esta arquitectura interna.
-- La DI (Dependency Injection) se resuelve en el container de infraestructura; el dominio no la conoce.
+* La API REST permanece independiente de la arquitectura interna.
+* PostgreSQL puede ser reemplazado sin modificar el dominio.
 
-## Alternativas consideradas
+---
 
-| Alternativa | Razón de rechazo |
-|---|---|
-| **Active Record** (SQLAlchemy ORM directo) | Mezcla infraestructura y dominio; imposibilita tests unitarios rápidos; los invariantes quedan dispersos en los models |
-| **Clean Architecture estricta (Uncle Bob)** | 4 círculos concéntricos con más indirección (Entities/Use Cases/Interface Adapters/Frameworks) sin beneficio adicional claro para un equipo de 2 personas |
-| **Layered Architecture clásica** | No protege el dominio de dependencias externas; facilita la "corrupción de capas"; ya fue evaluado y descartado en el análisis inicial |
-| **Transaction Script** | Sin modelado del dominio; imposible garantizar los invariantes del negocio de forma declarativa |
+## Alternativas Consideradas
 
-## Métricas de cumplimiento (guardrails)
+| Alternativa                       | Razón de rechazo                                         |
+| --------------------------------- | -------------------------------------------------------- |
+| Arquitectura en Capas Tradicional | Acopla negocio e infraestructura                         |
+| Active Record                     | Mezcla persistencia y dominio                            |
+| Transaction Script                | No modela adecuadamente el dominio                       |
+| Clean Architecture estricta       | Mayor complejidad para el alcance académico del proyecto |
 
-Los siguientes checks deben pasar en CI/CD:
+---
 
-```python
-# domain/ no debe importar nada de estos módulos
-FORBIDDEN_IMPORTS_IN_DOMAIN = [
-    "fastapi", "sqlalchemy", "aio_pika", "redis",
-    "aiohttp", "pydantic",  # solo se permite en adaptadores
-]
+## Métricas de Cumplimiento
+
+### Restricciones
+
+La capa Domain no puede importar:
+
+```java
+org.springframework.*
+jakarta.persistence.*
+org.hibernate.*
 ```
 
-- Cobertura de tests unitarios del dominio: **≥ 85%** (sin mocks de BD).
-- Tiempo máximo de tests unitarios del dominio: **< 100ms** por servicio.
-- Cada puerto declarado como `ABC` (Abstract Base Class) en `domain/ports/`.
-- Ningún router FastAPI contiene lógica de negocio (solo validación de entrada y delegación al use case).
+### Calidad
 
-## Diagrama de referencia
+* Cobertura mínima de pruebas unitarias: ≥ 80%.
+* Ningún Controller contiene lógica de negocio.
+* Todos los repositorios del dominio deben declararse como Ports.
+* Toda persistencia debe implementarse mediante adaptadores.
 
-Ver: [`diagrams/hexagonal-architecture.mmd`](../../diagrams/hexagonal-architecture.mmd)
+---
+
+## Impacto en Casos de Uso
+
+Esta decisión impacta directamente en:
+
+* UC-001 Compra mediante QR.
+* UC-002 Publicación y Gestión de Productos y Servicios.
+* UC-003 Registro y Validación de Emprendedor.
+
+---
+
+## Trazabilidad
+
+| Artefacto | Relación                                       |
+| --------- | ---------------------------------------------- |
+| BRD v4    | Marketplace universitario                      |
+| MRD Final | Necesidades de usuarios                        |
+| PRD v3    | Requerimientos funcionales                     |
+| FSD v3    | Especificaciones funcionales                   |
+| DD-UC-001 | Registro y Validación de Emprendedor           |
+| DD-UC-002 | Publicación y Gestión de Productos y Servicios |
+| ADR-0001  | Event Driven Architecture                      |
+| ADR-0002  | Saga Pattern                                   |
+
+---
+
+## Diagrama de Referencia
+
+Ver:
+
+```text
+diagrams/hexagonal-architecture.mmd
+```
+
+---
+
+## Registro de Cambios
+
+| Versión | Fecha      | Cambio                                                                                 |
+| ------- | ---------- | -------------------------------------------------------------------------------------- |
+| 1.0     | 24/05/2026 | Definición inicial de Arquitectura Hexagonal.                                          |
+| 2.0     | 21/06/2026 | Actualización para Spring Boot 3, Java 21, PostgreSQL y estructura final del proyecto. |
