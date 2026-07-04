@@ -9,60 +9,93 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import bo.umss.market.umss_market_api.application.dto.ErrorResponse;
 import bo.umss.market.umss_market_api.domain.exceptions.EmailAlreadyExistsException;
+import bo.umss.market.umss_market_api.domain.exceptions.InvalidPriceRangeException;
+import bo.umss.market.umss_market_api.domain.exceptions.PublicationNotFoundException;
 import bo.umss.market.umss_market_api.domain.exceptions.StoreAlreadyExistsException;
+import bo.umss.market.umss_market_api.domain.exceptions.StoreNotFoundException;
 import bo.umss.market.umss_market_api.domain.exceptions.UserAlreadyExistsException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // =========================
+    // 404 NOT FOUND
+    // =========================
+
+    @ExceptionHandler(StoreNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleStoreNotFound(
+            StoreNotFoundException ex) {
+
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(PublicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePublicationNotFound(
+            PublicationNotFoundException ex) {
+
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    // =========================
+    // 400 BAD REQUEST
+    // =========================
+
+    @ExceptionHandler(InvalidPriceRangeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPriceRange(
+            InvalidPriceRangeException ex) {
+
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // =========================
+    // 409 CONFLICT
+    // =========================
+
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExists(
             UserAlreadyExistsException ex) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(
-                        ErrorResponse.builder()
-                                .success(false)
-                                .message(ex.getMessage())
-                                .timestamp(LocalDateTime.now())
-                                .build());
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(
             EmailAlreadyExistsException ex) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(
-                        ErrorResponse.builder()
-                                .success(false)
-                                .message(ex.getMessage())
-                                .timestamp(LocalDateTime.now())
-                                .build());
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(StoreAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleStoreAlreadyExists(
             StoreAlreadyExistsException ex) {
 
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(
-                        ErrorResponse.builder()
-                                .success(false)
-                                .message(ex.getMessage())
-                                .timestamp(LocalDateTime.now())
-                                .build());
+        return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
+
+    // =========================
+    // 500 INTERNAL SERVER ERROR
+    // =========================
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
             Exception ex) {
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    // =========================
+    // Helper
+    // =========================
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(
+            HttpStatus status,
+            String message) {
+
+        return ResponseEntity.status(status)
                 .body(
                         ErrorResponse.builder()
                                 .success(false)
-                                .message(ex.getMessage())
+                                .message(message)
                                 .timestamp(LocalDateTime.now())
                                 .build());
     }

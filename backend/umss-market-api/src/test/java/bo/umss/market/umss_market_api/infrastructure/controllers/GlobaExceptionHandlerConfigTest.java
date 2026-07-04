@@ -10,11 +10,11 @@ import bo.umss.market.umss_market_api.domain.exceptions.PublicationNotFoundExcep
 import bo.umss.market.umss_market_api.domain.exceptions.StoreAlreadyExistsException;
 import bo.umss.market.umss_market_api.domain.exceptions.StoreNotFoundException;
 import bo.umss.market.umss_market_api.domain.exceptions.UserAlreadyExistsException;
-import bo.umss.market.umss_market_api.infrastructure.config.GlobalExceptionHandler;
+import bo.umss.market.umss_market_api.infrastructure.config.LegacyGlobalExceptionHandler;
 
 class GlobalExceptionHandlerConfigTest {
 
-    private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
+    private final LegacyGlobalExceptionHandler handler = new LegacyGlobalExceptionHandler();
 
     @Test
     void shouldHandle_PublicationNotFound_with404() {
