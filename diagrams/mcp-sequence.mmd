@@ -1,0 +1,29 @@
+sequenceDiagram
+
+actor QA Engineer
+
+participant MCP Agent
+participant Postman API
+participant Workspace
+participant Collection
+participant Newman
+
+QA Engineer->>MCP Agent: Execute API Tests
+
+MCP Agent->>Postman API: Authenticate(API Key)
+
+Postman API-->>MCP Agent: Token Valid
+
+MCP Agent->>Workspace: Get Workspaces
+
+Workspace-->>MCP Agent: Workspace List
+
+MCP Agent->>Collection: Get Collections
+
+Collection-->>MCP Agent: Collections
+
+MCP Agent->>Newman: Execute Collection
+
+Newman-->>MCP Agent: Results JSON
+
+MCP Agent-->>QA Engineer: Execution Report

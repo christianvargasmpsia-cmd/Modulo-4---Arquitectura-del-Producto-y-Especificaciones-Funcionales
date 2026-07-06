@@ -1,0 +1,27 @@
+flowchart LR
+
+QA[QA Engineer]
+
+CLI[CLI]
+
+POSTMAN[MCP Postman Agent]
+
+PLAYWRIGHT[AI Playwright Agent]
+
+RUNNER[Playwright Runner]
+
+ANALYZER[AI Test Analyzer]
+
+REPORTS[Reports]
+
+QA --> CLI
+
+CLI --> POSTMAN
+
+CLI --> PLAYWRIGHT
+
+PLAYWRIGHT --> RUNNER
+
+RUNNER --> ANALYZER
+
+ANALYZER --> REPORTS

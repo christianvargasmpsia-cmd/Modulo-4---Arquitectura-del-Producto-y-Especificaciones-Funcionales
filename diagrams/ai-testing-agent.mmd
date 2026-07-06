@@ -1,0 +1,65 @@
+flowchart LR
+
+subgraph User
+QA[QA Engineer]
+end
+
+subgraph MCP
+MCP[MCP Postman Agent]
+POSTMAN[Postman API]
+COLLECTIONS[Collections]
+NEWMAN[Newman]
+end
+
+subgraph AI
+PLAYWRIGHT[AI Playwright Agent]
+PROMPT[Prompt Builder]
+LLM[Mock AI / OpenAI]
+SPEC[Playwright Generator]
+WRITER[Spec Writer]
+TESTFILE[generated-tests/*.spec.js]
+end
+
+subgraph Execution
+RUNNER[Playwright Runner]
+RESULTS[playwright-results.json]
+end
+
+subgraph Analysis
+ANALYZER[AI Test Analyzer]
+HTML[HTML Reporter]
+MD[Markdown Reporter]
+CONSOLE[Console Reporter]
+end
+
+QA --> MCP
+
+MCP --> POSTMAN
+
+POSTMAN --> COLLECTIONS
+
+COLLECTIONS --> NEWMAN
+
+NEWMAN --> PLAYWRIGHT
+
+PLAYWRIGHT --> PROMPT
+
+PROMPT --> LLM
+
+LLM --> SPEC
+
+SPEC --> WRITER
+
+WRITER --> TESTFILE
+
+TESTFILE --> RUNNER
+
+RUNNER --> RESULTS
+
+RESULTS --> ANALYZER
+
+ANALYZER --> HTML
+
+ANALYZER --> MD
+
+ANALYZER --> CONSOLE
