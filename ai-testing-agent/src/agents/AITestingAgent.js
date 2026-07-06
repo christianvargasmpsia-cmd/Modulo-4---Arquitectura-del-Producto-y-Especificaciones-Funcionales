@@ -28,7 +28,7 @@ class AITestingAgent {
 
             Logger.info("Step 2 - Executing Playwright...");
 
-            const results = await PlaywrightRunner.run(spec);
+            const results = await PlaywrightRunner.run();
 
             Logger.success("Execution completed.");
 

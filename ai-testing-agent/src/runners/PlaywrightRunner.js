@@ -1,6 +1,6 @@
 import { exec } from "child_process";
 import { promisify } from "util";
-import path from "path";
+
 import RunnerResult from "./RunnerResult.js";
 import { Logger } from "../utils/Logger.js";
 
@@ -8,25 +8,13 @@ const execute = promisify(exec);
 
 class PlaywrightRunner {
 
-    async run(specFile = null) {
+    async run() {
 
         Logger.title("Playwright Runner");
 
         try {
 
-            let command = "npx playwright test";
-
-            if (specFile) {
-
-    const relativePath = path
-        .relative(process.cwd(), specFile)
-        .replace(/\\/g, "/");
-
-    command += ` ${relativePath}`;
-
-}
-
-            command += " --reporter=json";
+            const command = "npx playwright test --reporter=json";
 
             Logger.info(`Executing: ${command}`);
 
@@ -45,6 +33,7 @@ class PlaywrightRunner {
             return this.parse(stdout);
 
         }
+
         catch (error) {
 
             Logger.error("Playwright execution failed.");
@@ -90,7 +79,7 @@ class PlaywrightRunner {
 
             const data = JSON.parse(jsonOutput);
 
-            report.duration = data.duration || 0;
+            report.duration = data.stats?.duration || 0;
 
             if (data.suites) {
 
@@ -99,6 +88,7 @@ class PlaywrightRunner {
             }
 
         }
+
         catch (error) {
 
             Logger.warning("Unable to parse Playwright JSON output.");
@@ -126,18 +116,16 @@ class PlaywrightRunner {
                         switch (result.status) {
 
                             case "passed":
-
                                 report.passed++;
                                 break;
 
                             case "failed":
-
                                 report.failed++;
                                 break;
 
                             default:
-
                                 report.skipped++;
+                                break;
 
                         }
 
@@ -165,13 +153,7 @@ class PlaywrightRunner {
 
             if (suite.suites) {
 
-                this.processSuites(
-
-                    suite.suites,
-
-                    report
-
-                );
+                this.processSuites(suite.suites, report);
 
             }
 
