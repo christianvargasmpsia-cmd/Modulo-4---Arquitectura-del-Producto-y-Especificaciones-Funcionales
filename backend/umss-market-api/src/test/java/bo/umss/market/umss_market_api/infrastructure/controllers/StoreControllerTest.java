@@ -17,7 +17,7 @@ import bo.umss.market.umss_market_api.application.dto.StorePublicProfileResponse
 import bo.umss.market.umss_market_api.application.usecases.GetStorePublicProfileUseCase;
 import bo.umss.market.umss_market_api.domain.enums.StoreStatus;
 import bo.umss.market.umss_market_api.domain.exceptions.StoreNotFoundException;
-import bo.umss.market.umss_market_api.infrastructure.config.GlobalExceptionHandler;
+import bo.umss.market.umss_market_api.infrastructure.config.LegacyGlobalExceptionHandler;
 
 class StoreControllerTest {
 
@@ -31,7 +31,7 @@ class StoreControllerTest {
         controller = new StoreController(getStorePublicProfileUseCase);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
-                .setControllerAdvice(new GlobalExceptionHandler())
+                .setControllerAdvice(new LegacyGlobalExceptionHandler())
                 .build();
     }
 

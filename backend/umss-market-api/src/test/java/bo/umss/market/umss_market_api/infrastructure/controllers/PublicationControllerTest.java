@@ -25,7 +25,7 @@ import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
 import bo.umss.market.umss_market_api.domain.enums.PublicationType;
 import bo.umss.market.umss_market_api.domain.exceptions.InvalidPriceRangeException;
 import bo.umss.market.umss_market_api.domain.model.Publication;
-import bo.umss.market.umss_market_api.infrastructure.config.GlobalExceptionHandler;
+import bo.umss.market.umss_market_api.infrastructure.config.LegacyGlobalExceptionHandler;
 
 class PublicationControllerTest {
 
@@ -43,7 +43,7 @@ class PublicationControllerTest {
         controller = new PublicationController(createUseCase, searchUseCase, getByIdUseCase);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
-                .setControllerAdvice(new GlobalExceptionHandler())
+                .setControllerAdvice(new LegacyGlobalExceptionHandler())
                 .build();
     }
 

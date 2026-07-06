@@ -1,0 +1,29 @@
+{
+  "name": "ai-testing-agent",
+  "version": "1.0.0",
+  "description": "AI Testing Agent para UMSS Market",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": [
+    "ai",
+    "postman",
+    "mcp",
+    "testing"
+  ],
+  "author": "UMSS Market",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.0",
+    "newman": "6.2.2",
+    "openai": "6.45.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "26.1.0"
+  }
+}

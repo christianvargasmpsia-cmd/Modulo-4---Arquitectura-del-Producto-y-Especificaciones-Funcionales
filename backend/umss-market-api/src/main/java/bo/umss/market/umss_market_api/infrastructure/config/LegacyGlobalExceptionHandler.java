@@ -15,7 +15,7 @@ import bo.umss.market.umss_market_api.domain.exceptions.StoreNotFoundException;
 import bo.umss.market.umss_market_api.domain.exceptions.UserAlreadyExistsException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class LegacyGlobalExceptionHandler {
 
     // ── 404 Not Found ────────────────────────────────────────────────────────
 
