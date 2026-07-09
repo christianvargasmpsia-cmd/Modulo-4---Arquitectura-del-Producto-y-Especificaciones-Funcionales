@@ -1,6 +1,7 @@
 import getWorkspacesSkill from "../skills/getWorkspaces.skill.js";
 import getCollectionsSkill from "../skills/getCollections.skill.js";
 import runCollectionSkill from "../skills/runCollection.skill.js";
+import analyzeResultsSkill from "../skills/analyzeResults.skill.js";
 
 class PostmanAgent {
 
@@ -58,7 +59,10 @@ class PostmanAgent {
         console.log("=================================\n");
 
         // Ejecutar Newman
-        await runCollectionSkill.execute();
+        const newmanResult = await runCollectionSkill.execute();
+
+        // Feature 2: Análisis inteligente de resultados con LLM
+        await analyzeResultsSkill.execute(newmanResult);
 
         console.log("\n=================================");
         console.log("Proceso finalizado");
