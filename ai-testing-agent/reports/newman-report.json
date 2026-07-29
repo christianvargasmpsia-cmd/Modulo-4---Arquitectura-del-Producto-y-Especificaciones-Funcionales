@@ -7,19 +7,19 @@
     },
     "item": [
       {
-        "id": "52d5685e-b0a2-4e66-8d06-e639f465b7c8",
+        "id": "5251d506-80f3-4f22-be08-025dc6219cc1",
         "name": "api",
         "item": [
           {
-            "id": "8fbad734-fae1-4e51-b320-f6372829e3a0",
+            "id": "fca7b3fd-1e24-4049-bbaa-fe6ea42b7351",
             "name": "publications",
             "item": [
               {
-                "id": "e0134dc7-3da6-4fd2-b501-04ace9481d82",
+                "id": "f0418f22-356b-4962-9eee-b90dcded554f",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "a9b3c2a0-56c3-4b32-80d7-35098953c2f3",
+                    "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d",
                     "name": "find By Id",
                     "request": {
                       "url": {
@@ -53,7 +53,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "f5f6ba09-6a49-49eb-a443-2761e9d9b700",
+                        "id": "499a611b-553f-4244-8cbd-40ff153736fe",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -100,7 +100,7 @@
                 "event": []
               },
               {
-                "id": "da9ad63c-08a0-4829-9c5d-a10c5dd43a89",
+                "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad",
                 "name": "search",
                 "request": {
                   "url": {
@@ -148,7 +148,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "7c75b2c8-ffff-4f2d-bff6-47ef54b43a4b",
+                    "id": "09a93a8b-d0b6-4e2d-bb0d-045c4f21141f",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -206,7 +206,7 @@
                 "event": []
               },
               {
-                "id": "890817c4-eac9-4ddf-a204-0a11e1c99f49",
+                "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16",
                 "name": "create Publication",
                 "request": {
                   "url": {
@@ -247,7 +247,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "9159a029-4dde-47f0-875f-7cb5b9c96052",
+                    "id": "067677d3-4708-4453-8c5d-763100910d35",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -301,15 +301,15 @@
             "event": []
           },
           {
-            "id": "6f91d2c9-d513-478f-ab87-e0b8fb71327f",
+            "id": "a9fefa49-d308-47c9-9fba-d8cecf6ed66d",
             "name": "auth",
             "item": [
               {
-                "id": "93d80240-48ad-4606-b1d1-7368dcf1a543",
+                "id": "5dd9657f-8ba2-4553-936c-87bfea3564a7",
                 "name": "register",
                 "item": [
                   {
-                    "id": "859b9902-d241-4e2f-88c7-1137a97ef54c",
+                    "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153",
                     "name": "register",
                     "request": {
                       "url": {
@@ -351,7 +351,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "585b299c-7467-4cb2-bf38-c7d56b3d52c3",
+                        "id": "80e5f3c1-8d13-4fd9-aebb-ddfe4e0c492d",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -409,15 +409,15 @@
             "event": []
           },
           {
-            "id": "d90b427e-4849-47d1-b723-1488f3b97364",
+            "id": "83cb4202-8c15-42f7-8cf5-17f186a98798",
             "name": "tiendas",
             "item": [
               {
-                "id": "7b3db91b-2d30-44ea-9aed-c1b29d32be1f",
+                "id": "c0a13f50-ff91-4e1b-8813-7453cce54956",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "3accd7d0-133a-4be2-bae1-bc963be31bf6",
+                    "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe",
                     "name": "get Public Profile",
                     "request": {
                       "url": {
@@ -451,7 +451,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "4325ba56-0ec0-4ef7-bf13-51e96024bed8",
+                        "id": "02ba3e64-bb20-4a6c-bc9e-8a90760e693c",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -519,11 +519,11 @@
     }
   },
   "environment": {
-    "id": "fba09be1-d484-486f-8529-49da1844917c",
+    "id": "6b5ee50d-0759-41be-be44-a332a75b5bd6",
     "values": []
   },
   "globals": {
-    "id": "9c829af8-75bc-4291-b7dd-25fd57c05145",
+    "id": "9e06c496-9ba9-4175-ba74-2839f464803f",
     "values": []
   },
   "run": {
@@ -551,7 +551,7 @@
       "requests": {
         "total": 5,
         "pending": 0,
-        "failed": 5
+        "failed": 0
       },
       "tests": {
         "total": 5,
@@ -575,10 +575,10 @@
       }
     },
     "timings": {
-      "responseAverage": 0,
-      "responseMin": 0,
-      "responseMax": 0,
-      "responseSd": 0,
+      "responseAverage": 95,
+      "responseMin": 7,
+      "responseMax": 225,
+      "responseSd": 83.24181641458817,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -587,8 +587,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1783303395051,
-      "completed": 1783303395448
+      "started": 1783607926786,
+      "completed": 1783607927622
     },
     "executions": [
       {
@@ -601,11 +601,11 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "ef0a7a9b-6465-4b4f-8e07-0a6015facdbe",
-          "httpRequestId": "6ca31611-7a42-4eb0-ace3-e0f02b0805cf"
+          "ref": "80eaf86e-b9c4-49b3-bf9a-f5a854cc3928",
+          "httpRequestId": "6dc27b0d-1c02-41b4-baf7-63c78dc77e4a"
         },
         "item": {
-          "id": "a9b3c2a0-56c3-4b32-80d7-35098953c2f3",
+          "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d",
           "name": "find By Id",
           "request": {
             "url": {
@@ -639,7 +639,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "f5f6ba09-6a49-49eb-a443-2761e9d9b700",
+              "id": "499a611b-553f-4244-8cbd-40ff153736fe",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -714,7 +714,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "725c2079-ad45-468f-af28-06e689f99e91",
+              "value": "5efb1b52-7c2c-424a-9d47-3d11574a3b87",
               "system": true
             },
             {
@@ -735,26 +735,172 @@
           ],
           "method": "GET"
         },
-        "id": "a9b3c2a0-56c3-4b32-80d7-35098953c2f3",
-        "requestError": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080
-        }
+        "response": {
+          "id": "e1c2d1d7-951f-4e56-965a-1376b6967056",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              80,
+              117,
+              98,
+              108,
+              105,
+              99,
+              97,
+              99,
+              105,
+              195,
+              179,
+              110,
+              32,
+              110,
+              111,
+              32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              44,
+              34,
+              116,
+              105,
+              109,
+              101,
+              115,
+              116,
+              97,
+              109,
+              112,
+              34,
+              58,
+              34,
+              50,
+              48,
+              50,
+              54,
+              45,
+              48,
+              55,
+              45,
+              48,
+              57,
+              84,
+              49,
+              48,
+              58,
+              51,
+              56,
+              58,
+              52,
+              55,
+              46,
+              48,
+              49,
+              52,
+              53,
+              49,
+              56,
+              53,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 225,
+          "responseSize": 98
+        },
+        "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d"
       },
       {
         "cursor": {
-          "ref": "4f40ffac-df56-4052-8a12-164e144aaf3a",
+          "ref": "7f024260-5a3f-4585-bc2a-85e1b90993a4",
           "length": 5,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "f8cda27b-fd58-4361-bf9c-43af9d7ab471"
+          "httpRequestId": "af7a9fbd-39cb-4a8a-aec9-b3f0f8a795ef"
         },
         "item": {
-          "id": "da9ad63c-08a0-4829-9c5d-a10c5dd43a89",
+          "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad",
           "name": "search",
           "request": {
             "url": {
@@ -802,7 +948,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "7c75b2c8-ffff-4f2d-bff6-47ef54b43a4b",
+              "id": "09a93a8b-d0b6-4e2d-bb0d-045c4f21141f",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -911,7 +1057,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "d3f747cb-479d-49a5-a8c8-8c029ddbcc16",
+              "value": "193655a8-f9b5-480f-a4f1-c5c9f63e854d",
               "system": true
             },
             {
@@ -932,26 +1078,128 @@
           ],
           "method": "GET"
         },
-        "id": "da9ad63c-08a0-4829-9c5d-a10c5dd43a89",
-        "requestError": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080
-        }
+        "response": {
+          "id": "d7e90171-0417-4a95-884d-e259b2896e1c",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              112,
+              114,
+              101,
+              99,
+              105,
+              111,
+              77,
+              105,
+              110,
+              32,
+              110,
+              111,
+              32,
+              112,
+              117,
+              101,
+              100,
+              101,
+              32,
+              115,
+              101,
+              114,
+              32,
+              109,
+              97,
+              121,
+              111,
+              114,
+              32,
+              113,
+              117,
+              101,
+              32,
+              112,
+              114,
+              101,
+              99,
+              105,
+              111,
+              77,
+              97,
+              120,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 30,
+          "responseSize": 54
+        },
+        "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad"
       },
       {
         "cursor": {
-          "ref": "2d9e5594-7b9e-4ba6-982e-e643b94b11a3",
+          "ref": "7d12bb79-37ea-4545-8c06-e5686cd87f04",
           "length": 5,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "6d0c7298-94df-4ec9-a0d4-1d9697a6a762"
+          "httpRequestId": "e6099658-df48-4c9c-a256-14deaa48d5b7"
         },
         "item": {
-          "id": "890817c4-eac9-4ddf-a204-0a11e1c99f49",
+          "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16",
           "name": "create Publication",
           "request": {
             "url": {
@@ -992,7 +1240,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "9159a029-4dde-47f0-875f-7cb5b9c96052",
+              "id": "067677d3-4708-4453-8c5d-763100910d35",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1077,7 +1325,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "270b9b6f-1b0f-4ced-9cf8-10f8a30e6a91",
+              "value": "51ec8b99-a375-4bcd-b58d-914797353066",
               "system": true
             },
             {
@@ -1094,6 +1342,11 @@
               "key": "Connection",
               "value": "keep-alive",
               "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "208",
+              "system": true
             }
           ],
           "method": "POST",
@@ -1108,26 +1361,166 @@
             }
           }
         },
-        "id": "890817c4-eac9-4ddf-a204-0a11e1c99f49",
-        "requestError": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080
-        }
+        "response": {
+          "id": "385c27e3-a1d0-484c-b787-c5d8e0943601",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              84,
+              105,
+              101,
+              110,
+              100,
+              97,
+              32,
+              110,
+              111,
+              32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              44,
+              34,
+              116,
+              105,
+              109,
+              101,
+              115,
+              116,
+              97,
+              109,
+              112,
+              34,
+              58,
+              34,
+              50,
+              48,
+              50,
+              54,
+              45,
+              48,
+              55,
+              45,
+              48,
+              57,
+              84,
+              49,
+              48,
+              58,
+              51,
+              56,
+              58,
+              52,
+              55,
+              46,
+              50,
+              56,
+              49,
+              51,
+              53,
+              51,
+              53,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 54,
+          "responseSize": 92
+        },
+        "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16"
       },
       {
         "cursor": {
-          "ref": "0d93cd5a-dde4-4866-b468-b3c2bc50cd02",
+          "ref": "79833cf8-22c2-4262-ace9-2dafeff5124a",
           "length": 5,
           "cycles": 1,
           "position": 3,
           "iteration": 0,
-          "httpRequestId": "acedb6c1-6066-4e4f-8567-88a1a40ffee4"
+          "httpRequestId": "4a85f673-b441-4feb-a32f-cd16ea77d834"
         },
         "item": {
-          "id": "859b9902-d241-4e2f-88c7-1137a97ef54c",
+          "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153",
           "name": "register",
           "request": {
             "url": {
@@ -1169,7 +1562,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "585b299c-7467-4cb2-bf38-c7d56b3d52c3",
+              "id": "80e5f3c1-8d13-4fd9-aebb-ddfe4e0c492d",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1256,7 +1649,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "0e032008-0413-4e9c-8f6e-05074480b34f",
+              "value": "0e866fc1-bbb6-4025-aea9-70f6def951bc",
               "system": true
             },
             {
@@ -1273,6 +1666,11 @@
               "key": "Connection",
               "value": "keep-alive",
               "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "238",
+              "system": true
             }
           ],
           "method": "POST",
@@ -1287,26 +1685,122 @@
             }
           }
         },
-        "id": "859b9902-d241-4e2f-88c7-1137a97ef54c",
-        "requestError": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080
-        }
+        "response": {
+          "id": "71c3beb6-eb61-4861-b01b-4fb98e267162",
+          "status": "Conflict",
+          "code": 409,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              69,
+              108,
+              32,
+              82,
+              85,
+              32,
+              121,
+              97,
+              32,
+              115,
+              101,
+              32,
+              101,
+              110,
+              99,
+              117,
+              101,
+              110,
+              116,
+              114,
+              97,
+              32,
+              114,
+              101,
+              103,
+              105,
+              115,
+              116,
+              114,
+              97,
+              100,
+              111,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 159,
+          "responseSize": 44
+        },
+        "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153"
       },
       {
         "cursor": {
-          "ref": "ddf2cc97-df01-47bb-9384-b898a8810806",
+          "ref": "33ff450f-a244-486c-a5c9-8fdecda99f58",
           "length": 5,
           "cycles": 1,
           "position": 4,
           "iteration": 0,
-          "httpRequestId": "54c83e4b-a10e-46d8-b530-35b6b59034e8"
+          "httpRequestId": "4a541531-e1be-428a-9953-ed3c209a806e"
         },
         "item": {
-          "id": "3accd7d0-133a-4be2-bae1-bc963be31bf6",
+          "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe",
           "name": "get Public Profile",
           "request": {
             "url": {
@@ -1340,7 +1834,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "4325ba56-0ec0-4ef7-bf13-51e96024bed8",
+              "id": "02ba3e64-bb20-4a6c-bc9e-8a90760e693c",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1415,7 +1909,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "63ad1f3f-d060-4795-a499-410a59eb0313",
+              "value": "de5a28cc-2b34-4341-b4f6-a03d27595da9",
               "system": true
             },
             {
@@ -1436,781 +1930,104 @@
           ],
           "method": "GET"
         },
-        "id": "3accd7d0-133a-4be2-bae1-bc963be31bf6",
-        "requestError": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080
-        }
+        "response": {
+          "id": "f052a06f-2768-4296-bda1-416d52c2f164",
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              34,
+              58,
+              34,
+              84,
+              105,
+              101,
+              110,
+              100,
+              97,
+              32,
+              110,
+              111,
+              32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 7,
+          "responseSize": 32
+        },
+        "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe"
       }
     ],
     "transfers": {
-      "responseTotal": 0
+      "responseTotal": 320
     },
-    "failures": [
-      {
-        "error": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080,
-          "name": "Error",
-          "message": "connect ECONNREFUSED 127.0.0.1:8080",
-          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8080\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)",
-          "checksum": "fa5adbc9443a38125cad7b501b64ff60",
-          "id": "9a770689-1ef5-426d-9184-39191bf3dcd4",
-          "timestamp": 1783303395082,
-          "stacktrace": [
-            {
-              "fileName": "node:net",
-              "lineNumber": 1705,
-              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
-              "typeName": "TCPConnectWrap",
-              "methodName": "afterConnect [as oncomplete]",
-              "columnNumber": 16,
-              "native": false
-            }
-          ]
-        },
-        "at": "request",
-        "source": {
-          "id": "a9b3c2a0-56c3-4b32-80d7-35098953c2f3",
-          "name": "find By Id",
-          "request": {
-            "url": {
-              "protocol": "http",
-              "port": "8080",
-              "path": [
-                "api",
-                "publications",
-                "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
-              ],
-              "host": [
-                "localhost"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              },
-              {
-                "key": "User-Agent",
-                "value": "PostmanRuntime/7.39.1",
-                "system": true
-              },
-              {
-                "key": "Cache-Control",
-                "value": "no-cache",
-                "system": true
-              },
-              {
-                "key": "Postman-Token",
-                "value": "725c2079-ad45-468f-af28-06e689f99e91",
-                "system": true
-              },
-              {
-                "key": "Host",
-                "value": "localhost:8080",
-                "system": true
-              },
-              {
-                "key": "Accept-Encoding",
-                "value": "gzip, deflate, br",
-                "system": true
-              },
-              {
-                "key": "Connection",
-                "value": "keep-alive",
-                "system": true
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [
-            {
-              "id": "f5f6ba09-6a49-49eb-a443-2761e9d9b700",
-              "name": "OK",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "publications",
-                    ":id"
-                  ],
-                  "host": [
-                    "http://localhost:8080"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "type": "any",
-                      "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b",
-                      "key": "id"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "method": "GET"
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "body": "{\n  \"id\": \"93f34b29-68dc-2c16-759f-d89f5058de44\",\n  \"storeId\": \"effb595a-aaac-c957-cbab-58e169e496e8\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 3868.778035622984,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4514,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": true,\n  \"createdAt\": \"2017-04-10T02:43:31.764Z\",\n  \"updatedAt\": \"2005-01-18T03:25:46.432Z\"\n}",
-              "cookie": []
-            }
-          ],
-          "event": []
-        },
-        "cursor": {
-          "position": 0,
-          "iteration": 0,
-          "length": 5,
-          "cycles": 1,
-          "empty": false,
-          "eof": false,
-          "bof": true,
-          "cr": false,
-          "ref": "ef0a7a9b-6465-4b4f-8e07-0a6015facdbe",
-          "httpRequestId": "6ca31611-7a42-4eb0-ace3-e0f02b0805cf"
-        }
-      },
-      {
-        "error": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080,
-          "name": "Error",
-          "message": "connect ECONNREFUSED 127.0.0.1:8080",
-          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8080\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)",
-          "checksum": "fa5adbc9443a38125cad7b501b64ff60",
-          "id": "f30e2bad-7b0d-46e1-87fb-b2f8e62dc5db",
-          "timestamp": 1783303395153,
-          "stacktrace": [
-            {
-              "fileName": "node:net",
-              "lineNumber": 1705,
-              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
-              "typeName": "TCPConnectWrap",
-              "methodName": "afterConnect [as oncomplete]",
-              "columnNumber": 16,
-              "native": false
-            }
-          ]
-        },
-        "at": "request",
-        "source": {
-          "id": "da9ad63c-08a0-4829-9c5d-a10c5dd43a89",
-          "name": "search",
-          "request": {
-            "url": {
-              "protocol": "http",
-              "port": "8080",
-              "path": [
-                "api",
-                "publications"
-              ],
-              "host": [
-                "localhost"
-              ],
-              "query": [
-                {
-                  "key": "texto",
-                  "value": "string"
-                },
-                {
-                  "key": "tipo",
-                  "value": "SERVICIO"
-                },
-                {
-                  "key": "precioMin",
-                  "value": "4494.150703178834"
-                },
-                {
-                  "key": "precioMax",
-                  "value": "3023.054740403812"
-                },
-                {
-                  "key": "storeId",
-                  "value": "f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4"
-                }
-              ],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              },
-              {
-                "key": "User-Agent",
-                "value": "PostmanRuntime/7.39.1",
-                "system": true
-              },
-              {
-                "key": "Cache-Control",
-                "value": "no-cache",
-                "system": true
-              },
-              {
-                "key": "Postman-Token",
-                "value": "d3f747cb-479d-49a5-a8c8-8c029ddbcc16",
-                "system": true
-              },
-              {
-                "key": "Host",
-                "value": "localhost:8080",
-                "system": true
-              },
-              {
-                "key": "Accept-Encoding",
-                "value": "gzip, deflate, br",
-                "system": true
-              },
-              {
-                "key": "Connection",
-                "value": "keep-alive",
-                "system": true
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [
-            {
-              "id": "7c75b2c8-ffff-4f2d-bff6-47ef54b43a4b",
-              "name": "OK",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "publications"
-                  ],
-                  "host": [
-                    "http://localhost:8080"
-                  ],
-                  "query": [
-                    {
-                      "key": "texto",
-                      "value": "string"
-                    },
-                    {
-                      "key": "tipo",
-                      "value": "SERVICIO"
-                    },
-                    {
-                      "key": "precioMin",
-                      "value": "4494.150703178834"
-                    },
-                    {
-                      "key": "precioMax",
-                      "value": "3023.054740403812"
-                    },
-                    {
-                      "key": "storeId",
-                      "value": "f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4"
-                    }
-                  ],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "method": "GET"
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "body": "[\n  {\n    \"id\": \"5497c628-0b5c-eaab-1093-0c7ed9b24218\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8748.13858959589,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 1317,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"a5218437-3185-fb2d-d176-d5a86ed45e21\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  },\n  {\n    \"id\": \"c8956be7-b8d0-7f88-4d99-d0940195242c\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 1830.6093742654616,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 7845,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"a4f59a8a-afa7-6b30-ef50-3165b41a9ed8\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]",
-              "cookie": []
-            }
-          ],
-          "event": []
-        },
-        "cursor": {
-          "ref": "4f40ffac-df56-4052-8a12-164e144aaf3a",
-          "length": 5,
-          "cycles": 1,
-          "position": 1,
-          "iteration": 0,
-          "httpRequestId": "f8cda27b-fd58-4361-bf9c-43af9d7ab471"
-        }
-      },
-      {
-        "error": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080,
-          "name": "Error",
-          "message": "connect ECONNREFUSED 127.0.0.1:8080",
-          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8080\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)",
-          "checksum": "fa5adbc9443a38125cad7b501b64ff60",
-          "id": "c1769069-3afa-4dba-b660-0c7785df9710",
-          "timestamp": 1783303395230,
-          "stacktrace": [
-            {
-              "fileName": "node:net",
-              "lineNumber": 1705,
-              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
-              "typeName": "TCPConnectWrap",
-              "methodName": "afterConnect [as oncomplete]",
-              "columnNumber": 16,
-              "native": false
-            }
-          ]
-        },
-        "at": "request",
-        "source": {
-          "id": "890817c4-eac9-4ddf-a204-0a11e1c99f49",
-          "name": "create Publication",
-          "request": {
-            "url": {
-              "protocol": "http",
-              "port": "8080",
-              "path": [
-                "api",
-                "publications"
-              ],
-              "host": [
-                "localhost"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              },
-              {
-                "key": "User-Agent",
-                "value": "PostmanRuntime/7.39.1",
-                "system": true
-              },
-              {
-                "key": "Cache-Control",
-                "value": "no-cache",
-                "system": true
-              },
-              {
-                "key": "Postman-Token",
-                "value": "270b9b6f-1b0f-4ced-9cf8-10f8a30e6a91",
-                "system": true
-              },
-              {
-                "key": "Host",
-                "value": "localhost:8080",
-                "system": true
-              },
-              {
-                "key": "Accept-Encoding",
-                "value": "gzip, deflate, br",
-                "system": true
-              },
-              {
-                "key": "Connection",
-                "value": "keep-alive",
-                "system": true
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"storeId\": \"32c0b5bb-16e1-3710-010a-76a3c542bf6c\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 2322.876120638484,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4752,\n  \"modalidadCobro\": \"ANTICIPADO\"\n}",
-              "options": {
-                "raw": {
-                  "headerFamily": "json",
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "9159a029-4dde-47f0-875f-7cb5b9c96052",
-              "name": "OK",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "publications"
-                  ],
-                  "host": [
-                    "http://localhost:8080"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"storeId\": \"32c0b5bb-16e1-3710-010a-76a3c542bf6c\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 2322.876120638484,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4752,\n  \"modalidadCobro\": \"ANTICIPADO\"\n}",
-                  "options": {
-                    "raw": {
-                      "headerFamily": "json",
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"publicationId\": \"65e53b9a-fb70-b1b0-540b-2069de432f61\"\n}",
-              "cookie": []
-            }
-          ],
-          "event": []
-        },
-        "cursor": {
-          "ref": "2d9e5594-7b9e-4ba6-982e-e643b94b11a3",
-          "length": 5,
-          "cycles": 1,
-          "position": 2,
-          "iteration": 0,
-          "httpRequestId": "6d0c7298-94df-4ec9-a0d4-1d9697a6a762"
-        }
-      },
-      {
-        "error": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080,
-          "name": "Error",
-          "message": "connect ECONNREFUSED 127.0.0.1:8080",
-          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8080\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)",
-          "checksum": "fa5adbc9443a38125cad7b501b64ff60",
-          "id": "d5706284-1348-4086-9952-ddd1ef8c5d93",
-          "timestamp": 1783303395325,
-          "stacktrace": [
-            {
-              "fileName": "node:net",
-              "lineNumber": 1705,
-              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
-              "typeName": "TCPConnectWrap",
-              "methodName": "afterConnect [as oncomplete]",
-              "columnNumber": 16,
-              "native": false
-            }
-          ]
-        },
-        "at": "request",
-        "source": {
-          "id": "859b9902-d241-4e2f-88c7-1137a97ef54c",
-          "name": "register",
-          "request": {
-            "url": {
-              "protocol": "http",
-              "port": "8080",
-              "path": [
-                "api",
-                "auth",
-                "register"
-              ],
-              "host": [
-                "localhost"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              },
-              {
-                "key": "User-Agent",
-                "value": "PostmanRuntime/7.39.1",
-                "system": true
-              },
-              {
-                "key": "Cache-Control",
-                "value": "no-cache",
-                "system": true
-              },
-              {
-                "key": "Postman-Token",
-                "value": "0e032008-0413-4e9c-8f6e-05074480b34f",
-                "system": true
-              },
-              {
-                "key": "Host",
-                "value": "localhost:8080",
-                "system": true
-              },
-              {
-                "key": "Accept-Encoding",
-                "value": "gzip, deflate, br",
-                "system": true
-              },
-              {
-                "key": "Connection",
-                "value": "keep-alive",
-                "system": true
-              }
-            ],
-            "method": "POST",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"apellidoPaterno\": \"string\",\n  \"celular\": \"30498140\",\n  \"email\": \"Ap7@umss.edu.bo\",\n  \"facultad\": \"string\",\n  \"nombre\": \"string\",\n  \"nombreTienda\": \"string\",\n  \"password\": \"string\",\n  \"ru\": \"211879680\",\n  \"apellidoMaterno\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "headerFamily": "json",
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": [
-            {
-              "id": "585b299c-7467-4cb2-bf38-c7d56b3d52c3",
-              "name": "OK",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "auth",
-                    "register"
-                  ],
-                  "host": [
-                    "http://localhost:8080"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "method": "POST",
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apellidoPaterno\": \"string\",\n  \"celular\": \"30498140\",\n  \"email\": \"Ap7@umss.edu.bo\",\n  \"facultad\": \"string\",\n  \"nombre\": \"string\",\n  \"nombreTienda\": \"string\",\n  \"password\": \"string\",\n  \"ru\": \"211879680\",\n  \"apellidoMaterno\": \"string\"\n}",
-                  "options": {
-                    "raw": {
-                      "headerFamily": "json",
-                      "language": "json"
-                    }
-                  }
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"71863f62-1977-47b6-ac82-633f93b1e123\",\n  \"tiendaId\": \"9441276e-6e8c-6d62-30e3-3b579c78b189\"\n}",
-              "cookie": []
-            }
-          ],
-          "event": []
-        },
-        "cursor": {
-          "ref": "0d93cd5a-dde4-4866-b468-b3c2bc50cd02",
-          "length": 5,
-          "cycles": 1,
-          "position": 3,
-          "iteration": 0,
-          "httpRequestId": "acedb6c1-6066-4e4f-8567-88a1a40ffee4"
-        }
-      },
-      {
-        "error": {
-          "errno": -4078,
-          "code": "ECONNREFUSED",
-          "syscall": "connect",
-          "address": "127.0.0.1",
-          "port": 8080,
-          "name": "Error",
-          "message": "connect ECONNREFUSED 127.0.0.1:8080",
-          "stack": "Error: connect ECONNREFUSED 127.0.0.1:8080\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1705:16)",
-          "checksum": "fa5adbc9443a38125cad7b501b64ff60",
-          "id": "1b8a517f-9b05-40f7-83f2-bb062c584cbd",
-          "timestamp": 1783303395405,
-          "stacktrace": [
-            {
-              "fileName": "node:net",
-              "lineNumber": 1705,
-              "functionName": "TCPConnectWrap.afterConnect [as oncomplete]",
-              "typeName": "TCPConnectWrap",
-              "methodName": "afterConnect [as oncomplete]",
-              "columnNumber": 16,
-              "native": false
-            }
-          ]
-        },
-        "at": "request",
-        "source": {
-          "id": "3accd7d0-133a-4be2-bae1-bc963be31bf6",
-          "name": "get Public Profile",
-          "request": {
-            "url": {
-              "protocol": "http",
-              "port": "8080",
-              "path": [
-                "api",
-                "tiendas",
-                "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
-              ],
-              "host": [
-                "localhost"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              },
-              {
-                "key": "User-Agent",
-                "value": "PostmanRuntime/7.39.1",
-                "system": true
-              },
-              {
-                "key": "Cache-Control",
-                "value": "no-cache",
-                "system": true
-              },
-              {
-                "key": "Postman-Token",
-                "value": "63ad1f3f-d060-4795-a499-410a59eb0313",
-                "system": true
-              },
-              {
-                "key": "Host",
-                "value": "localhost:8080",
-                "system": true
-              },
-              {
-                "key": "Accept-Encoding",
-                "value": "gzip, deflate, br",
-                "system": true
-              },
-              {
-                "key": "Connection",
-                "value": "keep-alive",
-                "system": true
-              }
-            ],
-            "method": "GET"
-          },
-          "response": [
-            {
-              "id": "4325ba56-0ec0-4ef7-bf13-51e96024bed8",
-              "name": "OK",
-              "originalRequest": {
-                "url": {
-                  "path": [
-                    "api",
-                    "tiendas",
-                    ":id"
-                  ],
-                  "host": [
-                    "http://localhost:8080"
-                  ],
-                  "query": [],
-                  "variable": [
-                    {
-                      "type": "any",
-                      "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b",
-                      "key": "id"
-                    }
-                  ]
-                },
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "method": "GET"
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "body": "{\n  \"id\": \"ad5ccc21-3db2-178c-de9f-517afd2b176e\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"INACTIVE\",\n  \"publicaciones\": [\n    {\n      \"id\": \"0dab6194-6aef-cdb8-84df-2aed24fc7da8\",\n      \"nombre\": \"string\",\n      \"precio\": 2709.4317058116267,\n      \"tipo\": \"PRODUCTO\",\n      \"stock\": 4517,\n      \"modalidadCobro\": \"ANTICIPADO\",\n      \"activa\": true\n    },\n    {\n      \"id\": \"e8c02775-ceb8-e155-f89e-667630e9b7af\",\n      \"nombre\": \"string\",\n      \"precio\": 1866.9885663993657,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 8407,\n      \"modalidadCobro\": \"CONTRA_ENTREGA\",\n      \"activa\": false\n    }\n  ]\n}",
-              "cookie": []
-            }
-          ],
-          "event": []
-        },
-        "cursor": {
-          "ref": "ddf2cc97-df01-47bb-9384-b898a8810806",
-          "length": 5,
-          "cycles": 1,
-          "position": 4,
-          "iteration": 0,
-          "httpRequestId": "54c83e4b-a10e-46d8-b530-35b6b59034e8"
-        }
-      }
-    ],
+    "failures": [],
     "error": null
   }
 }
