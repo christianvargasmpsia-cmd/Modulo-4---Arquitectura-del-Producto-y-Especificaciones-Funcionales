@@ -32,12 +32,14 @@ public class AIServiceImpl implements AIService {
 
         String texto = message.toLowerCase();
 
-        // TOOL: Búsqueda de publicaciones
+        // TOOL: Búsqueda de publicaciones del catálogo
         if (texto.contains("buscar")
                 || texto.contains("producto")
+                || texto.contains("productos")
                 || texto.contains("publicación")
-                || texto.contains("catalogo")
-                || texto.contains("catálogo")) {
+                || texto.contains("publicaciones")
+                || texto.contains("catálogo")
+                || texto.contains("catalogo")) {
 
             CatalogFilterRequest request = new CatalogFilterRequest();
 
@@ -59,36 +61,64 @@ public class AIServiceImpl implements AIService {
 
             if (publicaciones.isEmpty()) {
                 return """
-                        ✅ Tool ejecutado correctamente.
+                        🤖 UMSS Market AI
 
-                        No se encontraron publicaciones en el catálogo.
+                        No encontré publicaciones que coincidan con tu búsqueda.
 
-                        Esto puede deberse a que la base de datos aún no contiene publicaciones registradas.
+                        Puedes intentar con otros términos o agregar nuevas publicaciones al catálogo.
                         """;
             }
 
             StringBuilder respuesta = new StringBuilder();
 
-            respuesta.append("Se encontraron las siguientes publicaciones:\n\n");
+            respuesta.append("""
+                    🤖 UMSS Market AI
+                    
+                    Encontré las siguientes publicaciones para ti:
+                    
+                    """);
 
             for (PublicationSummaryResponse p : publicaciones) {
 
-                respuesta.append("• ")
-                        .append(p.getNombre());
+                respuesta.append("📦 Producto: ")
+                        .append(p.getNombre())
+                        .append("\n");
+
+                if (p.getDescripcion() != null && !p.getDescripcion().isBlank()) {
+                    respuesta.append("📝 Descripción: ")
+                            .append(p.getDescripcion())
+                            .append("\n");
+                }
 
                 if (p.getPrecio() != null) {
-                    respuesta.append(" - Bs. ")
-                            .append(p.getPrecio());
+                    respuesta.append("💰 Precio: Bs. ")
+                            .append(p.getPrecio())
+                            .append("\n");
                 }
 
                 if (p.getNombreTienda() != null) {
-                    respuesta.append(" (")
+                    respuesta.append("🏪 Tienda: ")
                             .append(p.getNombreTienda())
-                            .append(")");
+                            .append("\n");
                 }
 
-                respuesta.append("\n");
+                if (p.getStock() != null) {
+                    respuesta.append("📦 Stock disponible: ")
+                            .append(p.getStock())
+                            .append("\n");
+                }
+
+                respuesta.append("\n────────────────────────────────────\n\n");
             }
+
+            respuesta.append("""
+                    ✅ Consulta realizada mediante la herramienta de búsqueda del catálogo.
+
+                    💡 Puedes pedirme otra búsqueda escribiendo, por ejemplo:
+                    • Buscar celulares
+                    • Buscar servicios de diseño
+                    • Buscar productos tecnológicos
+                    """);
 
             return respuesta.toString();
         }
