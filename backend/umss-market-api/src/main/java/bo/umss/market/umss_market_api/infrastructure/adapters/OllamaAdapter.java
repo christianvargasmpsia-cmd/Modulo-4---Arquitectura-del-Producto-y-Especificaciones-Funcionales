@@ -1,5 +1,4 @@
 package bo.umss.market.umss_market_api.infrastructure.adapters;
-
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import bo.umss.market.umss_market_api.infrastructure.dto.request.OllamaRequest;
 import bo.umss.market.umss_market_api.infrastructure.dto.response.OllamaResponse;
