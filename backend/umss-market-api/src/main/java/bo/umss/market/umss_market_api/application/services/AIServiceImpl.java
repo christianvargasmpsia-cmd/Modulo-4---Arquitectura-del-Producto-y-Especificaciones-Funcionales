@@ -6,7 +6,7 @@ import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import bo.umss.market.umss_market_api.application.dto.ToolDecision;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,32 +35,63 @@ public class AIServiceImpl implements AIService {
         return provider.generate(prompt);
     }
 
-    @Override
-    public String chat(String message) {
-        if (isCatalogSearchRequest(message)) {
-            return executeCatalogSearch(message);
-        }
+@Override
+public String chat(String message) {
 
-        if (!iaEnabled) {
-            return """
-                    La IA está deshabilitada.
+    // =============================
+    // ESCENARIO 1 (Persona 1)
+    // Búsqueda por palabras clave
+    // =============================
+    if (isCatalogSearchRequest(message)) {
+        return executeCatalogSearch(message);
+    }
 
-                    Solo puedo ayudarte con:
-                    - Buscar publicaciones
-                    - Buscar productos
-                    - Buscar servicios
-                    """;
-        }
+// =============================
+// ESCENARIO 2 (Tu parte)
+// El LLM decide la herramienta y
+// extrae la consulta
+// =============================
+if (iaEnabled) {
 
+    ToolDecision decision = provider.selectTool(message);
+
+    if (decision != null
+            && "SEARCH_CATALOG".equalsIgnoreCase(decision.getTool())) {
+
+        return executeCatalogSearch(decision.getQuery())
+                .replace("KEYWORD", "LLM");
+    }
+
+}
+
+    // =============================
+    // ESCENARIO 4 (Persona 1)
+    // IA apagada
+    // =============================
+    if (!iaEnabled) {
         return """
-                No puedo responder esa consulta.
+                La IA está deshabilitada.
 
-                Puedo ayudarte con:
+                Solo puedo ayudarte con:
                 - Buscar publicaciones
                 - Buscar productos
                 - Buscar servicios
                 """;
     }
+
+    // =============================
+    // ESCENARIO 3 (Persona 1)
+    // Fuera de alcance
+    // =============================
+    return """
+            No puedo responder esa consulta.
+
+            Puedo ayudarte con:
+            - Buscar publicaciones
+            - Buscar productos
+            - Buscar servicios
+            """;
+}
 
     private boolean isCatalogSearchRequest(String message) {
         String texto = message.toLowerCase(Locale.ROOT);
