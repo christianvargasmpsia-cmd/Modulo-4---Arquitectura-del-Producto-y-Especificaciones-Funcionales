@@ -2,18 +2,19 @@ package bo.umss.market.umss_market_api.application.services;
 
 import bo.umss.market.umss_market_api.application.dto.CatalogFilterRequest;
 import bo.umss.market.umss_market_api.application.dto.PublicationSummaryResponse;
+import bo.umss.market.umss_market_api.application.dto.ToolDecision;
 import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import bo.umss.market.umss_market_api.application.dto.ToolDecision;
+
 import java.util.List;
 import java.util.Locale;
 
 @Service
 public class AIServiceImpl implements AIService {
 
-    @Value("${ia.enabled:true}")
+    @Value("${ia.enabled:${IA_HABILITADA:false}}")
     private boolean iaEnabled;
 
     private final AIProviderPort provider;
@@ -35,63 +36,61 @@ public class AIServiceImpl implements AIService {
         return provider.generate(prompt);
     }
 
-@Override
-public String chat(String message) {
+    @Override
+    public String chat(String message) {
+        String texto = message == null ? "" : message.trim();
 
-    // =============================
-    // ESCENARIO 1 (Persona 1)
-    // Búsqueda por palabras clave
-    // =============================
-    if (isCatalogSearchRequest(message)) {
-        return executeCatalogSearch(message);
-    }
+        if (texto.isBlank()) {
+            return """
+                    No puedo responder esa consulta.
 
-// =============================
-// ESCENARIO 2 (Tu parte)
-// El LLM decide la herramienta y
-// extrae la consulta
-// =============================
-if (iaEnabled) {
+                    Puedo ayudarte con:
+                    - Buscar publicaciones
+                    - Buscar productos
+                    - Buscar servicios
+                    """;
+        }
 
-    ToolDecision decision = provider.selectTool(message);
+        // Escenario 1: búsqueda controlada por palabras clave
+        if (isCatalogSearchRequest(texto)) {
+            return executeCatalogSearch(texto, "KEYWORD", !iaEnabled);
+        }
 
-    if (decision != null
-            && "SEARCH_CATALOG".equalsIgnoreCase(decision.getTool())) {
+        // Escenario 4: IA deshabilitada
+        if (!iaEnabled) {
+            return """
+                    Estado IA: DESHABILITADA
 
-        return executeCatalogSearch(decision.getQuery())
-                .replace("KEYWORD", "LLM");
-    }
+                    La IA está deshabilitada.
 
-}
+                    Puedo ayudarte con:
+                    - Buscar publicaciones
+                    - Buscar productos
+                    - Buscar servicios
+                    """;
+        }
 
-    // =============================
-    // ESCENARIO 4 (Persona 1)
-    // IA apagada
-    // =============================
-    if (!iaEnabled) {
+        // Escenario 2: LLM decide usar la herramienta
+        ToolDecision decision = provider.selectTool(texto);
+
+        if (decision != null
+                && "SEARCH_CATALOG".equalsIgnoreCase(decision.getTool())
+                && decision.getQuery() != null
+                && !decision.getQuery().isBlank()) {
+
+            return executeCatalogSearch(decision.getQuery(), "LLM", false);
+        }
+
+        // Escenario 3: fuera de alcance
         return """
-                La IA está deshabilitada.
+                No puedo responder esa consulta.
 
-                Solo puedo ayudarte con:
+                Puedo ayudarte con:
                 - Buscar publicaciones
                 - Buscar productos
                 - Buscar servicios
                 """;
     }
-
-    // =============================
-    // ESCENARIO 3 (Persona 1)
-    // Fuera de alcance
-    // =============================
-    return """
-            No puedo responder esa consulta.
-
-            Puedo ayudarte con:
-            - Buscar publicaciones
-            - Buscar productos
-            - Buscar servicios
-            """;
-}
 
     private boolean isCatalogSearchRequest(String message) {
         String texto = message.toLowerCase(Locale.ROOT);
@@ -107,7 +106,7 @@ if (iaEnabled) {
                 || texto.contains("servicios");
     }
 
-    private String executeCatalogSearch(String message) {
+    private String executeCatalogSearch(String message, String camino, boolean showDisabledBanner) {
         CatalogFilterRequest request = new CatalogFilterRequest();
 
         String busqueda = message
@@ -127,6 +126,10 @@ if (iaEnabled) {
 
         StringBuilder respuesta = new StringBuilder();
 
+        if (showDisabledBanner) {
+            respuesta.append("Estado IA: DESHABILITADA\n\n");
+        }
+
         respuesta.append("""
                 Herramienta:
                 SEARCH_CATALOG
@@ -135,9 +138,13 @@ if (iaEnabled) {
                 publications
 
                 Camino:
-                KEYWORD
+                """)
+                .append(camino)
+                .append("\n\n");
 
-                """);
+        if (camino.equals("KEYWORD")) {
+            respuesta.append("La consulta se resuelve directamente mediante palabras clave.\n\n");
+        }
 
         if (publicaciones.isEmpty()) {
             respuesta.append("No encontré publicaciones que coincidan con tu búsqueda.");
