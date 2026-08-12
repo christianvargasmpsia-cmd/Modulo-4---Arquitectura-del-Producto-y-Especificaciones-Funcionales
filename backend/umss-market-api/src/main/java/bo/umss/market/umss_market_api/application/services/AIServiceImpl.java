@@ -30,15 +30,20 @@ public class AIServiceImpl implements AIService {
 
     @Override
     public String generate(String prompt) {
+
         if (!iaEnabled) {
             return "La IA está deshabilitada. Solo puedo ayudarte con búsquedas del catálogo.";
         }
+
         return provider.generate(prompt);
     }
 
     @Override
     public String chat(String message) {
-        String texto = message == null ? "" : message.trim();
+
+        String texto = message == null
+                ? ""
+                : message.trim();
 
         if (texto.isBlank()) {
             return """
@@ -51,13 +56,27 @@ public class AIServiceImpl implements AIService {
                     """;
         }
 
-        // Escenario 1: búsqueda controlada por palabras clave
+        // =====================================================
+        // ESCENARIO 1
+        // BÚSQUEDA DIRECTA POR PALABRAS CLAVE
+        // =====================================================
+
         if (isCatalogSearchRequest(texto)) {
-            return executeCatalogSearch(texto, "KEYWORD", !iaEnabled);
+
+            return executeCatalogSearch(
+                    texto,
+                    "KEYWORD",
+                    !iaEnabled
+            );
         }
 
-        // Escenario 4: IA deshabilitada
+        // =====================================================
+        // ESCENARIO 2
+        // IA DESHABILITADA
+        // =====================================================
+
         if (!iaEnabled) {
+
             return """
                     Estado IA: DESHABILITADA
 
@@ -70,18 +89,47 @@ public class AIServiceImpl implements AIService {
                     """;
         }
 
-        // Escenario 2: LLM decide usar la herramienta
-        ToolDecision decision = provider.selectTool(texto);
+        // =====================================================
+        // ESCENARIO 3
+        // EL LLM DECIDE UTILIZAR SEARCH_CATALOG
+        // =====================================================
+
+        ToolDecision decision =
+                provider.selectTool(texto);
 
         if (decision != null
-                && "SEARCH_CATALOG".equalsIgnoreCase(decision.getTool())
-                && decision.getQuery() != null
-                && !decision.getQuery().isBlank()) {
+                && "SEARCH_CATALOG".equalsIgnoreCase(
+                        decision.getTool())) {
 
-            return executeCatalogSearch(decision.getQuery(), "LLM", false);
+            /*
+             * IMPORTANTE:
+             *
+             * Para RAG usamos la pregunta original completa.
+             *
+             * Ejemplo:
+             *
+             * "Necesito algo para programar"
+             *
+             * y no solamente:
+             *
+             * "programar"
+             *
+             * Esto permite generar un embedding
+             * representativo de la intención completa.
+             */
+
+            return executeSemanticCatalogSearch(
+                    texto,
+                    "RAG_SEMANTICO",
+                    false
+            );
         }
 
-        // Escenario 3: fuera de alcance
+        // =====================================================
+        // ESCENARIO 4
+        // FUERA DE ALCANCE
+        // =====================================================
+
         return """
                 No puedo responder esa consulta.
 
@@ -92,8 +140,17 @@ public class AIServiceImpl implements AIService {
                 """;
     }
 
+    /**
+     * Detecta consultas que corresponden directamente
+     * al catálogo.
+     *
+     * Estas consultas mantienen el flujo tradicional
+     * mediante palabras clave.
+     */
     private boolean isCatalogSearchRequest(String message) {
-        String texto = message.toLowerCase(Locale.ROOT);
+
+        String texto =
+                message.toLowerCase(Locale.ROOT);
 
         return texto.contains("buscar")
                 || texto.contains("producto")
@@ -106,8 +163,18 @@ public class AIServiceImpl implements AIService {
                 || texto.contains("servicios");
     }
 
-    private String executeCatalogSearch(String message, String camino, boolean showDisabledBanner) {
-        CatalogFilterRequest request = new CatalogFilterRequest();
+    /**
+     * Búsqueda tradicional mediante palabras clave.
+     *
+     * Este flujo existente se mantiene.
+     */
+    private String executeCatalogSearch(
+            String message,
+            String camino,
+            boolean showDisabledBanner) {
+
+        CatalogFilterRequest request =
+                new CatalogFilterRequest();
 
         String busqueda = message
                 .replaceAll("(?i)buscar", "")
@@ -124,10 +191,13 @@ public class AIServiceImpl implements AIService {
         List<PublicationSummaryResponse> publicaciones =
                 searchCatalogUseCase.execute(request);
 
-        StringBuilder respuesta = new StringBuilder();
+        StringBuilder respuesta =
+                new StringBuilder();
 
         if (showDisabledBanner) {
-            respuesta.append("Estado IA: DESHABILITADA\n\n");
+            respuesta.append(
+                    "Estado IA: DESHABILITADA\n\n"
+            );
         }
 
         respuesta.append("""
@@ -143,38 +213,248 @@ public class AIServiceImpl implements AIService {
                 .append("\n\n");
 
         if (camino.equals("KEYWORD")) {
-            respuesta.append("La consulta se resuelve directamente mediante palabras clave.\n\n");
+
+            respuesta.append(
+                    "La consulta se resuelve directamente mediante palabras clave.\n\n"
+            );
         }
 
         if (publicaciones.isEmpty()) {
-            respuesta.append("No encontré publicaciones que coincidan con tu búsqueda.");
+
+            respuesta.append(
+                    "No encontré publicaciones que coincidan con tu búsqueda."
+            );
+
             return respuesta.toString();
         }
 
-        respuesta.append("Encontré las siguientes publicaciones:\n\n");
+        respuesta.append(
+                "Encontré las siguientes publicaciones:\n\n"
+        );
+
+        appendPublications(
+                respuesta,
+                publicaciones
+        );
+
+        return respuesta.toString();
+    }
+
+    /**
+     * Retrieval semántico mediante embeddings.
+     *
+     * Este es el nuevo flujo RAG.
+     */
+    private String executeSemanticCatalogSearch(
+        String query,
+        String camino,
+        boolean showDisabledBanner) {
+
+    List<PublicationSummaryResponse> publicaciones =
+            searchCatalogUseCase.executeSemanticSearch(
+                    query,
+                    3
+            );
+
+    StringBuilder respuesta =
+            new StringBuilder();
+
+    if (showDisabledBanner) {
+
+        respuesta.append(
+                "Estado IA: DESHABILITADA\n\n"
+        );
+    }
+
+    respuesta.append("""
+            Herramienta:
+            SEARCH_CATALOG
+
+            Fuente:
+            publications
+
+            Camino:
+            """)
+            .append(camino)
+            .append("\n\n");
+
+    respuesta.append(
+            "Consulta semántica:\n"
+    );
+
+    respuesta.append(query)
+            .append("\n\n");
+
+    if (publicaciones.isEmpty()) {
+
+        respuesta.append(
+                "No encontré publicaciones relacionadas semánticamente con tu consulta."
+        );
+
+        return respuesta.toString();
+    }
+
+    // =====================================================
+    // CONSTRUIR CONTEXTO PARA EL LLM
+    // =====================================================
+
+    StringBuilder contexto =
+            new StringBuilder();
+
+    for (PublicationSummaryResponse p : publicaciones) {
+
+        contexto.append("Producto: ")
+                .append(p.getNombre())
+                .append("\n");
+
+        if (p.getDescripcion() != null
+                && !p.getDescripcion().isBlank()) {
+
+            contexto.append("Descripción: ")
+                    .append(p.getDescripcion())
+                    .append("\n");
+        }
+
+        if (p.getPrecio() != null) {
+
+            contexto.append("Precio: Bs. ")
+                    .append(p.getPrecio())
+                    .append("\n");
+        }
+
+        if (p.getNombreTienda() != null) {
+
+            contexto.append("Tienda: ")
+                    .append(p.getNombreTienda())
+                    .append("\n");
+        }
+
+        if (p.getStock() != null) {
+
+            contexto.append("Stock: ")
+                    .append(p.getStock())
+                    .append("\n");
+        }
+
+        contexto.append("\n");
+    }
+
+    // =====================================================
+    // GENERACIÓN RAG
+    // =====================================================
+
+    String prompt = """
+            Eres el asistente de UMSS Market.
+
+            Debes responder la pregunta del usuario
+            utilizando EXCLUSIVAMENTE la información
+            proporcionada en el contexto recuperado.
+
+            No inventes productos, precios, tiendas ni stock.
+
+            Si la información del contexto no permite
+            responder la pregunta, indícalo claramente.
+
+            Responde de forma natural, clara y breve.
+
+            PREGUNTA DEL USUARIO:
+            %s
+
+            CONTEXTO RECUPERADO:
+            %s
+            """.formatted(
+                    query,
+                    contexto
+            );
+
+    String respuestaGenerada =
+            provider.generate(prompt);
+
+    if (respuestaGenerada == null
+            || respuestaGenerada.isBlank()) {
+
+        respuesta.append(
+                "Encontré publicaciones relacionadas:\n\n"
+        );
+
+        appendPublications(
+                respuesta,
+                publicaciones
+        );
+
+        return respuesta.toString();
+    }
+
+    // =====================================================
+    // RESPUESTA FINAL
+    // =====================================================
+
+    respuesta.append(
+            "Respuesta generada con contexto recuperado:\n\n"
+    );
+
+    respuesta.append(
+            respuestaGenerada.trim()
+    );
+
+    return respuesta.toString();
+}
+
+    /**
+     * Construye la respuesta de publicaciones.
+     */
+    private void appendPublications(
+            StringBuilder respuesta,
+            List<PublicationSummaryResponse> publicaciones) {
 
         for (PublicationSummaryResponse p : publicaciones) {
-            respuesta.append("📦 Producto: ").append(p.getNombre()).append("\n");
 
-            if (p.getDescripcion() != null && !p.getDescripcion().isBlank()) {
-                respuesta.append("📝 Descripción: ").append(p.getDescripcion()).append("\n");
+            respuesta.append(
+                    "📦 Producto: "
+            )
+            .append(p.getNombre())
+            .append("\n");
+
+            if (p.getDescripcion() != null
+                    && !p.getDescripcion().isBlank()) {
+
+                respuesta.append(
+                        "📝 Descripción: "
+                )
+                .append(p.getDescripcion())
+                .append("\n");
             }
 
             if (p.getPrecio() != null) {
-                respuesta.append("💰 Precio: Bs. ").append(p.getPrecio()).append("\n");
+
+                respuesta.append(
+                        "💰 Precio: Bs. "
+                )
+                .append(p.getPrecio())
+                .append("\n");
             }
 
             if (p.getNombreTienda() != null) {
-                respuesta.append("🏪 Tienda: ").append(p.getNombreTienda()).append("\n");
+
+                respuesta.append(
+                        "🏪 Tienda: "
+                )
+                .append(p.getNombreTienda())
+                .append("\n");
             }
 
             if (p.getStock() != null) {
-                respuesta.append("📦 Stock disponible: ").append(p.getStock()).append("\n");
+
+                respuesta.append(
+                        "📦 Stock disponible: "
+                )
+                .append(p.getStock())
+                .append("\n");
             }
 
-            respuesta.append("\n────────────────────────────────────\n\n");
+            respuesta.append(
+                    "\n────────────────────────────────────\n\n"
+            );
         }
-
-        return respuesta.toString();
     }
 }
