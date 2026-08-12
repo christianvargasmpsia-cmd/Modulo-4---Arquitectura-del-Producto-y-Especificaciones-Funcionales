@@ -6,7 +6,13 @@ import java.util.UUID;
 
 import bo.umss.market.umss_market_api.domain.enums.PaymentMode;
 import bo.umss.market.umss_market_api.domain.enums.PublicationType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,4 +54,13 @@ public class PublicationEntity {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    /**
+     * Embedding semántico de la publicación.
+     *
+     * Se almacena como texto JSON.
+     */
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String embedding;
 }

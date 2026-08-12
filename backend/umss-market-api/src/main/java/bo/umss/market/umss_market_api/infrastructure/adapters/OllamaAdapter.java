@@ -1,12 +1,17 @@
 package bo.umss.market.umss_market_api.infrastructure.adapters;
 
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import bo.umss.market.umss_market_api.application.dto.ToolDecision;
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import bo.umss.market.umss_market_api.infrastructure.dto.request.OllamaRequest;
 import bo.umss.market.umss_market_api.infrastructure.dto.response.OllamaResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 public class OllamaAdapter implements AIProviderPort {
@@ -14,8 +19,17 @@ public class OllamaAdapter implements AIProviderPort {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String URL =
+    private static final String GENERATE_URL =
             "http://localhost:11434/api/generate";
+
+    private static final String EMBEDDING_URL =
+            "http://localhost:11434/api/embed";
+
+    private static final String GENERATION_MODEL =
+            "llama3.2:3b";
+
+    private static final String EMBEDDING_MODEL =
+            "nomic-embed-text";
 
     public OllamaAdapter(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -25,11 +39,15 @@ public class OllamaAdapter implements AIProviderPort {
     public String generate(String prompt) {
 
         OllamaRequest request =
-                new OllamaRequest("llama3.2:3b", prompt, false);
+                new OllamaRequest(
+                        GENERATION_MODEL,
+                        prompt,
+                        false
+                );
 
         OllamaResponse response =
                 restTemplate.postForObject(
-                        URL,
+                        GENERATE_URL,
                         request,
                         OllamaResponse.class
                 );
@@ -45,53 +63,57 @@ public class OllamaAdapter implements AIProviderPort {
     public ToolDecision selectTool(String question) {
 
         String prompt = """
-Eres un router de herramientas para UMSS Market.
+                Eres un router de herramientas para UMSS Market.
 
-Debes decidir qué herramienta utilizar y extraer únicamente el término de búsqueda.
+                Debes decidir qué herramienta utilizar y extraer únicamente el término de búsqueda.
 
-Herramienta disponible:
+                Herramienta disponible:
 
-SEARCH_CATALOG
+                SEARCH_CATALOG
 
-Responde EXCLUSIVAMENTE con un JSON válido.
+                Responde EXCLUSIVAMENTE con un JSON válido.
 
-Formato:
+                Formato:
 
-{
-  "tool":"SEARCH_CATALOG",
-  "query":"laptop"
-}
+                {
+                  "tool":"SEARCH_CATALOG",
+                  "query":"laptop"
+                }
 
-Reglas:
+                Reglas:
 
-- "Quiero comprar una laptop" -> "laptop"
-- "¿Qué computadoras tienen?" -> "computadoras"
-- "Busco mouse gamer" -> "mouse gamer"
-- "Necesito una impresora HP" -> "impresora HP"
+                - "Quiero comprar una laptop" -> "laptop"
+                - "¿Qué computadoras tienen?" -> "computadoras"
+                - "Busco mouse gamer" -> "mouse gamer"
+                - "Necesito una impresora HP" -> "impresora HP"
 
-Si la consulta NO corresponde al marketplace responde:
+                Si la consulta NO corresponde al marketplace responde:
 
-{
-  "tool":"NO_TOOL",
-  "query":""
-}
+                {
+                  "tool":"NO_TOOL",
+                  "query":""
+                }
 
-NO escribas explicaciones.
-NO uses markdown.
-NO uses ```json.
-Devuelve únicamente el JSON.
+                NO escribas explicaciones.
+                NO uses markdown.
+                NO uses ```json.
+                Devuelve únicamente el JSON.
 
-Pregunta:
+                Pregunta:
 
-%s
-""".formatted(question);
+                %s
+                """.formatted(question);
 
         OllamaRequest request =
-                new OllamaRequest("llama3.2:3b", prompt, false);
+                new OllamaRequest(
+                        GENERATION_MODEL,
+                        prompt,
+                        false
+                );
 
         OllamaResponse response =
                 restTemplate.postForObject(
-                        URL,
+                        GENERATE_URL,
                         request,
                         OllamaResponse.class
                 );
@@ -99,6 +121,7 @@ Pregunta:
         if (response == null || response.getResponse() == null) {
 
             ToolDecision decision = new ToolDecision();
+
             decision.setTool("NO_TOOL");
             decision.setQuery("");
 
@@ -122,41 +145,102 @@ Pregunta:
                     ToolDecision.class
             );
 
-       } catch (Exception ex) {
+        } catch (Exception ex) {
 
-    ToolDecision decision = new ToolDecision();
+            ToolDecision decision = new ToolDecision();
 
-    if (json.toUpperCase().contains("SEARCH_CATALOG")) {
+            if (json.toUpperCase().contains("SEARCH_CATALOG")) {
 
-        decision.setTool("SEARCH_CATALOG");
+                decision.setTool("SEARCH_CATALOG");
 
-        String query = question
-                .replaceAll("(?i)quiero comprar", "")
-                .replaceAll("(?i)quiero", "")
-                .replaceAll("(?i)comprar", "")
-                .replaceAll("(?i)busco", "")
-                .replaceAll("(?i)buscar", "")
-                .replaceAll("(?i)necesito", "")
-                .replaceAll("(?i)muéstrame", "")
-                .replaceAll("(?i)mostrar", "")
-                .replaceAll("(?i)qué", "")
-                .replaceAll("(?i)tienen", "")
-                .replaceAll("(?i)una", "")
-                .replaceAll("(?i)un", "")
-                .replaceAll("[¿?]", "")
-                .trim();
+                String query = question
+                        .replaceAll("(?i)quiero comprar", "")
+                        .replaceAll("(?i)quiero", "")
+                        .replaceAll("(?i)comprar", "")
+                        .replaceAll("(?i)busco", "")
+                        .replaceAll("(?i)buscar", "")
+                        .replaceAll("(?i)necesito", "")
+                        .replaceAll("(?i)muéstrame", "")
+                        .replaceAll("(?i)mostrar", "")
+                        .replaceAll("(?i)qué", "")
+                        .replaceAll("(?i)tienen", "")
+                        .replaceAll("(?i)una", "")
+                        .replaceAll("(?i)un", "")
+                        .replaceAll("[¿?]", "")
+                        .trim();
 
-        decision.setQuery(query);
+                decision.setQuery(query);
 
-    } else {
+            } else {
 
-        decision.setTool("NO_TOOL");
-        decision.setQuery("");
+                decision.setTool("NO_TOOL");
+                decision.setQuery("");
+            }
 
+            return decision;
+        }
     }
 
-    return decision;
-}
-    }
+    @Override
+    public List<Double> generateEmbedding(String text) {
 
+        if (text == null || text.isBlank()) {
+            return List.of();
+        }
+
+        try {
+
+            String requestBody = """
+                    {
+                      "model": "%s",
+                      "input": %s
+                    }
+                    """.formatted(
+                    EMBEDDING_MODEL,
+                    objectMapper.writeValueAsString(text)
+            );
+
+            String response =
+                    restTemplate.postForObject(
+                            EMBEDDING_URL,
+                            requestBody,
+                            String.class
+                    );
+
+            if (response == null || response.isBlank()) {
+                return List.of();
+            }
+
+            JsonNode root =
+                    objectMapper.readTree(response);
+
+            JsonNode embeddings =
+                    root.path("embeddings");
+
+            if (!embeddings.isArray()
+                    || embeddings.isEmpty()) {
+
+                return List.of();
+            }
+
+            JsonNode firstEmbedding =
+                    embeddings.get(0);
+
+            return objectMapper.convertValue(
+                    firstEmbedding,
+                    objectMapper.getTypeFactory()
+                            .constructCollectionType(
+                                    List.class,
+                                    Double.class
+                            )
+            );
+
+        } catch (Exception ex) {
+
+            throw new IllegalStateException(
+                    "No fue posible generar el embedding con Ollama",
+                    ex
+            );
+        }
+    }
 }

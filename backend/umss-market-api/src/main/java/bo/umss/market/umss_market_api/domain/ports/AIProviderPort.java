@@ -1,5 +1,7 @@
 package bo.umss.market.umss_market_api.domain.ports;
 
+import java.util.List;
+
 import bo.umss.market.umss_market_api.application.dto.ToolDecision;
 
 public interface AIProviderPort {
@@ -15,4 +17,11 @@ public interface AIProviderPort {
      */
     ToolDecision selectTool(String question);
 
+    /**
+     * Genera un embedding vectorial a partir de un texto.
+     *
+     * Este vector será utilizado posteriormente
+     * para realizar búsqueda semántica mediante RAG.
+     */
+    List<Double> generateEmbedding(String text);
 }

@@ -8,7 +8,8 @@ public class PublicationMapper {
     private PublicationMapper() {
     }
 
-    public static PublicationEntity toEntity(Publication publication) {
+    public static PublicationEntity toEntity(
+            Publication publication) {
 
         return PublicationEntity.builder()
                 .id(publication.getId())
@@ -22,10 +23,12 @@ public class PublicationMapper {
                 .activa(publication.getActiva())
                 .createdAt(publication.getCreatedAt())
                 .updatedAt(publication.getUpdatedAt())
+                .embedding(publication.getEmbedding())
                 .build();
     }
 
-    public static Publication toDomain(PublicationEntity entity) {
+    public static Publication toDomain(
+            PublicationEntity entity) {
 
         return Publication.builder()
                 .id(entity.getId())
@@ -39,6 +42,7 @@ public class PublicationMapper {
                 .activa(entity.getActiva())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
+                .embedding(entity.getEmbedding())
                 .build();
     }
 }

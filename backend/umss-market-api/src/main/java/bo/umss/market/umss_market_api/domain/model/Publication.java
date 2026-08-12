@@ -34,4 +34,12 @@ public class Publication {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    /**
+     * Embedding semántico de la publicación.
+     *
+     * Se mantiene como JSON para poder transportarlo
+     * entre dominio y persistencia.
+     */
+    private String embedding;
 }
