@@ -38,6 +38,19 @@ public class AIServiceImpl implements AIService {
         return provider.generate(prompt);
     }
 
+    @Autowired
+    private GetPublicationDetailSemanticUseCase publicationDetailUseCase;
+    
+    @Autowired
+    private SearchStoresBySemanticUseCase storesUseCase;
+    
+    @Autowired
+    private GetUserInteractionsSemanticUseCase interactionsUseCase;
+    
+    @Autowired
+    private GetRecommendationsUseCase recommendationsUseCase;
+    
+
     @Override
     public String chat(String message) {
 
@@ -94,51 +107,81 @@ public class AIServiceImpl implements AIService {
         // EL LLM DECIDE UTILIZAR SEARCH_CATALOG
         // =====================================================
 
-        ToolDecision decision =
-                provider.selectTool(texto);
-
-        if (decision != null
-                && "SEARCH_CATALOG".equalsIgnoreCase(
-                        decision.getTool())) {
-
-            /*
-             * IMPORTANTE:
-             *
-             * Para RAG usamos la pregunta original completa.
-             *
-             * Ejemplo:
-             *
-             * "Necesito algo para programar"
-             *
-             * y no solamente:
-             *
-             * "programar"
-             *
-             * Esto permite generar un embedding
-             * representativo de la intención completa.
-             */
-
-            return executeSemanticCatalogSearch(
-                    texto,
-                    "RAG_SEMANTICO",
-                    false
-            );
+        ToolDecision decision = provider.selectTool(texto);
+        
+        if (decision != null) {
+            switch (decision.getTool().toUpperCase()) {
+                case "SEARCH_CATALOG" -> {
+                    return executeSemanticCatalogSearch(texto, "RAG_SEMANTICO", false);
+                }
+                case "PUBLICATION_DETAIL" -> {
+                    // Extraer ID de publicación del contexto
+                    UUID pubId = extractPublicationId(decision);
+                    return publicationDetailUseCase.executeWithContext(pubId, texto);
+                }
+                case "SEARCH_STORES" -> {
+                    return storesUseCase.executeSemanticSearch(texto);
+                }
+                case "USER_INTERACTIONS" -> {
+                    UUID userId = getCurrentUserId(); // Del contexto de auth
+                    return interactionsUseCase.executeUserHistory(userId, texto);
+                }
+                case "RECOMMENDATIONS" -> {
+                    UUID userId = getCurrentUserId();
+                    return recommendationsUseCase.getRecommendations(userId, texto);
+                }
+                default -> {
+                    return "No puedo responder esa consulta.";
+                }
+            }
         }
+        
+        return "No puedo responder esa consulta.";
+    }
+}
+
+        // if (decision != null
+        //         && "SEARCH_CATALOG".equalsIgnoreCase(
+        //                 decision.getTool())) {
+
+        //     /*
+        //      * IMPORTANTE:
+        //      *
+        //      * Para RAG usamos la pregunta original completa.
+        //      *
+        //      * Ejemplo:
+        //      *
+        //      * "Necesito algo para programar"
+        //      *
+        //      * y no solamente:
+        //      *
+        //      * "programar"
+        //      *
+        //      * Esto permite generar un embedding
+        //      * representativo de la intención completa.
+        //      */
+
+        //     return executeSemanticCatalogSearch(
+        //             texto,
+        //             "RAG_SEMANTICO",
+        //             false
+        //     );
+        // }
 
         // =====================================================
         // ESCENARIO 4
         // FUERA DE ALCANCE
         // =====================================================
 
-        return """
-                No puedo responder esa consulta.
+//         return """
+//                 No puedo responder esa consulta.
 
-                Puedo ayudarte con:
-                - Buscar publicaciones
-                - Buscar productos
-                - Buscar servicios
-                """;
-    }
+//                 Puedo ayudarte con:
+//                 - Buscar publicaciones
+//                 - Buscar productos
+//                 - Buscar servicios
+//                 """;
+//     }
 
     /**
      * Detecta consultas que corresponden directamente
