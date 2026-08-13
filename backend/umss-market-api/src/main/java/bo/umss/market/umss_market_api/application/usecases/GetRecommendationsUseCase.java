@@ -1,3 +1,19 @@
+package bo.umss.market.umss_market_api.application.usecases;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import bo.umss.market.umss_market_api.domain.model.Interaction;
+import bo.umss.market.umss_market_api.domain.model.Publication;
+import bo.umss.market.umss_market_api.domain.model.Store;
+import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
+import bo.umss.market.umss_market_api.domain.ports.InteractionRepositoryPort;
+import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
+import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class GetRecommendationsUseCase {
@@ -7,28 +23,11 @@ public class GetRecommendationsUseCase {
     private final StoreRepositoryPort storeRepository;
     private final AIProviderPort aiProvider;
 
-    /**
-     * Genera recomendaciones personalizadas.
-     * 
-     * Combina:
-     * 1. Historial de interacciones del usuario
-     * 2. Preferencias inferidas
-     * 3. Productos similares
-     * 4. Tiendas relevantes
-     * 
-     * Ejemplo: "¿Qué me recomiendas para estudiar programación?"
-     * → Busca interacciones relacionadas con programación
-     * → Identifica patrones de precio, tiendas favoritas
-     * → Busca productos similares a lo que vio antes
-     * → LLM genera recomendación personalizada
-     */
     public String getRecommendations(UUID userId, String userQuery) {
         
-        // 1. Obtener historial de usuario
         List<Interaction> userInteractions = 
             interactionRepository.findRecentByUserId(userId, 30);
         
-        // 2. Extraer publicaciones que vio/favoritó
         List<UUID> interactedPublications = userInteractions.stream()
             .map(Interaction::getPublicationId)
             .toList();
@@ -38,51 +37,30 @@ public class GetRecommendationsUseCase {
             .filter(p -> interactedPublications.contains(p.getId()))
             .toList();
         
-        // 3. Calcular preferencias: precio promedio, categorías
         double avgPrice = viewed.stream()
             .mapToDouble(p -> p.getPrecio().doubleValue())
             .average()
             .orElse(100);
         
-        // 4. Obtener contexto de todas las tiendas
-        List<Store> allStores = storeRepository.findAll();
-        
-        // 5. Construir perfil del usuario y contexto de recomendación
         String userProfile = String.format("""
             Perfil del usuario:
             - Ha interactuado con %d productos
             - Precio promedio de interés: Bs. %.2f
-            - Tipos de productos: %s
             - Intereses recientes: %s
             """,
             viewed.size(),
             avgPrice,
-            extractCategories(viewed),
             extractRecentInterests(viewed)
         );
         
-        // 6. Buscar publicaciones similares usando embeddings
         List<Double> queryEmbedding = aiProvider.generateEmbedding(userQuery);
         
         List<Publication> recommendations = publicationRepository.findAll()
             .stream()
             .filter(p -> !interactedPublications.contains(p.getId()))
-            .filter(p -> p.getEmbedding() != null)
-            .sorted((p1, p2) -> {
-                Double sim1 = cosineSimilarity(
-                    queryEmbedding,
-                    parseEmbedding(p1.getEmbedding())
-                );
-                Double sim2 = cosineSimilarity(
-                    queryEmbedding,
-                    parseEmbedding(p2.getEmbedding())
-                );
-                return sim2.compareTo(sim1);
-            })
             .limit(10)
             .toList();
         
-        // 7. Construir contexto de recomendaciones
         StringBuilder recomendations = new StringBuilder();
         recomendations.append("Productos recomendados:\n\n");
         
@@ -105,7 +83,6 @@ public class GetRecommendationsUseCase {
             ));
         }
         
-        // 8. Prompt final que combina todo
         String prompt = """
             Eres un asistente de recomendaciones en UMSS Market.
             
@@ -123,15 +100,6 @@ public class GetRecommendationsUseCase {
             """.formatted(userProfile, userQuery, recomendations);
         
         return aiProvider.generate(prompt);
-    }
-    
-    private String extractCategories(List<Publication> publications) {
-        return publications.stream()
-            .map(p -> p.getTipo().toString())
-            .distinct()
-            .limit(3)
-            .reduce((a, b) -> a + ", " + b)
-            .orElse("varias");
     }
     
     private String extractRecentInterests(List<Publication> publications) {

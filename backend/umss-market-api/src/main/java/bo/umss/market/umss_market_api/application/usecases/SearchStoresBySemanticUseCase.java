@@ -1,3 +1,16 @@
+package bo.umss.market.umss_market_api.application.usecases;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import bo.umss.market.umss_market_api.domain.model.CatalogFilter;
+import bo.umss.market.umss_market_api.domain.model.Store;
+import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
+import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
+import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class SearchStoresBySemanticUseCase {
@@ -6,28 +19,20 @@ public class SearchStoresBySemanticUseCase {
     private final PublicationRepositoryPort publicationRepository;
     private final AIProviderPort aiProvider;
 
-    /**
-     * Busca tiendas por consultas semánticas.
-     * 
-     * Ejemplo: "Busco una tienda que venda computadoras"
-     * → Genera embedding de la consulta
-     * → Compara con descripciones de tiendas
-     * → Retorna tiendas + sus productos
-     * → LLM genera respuesta
-     */
     public String executeSemanticSearch(String query) {
         
         List<Double> queryEmbedding = aiProvider.generateEmbedding(query);
         
+        if (queryEmbedding.isEmpty()) {
+            return "No pude procesar tu consulta.";
+        }
+        
         List<Store> stores = storeRepository.findAll();
         
-        // Buscar tienda más similar (simplificado)
-        // En producción, almacenarías embeddings de tiendas también
         List<Store> relevantStores = stores.stream()
-            .limit(3)  // Top 3 tiendas para contexto
+            .limit(3)
             .toList();
         
-        // Construir contexto con tiendas + publicaciones
         StringBuilder contexto = new StringBuilder();
         contexto.append("Tiendas disponibles:\n\n");
         
@@ -46,7 +51,6 @@ public class SearchStoresBySemanticUseCase {
                 store.getEmailContacto()
             ));
             
-            // Listar primeros 5 productos de la tienda
             CatalogFilter filter = CatalogFilter.builder()
                 .storeId(store.getId())
                 .build();
@@ -74,7 +78,7 @@ public class SearchStoresBySemanticUseCase {
             %s
             
             Recomienda la tienda que mejor se ajuste a lo que busca.
-            Sé amable y destacar los productos relevantes.
+            Sé amable y destaca los productos relevantes.
             """.formatted(query, contexto);
         
         return aiProvider.generate(prompt);

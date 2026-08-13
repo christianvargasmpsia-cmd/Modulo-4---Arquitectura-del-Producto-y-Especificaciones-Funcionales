@@ -1,3 +1,17 @@
+package bo.umss.market.umss_market_api.application.usecases;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import bo.umss.market.umss_market_api.domain.model.Publication;
+import bo.umss.market.umss_market_api.domain.model.Store;
+import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
+import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
+import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class GetPublicationDetailSemanticUseCase {
@@ -6,26 +20,14 @@ public class GetPublicationDetailSemanticUseCase {
     private final StoreRepositoryPort storeRepository;
     private final AIProviderPort aiProvider;
 
-    /**
-     * Obtiene detalles de una publicación y genera
-     * un contexto enriquecido para responder preguntas.
-     * 
-     * Ejemplo:
-     * "¿Cuáles son las características de la laptop?"
-     * → Encuentra la publicación
-     * → Crea contexto con nombre, descripción, precio, stock
-     * → LLM genera respuesta en lenguaje natural
-     */
     public String executeWithContext(UUID publicationId, String question) {
         
         Publication pub = publicationRepository.findById(publicationId)
-                .orElseThrow(() -> new PublicationNotFoundException(
-                        "Publicación no encontrada"));
+                .orElseThrow(() -> new RuntimeException("Publicación no encontrada"));
         
         Store store = storeRepository.findById(pub.getStoreId())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
         
-        // Construir contexto enriquecido
         String contexto = String.format("""
             Publicación: %s
             
@@ -62,31 +64,18 @@ public class GetPublicationDetailSemanticUseCase {
         
         return aiProvider.generate(prompt);
     }
-    
-    /**
-     * Búsqueda semántica de publicaciones por descripción
-     * (cuando no sabemos el ID exacto)
-     */
+
     public String executeSemanticSearch(String query) {
-        // Similar a SearchCatalogUseCase pero enfocado en descripciones
         List<Double> queryEmbedding = aiProvider.generateEmbedding(query);
         
-        // Buscar publicaciones y calcular similitud con descripciones
+        if (queryEmbedding.isEmpty()) {
+            return "No pude generar el embedding de tu consulta.";
+        }
+        
         List<Publication> publications = publicationRepository.findAll();
         
         List<Publication> relevant = publications.stream()
             .filter(p -> p.getEmbedding() != null)
-            .sorted((p1, p2) -> {
-                Double sim1 = cosineSimilarity(
-                    queryEmbedding, 
-                    parseEmbedding(p1.getEmbedding())
-                );
-                Double sim2 = cosineSimilarity(
-                    queryEmbedding,
-                    parseEmbedding(p2.getEmbedding())
-                );
-                return sim2.compareTo(sim1);
-            })
             .limit(1)
             .toList();
         
@@ -95,7 +84,8 @@ public class GetPublicationDetailSemanticUseCase {
         }
         
         Publication pub = relevant.get(0);
-        Store store = storeRepository.findById(pub.getStoreId()).orElseThrow();
+        Store store = storeRepository.findById(pub.getStoreId())
+                .orElseThrow();
         
         String contexto = String.format("""
             Encontré: %s

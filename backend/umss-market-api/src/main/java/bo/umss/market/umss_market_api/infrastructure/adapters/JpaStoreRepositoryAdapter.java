@@ -1,5 +1,6 @@
 package bo.umss.market.umss_market_api.infrastructure.adapters;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,5 +42,13 @@ public class JpaStoreRepositoryAdapter implements StoreRepositoryPort {
     @Override
     public boolean existsByUserId(UUID userId) {
         return repository.existsByUserId(userId);
+    }
+
+    @Override
+    public List<Store> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(StoreMapper::toDomain)
+                .toList();
     }
 }

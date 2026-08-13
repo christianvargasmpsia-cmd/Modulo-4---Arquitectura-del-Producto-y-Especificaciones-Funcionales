@@ -1,5 +1,6 @@
 package bo.umss.market.umss_market_api.domain.ports;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface StoreRepositoryPort {
     Optional<Store> findByUserId(UUID userId);
 
     boolean existsByUserId(UUID userId);
+    
+    List<Store> findAll();
 }

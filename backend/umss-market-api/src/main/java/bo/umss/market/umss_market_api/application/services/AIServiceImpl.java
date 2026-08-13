@@ -4,12 +4,18 @@ import bo.umss.market.umss_market_api.application.dto.CatalogFilterRequest;
 import bo.umss.market.umss_market_api.application.dto.PublicationSummaryResponse;
 import bo.umss.market.umss_market_api.application.dto.ToolDecision;
 import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
+import bo.umss.market.umss_market_api.application.usecases.GetPublicationDetailSemanticUseCase;
+import bo.umss.market.umss_market_api.application.usecases.SearchStoresBySemanticUseCase;
+import bo.umss.market.umss_market_api.application.usecases.GetUserInteractionsSemanticUseCase;
+import bo.umss.market.umss_market_api.application.usecases.GetRecommendationsUseCase;
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 public class AIServiceImpl implements AIService {
@@ -19,6 +25,18 @@ public class AIServiceImpl implements AIService {
 
     private final AIProviderPort provider;
     private final SearchCatalogUseCase searchCatalogUseCase;
+    
+    @Autowired(required = false)
+    private GetPublicationDetailSemanticUseCase publicationDetailUseCase;
+    
+    @Autowired(required = false)
+    private SearchStoresBySemanticUseCase searchStoresUseCase;
+    
+    @Autowired(required = false)
+    private GetUserInteractionsSemanticUseCase userInteractionsUseCase;
+    
+    @Autowired(required = false)
+    private GetRecommendationsUseCase recommendationsUseCase;
 
     public AIServiceImpl(
             AIProviderPort provider,
@@ -37,19 +55,6 @@ public class AIServiceImpl implements AIService {
 
         return provider.generate(prompt);
     }
-
-    @Autowired
-    private GetPublicationDetailSemanticUseCase publicationDetailUseCase;
-    
-    @Autowired
-    private SearchStoresBySemanticUseCase storesUseCase;
-    
-    @Autowired
-    private GetUserInteractionsSemanticUseCase interactionsUseCase;
-    
-    @Autowired
-    private GetRecommendationsUseCase recommendationsUseCase;
-    
 
     @Override
     public String chat(String message) {
@@ -71,24 +76,14 @@ public class AIServiceImpl implements AIService {
 
         // =====================================================
         // ESCENARIO 1
-        // BÚSQUEDA DIRECTA POR PALABRAS CLAVE
-        // =====================================================
-
-        if (isCatalogSearchRequest(texto)) {
-
-            return executeCatalogSearch(
-                    texto,
-                    "KEYWORD",
-                    !iaEnabled
-            );
-        }
-
-        // =====================================================
-        // ESCENARIO 2
-        // IA DESHABILITADA
+        // IA DESHABILITADA - SOLO BÚSQUEDA POR PALABRAS CLAVE
         // =====================================================
 
         if (!iaEnabled) {
+
+            if (isCatalogSearchRequest(texto)) {
+                return executeCatalogSearch(texto, "KEYWORD", true);
+            }
 
             return """
                     Estado IA: DESHABILITADA
@@ -103,97 +98,84 @@ public class AIServiceImpl implements AIService {
         }
 
         // =====================================================
-        // ESCENARIO 3
-        // EL LLM DECIDE UTILIZAR SEARCH_CATALOG
+        // ESCENARIO 2
+        // IA HABILITADA - USAR selectTool() PARA DECIDIR
         // =====================================================
 
         ToolDecision decision = provider.selectTool(texto);
-        
-        if (decision != null) {
-            switch (decision.getTool().toUpperCase()) {
-                case "SEARCH_CATALOG" -> {
-                    return executeSemanticCatalogSearch(texto, "RAG_SEMANTICO", false);
-                }
-                case "PUBLICATION_DETAIL" -> {
-                    // Extraer ID de publicación del contexto
-                    UUID pubId = extractPublicationId(decision);
-                    return publicationDetailUseCase.executeWithContext(pubId, texto);
-                }
-                case "SEARCH_STORES" -> {
-                    return storesUseCase.executeSemanticSearch(texto);
-                }
-                case "USER_INTERACTIONS" -> {
-                    UUID userId = getCurrentUserId(); // Del contexto de auth
-                    return interactionsUseCase.executeUserHistory(userId, texto);
-                }
-                case "RECOMMENDATIONS" -> {
-                    UUID userId = getCurrentUserId();
-                    return recommendationsUseCase.getRecommendations(userId, texto);
-                }
-                default -> {
-                    return "No puedo responder esa consulta.";
-                }
-            }
+
+        if (decision == null || decision.getTool() == null) {
+            return """
+                    No puedo responder esa consulta.
+
+                    Puedo ayudarte con:
+                    - Buscar publicaciones
+                    - Buscar productos
+                    - Buscar servicios
+                    """;
         }
-        
-        return "No puedo responder esa consulta.";
+
+        String tool = decision.getTool().toUpperCase();
+
+        switch (tool) {
+            case "SEARCH_CATALOG":
+                return executeSemanticCatalogSearch(
+                        texto,
+                        "RAG_SEMANTICO_CATALOGO"
+                );
+
+            case "PUBLICATION_DETAIL":
+                if (publicationDetailUseCase != null) {
+                    UUID pubId = extractPublicationId(decision);
+                    if (pubId != null) {
+                        return publicationDetailUseCase.executeWithContext(pubId, texto);
+                    }
+                }
+                return "No pude obtener detalles de esa publicación.";
+
+            case "SEARCH_STORES":
+                if (searchStoresUseCase != null) {
+                    return searchStoresUseCase.executeSemanticSearch(texto);
+                }
+                return "No pude buscar tiendas en este momento.";
+
+            case "USER_INTERACTIONS":
+                if (userInteractionsUseCase != null) {
+                    UUID userId = getCurrentUserId();
+                    if (userId != null) {
+                        return userInteractionsUseCase.executeUserHistory(userId, texto);
+                    }
+                }
+                return "No pude acceder a tu historial de interacciones.";
+
+            case "RECOMMENDATIONS":
+                if (recommendationsUseCase != null) {
+                    UUID userId = getCurrentUserId();
+                    if (userId != null) {
+                        return recommendationsUseCase.getRecommendations(userId, texto);
+                    }
+                }
+                return "No pude generar recomendaciones en este momento.";
+
+            default:
+                return """
+                        No puedo responder esa consulta.
+
+                        Puedo ayudarte con:
+                        - Buscar publicaciones
+                        - Buscar productos
+                        - Buscar servicios
+                        """;
+        }
     }
-}
-
-        // if (decision != null
-        //         && "SEARCH_CATALOG".equalsIgnoreCase(
-        //                 decision.getTool())) {
-
-        //     /*
-        //      * IMPORTANTE:
-        //      *
-        //      * Para RAG usamos la pregunta original completa.
-        //      *
-        //      * Ejemplo:
-        //      *
-        //      * "Necesito algo para programar"
-        //      *
-        //      * y no solamente:
-        //      *
-        //      * "programar"
-        //      *
-        //      * Esto permite generar un embedding
-        //      * representativo de la intención completa.
-        //      */
-
-        //     return executeSemanticCatalogSearch(
-        //             texto,
-        //             "RAG_SEMANTICO",
-        //             false
-        //     );
-        // }
-
-        // =====================================================
-        // ESCENARIO 4
-        // FUERA DE ALCANCE
-        // =====================================================
-
-//         return """
-//                 No puedo responder esa consulta.
-
-//                 Puedo ayudarte con:
-//                 - Buscar publicaciones
-//                 - Buscar productos
-//                 - Buscar servicios
-//                 """;
-//     }
 
     /**
      * Detecta consultas que corresponden directamente
-     * al catálogo.
-     *
-     * Estas consultas mantienen el flujo tradicional
-     * mediante palabras clave.
+     * al catálogo por palabras clave.
      */
     private boolean isCatalogSearchRequest(String message) {
 
-        String texto =
-                message.toLowerCase(Locale.ROOT);
+        String texto = message.toLowerCase(Locale.ROOT);
 
         return texto.contains("buscar")
                 || texto.contains("producto")
@@ -208,8 +190,6 @@ public class AIServiceImpl implements AIService {
 
     /**
      * Búsqueda tradicional mediante palabras clave.
-     *
-     * Este flujo existente se mantiene.
      */
     private String executeCatalogSearch(
             String message,
@@ -243,250 +223,34 @@ public class AIServiceImpl implements AIService {
             );
         }
 
-        respuesta.append("""
-                Herramienta:
-                SEARCH_CATALOG
-
-                Fuente:
-                publications
-
-                Camino:
-                """)
+        respuesta.append("Camino: ")
                 .append(camino)
                 .append("\n\n");
 
-        if (camino.equals("KEYWORD")) {
+        if (publicaciones == null || publicaciones.isEmpty()) {
+            respuesta.append(
+                    "No encontré publicaciones con esa búsqueda.\n"
+            );
+        } else {
 
             respuesta.append(
-                    "La consulta se resuelve directamente mediante palabras clave.\n\n"
-            );
-        }
-
-        if (publicaciones.isEmpty()) {
-
-            respuesta.append(
-                    "No encontré publicaciones que coincidan con tu búsqueda."
-            );
-
-            return respuesta.toString();
-        }
-
-        respuesta.append(
-                "Encontré las siguientes publicaciones:\n\n"
-        );
-
-        appendPublications(
-                respuesta,
-                publicaciones
-        );
-
-        return respuesta.toString();
-    }
-
-    /**
-     * Retrieval semántico mediante embeddings.
-     *
-     * Este es el nuevo flujo RAG.
-     */
-    private String executeSemanticCatalogSearch(
-        String query,
-        String camino,
-        boolean showDisabledBanner) {
-
-    List<PublicationSummaryResponse> publicaciones =
-            searchCatalogUseCase.executeSemanticSearch(
-                    query,
-                    3
-            );
-
-    StringBuilder respuesta =
-            new StringBuilder();
-
-    if (showDisabledBanner) {
-
-        respuesta.append(
-                "Estado IA: DESHABILITADA\n\n"
-        );
-    }
-
-    respuesta.append("""
-            Herramienta:
-            SEARCH_CATALOG
-
-            Fuente:
-            publications
-
-            Camino:
-            """)
-            .append(camino)
-            .append("\n\n");
-
-    respuesta.append(
-            "Consulta semántica:\n"
-    );
-
-    respuesta.append(query)
-            .append("\n\n");
-
-    if (publicaciones.isEmpty()) {
-
-        respuesta.append(
-                "No encontré publicaciones relacionadas semánticamente con tu consulta."
-        );
-
-        return respuesta.toString();
-    }
-
-    // =====================================================
-    // CONSTRUIR CONTEXTO PARA EL LLM
-    // =====================================================
-
-    StringBuilder contexto =
-            new StringBuilder();
-
-    for (PublicationSummaryResponse p : publicaciones) {
-
-        contexto.append("Producto: ")
-                .append(p.getNombre())
-                .append("\n");
-
-        if (p.getDescripcion() != null
-                && !p.getDescripcion().isBlank()) {
-
-            contexto.append("Descripción: ")
-                    .append(p.getDescripcion())
-                    .append("\n");
-        }
-
-        if (p.getPrecio() != null) {
-
-            contexto.append("Precio: Bs. ")
-                    .append(p.getPrecio())
-                    .append("\n");
-        }
-
-        if (p.getNombreTienda() != null) {
-
-            contexto.append("Tienda: ")
-                    .append(p.getNombreTienda())
-                    .append("\n");
-        }
-
-        if (p.getStock() != null) {
-
-            contexto.append("Stock: ")
-                    .append(p.getStock())
-                    .append("\n");
-        }
-
-        contexto.append("\n");
-    }
-
-    // =====================================================
-    // GENERACIÓN RAG
-    // =====================================================
-
-    String prompt = """
-            Eres el asistente de UMSS Market.
-
-            Debes responder la pregunta del usuario
-            utilizando EXCLUSIVAMENTE la información
-            proporcionada en el contexto recuperado.
-
-            No inventes productos, precios, tiendas ni stock.
-
-            Si la información del contexto no permite
-            responder la pregunta, indícalo claramente.
-
-            Responde de forma natural, clara y breve.
-
-            PREGUNTA DEL USUARIO:
-            %s
-
-            CONTEXTO RECUPERADO:
-            %s
-            """.formatted(
-                    query,
-                    contexto
-            );
-
-    String respuestaGenerada =
-            provider.generate(prompt);
-
-    if (respuestaGenerada == null
-            || respuestaGenerada.isBlank()) {
-
-        respuesta.append(
-                "Encontré publicaciones relacionadas:\n\n"
-        );
-
-        appendPublications(
-                respuesta,
-                publicaciones
-        );
-
-        return respuesta.toString();
-    }
-
-    // =====================================================
-    // RESPUESTA FINAL
-    // =====================================================
-
-    respuesta.append(
-            "Respuesta generada con contexto recuperado:\n\n"
-    );
-
-    respuesta.append(
-            respuestaGenerada.trim()
-    );
-
-    return respuesta.toString();
-}
-
-    /**
-     * Construye la respuesta de publicaciones.
-     */
-    private void appendPublications(
-            StringBuilder respuesta,
-            List<PublicationSummaryResponse> publicaciones) {
-
-        for (PublicationSummaryResponse p : publicaciones) {
-
-            respuesta.append(
-                    "📦 Producto: "
+                    "Encontré "
             )
-            .append(p.getNombre())
-            .append("\n");
+                    .append(publicaciones.size())
+                    .append(" publicaciones:\n\n");
 
-            if (p.getDescripcion() != null
-                    && !p.getDescripcion().isBlank()) {
+            for (PublicationSummaryResponse p
+                    : publicaciones) {
 
-                respuesta.append(
-                        "📝 Descripción: "
-                )
-                .append(p.getDescripcion())
-                .append("\n");
-            }
-
-            if (p.getPrecio() != null) {
+                respuesta.append("📌 ")
+                        .append(p.getNombre())
+                        .append("\n");
 
                 respuesta.append(
-                        "💰 Precio: Bs. "
+                        "   Precio: Bs. "
                 )
-                .append(p.getPrecio())
-                .append("\n");
-            }
-
-            if (p.getNombreTienda() != null) {
-
-                respuesta.append(
-                        "🏪 Tienda: "
-                )
-                .append(p.getNombreTienda())
-                .append("\n");
-            }
-
-            if (p.getStock() != null) {
+                        .append(p.getPrecio())
+                        .append("\n");
 
                 respuesta.append(
                         "📦 Stock disponible: "
@@ -499,5 +263,92 @@ public class AIServiceImpl implements AIService {
                     "\n────────────────────────────────────\n\n"
             );
         }
+
+        return respuesta.toString();
+    }
+
+    /**
+     * Búsqueda semántica mediante RAG.
+     */
+    private String executeSemanticCatalogSearch(
+            String message,
+            String camino) {
+
+        List<PublicationSummaryResponse> publicaciones =
+                searchCatalogUseCase.executeSemanticSearch(
+                        message,
+                        5
+                );
+
+        StringBuilder respuesta =
+                new StringBuilder();
+
+        respuesta.append("Camino: ")
+                .append(camino)
+                .append("\n\n");
+
+        if (publicaciones == null || publicaciones.isEmpty()) {
+            respuesta.append(
+                    "No encontré publicaciones que coincidan con tu búsqueda.\n"
+            );
+        } else {
+
+            respuesta.append(
+                    "Encontré "
+            )
+                    .append(publicaciones.size())
+                    .append(" publicaciones relevantes:\n\n");
+
+            for (PublicationSummaryResponse p
+                    : publicaciones) {
+
+                respuesta.append("📌 ")
+                        .append(p.getNombre())
+                        .append("\n");
+
+                respuesta.append(
+                        "   Precio: Bs. "
+                )
+                        .append(p.getPrecio())
+                        .append("\n");
+
+                respuesta.append(
+                        "📦 Stock disponible: "
+                )
+                .append(p.getStock())
+                .append("\n");
+            }
+
+            respuesta.append(
+                    "\n────────────────────────────────────\n\n"
+            );
+        }
+
+        return respuesta.toString();
+    }
+
+    /**
+     * Extrae el ID de publicación desde la decisión del LLM.
+     */
+    private UUID extractPublicationId(ToolDecision decision) {
+        if (decision == null || decision.getQuery() == null) {
+                return null;
+        }
+        
+        try {
+                // Intenta parsear la query como UUID
+                return UUID.fromString(decision.getQuery());
+        } catch (Exception e) {
+                return null;
+        }
+        }
+
+    /**
+     * Obtiene el ID del usuario actual desde el contexto de seguridad.
+     */
+    private UUID getCurrentUserId() {
+        // TODO: Implementar extracción de userId desde SecurityContext o JWT
+        // Por ahora retorna null
+        return null;
     }
 }

@@ -1,3 +1,11 @@
+package bo.umss.market.umss_market_api.domain.ports;
+
+import java.util.List;
+import java.util.UUID;
+
+import bo.umss.market.umss_market_api.domain.enums.InteractionType;
+import bo.umss.market.umss_market_api.domain.model.Interaction;
+
 public interface InteractionRepositoryPort {
     
     /**
