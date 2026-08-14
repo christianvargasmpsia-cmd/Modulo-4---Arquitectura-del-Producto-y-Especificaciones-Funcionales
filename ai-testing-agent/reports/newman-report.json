@@ -7,19 +7,19 @@
     },
     "item": [
       {
-        "id": "5251d506-80f3-4f22-be08-025dc6219cc1",
+        "id": "28494721-461e-4acc-9121-0084e57a48a9",
         "name": "api",
         "item": [
           {
-            "id": "fca7b3fd-1e24-4049-bbaa-fe6ea42b7351",
+            "id": "ddff623a-6d14-40b1-bd55-74c6f8b134bd",
             "name": "publications",
             "item": [
               {
-                "id": "f0418f22-356b-4962-9eee-b90dcded554f",
+                "id": "4653a376-6c0a-4e32-9f16-3266d21425f4",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d",
+                    "id": "44a69533-c47b-4386-a059-364ab9b11a57",
                     "name": "find By Id",
                     "request": {
                       "url": {
@@ -53,7 +53,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "499a611b-553f-4244-8cbd-40ff153736fe",
+                        "id": "8a51fe59-2135-4ca9-b8a5-77b694cca72d",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -100,7 +100,7 @@
                 "event": []
               },
               {
-                "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad",
+                "id": "5b9f1862-b28f-40b1-9818-c169180e5203",
                 "name": "search",
                 "request": {
                   "url": {
@@ -148,7 +148,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "09a93a8b-d0b6-4e2d-bb0d-045c4f21141f",
+                    "id": "9fddc56e-69bb-4c60-af9a-9d2522aed977",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -206,7 +206,7 @@
                 "event": []
               },
               {
-                "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16",
+                "id": "689e4f0a-129a-4115-8843-131f0de23a16",
                 "name": "create Publication",
                 "request": {
                   "url": {
@@ -247,7 +247,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "067677d3-4708-4453-8c5d-763100910d35",
+                    "id": "9058843f-b38b-4d1e-9004-df2ceca5ad33",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -301,15 +301,15 @@
             "event": []
           },
           {
-            "id": "a9fefa49-d308-47c9-9fba-d8cecf6ed66d",
+            "id": "58fe9cac-2a43-4551-b374-7305aaa0d2e5",
             "name": "auth",
             "item": [
               {
-                "id": "5dd9657f-8ba2-4553-936c-87bfea3564a7",
+                "id": "80c0a77d-55ef-4a3a-95fd-72da679c3ff0",
                 "name": "register",
                 "item": [
                   {
-                    "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153",
+                    "id": "13da0736-9c7b-4c1c-9392-945bc67541dd",
                     "name": "register",
                     "request": {
                       "url": {
@@ -351,7 +351,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "80e5f3c1-8d13-4fd9-aebb-ddfe4e0c492d",
+                        "id": "6dbe7f1e-98a3-4849-9965-6823d11c4ebe",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -409,15 +409,15 @@
             "event": []
           },
           {
-            "id": "83cb4202-8c15-42f7-8cf5-17f186a98798",
+            "id": "cec0efcd-14f4-496a-80ed-5591b41674cc",
             "name": "tiendas",
             "item": [
               {
-                "id": "c0a13f50-ff91-4e1b-8813-7453cce54956",
+                "id": "fbb7d476-8c8f-4b09-a8f1-505b1e0bad7f",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe",
+                    "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf",
                     "name": "get Public Profile",
                     "request": {
                       "url": {
@@ -451,7 +451,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "02ba3e64-bb20-4a6c-bc9e-8a90760e693c",
+                        "id": "db604586-d769-42cb-96ef-ca5904bb239a",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -519,11 +519,11 @@
     }
   },
   "environment": {
-    "id": "6b5ee50d-0759-41be-be44-a332a75b5bd6",
+    "id": "efa6650f-f6e6-44bd-9bb1-424a0555872c",
     "values": []
   },
   "globals": {
-    "id": "9e06c496-9ba9-4175-ba74-2839f464803f",
+    "id": "b35deab6-deeb-4a03-8cf5-f792a82ba672",
     "values": []
   },
   "run": {
@@ -575,10 +575,10 @@
       }
     },
     "timings": {
-      "responseAverage": 95,
-      "responseMin": 7,
-      "responseMax": 225,
-      "responseSd": 83.24181641458817,
+      "responseAverage": 114.8,
+      "responseMin": 110,
+      "responseMax": 130,
+      "responseSd": 7.626270385975048,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -587,8 +587,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1783607926786,
-      "completed": 1783607927622
+      "started": 1786668021065,
+      "completed": 1786668022045
     },
     "executions": [
       {
@@ -601,11 +601,11 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "80eaf86e-b9c4-49b3-bf9a-f5a854cc3928",
-          "httpRequestId": "6dc27b0d-1c02-41b4-baf7-63c78dc77e4a"
+          "ref": "b05ed6b3-3805-4fe1-bc59-21c32f518e1e",
+          "httpRequestId": "f9405f36-c95e-4d3f-b145-11a6c1b7154f"
         },
         "item": {
-          "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d",
+          "id": "44a69533-c47b-4386-a059-364ab9b11a57",
           "name": "find By Id",
           "request": {
             "url": {
@@ -639,7 +639,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "499a611b-553f-4244-8cbd-40ff153736fe",
+              "id": "8a51fe59-2135-4ca9-b8a5-77b694cca72d",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -714,7 +714,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "5efb1b52-7c2c-424a-9d47-3d11574a3b87",
+              "value": "8fb80417-a4ee-41da-8f3a-9703b2f79a4f",
               "system": true
             },
             {
@@ -736,171 +736,208 @@
           "method": "GET"
         },
         "response": {
-          "id": "e1c2d1d7-951f-4e56-965a-1376b6967056",
-          "status": "Internal Server Error",
-          "code": 500,
+          "id": "b0aaac43-f55c-418c-be9c-d50001be4c95",
+          "status": "Unauthorized",
+          "code": 401,
           "header": [
             {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
+              "key": "MS-Author-Via",
+              "value": "DAV"
             },
             {
-              "key": "X-XSS-Protection",
-              "value": "0"
+              "key": "DAV",
+              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
             },
             {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, max-age=0, must-revalidate"
+              "key": "Server",
+              "value": "Oracle XML DB/Oracle Database"
             },
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "DENY"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Transfer-Encoding",
-              "value": "chunked"
+              "key": "WWW-Authenticate",
+              "value": "Basic realm=\"XDB\""
             },
             {
               "key": "Date",
-              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
             },
             {
-              "key": "Connection",
-              "value": "close"
+              "key": "Content-Type",
+              "value": "text/html; charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "147"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              123,
-              34,
-              115,
-              117,
-              99,
-              99,
-              101,
-              115,
-              115,
-              34,
-              58,
-              102,
-              97,
-              108,
-              115,
-              101,
-              44,
-              34,
-              109,
-              101,
-              115,
-              115,
-              97,
-              103,
-              101,
-              34,
-              58,
-              34,
-              80,
-              117,
-              98,
-              108,
-              105,
-              99,
-              97,
-              99,
-              105,
-              195,
-              179,
-              110,
-              32,
-              110,
-              111,
-              32,
-              101,
-              110,
-              99,
-              111,
-              110,
-              116,
-              114,
-              97,
-              100,
-              97,
-              34,
-              44,
-              34,
-              116,
-              105,
-              109,
-              101,
-              115,
-              116,
-              97,
-              109,
-              112,
-              34,
-              58,
-              34,
-              50,
-              48,
-              50,
-              54,
-              45,
-              48,
-              55,
-              45,
-              48,
-              57,
+              60,
+              33,
+              68,
+              79,
+              67,
               84,
-              49,
-              48,
-              58,
-              51,
-              56,
-              58,
-              52,
-              55,
+              89,
+              80,
+              69,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              80,
+              85,
+              66,
+              76,
+              73,
+              67,
+              32,
+              34,
+              45,
+              47,
+              47,
+              73,
+              69,
+              84,
+              70,
+              47,
+              47,
+              68,
+              84,
+              68,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              50,
               46,
               48,
-              49,
-              52,
-              53,
-              49,
-              56,
-              53,
+              47,
+              47,
+              69,
+              78,
               34,
-              125
+              62,
+              10,
+              60,
+              72,
+              84,
+              77,
+              76,
+              62,
+              60,
+              72,
+              69,
+              65,
+              68,
+              62,
+              10,
+              60,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              52,
+              48,
+              49,
+              32,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              10,
+              60,
+              47,
+              72,
+              69,
+              65,
+              68,
+              62,
+              60,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              72,
+              49,
+              62,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              72,
+              49,
+              62,
+              10,
+              60,
+              47,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              47,
+              72,
+              84,
+              77,
+              76,
+              62,
+              13,
+              10
             ]
           },
           "cookie": [],
-          "responseTime": 225,
-          "responseSize": 98
+          "responseTime": 130,
+          "responseSize": 147
         },
-        "id": "a0b6d696-3315-4b23-9556-827ce0b53b2d"
+        "id": "44a69533-c47b-4386-a059-364ab9b11a57"
       },
       {
         "cursor": {
-          "ref": "7f024260-5a3f-4585-bc2a-85e1b90993a4",
+          "ref": "42839ac2-59fb-4ba6-b77a-e40499fa5558",
           "length": 5,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "af7a9fbd-39cb-4a8a-aec9-b3f0f8a795ef"
+          "httpRequestId": "ad831c4f-bdc5-4300-9af1-c0a9df36fb7b"
         },
         "item": {
-          "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad",
+          "id": "5b9f1862-b28f-40b1-9818-c169180e5203",
           "name": "search",
           "request": {
             "url": {
@@ -948,7 +985,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "09a93a8b-d0b6-4e2d-bb0d-045c4f21141f",
+              "id": "9fddc56e-69bb-4c60-af9a-9d2522aed977",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1057,7 +1094,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "193655a8-f9b5-480f-a4f1-c5c9f63e854d",
+              "value": "a3b49271-416e-4b69-a4e5-e62a04233927",
               "system": true
             },
             {
@@ -1079,127 +1116,208 @@
           "method": "GET"
         },
         "response": {
-          "id": "d7e90171-0417-4a95-884d-e259b2896e1c",
-          "status": "Bad Request",
-          "code": 400,
+          "id": "9514b978-b733-4a11-9f2a-a71d34b4b8b8",
+          "status": "Unauthorized",
+          "code": 401,
           "header": [
             {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
+              "key": "MS-Author-Via",
+              "value": "DAV"
             },
             {
-              "key": "X-XSS-Protection",
-              "value": "0"
+              "key": "DAV",
+              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
             },
             {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, max-age=0, must-revalidate"
+              "key": "Server",
+              "value": "Oracle XML DB/Oracle Database"
             },
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "DENY"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Transfer-Encoding",
-              "value": "chunked"
+              "key": "WWW-Authenticate",
+              "value": "Basic realm=\"XDB\""
             },
             {
               "key": "Date",
-              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
             },
             {
-              "key": "Connection",
-              "value": "close"
+              "key": "Content-Type",
+              "value": "text/html; charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "147"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              123,
-              34,
-              101,
-              114,
-              114,
-              111,
-              114,
-              34,
-              58,
-              34,
-              112,
-              114,
-              101,
-              99,
-              105,
-              111,
+              60,
+              33,
+              68,
+              79,
+              67,
+              84,
+              89,
+              80,
+              69,
+              32,
+              72,
+              84,
               77,
-              105,
-              110,
+              76,
               32,
-              110,
-              111,
+              80,
+              85,
+              66,
+              76,
+              73,
+              67,
               32,
-              112,
+              34,
+              45,
+              47,
+              47,
+              73,
+              69,
+              84,
+              70,
+              47,
+              47,
+              68,
+              84,
+              68,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              50,
+              46,
+              48,
+              47,
+              47,
+              69,
+              78,
+              34,
+              62,
+              10,
+              60,
+              72,
+              84,
+              77,
+              76,
+              62,
+              60,
+              72,
+              69,
+              65,
+              68,
+              62,
+              10,
+              60,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              52,
+              48,
+              49,
+              32,
+              85,
+              110,
+              97,
               117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
               101,
               100,
-              101,
-              32,
-              115,
-              101,
-              114,
-              32,
-              109,
+              60,
+              47,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              10,
+              60,
+              47,
+              72,
+              69,
+              65,
+              68,
+              62,
+              60,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              72,
+              49,
+              62,
+              85,
+              110,
               97,
-              121,
-              111,
-              114,
-              32,
-              113,
               117,
-              101,
-              32,
-              112,
-              114,
-              101,
-              99,
-              105,
+              116,
+              104,
               111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              72,
+              49,
+              62,
+              10,
+              60,
+              47,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              47,
+              72,
+              84,
               77,
-              97,
-              120,
-              34,
-              125
+              76,
+              62,
+              13,
+              10
             ]
           },
           "cookie": [],
-          "responseTime": 30,
-          "responseSize": 54
+          "responseTime": 111,
+          "responseSize": 147
         },
-        "id": "daa1c148-02a7-458a-815d-6f80e2bd13ad"
+        "id": "5b9f1862-b28f-40b1-9818-c169180e5203"
       },
       {
         "cursor": {
-          "ref": "7d12bb79-37ea-4545-8c06-e5686cd87f04",
+          "ref": "e1605e8d-21d6-4e80-a53d-dac8d715ed6c",
           "length": 5,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "e6099658-df48-4c9c-a256-14deaa48d5b7"
+          "httpRequestId": "6ae2f2cd-d465-4258-95f3-d5e3ca64ebc6"
         },
         "item": {
-          "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16",
+          "id": "689e4f0a-129a-4115-8843-131f0de23a16",
           "name": "create Publication",
           "request": {
             "url": {
@@ -1240,7 +1358,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "067677d3-4708-4453-8c5d-763100910d35",
+              "id": "9058843f-b38b-4d1e-9004-df2ceca5ad33",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1325,7 +1443,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "51ec8b99-a375-4bcd-b58d-914797353066",
+              "value": "f0485b52-5150-4576-bcda-6c8beaf4f962",
               "system": true
             },
             {
@@ -1362,165 +1480,208 @@
           }
         },
         "response": {
-          "id": "385c27e3-a1d0-484c-b787-c5d8e0943601",
-          "status": "Internal Server Error",
-          "code": 500,
+          "id": "b0cc1742-c008-48c1-9d4f-ddc733eda6f9",
+          "status": "Unauthorized",
+          "code": 401,
           "header": [
             {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
+              "key": "MS-Author-Via",
+              "value": "DAV"
             },
             {
-              "key": "X-XSS-Protection",
-              "value": "0"
+              "key": "DAV",
+              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
             },
             {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, max-age=0, must-revalidate"
+              "key": "Server",
+              "value": "Oracle XML DB/Oracle Database"
             },
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "DENY"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Transfer-Encoding",
-              "value": "chunked"
+              "key": "WWW-Authenticate",
+              "value": "Basic realm=\"XDB\""
             },
             {
               "key": "Date",
-              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
             },
             {
-              "key": "Connection",
-              "value": "close"
+              "key": "Content-Type",
+              "value": "text/html; charset=UTF-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "147"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              123,
-              34,
-              115,
-              117,
-              99,
-              99,
-              101,
-              115,
-              115,
-              34,
-              58,
-              102,
-              97,
-              108,
-              115,
-              101,
-              44,
-              34,
-              109,
-              101,
-              115,
-              115,
-              97,
-              103,
-              101,
-              34,
-              58,
-              34,
+              60,
+              33,
+              68,
+              79,
+              67,
               84,
-              105,
-              101,
-              110,
-              100,
-              97,
+              89,
+              80,
+              69,
               32,
-              110,
-              111,
-              32,
-              101,
-              110,
-              99,
-              111,
-              110,
-              116,
-              114,
-              97,
-              100,
-              97,
-              34,
-              44,
-              34,
-              116,
-              105,
-              109,
-              101,
-              115,
-              116,
-              97,
-              109,
-              112,
-              34,
-              58,
-              34,
-              50,
-              48,
-              50,
-              54,
-              45,
-              48,
-              55,
-              45,
-              48,
-              57,
+              72,
               84,
-              49,
-              48,
-              58,
-              51,
-              56,
-              58,
-              52,
-              55,
+              77,
+              76,
+              32,
+              80,
+              85,
+              66,
+              76,
+              73,
+              67,
+              32,
+              34,
+              45,
+              47,
+              47,
+              73,
+              69,
+              84,
+              70,
+              47,
+              47,
+              68,
+              84,
+              68,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              50,
               46,
-              50,
-              56,
-              49,
-              51,
-              53,
-              51,
-              53,
+              48,
+              47,
+              47,
+              69,
+              78,
               34,
-              125
+              62,
+              10,
+              60,
+              72,
+              84,
+              77,
+              76,
+              62,
+              60,
+              72,
+              69,
+              65,
+              68,
+              62,
+              10,
+              60,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              52,
+              48,
+              49,
+              32,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              10,
+              60,
+              47,
+              72,
+              69,
+              65,
+              68,
+              62,
+              60,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              72,
+              49,
+              62,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              72,
+              49,
+              62,
+              10,
+              60,
+              47,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              47,
+              72,
+              84,
+              77,
+              76,
+              62,
+              13,
+              10
             ]
           },
           "cookie": [],
-          "responseTime": 54,
-          "responseSize": 92
+          "responseTime": 112,
+          "responseSize": 147
         },
-        "id": "8db3bb9d-59eb-4e51-be50-16a73ae95a16"
+        "id": "689e4f0a-129a-4115-8843-131f0de23a16"
       },
       {
         "cursor": {
-          "ref": "79833cf8-22c2-4262-ace9-2dafeff5124a",
+          "ref": "63b7e128-f669-4186-a14a-ef92626fa72a",
           "length": 5,
           "cycles": 1,
           "position": 3,
           "iteration": 0,
-          "httpRequestId": "4a85f673-b441-4feb-a32f-cd16ea77d834"
+          "httpRequestId": "beedd31a-65a5-4f5b-b255-697457644e69"
         },
         "item": {
-          "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153",
+          "id": "13da0736-9c7b-4c1c-9392-945bc67541dd",
           "name": "register",
           "request": {
             "url": {
@@ -1562,7 +1723,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "80e5f3c1-8d13-4fd9-aebb-ddfe4e0c492d",
+              "id": "6dbe7f1e-98a3-4849-9965-6823d11c4ebe",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1649,7 +1810,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "0e866fc1-bbb6-4025-aea9-70f6def951bc",
+              "value": "42244b71-8d5e-4968-b415-55e4f4ca21a5",
               "system": true
             },
             {
@@ -1686,121 +1847,208 @@
           }
         },
         "response": {
-          "id": "71c3beb6-eb61-4861-b01b-4fb98e267162",
-          "status": "Conflict",
-          "code": 409,
+          "id": "380617a9-7fea-409f-bb43-e26ae591be30",
+          "status": "Unauthorized",
+          "code": 401,
           "header": [
             {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
+              "key": "MS-Author-Via",
+              "value": "DAV"
             },
             {
-              "key": "X-XSS-Protection",
-              "value": "0"
+              "key": "DAV",
+              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
             },
             {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, max-age=0, must-revalidate"
+              "key": "Server",
+              "value": "Oracle XML DB/Oracle Database"
             },
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "DENY"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Transfer-Encoding",
-              "value": "chunked"
+              "key": "WWW-Authenticate",
+              "value": "Basic realm=\"XDB\""
             },
             {
               "key": "Date",
-              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
             },
             {
-              "key": "Keep-Alive",
-              "value": "timeout=60"
+              "key": "Content-Type",
+              "value": "text/html; charset=UTF-8"
             },
             {
-              "key": "Connection",
-              "value": "keep-alive"
+              "key": "Content-Length",
+              "value": "147"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              123,
-              34,
-              101,
-              114,
-              114,
-              111,
-              114,
-              34,
-              58,
-              34,
+              60,
+              33,
+              68,
+              79,
+              67,
+              84,
+              89,
+              80,
               69,
-              108,
               32,
-              82,
+              72,
+              84,
+              77,
+              76,
+              32,
+              80,
               85,
+              66,
+              76,
+              73,
+              67,
               32,
-              121,
-              97,
-              32,
-              115,
-              101,
-              32,
-              101,
-              110,
-              99,
-              117,
-              101,
-              110,
-              116,
-              114,
-              97,
-              32,
-              114,
-              101,
-              103,
-              105,
-              115,
-              116,
-              114,
-              97,
-              100,
-              111,
               34,
-              125
+              45,
+              47,
+              47,
+              73,
+              69,
+              84,
+              70,
+              47,
+              47,
+              68,
+              84,
+              68,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              50,
+              46,
+              48,
+              47,
+              47,
+              69,
+              78,
+              34,
+              62,
+              10,
+              60,
+              72,
+              84,
+              77,
+              76,
+              62,
+              60,
+              72,
+              69,
+              65,
+              68,
+              62,
+              10,
+              60,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              52,
+              48,
+              49,
+              32,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              10,
+              60,
+              47,
+              72,
+              69,
+              65,
+              68,
+              62,
+              60,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              72,
+              49,
+              62,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              72,
+              49,
+              62,
+              10,
+              60,
+              47,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              47,
+              72,
+              84,
+              77,
+              76,
+              62,
+              13,
+              10
             ]
           },
           "cookie": [],
-          "responseTime": 159,
-          "responseSize": 44
+          "responseTime": 110,
+          "responseSize": 147
         },
-        "id": "dd80c4eb-2bd1-4b3f-b33d-4ec8829ae153"
+        "id": "13da0736-9c7b-4c1c-9392-945bc67541dd"
       },
       {
         "cursor": {
-          "ref": "33ff450f-a244-486c-a5c9-8fdecda99f58",
+          "ref": "aa15e6ea-1ec8-46ff-81bd-f58b376a2bb0",
           "length": 5,
           "cycles": 1,
           "position": 4,
           "iteration": 0,
-          "httpRequestId": "4a541531-e1be-428a-9953-ed3c209a806e"
+          "httpRequestId": "e806b00e-3f95-4ba9-9a39-5e92cbc133f8"
         },
         "item": {
-          "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe",
+          "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf",
           "name": "get Public Profile",
           "request": {
             "url": {
@@ -1834,7 +2082,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "02ba3e64-bb20-4a6c-bc9e-8a90760e693c",
+              "id": "db604586-d769-42cb-96ef-ca5904bb239a",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1909,7 +2157,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "de5a28cc-2b34-4341-b4f6-a03d27595da9",
+              "value": "51c50fa5-7b87-446e-94f9-4ce4a13f3a6b",
               "system": true
             },
             {
@@ -1931,101 +2179,200 @@
           "method": "GET"
         },
         "response": {
-          "id": "f052a06f-2768-4296-bda1-416d52c2f164",
-          "status": "Not Found",
-          "code": 404,
+          "id": "c9942870-6f8d-4037-bd17-ff33d2c36fb6",
+          "status": "Unauthorized",
+          "code": 401,
           "header": [
             {
-              "key": "X-Content-Type-Options",
-              "value": "nosniff"
+              "key": "MS-Author-Via",
+              "value": "DAV"
             },
             {
-              "key": "X-XSS-Protection",
-              "value": "0"
+              "key": "DAV",
+              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
             },
             {
-              "key": "Cache-Control",
-              "value": "no-cache, no-store, max-age=0, must-revalidate"
+              "key": "Server",
+              "value": "Oracle XML DB/Oracle Database"
             },
             {
-              "key": "Pragma",
-              "value": "no-cache"
-            },
-            {
-              "key": "Expires",
-              "value": "0"
-            },
-            {
-              "key": "X-Frame-Options",
-              "value": "DENY"
-            },
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Transfer-Encoding",
-              "value": "chunked"
+              "key": "WWW-Authenticate",
+              "value": "Basic realm=\"XDB\""
             },
             {
               "key": "Date",
-              "value": "Thu, 09 Jul 2026 14:38:47 GMT"
+              "value": "Fri, 14 Aug 2026 00:40:21 GMT"
             },
             {
-              "key": "Keep-Alive",
-              "value": "timeout=60"
+              "key": "Content-Type",
+              "value": "text/html; charset=UTF-8"
             },
             {
-              "key": "Connection",
-              "value": "keep-alive"
+              "key": "Content-Length",
+              "value": "147"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              123,
-              34,
-              101,
-              114,
-              114,
-              111,
-              114,
-              34,
-              58,
-              34,
+              60,
+              33,
+              68,
+              79,
+              67,
               84,
-              105,
-              101,
-              110,
-              100,
-              97,
+              89,
+              80,
+              69,
               32,
-              110,
-              111,
+              72,
+              84,
+              77,
+              76,
               32,
-              101,
-              110,
-              99,
-              111,
-              110,
-              116,
-              114,
-              97,
-              100,
-              97,
+              80,
+              85,
+              66,
+              76,
+              73,
+              67,
+              32,
               34,
-              125
+              45,
+              47,
+              47,
+              73,
+              69,
+              84,
+              70,
+              47,
+              47,
+              68,
+              84,
+              68,
+              32,
+              72,
+              84,
+              77,
+              76,
+              32,
+              50,
+              46,
+              48,
+              47,
+              47,
+              69,
+              78,
+              34,
+              62,
+              10,
+              60,
+              72,
+              84,
+              77,
+              76,
+              62,
+              60,
+              72,
+              69,
+              65,
+              68,
+              62,
+              10,
+              60,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              52,
+              48,
+              49,
+              32,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              84,
+              73,
+              84,
+              76,
+              69,
+              62,
+              10,
+              60,
+              47,
+              72,
+              69,
+              65,
+              68,
+              62,
+              60,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              72,
+              49,
+              62,
+              85,
+              110,
+              97,
+              117,
+              116,
+              104,
+              111,
+              114,
+              105,
+              122,
+              101,
+              100,
+              60,
+              47,
+              72,
+              49,
+              62,
+              10,
+              60,
+              47,
+              66,
+              79,
+              68,
+              89,
+              62,
+              60,
+              47,
+              72,
+              84,
+              77,
+              76,
+              62,
+              13,
+              10
             ]
           },
           "cookie": [],
-          "responseTime": 7,
-          "responseSize": 32
+          "responseTime": 111,
+          "responseSize": 147
         },
-        "id": "7045114c-a4d5-4ad2-aaa9-b52d37712afe"
+        "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf"
       }
     ],
     "transfers": {
-      "responseTotal": 320
+      "responseTotal": 735
     },
     "failures": [],
     "error": null

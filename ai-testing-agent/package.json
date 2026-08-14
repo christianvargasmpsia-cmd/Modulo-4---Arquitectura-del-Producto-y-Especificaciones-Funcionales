@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "start:enhanced": "node src/index.enhanced.js",
+    "mcp": "node src/agents/postman.agent.enhanced.js",
+    "playwright": "node src/agents/playwright.agent.enhanced.js",
+    "test:all": "npm run playwright && npm run mcp",
+    "dev": "nodemon src/index.enhanced.js",
+    "generate-tests": "npx playwright codegen http://localhost:3000"
   },
   "keywords": [
     "ai",
@@ -20,5 +25,8 @@
     "axios": "^1.11.0",
     "dotenv": "^17.2.0",
     "newman": "6.2.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
   }
 }
