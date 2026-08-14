@@ -7,19 +7,19 @@
     },
     "item": [
       {
-        "id": "28494721-461e-4acc-9121-0084e57a48a9",
+        "id": "32f7c646-a500-4331-bf40-25a50d3514f1",
         "name": "api",
         "item": [
           {
-            "id": "ddff623a-6d14-40b1-bd55-74c6f8b134bd",
+            "id": "46d69081-13a2-4664-ac88-32c2f6f7a663",
             "name": "publications",
             "item": [
               {
-                "id": "4653a376-6c0a-4e32-9f16-3266d21425f4",
+                "id": "4f603307-8cc8-4ba1-8666-055eadb2e985",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "44a69533-c47b-4386-a059-364ab9b11a57",
+                    "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611",
                     "name": "find By Id",
                     "request": {
                       "url": {
@@ -53,7 +53,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "8a51fe59-2135-4ca9-b8a5-77b694cca72d",
+                        "id": "65423a4f-e1f9-41c4-a097-49d5809973c2",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -100,7 +100,7 @@
                 "event": []
               },
               {
-                "id": "5b9f1862-b28f-40b1-9818-c169180e5203",
+                "id": "9bf8e346-e19a-4213-adf0-c462e579c713",
                 "name": "search",
                 "request": {
                   "url": {
@@ -148,7 +148,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "9fddc56e-69bb-4c60-af9a-9d2522aed977",
+                    "id": "cfad8f1d-477a-4618-9f4f-4932353c2828",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -206,7 +206,7 @@
                 "event": []
               },
               {
-                "id": "689e4f0a-129a-4115-8843-131f0de23a16",
+                "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485",
                 "name": "create Publication",
                 "request": {
                   "url": {
@@ -247,7 +247,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "9058843f-b38b-4d1e-9004-df2ceca5ad33",
+                    "id": "a9ad1f01-af8f-42ca-b00d-200f71722cfc",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -301,15 +301,15 @@
             "event": []
           },
           {
-            "id": "58fe9cac-2a43-4551-b374-7305aaa0d2e5",
+            "id": "a640f066-5f07-4462-994a-cb2116fa2eb3",
             "name": "auth",
             "item": [
               {
-                "id": "80c0a77d-55ef-4a3a-95fd-72da679c3ff0",
+                "id": "169f2dc7-dead-40c0-963b-8092eede02d1",
                 "name": "register",
                 "item": [
                   {
-                    "id": "13da0736-9c7b-4c1c-9392-945bc67541dd",
+                    "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b",
                     "name": "register",
                     "request": {
                       "url": {
@@ -351,7 +351,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "6dbe7f1e-98a3-4849-9965-6823d11c4ebe",
+                        "id": "cf4e6f81-2767-4314-b41b-a159bcc429a1",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -409,15 +409,15 @@
             "event": []
           },
           {
-            "id": "cec0efcd-14f4-496a-80ed-5591b41674cc",
+            "id": "4370fc27-702a-46ca-949f-43a8fe111ce7",
             "name": "tiendas",
             "item": [
               {
-                "id": "fbb7d476-8c8f-4b09-a8f1-505b1e0bad7f",
+                "id": "82cc7c15-c883-4dff-93e6-19ec7a576e57",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf",
+                    "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8",
                     "name": "get Public Profile",
                     "request": {
                       "url": {
@@ -451,7 +451,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "db604586-d769-42cb-96ef-ca5904bb239a",
+                        "id": "71ac64f0-f51e-448a-83fe-c886b1c02560",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -519,11 +519,11 @@
     }
   },
   "environment": {
-    "id": "efa6650f-f6e6-44bd-9bb1-424a0555872c",
+    "id": "aa57ac57-a38b-46d8-84cf-edb45d811b48",
     "values": []
   },
   "globals": {
-    "id": "b35deab6-deeb-4a03-8cf5-f792a82ba672",
+    "id": "9350d86d-c881-45e2-881a-fc70ff8796b7",
     "values": []
   },
   "run": {
@@ -575,10 +575,10 @@
       }
     },
     "timings": {
-      "responseAverage": 114.8,
-      "responseMin": 110,
-      "responseMax": 130,
-      "responseSd": 7.626270385975048,
+      "responseAverage": 9.8,
+      "responseMin": 5,
+      "responseMax": 21,
+      "responseSd": 5.979966555090421,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -587,8 +587,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1786668021065,
-      "completed": 1786668022045
+      "started": 1786733946486,
+      "completed": 1786733946855
     },
     "executions": [
       {
@@ -601,11 +601,11 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "b05ed6b3-3805-4fe1-bc59-21c32f518e1e",
-          "httpRequestId": "f9405f36-c95e-4d3f-b145-11a6c1b7154f"
+          "ref": "875a74fb-64a0-462c-85a0-b5627361b5a6",
+          "httpRequestId": "da4c3414-d493-42fb-aff1-84246fe82c09"
         },
         "item": {
-          "id": "44a69533-c47b-4386-a059-364ab9b11a57",
+          "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611",
           "name": "find By Id",
           "request": {
             "url": {
@@ -639,7 +639,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "8a51fe59-2135-4ca9-b8a5-77b694cca72d",
+              "id": "65423a4f-e1f9-41c4-a097-49d5809973c2",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -714,7 +714,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "8fb80417-a4ee-41da-8f3a-9703b2f79a4f",
+              "value": "049aad71-577c-4c56-8de3-b6970e9b6545",
               "system": true
             },
             {
@@ -736,208 +736,171 @@
           "method": "GET"
         },
         "response": {
-          "id": "b0aaac43-f55c-418c-be9c-d50001be4c95",
-          "status": "Unauthorized",
-          "code": 401,
+          "id": "3e2bdb6e-94a3-4635-b26a-1cec51bce5e8",
+          "status": "Internal Server Error",
+          "code": 500,
           "header": [
             {
-              "key": "MS-Author-Via",
-              "value": "DAV"
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             },
             {
-              "key": "DAV",
-              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
+              "key": "X-XSS-Protection",
+              "value": "0"
             },
             {
-              "key": "Server",
-              "value": "Oracle XML DB/Oracle Database"
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
             },
             {
-              "key": "WWW-Authenticate",
-              "value": "Basic realm=\"XDB\""
+              "key": "Pragma",
+              "value": "no-cache"
             },
             {
-              "key": "Date",
-              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
             },
             {
               "key": "Content-Type",
-              "value": "text/html; charset=UTF-8"
+              "value": "application/json"
             },
             {
-              "key": "Content-Length",
-              "value": "147"
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              60,
-              33,
-              68,
-              79,
-              67,
-              84,
-              89,
-              80,
-              69,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              80,
-              85,
-              66,
-              76,
-              73,
-              67,
-              32,
+              123,
               34,
-              45,
-              47,
-              47,
-              73,
-              69,
-              84,
-              70,
-              47,
-              47,
-              68,
-              84,
-              68,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
+              80,
+              117,
+              98,
+              108,
+              105,
+              99,
+              97,
+              99,
+              105,
+              195,
+              179,
+              110,
               32,
-              72,
-              84,
-              77,
-              76,
+              110,
+              111,
               32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              44,
+              34,
+              116,
+              105,
+              109,
+              101,
+              115,
+              116,
+              97,
+              109,
+              112,
+              34,
+              58,
+              34,
               50,
-              46,
               48,
-              47,
-              47,
-              69,
-              78,
-              34,
-              62,
-              10,
-              60,
-              72,
-              84,
-              77,
-              76,
-              62,
-              60,
-              72,
-              69,
-              65,
-              68,
-              62,
-              10,
-              60,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
+              50,
+              54,
+              45,
+              48,
+              56,
+              45,
+              49,
               52,
+              84,
+              49,
+              52,
+              58,
+              53,
+              57,
+              58,
               48,
+              54,
+              46,
+              53,
               49,
-              32,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
-              101,
-              100,
-              60,
-              47,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              10,
-              60,
-              47,
-              72,
-              69,
-              65,
-              68,
-              62,
-              60,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              72,
-              49,
-              62,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
-              101,
-              100,
-              60,
-              47,
-              72,
-              49,
-              62,
-              10,
-              60,
-              47,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              47,
-              72,
-              84,
-              77,
-              76,
-              62,
-              13,
-              10
+              53,
+              53,
+              53,
+              57,
+              56,
+              34,
+              125
             ]
           },
           "cookie": [],
-          "responseTime": 130,
-          "responseSize": 147
+          "responseTime": 21,
+          "responseSize": 98
         },
-        "id": "44a69533-c47b-4386-a059-364ab9b11a57"
+        "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611"
       },
       {
         "cursor": {
-          "ref": "42839ac2-59fb-4ba6-b77a-e40499fa5558",
+          "ref": "3f183b6d-5778-48ec-acd2-c1aec2434ae7",
           "length": 5,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "ad831c4f-bdc5-4300-9af1-c0a9df36fb7b"
+          "httpRequestId": "56967e80-b50e-447c-a333-dfa62ed7e9c7"
         },
         "item": {
-          "id": "5b9f1862-b28f-40b1-9818-c169180e5203",
+          "id": "9bf8e346-e19a-4213-adf0-c462e579c713",
           "name": "search",
           "request": {
             "url": {
@@ -985,7 +948,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "9fddc56e-69bb-4c60-af9a-9d2522aed977",
+              "id": "cfad8f1d-477a-4618-9f4f-4932353c2828",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1094,7 +1057,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "a3b49271-416e-4b69-a4e5-e62a04233927",
+              "value": "471369ba-2210-4f34-b35d-6dee57c87f7e",
               "system": true
             },
             {
@@ -1116,208 +1079,127 @@
           "method": "GET"
         },
         "response": {
-          "id": "9514b978-b733-4a11-9f2a-a71d34b4b8b8",
-          "status": "Unauthorized",
-          "code": 401,
+          "id": "f8e690d6-48f5-43a0-878b-68a81f5fdfa8",
+          "status": "Bad Request",
+          "code": 400,
           "header": [
             {
-              "key": "MS-Author-Via",
-              "value": "DAV"
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             },
             {
-              "key": "DAV",
-              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
+              "key": "X-XSS-Protection",
+              "value": "0"
             },
             {
-              "key": "Server",
-              "value": "Oracle XML DB/Oracle Database"
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
             },
             {
-              "key": "WWW-Authenticate",
-              "value": "Basic realm=\"XDB\""
+              "key": "Pragma",
+              "value": "no-cache"
             },
             {
-              "key": "Date",
-              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
             },
             {
               "key": "Content-Type",
-              "value": "text/html; charset=UTF-8"
+              "value": "application/json"
             },
             {
-              "key": "Content-Length",
-              "value": "147"
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              60,
-              33,
-              68,
-              79,
-              67,
-              84,
-              89,
-              80,
-              69,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              80,
-              85,
-              66,
-              76,
-              73,
-              67,
-              32,
+              123,
               34,
-              45,
-              47,
-              47,
-              73,
-              69,
-              84,
-              70,
-              47,
-              47,
-              68,
-              84,
-              68,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              50,
-              46,
-              48,
-              47,
-              47,
-              69,
-              78,
-              34,
-              62,
-              10,
-              60,
-              72,
-              84,
-              77,
-              76,
-              62,
-              60,
-              72,
-              69,
-              65,
-              68,
-              62,
-              10,
-              60,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              52,
-              48,
-              49,
-              32,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
+              101,
+              114,
+              114,
               111,
               114,
+              34,
+              58,
+              34,
+              112,
+              114,
+              101,
+              99,
               105,
-              122,
+              111,
+              77,
+              105,
+              110,
+              32,
+              110,
+              111,
+              32,
+              112,
+              117,
               101,
               100,
-              60,
-              47,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              10,
-              60,
-              47,
-              72,
-              69,
-              65,
-              68,
-              62,
-              60,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              72,
-              49,
-              62,
-              85,
-              110,
+              101,
+              32,
+              115,
+              101,
+              114,
+              32,
+              109,
               97,
-              117,
-              116,
-              104,
+              121,
               111,
               114,
-              105,
-              122,
+              32,
+              113,
+              117,
               101,
-              100,
-              60,
-              47,
-              72,
-              49,
-              62,
-              10,
-              60,
-              47,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              47,
-              72,
-              84,
+              32,
+              112,
+              114,
+              101,
+              99,
+              105,
+              111,
               77,
-              76,
-              62,
-              13,
-              10
+              97,
+              120,
+              34,
+              125
             ]
           },
           "cookie": [],
-          "responseTime": 111,
-          "responseSize": 147
+          "responseTime": 5,
+          "responseSize": 54
         },
-        "id": "5b9f1862-b28f-40b1-9818-c169180e5203"
+        "id": "9bf8e346-e19a-4213-adf0-c462e579c713"
       },
       {
         "cursor": {
-          "ref": "e1605e8d-21d6-4e80-a53d-dac8d715ed6c",
+          "ref": "59e97d53-ea52-4181-b221-23d88a1b8d84",
           "length": 5,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "6ae2f2cd-d465-4258-95f3-d5e3ca64ebc6"
+          "httpRequestId": "b64f5637-b468-4b51-9f61-393e68f21924"
         },
         "item": {
-          "id": "689e4f0a-129a-4115-8843-131f0de23a16",
+          "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485",
           "name": "create Publication",
           "request": {
             "url": {
@@ -1358,7 +1240,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "9058843f-b38b-4d1e-9004-df2ceca5ad33",
+              "id": "a9ad1f01-af8f-42ca-b00d-200f71722cfc",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1443,7 +1325,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "f0485b52-5150-4576-bcda-6c8beaf4f962",
+              "value": "c577e149-2407-49f9-8906-d7ac079123d7",
               "system": true
             },
             {
@@ -1480,208 +1362,165 @@
           }
         },
         "response": {
-          "id": "b0cc1742-c008-48c1-9d4f-ddc733eda6f9",
-          "status": "Unauthorized",
-          "code": 401,
+          "id": "a52e5800-2d1a-44b4-8a63-677e692a3e88",
+          "status": "Internal Server Error",
+          "code": 500,
           "header": [
             {
-              "key": "MS-Author-Via",
-              "value": "DAV"
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             },
             {
-              "key": "DAV",
-              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
+              "key": "X-XSS-Protection",
+              "value": "0"
             },
             {
-              "key": "Server",
-              "value": "Oracle XML DB/Oracle Database"
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
             },
             {
-              "key": "WWW-Authenticate",
-              "value": "Basic realm=\"XDB\""
+              "key": "Pragma",
+              "value": "no-cache"
             },
             {
-              "key": "Date",
-              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
             },
             {
               "key": "Content-Type",
-              "value": "text/html; charset=UTF-8"
+              "value": "application/json"
             },
             {
-              "key": "Content-Length",
-              "value": "147"
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              60,
-              33,
-              68,
-              79,
-              67,
-              84,
-              89,
-              80,
-              69,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              80,
-              85,
-              66,
-              76,
-              73,
-              67,
-              32,
+              123,
               34,
-              45,
-              47,
-              47,
-              73,
-              69,
+              115,
+              117,
+              99,
+              99,
+              101,
+              115,
+              115,
+              34,
+              58,
+              102,
+              97,
+              108,
+              115,
+              101,
+              44,
+              34,
+              109,
+              101,
+              115,
+              115,
+              97,
+              103,
+              101,
+              34,
+              58,
+              34,
               84,
-              70,
-              47,
-              47,
-              68,
-              84,
-              68,
+              105,
+              101,
+              110,
+              100,
+              97,
               32,
-              72,
-              84,
-              77,
-              76,
+              110,
+              111,
               32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              44,
+              34,
+              116,
+              105,
+              109,
+              101,
+              115,
+              116,
+              97,
+              109,
+              112,
+              34,
+              58,
+              34,
               50,
-              46,
               48,
-              47,
-              47,
-              69,
-              78,
-              34,
-              62,
-              10,
-              60,
-              72,
-              84,
-              77,
-              76,
-              62,
-              60,
-              72,
-              69,
-              65,
-              68,
-              62,
-              10,
-              60,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
+              50,
+              54,
+              45,
+              48,
+              56,
+              45,
+              49,
               52,
+              84,
+              49,
+              52,
+              58,
+              53,
+              57,
+              58,
               48,
-              49,
-              32,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
-              101,
-              100,
-              60,
-              47,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              10,
-              60,
-              47,
-              72,
-              69,
-              65,
-              68,
-              62,
-              60,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              72,
-              49,
-              62,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
-              101,
-              100,
-              60,
-              47,
-              72,
-              49,
-              62,
-              10,
-              60,
-              47,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              47,
-              72,
-              84,
-              77,
-              76,
-              62,
-              13,
-              10
+              54,
+              46,
+              54,
+              55,
+              54,
+              51,
+              50,
+              48,
+              50,
+              34,
+              125
             ]
           },
           "cookie": [],
-          "responseTime": 112,
-          "responseSize": 147
+          "responseTime": 6,
+          "responseSize": 92
         },
-        "id": "689e4f0a-129a-4115-8843-131f0de23a16"
+        "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485"
       },
       {
         "cursor": {
-          "ref": "63b7e128-f669-4186-a14a-ef92626fa72a",
+          "ref": "ee2bcba0-b1f5-41c5-93c3-59d566e98ed9",
           "length": 5,
           "cycles": 1,
           "position": 3,
           "iteration": 0,
-          "httpRequestId": "beedd31a-65a5-4f5b-b255-697457644e69"
+          "httpRequestId": "25cf6c0e-04b6-42ac-9b8b-ba86c7983b15"
         },
         "item": {
-          "id": "13da0736-9c7b-4c1c-9392-945bc67541dd",
+          "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b",
           "name": "register",
           "request": {
             "url": {
@@ -1723,7 +1562,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "6dbe7f1e-98a3-4849-9965-6823d11c4ebe",
+              "id": "cf4e6f81-2767-4314-b41b-a159bcc429a1",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1810,7 +1649,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "42244b71-8d5e-4968-b415-55e4f4ca21a5",
+              "value": "0f4afee2-1a7b-4e33-bcaf-cdf9b712fb90",
               "system": true
             },
             {
@@ -1847,208 +1686,121 @@
           }
         },
         "response": {
-          "id": "380617a9-7fea-409f-bb43-e26ae591be30",
-          "status": "Unauthorized",
-          "code": 401,
+          "id": "6c57d531-27c0-4a5e-911c-5f08770fac9f",
+          "status": "Conflict",
+          "code": 409,
           "header": [
             {
-              "key": "MS-Author-Via",
-              "value": "DAV"
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             },
             {
-              "key": "DAV",
-              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
+              "key": "X-XSS-Protection",
+              "value": "0"
             },
             {
-              "key": "Server",
-              "value": "Oracle XML DB/Oracle Database"
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
             },
             {
-              "key": "WWW-Authenticate",
-              "value": "Basic realm=\"XDB\""
+              "key": "Pragma",
+              "value": "no-cache"
             },
             {
-              "key": "Date",
-              "value": "Fri, 14 Aug 2026 00:40:20 GMT"
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
             },
             {
               "key": "Content-Type",
-              "value": "text/html; charset=UTF-8"
+              "value": "application/json"
             },
             {
-              "key": "Content-Length",
-              "value": "147"
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              60,
-              33,
-              68,
-              79,
-              67,
-              84,
-              89,
-              80,
-              69,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              80,
-              85,
-              66,
-              76,
-              73,
-              67,
-              32,
+              123,
               34,
-              45,
-              47,
-              47,
-              73,
-              69,
-              84,
-              70,
-              47,
-              47,
-              68,
-              84,
-              68,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              50,
-              46,
-              48,
-              47,
-              47,
-              69,
-              78,
-              34,
-              62,
-              10,
-              60,
-              72,
-              84,
-              77,
-              76,
-              62,
-              60,
-              72,
-              69,
-              65,
-              68,
-              62,
-              10,
-              60,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              52,
-              48,
-              49,
-              32,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
+              101,
+              114,
+              114,
               111,
               114,
-              105,
-              122,
-              101,
-              100,
-              60,
-              47,
-              84,
-              73,
-              84,
-              76,
+              34,
+              58,
+              34,
               69,
-              62,
-              10,
-              60,
-              47,
-              72,
-              69,
-              65,
-              68,
-              62,
-              60,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              72,
-              49,
-              62,
+              108,
+              32,
+              82,
               85,
-              110,
+              32,
+              121,
               97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
+              32,
+              115,
               101,
+              32,
+              101,
+              110,
+              99,
+              117,
+              101,
+              110,
+              116,
+              114,
+              97,
+              32,
+              114,
+              101,
+              103,
+              105,
+              115,
+              116,
+              114,
+              97,
               100,
-              60,
-              47,
-              72,
-              49,
-              62,
-              10,
-              60,
-              47,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              47,
-              72,
-              84,
-              77,
-              76,
-              62,
-              13,
-              10
+              111,
+              34,
+              125
             ]
           },
           "cookie": [],
-          "responseTime": 110,
-          "responseSize": 147
+          "responseTime": 11,
+          "responseSize": 44
         },
-        "id": "13da0736-9c7b-4c1c-9392-945bc67541dd"
+        "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b"
       },
       {
         "cursor": {
-          "ref": "aa15e6ea-1ec8-46ff-81bd-f58b376a2bb0",
+          "ref": "c13fc8e5-920f-4d44-b600-45aa04d7b899",
           "length": 5,
           "cycles": 1,
           "position": 4,
           "iteration": 0,
-          "httpRequestId": "e806b00e-3f95-4ba9-9a39-5e92cbc133f8"
+          "httpRequestId": "d5e80be3-5dc7-47ca-ac0d-6b9ce0ca6110"
         },
         "item": {
-          "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf",
+          "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8",
           "name": "get Public Profile",
           "request": {
             "url": {
@@ -2082,7 +1834,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "db604586-d769-42cb-96ef-ca5904bb239a",
+              "id": "71ac64f0-f51e-448a-83fe-c886b1c02560",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -2157,7 +1909,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "51c50fa5-7b87-446e-94f9-4ce4a13f3a6b",
+              "value": "69163eec-f6ee-4f14-ad27-cc5da9e9a6d1",
               "system": true
             },
             {
@@ -2179,200 +1931,101 @@
           "method": "GET"
         },
         "response": {
-          "id": "c9942870-6f8d-4037-bd17-ff33d2c36fb6",
-          "status": "Unauthorized",
-          "code": 401,
+          "id": "44b0c99c-501f-4116-b274-01d6d7b86f65",
+          "status": "Not Found",
+          "code": 404,
           "header": [
             {
-              "key": "MS-Author-Via",
-              "value": "DAV"
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
             },
             {
-              "key": "DAV",
-              "value": "1,2,<http://www.oracle.com/xdb/webdav/props>"
+              "key": "X-XSS-Protection",
+              "value": "0"
             },
             {
-              "key": "Server",
-              "value": "Oracle XML DB/Oracle Database"
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
             },
             {
-              "key": "WWW-Authenticate",
-              "value": "Basic realm=\"XDB\""
+              "key": "Pragma",
+              "value": "no-cache"
             },
             {
-              "key": "Date",
-              "value": "Fri, 14 Aug 2026 00:40:21 GMT"
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
             },
             {
               "key": "Content-Type",
-              "value": "text/html; charset=UTF-8"
+              "value": "application/json"
             },
             {
-              "key": "Content-Length",
-              "value": "147"
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=60"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
             }
           ],
           "stream": {
             "type": "Buffer",
             "data": [
-              60,
-              33,
-              68,
-              79,
-              67,
-              84,
-              89,
-              80,
-              69,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              80,
-              85,
-              66,
-              76,
-              73,
-              67,
-              32,
+              123,
               34,
-              45,
-              47,
-              47,
-              73,
-              69,
-              84,
-              70,
-              47,
-              47,
-              68,
-              84,
-              68,
-              32,
-              72,
-              84,
-              77,
-              76,
-              32,
-              50,
-              46,
-              48,
-              47,
-              47,
-              69,
-              78,
-              34,
-              62,
-              10,
-              60,
-              72,
-              84,
-              77,
-              76,
-              62,
-              60,
-              72,
-              69,
-              65,
-              68,
-              62,
-              10,
-              60,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              52,
-              48,
-              49,
-              32,
-              85,
-              110,
-              97,
-              117,
-              116,
-              104,
+              101,
+              114,
+              114,
               111,
               114,
+              34,
+              58,
+              34,
+              84,
               105,
-              122,
               101,
-              100,
-              60,
-              47,
-              84,
-              73,
-              84,
-              76,
-              69,
-              62,
-              10,
-              60,
-              47,
-              72,
-              69,
-              65,
-              68,
-              62,
-              60,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              72,
-              49,
-              62,
-              85,
               110,
-              97,
-              117,
-              116,
-              104,
-              111,
-              114,
-              105,
-              122,
-              101,
               100,
-              60,
-              47,
-              72,
-              49,
-              62,
-              10,
-              60,
-              47,
-              66,
-              79,
-              68,
-              89,
-              62,
-              60,
-              47,
-              72,
-              84,
-              77,
-              76,
-              62,
-              13,
-              10
+              97,
+              32,
+              110,
+              111,
+              32,
+              101,
+              110,
+              99,
+              111,
+              110,
+              116,
+              114,
+              97,
+              100,
+              97,
+              34,
+              125
             ]
           },
           "cookie": [],
-          "responseTime": 111,
-          "responseSize": 147
+          "responseTime": 6,
+          "responseSize": 32
         },
-        "id": "f0dfb04b-ef65-4a96-a9e3-8be94c8c0daf"
+        "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8"
       }
     ],
     "transfers": {
-      "responseTotal": 735
+      "responseTotal": 320
     },
     "failures": [],
     "error": null

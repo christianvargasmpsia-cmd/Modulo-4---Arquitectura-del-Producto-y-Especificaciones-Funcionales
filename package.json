@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "openai": "^6.45.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
   }
 }

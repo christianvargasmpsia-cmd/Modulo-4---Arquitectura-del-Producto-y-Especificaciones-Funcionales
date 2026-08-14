@@ -18,117 +18,339 @@ class LLMService {
         });
 
         this.model = "gpt-4o-mini";
-
     }
 
     /**
-     * Extrae los fallos relevantes del reporte Newman
-     * para construir el contexto del prompt.
+     * Convierte los resultados HTTP detectados por Newman
+     * en una estructura de fallos que pueda analizar la IA.
      */
-    extractFailures(newmanSummary) {
+    extractFailures(results) {
 
         const failures = [];
 
-        newmanSummary.run.failures.forEach(failure => {
+        const httpResults = Array.isArray(results.httpResults)
+            ? results.httpResults
+            : [];
 
-            failures.push({
-                test: failure.source?.name ?? "Test desconocido",
-                endpoint: failure.source?.request?.url?.path?.join("/") ?? "",
-                method: failure.source?.request?.method ?? "",
-                error: failure.error?.message ?? "Error desconocido",
-                statusCode: failure.result?.response?.code ?? null
+        httpResults
+            .filter(result => result.failed)
+            .forEach(result => {
+
+                failures.push({
+
+                    test:
+                        result.request ??
+                        "Test desconocido",
+
+                    endpoint:
+                        result.request ??
+                        "",
+
+                    method:
+                        result.method ??
+                        "",
+
+                    error:
+                        result.statusCode
+                            ? `HTTP ${result.statusCode} ${result.status}`
+                            : "Error HTTP desconocido",
+
+                    statusCode:
+                        result.statusCode ?? null
+
+                });
+
             });
 
-        });
-
         return failures;
-
     }
 
     /**
-     * Construye el prompt estructurado para el LLM.
+     * Construye el prompt para el LLM.
      */
     buildPrompt(failures, stats) {
 
-        const failuresList = failures
-            .map(
-                (f, i) =>
-                    `${i + 1}. [${f.method} /${f.endpoint}] "${f.test}"\n` +
-                    `   Error: ${f.error}` +
-                    (f.statusCode ? `\n   HTTP Status: ${f.statusCode}` : "")
-            )
-            .join("\n\n");
+        const failuresList = failures.length > 0
 
-        return (
-            `Eres un experto en QA y testing de APIs REST. ` +
-            `Analiza los siguientes resultados de pruebas automatizadas y responde ÚNICAMENTE con un objeto JSON válido.\n\n` +
-            `ESTADÍSTICAS GENERALES:\n` +
-            `- Total de requests: ${stats.requests}\n` +
-            `- Total de assertions: ${stats.assertions}\n` +
-            `- Fallos encontrados: ${stats.failed}\n\n` +
-            `FALLOS DETECTADOS:\n\n${failuresList}\n\n` +
-            `Responde con este JSON exacto (sin markdown, sin texto adicional):\n` +
-            `{\n` +
-            `  "summary": "resumen ejecutivo en 2-3 oraciones",\n` +
-            `  "overallStatus": "CRITICAL | DEGRADED | STABLE",\n` +
-            `  "failures": [\n` +
-            `    {\n` +
-            `      "test": "nombre del test",\n` +
-            `      "explanation": "explicación del error en lenguaje simple",\n` +
-            `      "priority": "CRITICAL | HIGH | MEDIUM | LOW",\n` +
-            `      "suggestion": "acción concreta para solucionar el problema"\n` +
-            `    }\n` +
-            `  ]\n` +
-            `}`
-        );
+            ? failures
+                .map(
+                    (failure, index) =>
+                        `${index + 1}. ` +
+                        `[${failure.method} ${failure.endpoint}] ` +
+                        `"${failure.test}"\n` +
+                        `   Error: ${failure.error}\n` +
+                        `   HTTP Status: ${failure.statusCode ?? "N/A"}`
+                )
+                .join("\n\n")
 
+            : "No se detectaron fallos.";
+
+        return `
+Eres un experto en QA, testing de APIs REST y análisis
+automatizado de resultados.
+
+Analiza los resultados reales de Newman proporcionados
+a continuación.
+
+IMPORTANTE:
+- Si existen fallos HTTP 4xx o 5xx, NO debes considerar
+  el sistema como STABLE.
+- HTTP 500 debe considerarse un error crítico.
+- HTTP 400 debe considerarse un error de solicitud.
+- HTTP 404 debe considerarse un recurso no encontrado.
+- HTTP 409 puede representar un conflicto de datos.
+- Si existen varios errores, debes reflejarlos en el análisis.
+- No inventes errores que no estén presentes.
+- Devuelve ÚNICAMENTE JSON válido.
+
+ESTADÍSTICAS GENERALES:
+
+- Total de requests: ${stats.requests}
+- Total de assertions: ${stats.assertions}
+- Fallos encontrados: ${stats.failed}
+- Fallos HTTP: ${stats.httpFailures}
+
+FALLOS DETECTADOS:
+
+${failuresList}
+
+REGLAS PARA overallStatus:
+
+1. CRITICAL:
+   - Si existe al menos un HTTP 500.
+   - O existen 3 o más fallos.
+
+2. DEGRADED:
+   - Si existen fallos 400, 404, 409 u otros 4xx.
+   - Pero no existe HTTP 500 y hay menos de 3 fallos.
+
+3. STABLE:
+   - Únicamente cuando no existen fallos.
+
+Para cada fallo proporciona una explicación clara
+y una sugerencia concreta.
+
+RESPONDE EXACTAMENTE CON ESTE FORMATO:
+
+{
+  "summary": "resumen ejecutivo en 2-3 oraciones",
+  "overallStatus": "CRITICAL",
+  "failures": [
+    {
+      "test": "nombre del test",
+      "explanation": "explicación del error",
+      "priority": "CRITICAL",
+      "suggestion": "acción concreta para solucionar el problema"
+    }
+  ]
+}
+`;
     }
 
     /**
-     * Envía los resultados Newman al LLM y retorna el análisis estructurado.
+     * Analiza los resultados recibidos desde Newman.
      */
-    async analyzeResults(newmanSummary) {
+    async analyzeResults(results) {
 
+        /*
+         * Normalizamos las estadísticas.
+         */
         const stats = {
-            requests: newmanSummary.run.stats.requests.total,
-            assertions: newmanSummary.run.stats.assertions.total,
-            failed: newmanSummary.run.failures.length
+
+            requests:
+                results.requests ?? 0,
+
+            assertions:
+                results.assertions ?? 0,
+
+            failed:
+                results.failed ?? 0,
+
+            httpFailures:
+                results.httpFailures ?? 0,
+
+            assertionFailures:
+                results.assertionFailures ?? 0
         };
 
-        // Si no hay fallos, no hace falta llamar al LLM
+        /*
+         * Extraemos los fallos HTTP.
+         */
+        const failures =
+            this.extractFailures(results);
+
+        /*
+         * Si Newman dice que no hay fallos,
+         * no necesitamos llamar al LLM.
+         */
         if (stats.failed === 0) {
 
             return {
-                summary: "Todas las pruebas pasaron exitosamente. No se detectaron fallos.",
-                overallStatus: "STABLE",
-                failures: []
-            };
 
+                summary:
+                    "Todas las pruebas pasaron exitosamente. " +
+                    "No se detectaron fallos.",
+
+                overallStatus:
+                    "STABLE",
+
+                failures: []
+
+            };
         }
 
-        const failures = this.extractFailures(newmanSummary);
-        const prompt = this.buildPrompt(failures, stats);
+        /*
+         * Construimos el prompt.
+         */
+        const prompt =
+            this.buildPrompt(
+                failures,
+                stats
+            );
 
-        const response = await this.client.chat.completions.create({
-            model: this.model,
-            messages: [
-                {
-                    role: "user",
-                    content: prompt
-                }
-            ],
-            temperature: 0.2
-        });
+        /*
+         * Llamamos al modelo.
+         */
+        const response =
+            await this.client.chat.completions.create({
 
-        const content = response.choices[0].message.content.trim();
+                model: this.model,
 
-        // Parsear la respuesta JSON del LLM
-        const analysis = JSON.parse(content);
+                messages: [
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ],
+
+                temperature: 0.2
+
+            });
+
+        /*
+         * Extraemos respuesta.
+         */
+        let content =
+            response
+                .choices[0]
+                .message
+                .content
+                .trim();
+
+        /*
+         * Eliminamos posibles bloques Markdown
+         * aunque el prompt solicite solamente JSON.
+         */
+        if (content.startsWith("```")) {
+
+            content =
+                content
+                    .replace(/^```json\s*/i, "")
+                    .replace(/^```\s*/i, "")
+                    .replace(/\s*```$/i, "")
+                    .trim();
+        }
+
+        let analysis;
+
+        try {
+
+            analysis =
+                JSON.parse(content);
+
+        } catch (error) {
+
+            /*
+             * Si el LLM devuelve algo que no es JSON,
+             * generamos un resultado seguro.
+             */
+            analysis = {
+
+                summary:
+                    `Se detectaron ${stats.failed} ` +
+                    `fallos durante la ejecución de las pruebas.`,
+
+                overallStatus:
+                    stats.failed >= 3 ||
+                    failures.some(
+                        failure =>
+                            failure.statusCode >= 500
+                    )
+                        ? "CRITICAL"
+                        : "DEGRADED",
+
+                failures:
+                    failures.map(failure => ({
+
+                        test:
+                            failure.test,
+
+                        explanation:
+                            failure.error,
+
+                        priority:
+                            failure.statusCode >= 500
+                                ? "CRITICAL"
+                                : "HIGH",
+
+                        suggestion:
+                            "Revisar el endpoint y validar " +
+                            "la solicitud y respuesta del backend."
+
+                    }))
+
+            };
+        }
+
+        /*
+         * Validación final de seguridad.
+         *
+         * Nunca permitimos STABLE si Newman
+         * reportó fallos.
+         */
+        if (
+            stats.failed > 0 &&
+            analysis.overallStatus === "STABLE"
+        ) {
+
+            analysis.overallStatus =
+                stats.failed >= 3 ||
+                failures.some(
+                    failure =>
+                        failure.statusCode >= 500
+                )
+                    ? "CRITICAL"
+                    : "DEGRADED";
+        }
+
+        /*
+         * Garantizamos que failures exista.
+         */
+        if (!Array.isArray(analysis.failures)) {
+
+            analysis.failures =
+                failures.map(failure => ({
+
+                    test:
+                        failure.test,
+
+                    explanation:
+                        failure.error,
+
+                    priority:
+                        failure.statusCode >= 500
+                            ? "CRITICAL"
+                            : "HIGH",
+
+                    suggestion:
+                        "Revisar el endpoint y validar " +
+                        "la implementación del backend."
+
+                }));
+        }
 
         return analysis;
-
     }
-
 }
 
 export default new LLMService();
