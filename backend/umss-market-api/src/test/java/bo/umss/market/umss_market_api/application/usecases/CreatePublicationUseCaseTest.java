@@ -5,11 +5,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationResponse;
@@ -18,6 +21,7 @@ import bo.umss.market.umss_market_api.domain.enums.PublicationType;
 import bo.umss.market.umss_market_api.domain.enums.StoreStatus;
 import bo.umss.market.umss_market_api.domain.model.Publication;
 import bo.umss.market.umss_market_api.domain.model.Store;
+import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
 import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
 
@@ -25,6 +29,8 @@ class CreatePublicationUseCaseTest {
 
     private PublicationRepositoryPort publicationRepository;
     private StoreRepositoryPort storeRepository;
+    private AIProviderPort aiProvider;
+    private ObjectMapper objectMapper;
 
     private CreatePublicationUseCase useCase;
 
@@ -33,10 +39,15 @@ class CreatePublicationUseCaseTest {
 
         publicationRepository = mock(PublicationRepositoryPort.class);
         storeRepository = mock(StoreRepositoryPort.class);
+        aiProvider = mock(AIProviderPort.class);
+
+        objectMapper = new ObjectMapper();
 
         useCase = new CreatePublicationUseCase(
                 publicationRepository,
-                storeRepository
+                storeRepository,
+                aiProvider,
+                objectMapper
         );
     }
 
@@ -54,12 +65,35 @@ class CreatePublicationUseCaseTest {
         when(storeRepository.findById(storeId))
                 .thenReturn(Optional.of(store));
 
+        // Mock del embedding generado por Ollama
+        when(aiProvider.generateEmbedding(any(String.class)))
+                .thenReturn(List.of(
+                        0.1,
+                        0.2,
+                        0.3
+                ));
+
         when(publicationRepository.save(any(Publication.class)))
-                .thenReturn(
-                        Publication.builder()
-                                .id(publicationId)
-                                .build()
-                );
+                .thenAnswer(invocation -> {
+
+                    Publication publication =
+                            invocation.getArgument(0);
+
+                    return Publication.builder()
+                            .id(publicationId)
+                            .storeId(publication.getStoreId())
+                            .nombre(publication.getNombre())
+                            .descripcion(publication.getDescripcion())
+                            .precio(publication.getPrecio())
+                            .tipo(publication.getTipo())
+                            .stock(publication.getStock())
+                            .modalidadCobro(publication.getModalidadCobro())
+                            .activa(publication.getActiva())
+                            .createdAt(publication.getCreatedAt())
+                            .updatedAt(publication.getUpdatedAt())
+                            .embedding(publication.getEmbedding())
+                            .build();
+                });
 
         CreatePublicationRequest request =
                 new CreatePublicationRequest();
@@ -75,10 +109,22 @@ class CreatePublicationUseCaseTest {
                 useCase.execute(request);
 
         assertTrue(response.isSuccess());
+
         assertEquals(
                 publicationId,
                 response.getPublicationId()
         );
+
+        // Verificar que se generó el embedding
+        verify(aiProvider)
+                .generateEmbedding(any(String.class));
+
+        // Verificar que la publicación guardada tiene embedding
+        verify(publicationRepository)
+                .save(argThat(publication ->
+                        publication.getEmbedding() != null
+                                && !publication.getEmbedding().isBlank()
+                ));
     }
 
     @Test
@@ -111,6 +157,11 @@ class CreatePublicationUseCaseTest {
                 "Los productos deben tener stock mayor a cero",
                 exception.getMessage()
         );
+
+        // No debe generar embedding porque la validación
+        // de stock falla antes.
+        verify(aiProvider, never())
+                .generateEmbedding(any(String.class));
     }
 
     @Test
@@ -127,12 +178,35 @@ class CreatePublicationUseCaseTest {
         when(storeRepository.findById(storeId))
                 .thenReturn(Optional.of(store));
 
+        // Mock del embedding
+        when(aiProvider.generateEmbedding(any(String.class)))
+                .thenReturn(List.of(
+                        0.4,
+                        0.5,
+                        0.6
+                ));
+
         when(publicationRepository.save(any(Publication.class)))
-                .thenReturn(
-                        Publication.builder()
-                                .id(publicationId)
-                                .build()
-                );
+                .thenAnswer(invocation -> {
+
+                    Publication publication =
+                            invocation.getArgument(0);
+
+                    return Publication.builder()
+                            .id(publicationId)
+                            .storeId(publication.getStoreId())
+                            .nombre(publication.getNombre())
+                            .descripcion(publication.getDescripcion())
+                            .precio(publication.getPrecio())
+                            .tipo(publication.getTipo())
+                            .stock(publication.getStock())
+                            .modalidadCobro(publication.getModalidadCobro())
+                            .activa(publication.getActiva())
+                            .createdAt(publication.getCreatedAt())
+                            .updatedAt(publication.getUpdatedAt())
+                            .embedding(publication.getEmbedding())
+                            .build();
+                });
 
         CreatePublicationRequest request =
                 new CreatePublicationRequest();
@@ -148,9 +222,19 @@ class CreatePublicationUseCaseTest {
                 useCase.execute(request);
 
         assertTrue(response.isSuccess());
+
         assertEquals(
                 publicationId,
                 response.getPublicationId()
         );
+
+        verify(aiProvider)
+                .generateEmbedding(any(String.class));
+
+        verify(publicationRepository)
+                .save(argThat(publication ->
+                        publication.getEmbedding() != null
+                                && !publication.getEmbedding().isBlank()
+                ));
     }
 }

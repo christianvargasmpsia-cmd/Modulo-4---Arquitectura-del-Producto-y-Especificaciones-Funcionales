@@ -1,10 +1,14 @@
 package bo.umss.market.umss_market_api.infrastructure.controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,44 +34,86 @@ import bo.umss.market.umss_market_api.infrastructure.config.LegacyGlobalExceptio
 class PublicationControllerTest {
 
     private CreatePublicationUseCase createUseCase;
+
     private SearchCatalogUseCase searchUseCase;
+
     private GetPublicationByIdUseCase getByIdUseCase;
+
     private PublicationController controller;
+
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        createUseCase = mock(CreatePublicationUseCase.class);
-        searchUseCase = mock(SearchCatalogUseCase.class);
-        getByIdUseCase = mock(GetPublicationByIdUseCase.class);
-        controller = new PublicationController(createUseCase, searchUseCase, getByIdUseCase);
+
+        createUseCase =
+                mock(CreatePublicationUseCase.class);
+
+        searchUseCase =
+                mock(SearchCatalogUseCase.class);
+
+        getByIdUseCase =
+                mock(GetPublicationByIdUseCase.class);
+
+        controller = new PublicationController(
+                createUseCase,
+                searchUseCase,
+                getByIdUseCase
+        );
+
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
-                .setControllerAdvice(new LegacyGlobalExceptionHandler())
+                .setControllerAdvice(
+                        new LegacyGlobalExceptionHandler()
+                )
                 .build();
     }
 
-    // ── tests unitarios directos ──────────────────────────────────────────────
+    // ============================================================
+    // CREAR PUBLICACIÓN
+    // ============================================================
 
     @Test
     void shouldCreatePublication() {
+
+        UUID publicationId = UUID.randomUUID();
 
         CreatePublicationResponse response =
                 CreatePublicationResponse.builder()
                         .success(true)
                         .message("OK")
-                        .publicationId(UUID.randomUUID())
+                        .publicationId(publicationId)
                         .build();
 
-        when(createUseCase.execute(any()))
-                .thenReturn(response);
+        when(createUseCase.execute(
+                any(CreatePublicationRequest.class)
+        )).thenReturn(response);
 
-        var result = controller.createPublication(
-                new CreatePublicationRequest());
+        var result =
+                controller.createPublication(
+                        new CreatePublicationRequest()
+                );
 
-        assertEquals(201, result.getStatusCode().value());
-        assertTrue(result.getBody().isSuccess());
+        assertEquals(
+                201,
+                result.getStatusCode().value()
+        );
+
+        assertNotNull(result.getBody());
+
+        assertTrue(
+                result.getBody().isSuccess()
+        );
+
+        assertEquals(
+                publicationId,
+                result.getBody().getPublicationId()
+        );
     }
+
+    // ============================================================
+    // BUSCAR CATÁLOGO
+    // ============================================================
 
     @Test
     void shouldSearchCatalog() {
@@ -80,13 +126,37 @@ class PublicationControllerTest {
                         .tipo(PublicationType.PRODUCTO)
                         .build();
 
-        when(searchUseCase.execute(any()))
-                .thenReturn(List.of(summary));
+        when(searchUseCase.execute(
+                any(CatalogFilterRequest.class)
+        )).thenReturn(
+                List.of(summary)
+        );
 
-        var result = controller.search(new CatalogFilterRequest());
+        var result =
+                controller.search(
+                        new CatalogFilterRequest()
+                );
 
-        assertEquals(1, result.getBody().size());
+        assertNotNull(
+                result.getBody()
+        );
+
+        assertEquals(
+                1,
+                result.getBody().size()
+        );
+
+        assertEquals(
+                "Brownie",
+                result.getBody()
+                        .get(0)
+                        .getNombre()
+        );
     }
+
+    // ============================================================
+    // OBTENER PUBLICACIÓN POR ID
+    // ============================================================
 
     @Test
     void shouldGetPublicationById() {
@@ -101,30 +171,67 @@ class PublicationControllerTest {
                         .tipo(PublicationType.PRODUCTO)
                         .build();
 
-        when(getByIdUseCase.execute(id))
-                .thenReturn(publication);
+        when(
+                getByIdUseCase.execute(id)
+        ).thenReturn(publication);
 
-        var result = controller.findById(id);
+        var result =
+                controller.findById(id);
 
-        assertEquals(id, result.getBody().getId());
+        assertNotNull(
+                result.getBody()
+        );
+
+        assertEquals(
+                id,
+                result.getBody().getId()
+        );
+
+        assertEquals(
+                "Brownie",
+                result.getBody().getNombre()
+        );
     }
 
-    // ── MockMvc GET /api/publications ─────────────────────────────────────────
+    // ============================================================
+    // GET /api/publications
+    // SIN RESULTADOS
+    // ============================================================
 
     @Test
-    void shouldReturn200WithEmptyListWhenNoPublications() throws Exception {
+    void shouldReturn200WithEmptyListWhenNoPublications()
+            throws Exception {
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenReturn(List.of());
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
+                List.of()
+        );
 
-        mockMvc.perform(get("/api/publications"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(0));
+        mockMvc.perform(
+                get("/api/publications")
+        )
+                .andExpect(
+                        status().isOk()
+                )
+                .andExpect(
+                        jsonPath("$").isArray()
+                )
+                .andExpect(
+                        jsonPath("$.length()").value(0)
+                );
     }
 
+    // ============================================================
+    // GET /api/publications
+    // CON RESULTADOS
+    // ============================================================
+
     @Test
-    void shouldReturn200WithResultsWhenPublicationsExist() throws Exception {
+    void shouldReturn200WithResultsWhenPublicationsExist()
+            throws Exception {
 
         PublicationSummaryResponse summary =
                 PublicationSummaryResponse.builder()
@@ -135,17 +242,36 @@ class PublicationControllerTest {
                         .activa(true)
                         .build();
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenReturn(List.of(summary));
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
+                List.of(summary)
+        );
 
-        mockMvc.perform(get("/api/publications"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].nombre").value("Brownie"));
+        mockMvc.perform(
+                get("/api/publications")
+        )
+                .andExpect(
+                        status().isOk()
+                )
+                .andExpect(
+                        jsonPath("$.length()").value(1)
+                )
+                .andExpect(
+                        jsonPath("$[0].nombre")
+                                .value("Brownie")
+                );
     }
 
+    // ============================================================
+    // GET /api/publications?texto=torta
+    // ============================================================
+
     @Test
-    void shouldReturn200WithTextoParam() throws Exception {
+    void shouldReturn200WithTextoParam()
+            throws Exception {
 
         PublicationSummaryResponse summary =
                 PublicationSummaryResponse.builder()
@@ -156,68 +282,162 @@ class PublicationControllerTest {
                         .activa(true)
                         .build();
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenReturn(List.of(summary));
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
+                List.of(summary)
+        );
 
-        mockMvc.perform(get("/api/publications").param("texto", "torta"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nombre").value("Torta"));
+        mockMvc.perform(
+                get("/api/publications")
+                        .param(
+                                "texto",
+                                "torta"
+                        )
+        )
+                .andExpect(
+                        status().isOk()
+                )
+                .andExpect(
+                        jsonPath("$[0].nombre")
+                                .value("Torta")
+                );
     }
 
+    // ============================================================
+    // GET /api/publications?tipo=SERVICIO
+    // ============================================================
+
     @Test
-    void shouldReturn200WithTipoParam() throws Exception {
+    void shouldReturn200WithTipoParam()
+            throws Exception {
 
         PublicationSummaryResponse summary =
                 PublicationSummaryResponse.builder()
                         .id(UUID.randomUUID())
-                        .nombre("Clases de inglés")
-                        .precio(BigDecimal.valueOf(50))
-                        .tipo(PublicationType.SERVICIO)
+                        .nombre("Clases de ingles")
+                        .precio(
+                                BigDecimal.valueOf(50)
+                        )
+                        .tipo(
+                                PublicationType.SERVICIO
+                        )
                         .activa(true)
                         .build();
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenReturn(List.of(summary));
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
+                List.of(summary)
+        );
 
-        mockMvc.perform(get("/api/publications").param("tipo", "SERVICIO"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].tipo").value("SERVICIO"));
+        mockMvc.perform(
+                get("/api/publications")
+                        .param(
+                                "tipo",
+                                "SERVICIO"
+                        )
+        )
+                .andExpect(
+                        status().isOk()
+                )
+                .andExpect(
+                        jsonPath("$[0].tipo")
+                                .value("SERVICIO")
+                );
     }
 
+    // ============================================================
+    // GET /api/publications
+    // RANGO DE PRECIO
+    // ============================================================
+
     @Test
-    void shouldReturn200WithPrecioRangeParams() throws Exception {
+    void shouldReturn200WithPrecioRangeParams()
+            throws Exception {
 
         PublicationSummaryResponse summary =
                 PublicationSummaryResponse.builder()
                         .id(UUID.randomUUID())
                         .nombre("Muffin")
-                        .precio(BigDecimal.valueOf(15))
-                        .tipo(PublicationType.PRODUCTO)
+                        .precio(
+                                BigDecimal.valueOf(15)
+                        )
+                        .tipo(
+                                PublicationType.PRODUCTO
+                        )
                         .activa(true)
                         .build();
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenReturn(List.of(summary));
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
+                List.of(summary)
+        );
 
-        mockMvc.perform(get("/api/publications")
-                        .param("precioMin", "10")
-                        .param("precioMax", "20"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nombre").value("Muffin"));
+        mockMvc.perform(
+                get("/api/publications")
+                        .param(
+                                "precioMin",
+                                "10"
+                        )
+                        .param(
+                                "precioMax",
+                                "20"
+                        )
+        )
+                .andExpect(
+                        status().isOk()
+                )
+                .andExpect(
+                        jsonPath("$[0].nombre")
+                                .value("Muffin")
+                );
     }
 
+    // ============================================================
+    // RANGO DE PRECIO INVÁLIDO
+    // ============================================================
+
     @Test
-    void shouldReturn400WhenPrecioMinExceedsPrecioMax() throws Exception {
+    void shouldReturn400WhenPrecioMinExceedsPrecioMax()
+            throws Exception {
 
-        when(searchUseCase.execute(any(CatalogFilterRequest.class)))
-                .thenThrow(new InvalidPriceRangeException(
-                        "precioMin no puede ser mayor que precioMax"));
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenThrow(
+                new InvalidPriceRangeException(
+                        "precioMin no puede ser mayor que precioMax"
+                )
+        );
 
-        mockMvc.perform(get("/api/publications")
-                        .param("precioMin", "100")
-                        .param("precioMax", "50"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value(
-                        "precioMin no puede ser mayor que precioMax"));
+        mockMvc.perform(
+                get("/api/publications")
+                        .param(
+                                "precioMin",
+                                "100"
+                        )
+                        .param(
+                                "precioMax",
+                                "50"
+                        )
+        )
+                .andExpect(
+                        status().isBadRequest()
+                )
+                .andExpect(
+                        jsonPath("$.error")
+                                .value(
+                                        "precioMin no puede ser mayor que precioMax"
+                                )
+                );
     }
 }

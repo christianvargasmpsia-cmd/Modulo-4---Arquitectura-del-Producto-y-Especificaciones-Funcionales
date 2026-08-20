@@ -7,19 +7,19 @@
     },
     "item": [
       {
-        "id": "32f7c646-a500-4331-bf40-25a50d3514f1",
+        "id": "e63cca92-b6b3-4999-aeaa-5386eb02a543",
         "name": "api",
         "item": [
           {
-            "id": "46d69081-13a2-4664-ac88-32c2f6f7a663",
+            "id": "243e7683-f0a6-406c-9b07-ce8849ae55a5",
             "name": "publications",
             "item": [
               {
-                "id": "4f603307-8cc8-4ba1-8666-055eadb2e985",
+                "id": "b753bc7f-b8fe-472f-9c36-342d55cafac7",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611",
+                    "id": "c90aec48-f819-462a-b755-c1098c98dc09",
                     "name": "find By Id",
                     "request": {
                       "url": {
@@ -53,7 +53,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "65423a4f-e1f9-41c4-a097-49d5809973c2",
+                        "id": "5cfb13db-469c-4d97-8199-8bb9e7fed3f0",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -100,7 +100,7 @@
                 "event": []
               },
               {
-                "id": "9bf8e346-e19a-4213-adf0-c462e579c713",
+                "id": "ae35524d-43d1-49c0-81d8-2260b0856c38",
                 "name": "search",
                 "request": {
                   "url": {
@@ -148,7 +148,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "cfad8f1d-477a-4618-9f4f-4932353c2828",
+                    "id": "e7df66ee-def9-4d4e-a142-55e7d585fe76",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -206,7 +206,7 @@
                 "event": []
               },
               {
-                "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485",
+                "id": "12664876-c891-4906-85af-14990f84d291",
                 "name": "create Publication",
                 "request": {
                   "url": {
@@ -247,7 +247,7 @@
                     "_": {
                       "postman_previewlanguage": "text"
                     },
-                    "id": "a9ad1f01-af8f-42ca-b00d-200f71722cfc",
+                    "id": "fe1544a7-7106-427b-aabc-61e77305f302",
                     "name": "OK",
                     "originalRequest": {
                       "url": {
@@ -301,15 +301,15 @@
             "event": []
           },
           {
-            "id": "a640f066-5f07-4462-994a-cb2116fa2eb3",
+            "id": "9ed1768b-0906-4580-acff-9b7dfe5be154",
             "name": "auth",
             "item": [
               {
-                "id": "169f2dc7-dead-40c0-963b-8092eede02d1",
+                "id": "c75e8eee-0533-4a89-8773-0b2d66b7ab53",
                 "name": "register",
                 "item": [
                   {
-                    "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b",
+                    "id": "3fa7a5bf-b753-46b9-968a-68c8c55ef628",
                     "name": "register",
                     "request": {
                       "url": {
@@ -351,7 +351,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "cf4e6f81-2767-4314-b41b-a159bcc429a1",
+                        "id": "e237043c-aced-4833-9390-fb3e2631d881",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -409,15 +409,15 @@
             "event": []
           },
           {
-            "id": "4370fc27-702a-46ca-949f-43a8fe111ce7",
+            "id": "9402a709-f7f1-4703-84cc-1927167c245b",
             "name": "tiendas",
             "item": [
               {
-                "id": "82cc7c15-c883-4dff-93e6-19ec7a576e57",
+                "id": "d5817e9a-6ef6-43e3-aab1-4d84c4adf637",
                 "name": "{id}",
                 "item": [
                   {
-                    "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8",
+                    "id": "16f0f690-ca25-43c2-b4cf-a6cc3c35cb18",
                     "name": "get Public Profile",
                     "request": {
                       "url": {
@@ -451,7 +451,7 @@
                         "_": {
                           "postman_previewlanguage": "text"
                         },
-                        "id": "71ac64f0-f51e-448a-83fe-c886b1c02560",
+                        "id": "5067f5cb-ebe0-4b8c-8f01-7b1132b4e2d5",
                         "name": "OK",
                         "originalRequest": {
                           "url": {
@@ -519,11 +519,11 @@
     }
   },
   "environment": {
-    "id": "aa57ac57-a38b-46d8-84cf-edb45d811b48",
+    "id": "5700e476-1d32-4d18-8fa9-66bef0c3b068",
     "values": []
   },
   "globals": {
-    "id": "9350d86d-c881-45e2-881a-fc70ff8796b7",
+    "id": "a8478fd6-8562-4864-bf55-c975f1d835fa",
     "values": []
   },
   "run": {
@@ -575,10 +575,10 @@
       }
     },
     "timings": {
-      "responseAverage": 9.8,
-      "responseMin": 5,
-      "responseMax": 21,
-      "responseSd": 5.979966555090421,
+      "responseAverage": 60,
+      "responseMin": 6,
+      "responseMax": 126,
+      "responseSd": 45.1840679886174,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -587,8 +587,8 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1786733946486,
-      "completed": 1786733946855
+      "started": 1787186495733,
+      "completed": 1787186496457
     },
     "executions": [
       {
@@ -601,11 +601,11 @@
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "875a74fb-64a0-462c-85a0-b5627361b5a6",
-          "httpRequestId": "da4c3414-d493-42fb-aff1-84246fe82c09"
+          "ref": "3e27a963-5cec-4240-8d30-53893222120e",
+          "httpRequestId": "fe499353-1ff2-4e16-ac7f-fa479feda22d"
         },
         "item": {
-          "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611",
+          "id": "c90aec48-f819-462a-b755-c1098c98dc09",
           "name": "find By Id",
           "request": {
             "url": {
@@ -639,7 +639,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "65423a4f-e1f9-41c4-a097-49d5809973c2",
+              "id": "5cfb13db-469c-4d97-8199-8bb9e7fed3f0",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -714,7 +714,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "049aad71-577c-4c56-8de3-b6970e9b6545",
+              "value": "3438fca8-8dab-4ddf-bcb5-59ba3a6ecfbc",
               "system": true
             },
             {
@@ -736,7 +736,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "3e2bdb6e-94a3-4635-b26a-1cec51bce5e8",
+          "id": "e966578b-0467-43d7-a0d9-fded7db0fe3e",
           "status": "Internal Server Error",
           "code": 500,
           "header": [
@@ -774,7 +774,7 @@
             },
             {
               "key": "Date",
-              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+              "value": "Thu, 20 Aug 2026 00:41:35 GMT"
             },
             {
               "key": "Connection",
@@ -862,45 +862,45 @@
               56,
               45,
               49,
-              52,
+              57,
               84,
-              49,
-              52,
-              58,
-              53,
-              57,
-              58,
+              50,
               48,
-              54,
-              46,
-              53,
+              58,
+              52,
               49,
+              58,
+              51,
               53,
-              53,
-              53,
-              57,
+              46,
               56,
+              54,
+              53,
+              54,
+              48,
+              55,
+              54,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 21,
+          "responseTime": 98,
           "responseSize": 98
         },
-        "id": "cf67d5e1-e95b-46a3-aa4f-adba91b7a611"
+        "id": "c90aec48-f819-462a-b755-c1098c98dc09"
       },
       {
         "cursor": {
-          "ref": "3f183b6d-5778-48ec-acd2-c1aec2434ae7",
+          "ref": "9eb8634f-3921-49e2-b445-b6bcde1080de",
           "length": 5,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "56967e80-b50e-447c-a333-dfa62ed7e9c7"
+          "httpRequestId": "be30b4f9-2fd0-4238-9d50-445c112cc07c"
         },
         "item": {
-          "id": "9bf8e346-e19a-4213-adf0-c462e579c713",
+          "id": "ae35524d-43d1-49c0-81d8-2260b0856c38",
           "name": "search",
           "request": {
             "url": {
@@ -948,7 +948,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "cfad8f1d-477a-4618-9f4f-4932353c2828",
+              "id": "e7df66ee-def9-4d4e-a142-55e7d585fe76",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1057,7 +1057,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "471369ba-2210-4f34-b35d-6dee57c87f7e",
+              "value": "3e1d5e03-247e-4eda-813d-482864c3dd2e",
               "system": true
             },
             {
@@ -1079,7 +1079,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "f8e690d6-48f5-43a0-878b-68a81f5fdfa8",
+          "id": "949d875a-4a6e-40bf-81d7-6a06036b67ff",
           "status": "Bad Request",
           "code": 400,
           "header": [
@@ -1117,7 +1117,7 @@
             },
             {
               "key": "Date",
-              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+              "value": "Thu, 20 Aug 2026 00:41:35 GMT"
             },
             {
               "key": "Connection",
@@ -1184,22 +1184,22 @@
             ]
           },
           "cookie": [],
-          "responseTime": 5,
+          "responseTime": 24,
           "responseSize": 54
         },
-        "id": "9bf8e346-e19a-4213-adf0-c462e579c713"
+        "id": "ae35524d-43d1-49c0-81d8-2260b0856c38"
       },
       {
         "cursor": {
-          "ref": "59e97d53-ea52-4181-b221-23d88a1b8d84",
+          "ref": "dea9ee2c-94db-41f6-92df-e1b1239f98d1",
           "length": 5,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "b64f5637-b468-4b51-9f61-393e68f21924"
+          "httpRequestId": "02b5460f-8e99-455c-a6fd-42f82b6bd918"
         },
         "item": {
-          "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485",
+          "id": "12664876-c891-4906-85af-14990f84d291",
           "name": "create Publication",
           "request": {
             "url": {
@@ -1240,7 +1240,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "a9ad1f01-af8f-42ca-b00d-200f71722cfc",
+              "id": "fe1544a7-7106-427b-aabc-61e77305f302",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1325,7 +1325,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "c577e149-2407-49f9-8906-d7ac079123d7",
+              "value": "20d12a20-ac7e-4c37-9bad-0c9d15562a96",
               "system": true
             },
             {
@@ -1362,7 +1362,7 @@
           }
         },
         "response": {
-          "id": "a52e5800-2d1a-44b4-8a63-677e692a3e88",
+          "id": "8dc4c620-ba56-454a-aab1-039583f0b836",
           "status": "Internal Server Error",
           "code": 500,
           "header": [
@@ -1400,7 +1400,7 @@
             },
             {
               "key": "Date",
-              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+              "value": "Thu, 20 Aug 2026 00:41:36 GMT"
             },
             {
               "key": "Connection",
@@ -1482,45 +1482,45 @@
               56,
               45,
               49,
-              52,
-              84,
-              49,
-              52,
-              58,
-              53,
               57,
-              58,
+              84,
+              50,
               48,
+              58,
+              52,
+              49,
+              58,
+              51,
               54,
               46,
-              54,
-              55,
-              54,
-              51,
-              50,
               48,
-              50,
+              57,
+              55,
+              48,
+              48,
+              55,
+              49,
               34,
               125
             ]
           },
           "cookie": [],
-          "responseTime": 6,
+          "responseTime": 46,
           "responseSize": 92
         },
-        "id": "60d5f6be-30d0-4432-b27f-1de8d3e61485"
+        "id": "12664876-c891-4906-85af-14990f84d291"
       },
       {
         "cursor": {
-          "ref": "ee2bcba0-b1f5-41c5-93c3-59d566e98ed9",
+          "ref": "fdc40eae-f96b-43ad-97d9-06a993f159c6",
           "length": 5,
           "cycles": 1,
           "position": 3,
           "iteration": 0,
-          "httpRequestId": "25cf6c0e-04b6-42ac-9b8b-ba86c7983b15"
+          "httpRequestId": "3bf4a96a-df36-4132-acc1-68354be09a9f"
         },
         "item": {
-          "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b",
+          "id": "3fa7a5bf-b753-46b9-968a-68c8c55ef628",
           "name": "register",
           "request": {
             "url": {
@@ -1562,7 +1562,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "cf4e6f81-2767-4314-b41b-a159bcc429a1",
+              "id": "e237043c-aced-4833-9390-fb3e2631d881",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1649,7 +1649,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "0f4afee2-1a7b-4e33-bcaf-cdf9b712fb90",
+              "value": "da54acea-c538-4bb5-919d-6c209d10aa21",
               "system": true
             },
             {
@@ -1686,7 +1686,7 @@
           }
         },
         "response": {
-          "id": "6c57d531-27c0-4a5e-911c-5f08770fac9f",
+          "id": "def09fb5-8c2e-44ee-b51a-77cd08e325a6",
           "status": "Conflict",
           "code": 409,
           "header": [
@@ -1724,7 +1724,7 @@
             },
             {
               "key": "Date",
-              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+              "value": "Thu, 20 Aug 2026 00:41:36 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -1785,22 +1785,22 @@
             ]
           },
           "cookie": [],
-          "responseTime": 11,
+          "responseTime": 126,
           "responseSize": 44
         },
-        "id": "ffd92218-4b0c-4d05-94f0-19f34ded0c1b"
+        "id": "3fa7a5bf-b753-46b9-968a-68c8c55ef628"
       },
       {
         "cursor": {
-          "ref": "c13fc8e5-920f-4d44-b600-45aa04d7b899",
+          "ref": "bfb0a2cf-c30e-4990-93e4-bc05ca55e42b",
           "length": 5,
           "cycles": 1,
           "position": 4,
           "iteration": 0,
-          "httpRequestId": "d5e80be3-5dc7-47ca-ac0d-6b9ce0ca6110"
+          "httpRequestId": "ae28fa4c-c93e-482a-98da-c31a940e5d8b"
         },
         "item": {
-          "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8",
+          "id": "16f0f690-ca25-43c2-b4cf-a6cc3c35cb18",
           "name": "get Public Profile",
           "request": {
             "url": {
@@ -1834,7 +1834,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "71ac64f0-f51e-448a-83fe-c886b1c02560",
+              "id": "5067f5cb-ebe0-4b8c-8f01-7b1132b4e2d5",
               "name": "OK",
               "originalRequest": {
                 "url": {
@@ -1909,7 +1909,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "69163eec-f6ee-4f14-ad27-cc5da9e9a6d1",
+              "value": "c75d2dc1-4cd2-42c9-b250-21be1774bde2",
               "system": true
             },
             {
@@ -1931,7 +1931,7 @@
           "method": "GET"
         },
         "response": {
-          "id": "44b0c99c-501f-4116-b274-01d6d7b86f65",
+          "id": "a57d8676-2db7-4d37-8cba-e2a637e7e2b9",
           "status": "Not Found",
           "code": 404,
           "header": [
@@ -1969,7 +1969,7 @@
             },
             {
               "key": "Date",
-              "value": "Fri, 14 Aug 2026 18:59:06 GMT"
+              "value": "Thu, 20 Aug 2026 00:41:36 GMT"
             },
             {
               "key": "Keep-Alive",
@@ -2021,7 +2021,7 @@
           "responseTime": 6,
           "responseSize": 32
         },
-        "id": "0a0e238e-1e60-4615-82fa-5a76e7ef6ec8"
+        "id": "16f0f690-ca25-43c2-b4cf-a6cc3c35cb18"
       }
     ],
     "transfers": {

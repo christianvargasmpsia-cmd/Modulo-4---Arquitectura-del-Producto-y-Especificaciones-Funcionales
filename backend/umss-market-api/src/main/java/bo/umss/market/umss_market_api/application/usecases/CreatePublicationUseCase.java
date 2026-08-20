@@ -1,15 +1,20 @@
 package bo.umss.market.umss_market_api.application.usecases;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationResponse;
 import bo.umss.market.umss_market_api.domain.enums.PublicationType;
 import bo.umss.market.umss_market_api.domain.model.Publication;
 import bo.umss.market.umss_market_api.domain.model.Store;
+import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
 import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,8 @@ public class CreatePublicationUseCase {
 
     private final PublicationRepositoryPort publicationRepository;
     private final StoreRepositoryPort storeRepository;
+    private final AIProviderPort aiProvider;
+    private final ObjectMapper objectMapper;
 
     public CreatePublicationResponse execute(
             CreatePublicationRequest request) {
@@ -29,7 +36,8 @@ public class CreatePublicationUseCase {
                         new RuntimeException("Tienda no encontrada"));
 
         if (!store.getStatus().name().equals("ACTIVE")) {
-            throw new RuntimeException("La tienda no está activa");
+            throw new RuntimeException(
+                    "La tienda no está activa");
         }
 
         if (request.getTipo() == PublicationType.PRODUCTO) {
@@ -51,6 +59,51 @@ public class CreatePublicationUseCase {
             }
         }
 
+        /*
+         * ============================================================
+         * GENERACIÓN DEL EMBEDDING
+         * ============================================================
+         *
+         * Creamos un texto representativo de la publicación.
+         * Este texto será enviado al modelo de embeddings de Ollama.
+         */
+        String textoEmbedding = String.format("""
+                Nombre: %s
+                Descripción: %s
+                Tipo: %s
+                Precio: %s
+                Modalidad de cobro: %s
+                """,
+                request.getNombre(),
+                request.getDescripcion(),
+                request.getTipo(),
+                request.getPrecio(),
+                request.getModalidadCobro()
+        );
+
+        List<Double> embedding =
+                aiProvider.generateEmbedding(textoEmbedding);
+
+        String embeddingJson = null;
+
+        if (!embedding.isEmpty()) {
+            try {
+                embeddingJson =
+                        objectMapper.writeValueAsString(embedding);
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(
+                        "No fue posible serializar el embedding",
+                        e
+                );
+            }
+        }
+
+        /*
+         * ============================================================
+         * CREACIÓN DE LA PUBLICACIÓN
+         * ============================================================
+         */
         Publication publication = Publication.builder()
                 .id(UUID.randomUUID())
                 .storeId(request.getStoreId())
@@ -63,6 +116,7 @@ public class CreatePublicationUseCase {
                 .activa(true)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .embedding(embeddingJson)
                 .build();
 
         Publication saved =
