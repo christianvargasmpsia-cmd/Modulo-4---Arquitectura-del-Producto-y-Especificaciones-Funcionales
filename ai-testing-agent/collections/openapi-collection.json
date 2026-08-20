@@ -39,53 +39,12 @@
                       "variable": [
                         {
                           "key": "id",
-                          "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
+                          "value": "fa64e55f-7629-4ddd-8eff-04ea2f072034"
                         }
                       ]
                     }
                   },
-                  "response": [
-                    {
-                      "name": "OK",
-                      "originalRequest": {
-                        "method": "GET",
-                        "header": [
-                          {
-                            "key": "Accept",
-                            "value": "*/*"
-                          }
-                        ],
-                        "url": {
-                          "raw": "{{baseUrl}}/api/publications/:id",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "api",
-                            "publications",
-                            ":id"
-                          ],
-                          "variable": [
-                            {
-                              "key": "id",
-                              "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
-                            }
-                          ]
-                        }
-                      },
-                      "status": "OK",
-                      "code": 200,
-                      "_postman_previewlanguage": "text",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "*/*"
-                        }
-                      ],
-                      "cookie": [],
-                      "body": "{\n  \"id\": \"93f34b29-68dc-2c16-759f-d89f5058de44\",\n  \"storeId\": \"effb595a-aaac-c957-cbab-58e169e496e8\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 3868.778035622984,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4514,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": true,\n  \"createdAt\": \"2017-04-10T02:43:31.764Z\",\n  \"updatedAt\": \"2005-01-18T03:25:46.432Z\"\n}"
-                    }
-                  ]
+                  "response": []
                 }
               ]
             },
@@ -100,7 +59,7 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/api/publications?texto=string&tipo=SERVICIO&precioMin=4494.150703178834&precioMax=3023.054740403812&storeId=f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4",
+                  "raw": "{{baseUrl}}/api/publications?texto=laptop",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -111,84 +70,12 @@
                   "query": [
                     {
                       "key": "texto",
-                      "value": "string"
-                    },
-                    {
-                      "key": "tipo",
-                      "value": "SERVICIO"
-                    },
-                    {
-                      "key": "precioMin",
-                      "value": "4494.150703178834"
-                    },
-                    {
-                      "key": "precioMax",
-                      "value": "3023.054740403812"
-                    },
-                    {
-                      "key": "storeId",
-                      "value": "f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4"
+                      "value": "laptop"
                     }
                   ]
                 }
               },
-              "response": [
-                {
-                  "name": "OK",
-                  "originalRequest": {
-                    "method": "GET",
-                    "header": [
-                      {
-                        "key": "Accept",
-                        "value": "*/*"
-                      }
-                    ],
-                    "url": {
-                      "raw": "{{baseUrl}}/api/publications?texto=string&tipo=SERVICIO&precioMin=4494.150703178834&precioMax=3023.054740403812&storeId=f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "api",
-                        "publications"
-                      ],
-                      "query": [
-                        {
-                          "key": "texto",
-                          "value": "string"
-                        },
-                        {
-                          "key": "tipo",
-                          "value": "SERVICIO"
-                        },
-                        {
-                          "key": "precioMin",
-                          "value": "4494.150703178834"
-                        },
-                        {
-                          "key": "precioMax",
-                          "value": "3023.054740403812"
-                        },
-                        {
-                          "key": "storeId",
-                          "value": "f6fd0dd9-1001-9384-50d8-1b9d0c0f62a4"
-                        }
-                      ]
-                    }
-                  },
-                  "status": "OK",
-                  "code": 200,
-                  "_postman_previewlanguage": "text",
-                  "header": [
-                    {
-                      "key": "Content-Type",
-                      "value": "*/*"
-                    }
-                  ],
-                  "cookie": [],
-                  "body": "[\n  {\n    \"id\": \"5497c628-0b5c-eaab-1093-0c7ed9b24218\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8748.13858959589,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 1317,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"a5218437-3185-fb2d-d176-d5a86ed45e21\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  },\n  {\n    \"id\": \"c8956be7-b8d0-7f88-4d99-d0940195242c\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 1830.6093742654616,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 7845,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"a4f59a8a-afa7-6b30-ef50-3165b41a9ed8\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]"
-                }
-              ]
+              "response": []
             },
             {
               "name": "create Publication",
@@ -206,7 +93,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"storeId\": \"32c0b5bb-16e1-3710-010a-76a3c542bf6c\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 2322.876120638484,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4752,\n  \"modalidadCobro\": \"ANTICIPADO\"\n}",
+                  "raw": "{\n  \"storeId\": \"99999999-9999-9999-9999-999999999999\",\n  \"nombre\": \"Servicio de prueba UMSS Market\",\n  \"descripcion\": \"Publicacion creada automaticamente para pruebas del agente MCP Postman\",\n  \"precio\": 100.00,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": null,\n  \"modalidadCobro\": \"COMPLETO\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -225,55 +112,7 @@
                   ]
                 }
               },
-              "response": [
-                {
-                  "name": "OK",
-                  "originalRequest": {
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "*/*"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"storeId\": \"32c0b5bb-16e1-3710-010a-76a3c542bf6c\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 2322.876120638484,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 4752,\n  \"modalidadCobro\": \"ANTICIPADO\"\n}",
-                      "options": {
-                        "raw": {
-                          "headerFamily": "json",
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/api/publications",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "api",
-                        "publications"
-                      ]
-                    }
-                  },
-                  "status": "OK",
-                  "code": 200,
-                  "_postman_previewlanguage": "text",
-                  "header": [
-                    {
-                      "key": "Content-Type",
-                      "value": "*/*"
-                    }
-                  ],
-                  "cookie": [],
-                  "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"publicationId\": \"65e53b9a-fb70-b1b0-540b-2069de432f61\"\n}"
-                }
-              ]
+              "response": []
             }
           ]
         },
@@ -285,6 +124,27 @@
               "item": [
                 {
                   "name": "register",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const timestamp = Date.now();",
+                          "",
+                          "// Email único para evitar conflictos por duplicados",
+                          "pm.variables.set(\"testEmail\", `mcp.test.${timestamp}@umss.edu.bo`);",
+                          "",
+                          "// El backend exige exactamente 9 dígitos",
+                          "const numericTimestamp = String(timestamp).replace(/\\D/g, \"\");",
+                          "pm.variables.set(\"testRu\", numericTimestamp.slice(-9));",
+                          "",
+                          "// El backend utiliza celulares de 8 dígitos",
+                          "pm.variables.set(\"testCelular\", `7${numericTimestamp.slice(-7)}`);"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
                   "request": {
                     "method": "POST",
                     "header": [
@@ -299,7 +159,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n  \"apellidoPaterno\": \"string\",\n  \"celular\": \"30498140\",\n  \"email\": \"Ap7@umss.edu.bo\",\n  \"facultad\": \"string\",\n  \"nombre\": \"string\",\n  \"nombreTienda\": \"string\",\n  \"password\": \"string\",\n  \"ru\": \"211879680\",\n  \"apellidoMaterno\": \"string\"\n}",
+                      "raw": "{\n  \"apellidoPaterno\": \"MCP\",\n  \"celular\": \"{{testCelular}}\",\n  \"email\": \"{{testEmail}}\",\n  \"facultad\": \"Ingenieria\",\n  \"nombre\": \"Usuario\",\n  \"nombreTienda\": \"MCP Test Store\",\n  \"password\": \"Test12345!\",\n  \"ru\": \"{{testRu}}\",\n  \"apellidoMaterno\": \"Prueba\"\n}",
                       "options": {
                         "raw": {
                           "headerFamily": "json",
@@ -319,56 +179,7 @@
                       ]
                     }
                   },
-                  "response": [
-                    {
-                      "name": "OK",
-                      "originalRequest": {
-                        "method": "POST",
-                        "header": [
-                          {
-                            "key": "Content-Type",
-                            "value": "application/json"
-                          },
-                          {
-                            "key": "Accept",
-                            "value": "*/*"
-                          }
-                        ],
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{\n  \"apellidoPaterno\": \"string\",\n  \"celular\": \"30498140\",\n  \"email\": \"Ap7@umss.edu.bo\",\n  \"facultad\": \"string\",\n  \"nombre\": \"string\",\n  \"nombreTienda\": \"string\",\n  \"password\": \"string\",\n  \"ru\": \"211879680\",\n  \"apellidoMaterno\": \"string\"\n}",
-                          "options": {
-                            "raw": {
-                              "headerFamily": "json",
-                              "language": "json"
-                            }
-                          }
-                        },
-                        "url": {
-                          "raw": "{{baseUrl}}/api/auth/register",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "api",
-                            "auth",
-                            "register"
-                          ]
-                        }
-                      },
-                      "status": "OK",
-                      "code": 200,
-                      "_postman_previewlanguage": "text",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "*/*"
-                        }
-                      ],
-                      "cookie": [],
-                      "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"71863f62-1977-47b6-ac82-633f93b1e123\",\n  \"tiendaId\": \"9441276e-6e8c-6d62-30e3-3b579c78b189\"\n}"
-                    }
-                  ]
+                  "response": []
                 }
               ]
             }
@@ -403,53 +214,12 @@
                       "variable": [
                         {
                           "key": "id",
-                          "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
+                          "value": "99999999-9999-9999-9999-999999999999"
                         }
                       ]
                     }
                   },
-                  "response": [
-                    {
-                      "name": "OK",
-                      "originalRequest": {
-                        "method": "GET",
-                        "header": [
-                          {
-                            "key": "Accept",
-                            "value": "*/*"
-                          }
-                        ],
-                        "url": {
-                          "raw": "{{baseUrl}}/api/tiendas/:id",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "api",
-                            "tiendas",
-                            ":id"
-                          ],
-                          "variable": [
-                            {
-                              "key": "id",
-                              "value": "2f5795ac-84cf-b7c7-5617-10a18f7dcc3b"
-                            }
-                          ]
-                        }
-                      },
-                      "status": "OK",
-                      "code": 200,
-                      "_postman_previewlanguage": "text",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "*/*"
-                        }
-                      ],
-                      "cookie": [],
-                      "body": "{\n  \"id\": \"ad5ccc21-3db2-178c-de9f-517afd2b176e\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"INACTIVE\",\n  \"publicaciones\": [\n    {\n      \"id\": \"0dab6194-6aef-cdb8-84df-2aed24fc7da8\",\n      \"nombre\": \"string\",\n      \"precio\": 2709.4317058116267,\n      \"tipo\": \"PRODUCTO\",\n      \"stock\": 4517,\n      \"modalidadCobro\": \"ANTICIPADO\",\n      \"activa\": true\n    },\n    {\n      \"id\": \"e8c02775-ceb8-e155-f89e-667630e9b7af\",\n      \"nombre\": \"string\",\n      \"precio\": 1866.9885663993657,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 8407,\n      \"modalidadCobro\": \"CONTRA_ENTREGA\",\n      \"activa\": false\n    }\n  ]\n}"
-                    }
-                  ]
+                  "response": []
                 }
               ]
             }

@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,9 +57,13 @@ public class PublicationEntity {
     /**
      * Embedding semántico de la publicación.
      *
-     * Se almacena como texto JSON.
+     * Actualmente se almacena como JSON/texto
+     * en una columna PostgreSQL TEXT.
+     *
+     * No usamos @Lob porque PostgreSQL ya maneja
+     * esta columna como TEXT y Hibernate no necesita
+     * acceder a ella como un LOB stream.
      */
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String embedding;
 }

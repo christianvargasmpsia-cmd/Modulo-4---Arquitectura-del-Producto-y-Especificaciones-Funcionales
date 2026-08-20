@@ -1,174 +1,403 @@
 import newman from "newman";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 class NewmanService {
 
     constructor() {
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
 
-        this.projectRoot = path.resolve(__dirname, "../../");
+        const __filename =
+            fileURLToPath(import.meta.url);
+
+        const __dirname =
+            path.dirname(__filename);
+
+        this.projectRoot =
+            path.resolve(
+                __dirname,
+                "../../"
+            );
+
+        this.collectionPath =
+            path.join(
+                this.projectRoot,
+                "collections",
+                "openapi-collection.json"
+            );
+
+        this.reportsPath =
+            path.join(
+                this.projectRoot,
+                "reports"
+            );
+
+        /*
+         * Nos aseguramos de que exista
+         * la carpeta de reportes.
+         */
+        if (!fs.existsSync(this.reportsPath)) {
+
+            fs.mkdirSync(
+                this.reportsPath,
+                {
+                    recursive: true
+                }
+            );
+        }
     }
+
+
+    /*
+     * ==========================================================
+     * EJECUTAR COLLECTION
+     * ==========================================================
+     */
 
     async runCollection() {
 
-        const collectionPath = path.join(
-            this.projectRoot,
-            "collections",
-            "openapi-collection.json"
+        console.log(
+            "================================="
         );
 
-        const reportsPath = path.join(
-            this.projectRoot,
-            "reports"
+        console.log(
+            "Ejecutando Newman"
         );
 
-        return new Promise((resolve, reject) => {
+        console.log(
+            "=================================\n"
+        );
 
-            newman.run(
-                {
-                    collection: collectionPath,
+        /*
+         * Validación de collection.
+         */
+        if (
+            !fs.existsSync(
+                this.collectionPath
+            )
+        ) {
 
-                    reporters: [
-                        "cli",
-                        "json"
-                    ],
+            throw new Error(
+                `No se encontró la colección de Postman: ` +
+                `${this.collectionPath}`
+            );
+        }
 
-                    reporter: {
-                        json: {
-                            export: path.join(
-                                reportsPath,
-                                "newman-report.json"
-                            )
+        return new Promise(
+            (resolve, reject) => {
+
+                newman.run(
+
+                    {
+
+                        /*
+                         * Collection real.
+                         */
+                        collection:
+                            this.collectionPath,
+
+                        /*
+                         * Reporters.
+                         */
+                        reporters: [
+                            "cli",
+                            "json"
+                        ],
+
+                        reporter: {
+
+                            json: {
+
+                                export:
+                                    path.join(
+                                        this.reportsPath,
+                                        "newman-report.json"
+                                    )
+                            }
                         }
-                    }
-                },
 
-                (error, summary) => {
+                    },
 
-                    if (error) {
-                        return reject(error);
-                    }
+                    (
+                        error,
+                        summary
+                    ) => {
 
-                    const executions =
-                        summary?.run?.executions ?? [];
+                        /*
+                         * Newman puede devolver error
+                         * de ejecución.
+                         */
+                        if (error) {
 
-                    /*
-                     * Newman puede no registrar como "failure"
-                     * una respuesta HTTP 4xx/5xx si la colección
-                     * no tiene assertions.
-                     *
-                     * Por eso analizamos también los códigos HTTP.
-                     */
-
-                    const httpFailures = executions.filter(execution => {
-
-                        const response = execution?.response;
-
-                        if (!response) {
-                            return true;
+                            return reject(
+                                error
+                            );
                         }
 
-                        const statusCode = response.code;
 
-                        return statusCode >= 400;
+                        /*
+                         * ==================================================
+                         * EXECUTIONS
+                         * ==================================================
+                         */
 
-                    });
+                        const executions =
+                            summary
+                                ?.run
+                                ?.executions ??
+                            [];
 
-                    const assertionFailures =
-                        summary?.run?.failures?.length ?? 0;
 
-                    /*
-                     * Un fallo HTTP también cuenta como fallo
-                     * del test.
-                     *
-                     * Usamos Set para evitar contar dos veces
-                     * la misma ejecución si Newman ya la registró
-                     * como failure.
-                     */
+                        /*
+                         * ==================================================
+                         * REQUESTS
+                         * ==================================================
+                         */
 
-                    const failedExecutions = new Set();
+                        const requests =
+                            summary
+                                ?.run
+                                ?.stats
+                                ?.requests
+                                ?.total ??
+                            executions.length ??
+                            0;
 
-                    httpFailures.forEach(execution => {
-                        failedExecutions.add(execution);
-                    });
 
-                    /*
-                     * Si Newman registró failures pero no podemos
-                     * asociarlos directamente a executions,
-                     * los agregamos al contador.
-                     */
+                        /*
+                         * ==================================================
+                         * ASSERTIONS
+                         * ==================================================
+                         */
 
-                    const failed =
-                        Math.max(
-                            failedExecutions.size,
-                            assertionFailures
-                        );
+                        const assertions =
+                            summary
+                                ?.run
+                                ?.stats
+                                ?.assertions
+                                ?.total ??
+                            0;
 
-                    const requests =
-                        summary?.run?.stats?.requests?.total ?? 0;
 
-                    const assertions =
-                        summary?.run?.stats?.assertions?.total ?? 0;
+                        /*
+                         * ==================================================
+                         * ASSERTION FAILURES
+                         * ==================================================
+                         */
 
-                    /*
-                     * Información adicional para el AI Analyzer.
-                     */
+                        const assertionFailures =
+                            summary
+                                ?.run
+                                ?.failures
+                                ?.length ??
+                            0;
 
-                    const httpResults = executions.map(execution => {
 
-                        const response = execution?.response;
+                        /*
+                         * ==================================================
+                         * ANALIZAR RESPUESTAS HTTP
+                         * ==================================================
+                         *
+                         * Newman puede no marcar como failure
+                         * una respuesta 4xx/5xx cuando no existen
+                         * assertions.
+                         *
+                         * Por eso analizamos explícitamente
+                         * los códigos HTTP.
+                         */
 
-                        return {
-                            request:
-                                execution?.item?.name ?? "Unknown request",
+                        const httpResults =
+                            executions.map(
+                                (execution, index) => {
 
-                            method:
-                                execution?.request?.method ??
-                                response?.request?.method ??
-                                "UNKNOWN",
+                                    const response =
+                                        execution?.response;
 
-                            status:
-                                response?.status ??
-                                "NO RESPONSE",
+                                    const request =
+                                        execution?.request;
 
-                            statusCode:
-                                response?.code ??
-                                null,
+                                    const item =
+                                        execution?.item;
 
-                            failed:
-                                !response ||
-                                response.code >= 400
+
+                                    const statusCode =
+                                        response?.code ??
+                                        null;
+
+
+                                    const failed =
+                                        !response ||
+                                        (
+                                            statusCode !== null &&
+                                            statusCode >= 400
+                                        );
+
+
+                                    return {
+
+                                        id:
+                                            index + 1,
+
+                                        test:
+                                            item?.name ??
+                                            "Unknown request",
+
+                                        request:
+                                            item?.name ??
+                                            "Unknown request",
+
+                                        method:
+                                            request?.method ??
+                                            "UNKNOWN",
+
+                                        url:
+                                            request?.url
+                                                ?.toString?.() ??
+                                            "",
+
+                                        status:
+                                            response?.status ??
+                                            "NO RESPONSE",
+
+                                        statusCode,
+
+                                        failed,
+
+                                        responseTime:
+                                            response?.responseTime ??
+                                            null
+
+                                    };
+
+                                }
+                            );
+
+
+                        /*
+                         * ==================================================
+                         * HTTP FAILURES
+                         * ==================================================
+                         */
+
+                        const httpFailures =
+                            httpResults.filter(
+                                result =>
+                                    result.failed
+                            );
+
+
+                        /*
+                         * ==================================================
+                         * FAILED TOTAL
+                         * ==================================================
+                         *
+                         * Un request HTTP 4xx/5xx debe contar
+                         * como fallo aunque no tenga assertion.
+                         *
+                         * No sumamos:
+                         *
+                         * httpFailures + assertionFailures
+                         *
+                         * porque el mismo request podría aparecer
+                         * en ambos grupos.
+                         *
+                         * Tomamos el número real de ejecuciones
+                         * fallidas.
+                         */
+
+                        const failed =
+                            httpFailures.length;
+
+
+                        /*
+                         * ==================================================
+                         * RESULTADO FINAL
+                         * ==================================================
+                         */
+
+                        const result = {
+
+                            requests,
+
+                            assertions,
+
+                            failed,
+
+                            httpFailures:
+                                httpFailures.length,
+
+                            assertionFailures,
+
+                            httpResults,
+
+                            summary
+
                         };
 
-                    });
 
-                    resolve({
+                        /*
+                         * ==================================================
+                         * LOG
+                         * ==================================================
+                         */
 
-                        requests,
+                        console.log(
+                            "\nResultado Newman:"
+                        );
 
-                        assertions,
+                        console.log(
+                            `Requests      : ${requests}`
+                        );
 
-                        failed,
+                        console.log(
+                            `Assertions    : ${assertions}`
+                        );
 
-                        httpFailures: httpFailures.length,
+                        console.log(
+                            `HTTP failures : ${httpFailures.length}`
+                        );
 
-                        assertionFailures,
+                        console.log(
+                            `Failed        : ${failed}`
+                        );
 
-                        httpResults,
 
-                        summary
+                        /*
+                         * Mostrar fallos.
+                         */
 
-                    });
+                        if (
+                            httpFailures.length > 0
+                        ) {
 
-                }
-            );
+                            console.log(
+                                "\nFallos detectados:"
+                            );
 
-        });
+                            httpFailures.forEach(
+                                failure => {
 
+                                    console.log(
+                                        `  ${failure.method} ` +
+                                        `${failure.url || failure.request} ` +
+                                        `→ HTTP ${failure.statusCode ?? "N/A"}`
+                                    );
+
+                                }
+                            );
+                        }
+
+
+                        resolve(
+                            result
+                        );
+
+                    }
+                );
+
+            }
+        );
     }
-
 }
 
 export default new NewmanService();

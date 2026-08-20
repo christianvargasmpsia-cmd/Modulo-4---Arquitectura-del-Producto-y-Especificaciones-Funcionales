@@ -15,15 +15,38 @@ public interface JpaPublicationRepository
         extends JpaRepository<PublicationEntity, UUID> {
 
     @Query("""
-            SELECT p FROM PublicationEntity p
+            SELECT p
+            FROM PublicationEntity p
             WHERE p.activa = true
-              AND (:storeId IS NULL OR p.storeId = :storeId)
-              AND (:tipo IS NULL OR p.tipo = :tipo)
-              AND (:precioMin IS NULL OR p.precio >= :precioMin)
-              AND (:precioMax IS NULL OR p.precio <= :precioMax)
-              AND (:textoBusqueda IS NULL
-                   OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :textoBusqueda, '%'))
-                   OR LOWER(p.descripcion) LIKE LOWER(CONCAT('%', :textoBusqueda, '%')))
+
+              AND (
+                    :storeId IS NULL
+                    OR p.storeId = :storeId
+                  )
+
+              AND (
+                    :tipo IS NULL
+                    OR p.tipo = :tipo
+                  )
+
+              AND (
+                    :precioMin IS NULL
+                    OR p.precio >= :precioMin
+                  )
+
+              AND (
+                    :precioMax IS NULL
+                    OR p.precio <= :precioMax
+                  )
+
+              AND (
+                    COALESCE(:textoBusqueda, '') = ''
+                    OR LOWER(p.nombre)
+                        LIKE LOWER(CONCAT('%', :textoBusqueda, '%'))
+                    OR LOWER(p.descripcion)
+                        LIKE LOWER(CONCAT('%', :textoBusqueda, '%'))
+                  )
+
             ORDER BY p.createdAt DESC
             """)
     List<PublicationEntity> findByFilters(
