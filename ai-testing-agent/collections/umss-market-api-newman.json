@@ -29,7 +29,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"ru\": \"2026633097666\",\n  \"nombre\": \"Cliente\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"customer.testing.633097666@umss.edu.bo\",\n  \"celular\": \"70933495\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
+          "raw": "{\n  \"ru\": \"2026559441804\",\n  \"nombre\": \"Cliente\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"customer.testing.559441804@umss.edu.bo\",\n  \"celular\": \"70461641\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -109,7 +109,6 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
               "",
@@ -130,9 +129,6 @@
               "    if (id) {",
               "        pm.collectionVariables.set('createdUserId', id);",
               "        console.log('🆔 createdUserId:', id);",
-              "    } else {",
-              "        console.log('❌ No se encontró createdUserId');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}"
             ]
@@ -160,7 +156,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"ru\": \"2026633097644\",\n  \"nombre\": \"Emprendedor\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"entrepreneur.testing.633097644@umss.edu.bo\",\n  \"celular\": \"70305785\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\",\n  \"nombreTienda\": \"Tienda Testing 633097644\"\n}",
+          "raw": "{\n  \"ru\": \"2026559441800\",\n  \"nombre\": \"Emprendedor\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"entrepreneur.testing.559441800@umss.edu.bo\",\n  \"celular\": \"70061527\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\",\n  \"nombreTienda\": \"Tienda Testing 559441800\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -240,7 +236,6 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
               "",
@@ -261,12 +256,8 @@
               "    if (id) {",
               "        pm.collectionVariables.set('createdUserId', id);",
               "        console.log('🆔 createdUserId:', id);",
-              "    } else {",
-              "        console.log('❌ No se encontró createdUserId');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}",
-              "",
               "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
@@ -289,9 +280,6 @@
               "    if (storeId) {",
               "        pm.collectionVariables.set('createdStoreId', storeId);",
               "        console.log('🆔 createdStoreId:', storeId);",
-              "    } else {",
-              "        console.log('⚠️ No se encontró createdStoreId en REGISTER ENTREPRENEUR');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}"
             ]
@@ -319,7 +307,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"ru\": \"2026633098849\",\n  \"nombre\": \"Administrador\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"admin.testing.633098849@umss.edu.bo\",\n  \"celular\": \"70721740\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
+          "raw": "{\n  \"ru\": \"2026559441290\",\n  \"nombre\": \"Administrador\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"admin.testing.559441290@umss.edu.bo\",\n  \"celular\": \"70880290\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -399,7 +387,6 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
               "",
@@ -420,9 +407,6 @@
               "    if (id) {",
               "        pm.collectionVariables.set('createdUserId', id);",
               "        console.log('🆔 createdUserId:', id);",
-              "    } else {",
-              "        console.log('❌ No se encontró createdUserId');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}"
             ]
@@ -450,7 +434,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"camila.mendoza.customer@umss.edu.bo\",\n  \"password\": \"12345678\"\n}",
+          "raw": "{\n  \"email\": \"alejandro.mamani.test@umss.edu.bo\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -674,7 +658,7 @@
           "path": [
             "api",
             "users",
-            "8ccb01da-972e-42bc-a52d-6a39ef87423d"
+            "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b"
           ],
           "variable": [
             {
@@ -763,7 +747,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"apellidoPaterno\": \"Testing UMSS Market\",\n  \"celular\": \"Testing UMSS Market\",\n  \"email\": \"Testing UMSS Market\",\n  \"facultad\": \"Testing UMSS Market\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"ru\": \"Testing UMSS Market\",\n  \"apellidoMaterno\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"nombre\": \"Usuario Actualizado\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -778,7 +762,7 @@
           "path": [
             "api",
             "users",
-            "8ccb01da-972e-42bc-a52d-6a39ef87423d"
+            "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b"
           ],
           "variable": [
             {
@@ -876,7 +860,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"status\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -891,7 +875,7 @@
           "path": [
             "api",
             "users",
-            "8ccb01da-972e-42bc-a52d-6a39ef87423d",
+            "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b",
             "status"
           ],
           "variable": [
@@ -1067,7 +1051,7 @@
           "path": [
             "api",
             "stores",
-            "569f149a-0a7d-41c1-a733-f87256ced516"
+            "96e1ac65-bb6e-42ea-9737-9e26297518d5"
           ],
           "variable": [
             {
@@ -1156,7 +1140,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre\": \"Testing UMSS Market\",\n  \"telefonoContacto\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"categoria\": \"Testing UMSS Market\",\n  \"emailContacto\": \"Testing UMSS Market\",\n  \"status\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"nombre\": \"Tienda Actualizada\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1171,7 +1155,7 @@
           "path": [
             "api",
             "stores",
-            "569f149a-0a7d-41c1-a733-f87256ced516"
+            "96e1ac65-bb6e-42ea-9737-9e26297518d5"
           ],
           "variable": [
             {
@@ -1269,7 +1253,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"categoria\": \"Testing UMSS Market\",\n  \"telefonoContacto\": \"Testing UMSS Market\",\n  \"emailContacto\": \"Testing UMSS Market\",\n  \"status\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1284,7 +1268,7 @@
           "path": [
             "api",
             "stores",
-            "569f149a-0a7d-41c1-a733-f87256ced516"
+            "96e1ac65-bb6e-42ea-9737-9e26297518d5"
           ],
           "variable": [
             {
@@ -1458,7 +1442,7 @@
           "path": [
             "api",
             "publications",
-            "fd4e98dd-b369-4959-ba27-b60470a09f70"
+            "9370133d-ed80-48b7-bc64-c77ddcb5643b"
           ],
           "variable": [
             {
@@ -1547,7 +1531,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"nombre\": \"Publicacion Actualizada\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1562,7 +1546,7 @@
           "path": [
             "api",
             "publications",
-            "fd4e98dd-b369-4959-ba27-b60470a09f70"
+            "9370133d-ed80-48b7-bc64-c77ddcb5643b"
           ],
           "variable": [
             {
@@ -1686,7 +1670,7 @@
             },
             {
               "key": "storeId",
-              "value": "569f149a-0a7d-41c1-a733-f87256ced516",
+              "value": "96e1ac65-bb6e-42ea-9737-9e26297518d5",
               "description": "(Required) "
             }
           ]
@@ -1783,7 +1767,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"storeId\": \"fd4e98dd-b369-4959-ba27-b60470a09f70\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"storeId\": \"9370133d-ed80-48b7-bc64-c77ddcb5643b\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1859,7 +1843,6 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
               "",
@@ -1880,9 +1863,6 @@
               "    if (id) {",
               "        pm.collectionVariables.set('createdPublicationId', id);",
               "        console.log('🆔 createdPublicationId:', id);",
-              "    } else {",
-              "        console.log('❌ No se encontró createdPublicationId');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}"
             ]
@@ -1915,7 +1895,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"activa\": \"true\"\n}",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1930,7 +1910,7 @@
           "path": [
             "api",
             "publications",
-            "fd4e98dd-b369-4959-ba27-b60470a09f70",
+            "9370133d-ed80-48b7-bc64-c77ddcb5643b",
             "status"
           ],
           "variable": [
@@ -2201,7 +2181,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"publicationId\": \"fd4e98dd-b369-4959-ba27-b60470a09f70\",\n  \"type\": \"Testing UMSS Market\",\n  \"metadata\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"publicationId\": \"9370133d-ed80-48b7-bc64-c77ddcb5643b\",\n  \"type\": \"Testing UMSS Market\",\n  \"metadata\": \"Testing UMSS Market\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -2277,7 +2257,6 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "",
               "if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    let data = {};",
               "",
@@ -2298,9 +2277,6 @@
               "    if (interactionId) {",
               "        pm.collectionVariables.set('createdInteractionId', interactionId);",
               "        console.log('🆔 createdInteractionId:', interactionId);",
-              "    } else {",
-              "        console.log('❌ No se encontró createdInteractionId');",
-              "        console.log('Response:', JSON.stringify(data));",
               "    }",
               "}"
             ]
@@ -2335,7 +2311,7 @@
           "path": [
             "api",
             "interactions",
-            "549031c0-ff6d-4e87-98ed-c940b6c21f6d"
+            "1955e9d0-3f9c-4f93-a8d8-f46c0b6562f4"
           ],
           "variable": [
             {
@@ -2774,7 +2750,7 @@
           "path": [
             "api",
             "interactions",
-            "549031c0-ff6d-4e87-98ed-c940b6c21f6d"
+            "1955e9d0-3f9c-4f93-a8d8-f46c0b6562f4"
           ],
           "variable": [
             {
@@ -2856,7 +2832,7 @@
           "path": [
             "api",
             "publications",
-            "fd4e98dd-b369-4959-ba27-b60470a09f70"
+            "9370133d-ed80-48b7-bc64-c77ddcb5643b"
           ],
           "variable": [
             {
@@ -2938,7 +2914,7 @@
           "path": [
             "api",
             "stores",
-            "569f149a-0a7d-41c1-a733-f87256ced516"
+            "96e1ac65-bb6e-42ea-9737-9e26297518d5"
           ],
           "variable": [
             {
@@ -3020,7 +2996,7 @@
           "path": [
             "api",
             "users",
-            "8ccb01da-972e-42bc-a52d-6a39ef87423d"
+            "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b"
           ],
           "variable": [
             {
@@ -3173,39 +3149,39 @@
     },
     {
       "key": "userId",
-      "value": "8ccb01da-972e-42bc-a52d-6a39ef87423d"
+      "value": "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b"
     },
     {
       "key": "storeId",
-      "value": "569f149a-0a7d-41c1-a733-f87256ced516"
+      "value": "96e1ac65-bb6e-42ea-9737-9e26297518d5"
     },
     {
       "key": "publicationId",
-      "value": "fd4e98dd-b369-4959-ba27-b60470a09f70"
+      "value": "9370133d-ed80-48b7-bc64-c77ddcb5643b"
     },
     {
       "key": "interactionId",
-      "value": "549031c0-ff6d-4e87-98ed-c940b6c21f6d"
+      "value": "1955e9d0-3f9c-4f93-a8d8-f46c0b6562f4"
     },
     {
       "key": "createdUserId",
-      "value": "8ccb01da-972e-42bc-a52d-6a39ef87423d"
+      "value": "4abdce3a-a4f9-41a0-9fc4-9d7be016b16b"
     },
     {
       "key": "createdStoreId",
-      "value": "569f149a-0a7d-41c1-a733-f87256ced516"
+      "value": "96e1ac65-bb6e-42ea-9737-9e26297518d5"
     },
     {
       "key": "createdPublicationId",
-      "value": "fd4e98dd-b369-4959-ba27-b60470a09f70"
+      "value": "9370133d-ed80-48b7-bc64-c77ddcb5643b"
     },
     {
       "key": "createdInteractionId",
-      "value": "549031c0-ff6d-4e87-98ed-c940b6c21f6d"
+      "value": "1955e9d0-3f9c-4f93-a8d8-f46c0b6562f4"
     },
     {
       "key": "discoveryToken",
-      "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI4Y2NiMDFkYS05NzJlLTQyYmMtYTUyZC02YTM5ZWY4NzQyM2QiLCJlbWFpbCI6ImNhbWlsYS5tZW5kb3phLmN1c3RvbWVyQHVtc3MuZWR1LmJvIiwicm9sZSI6IkNPTVBSQURPUiIsImlhdCI6MTc4NzMzOTYzMywiZXhwIjoxNzg3NDI2MDMzfQ.R9qV84Hwps_X_-O1wLvjzR6dDOAXFSqeIWuNmoNPCJ_CN-pvKwUXcJjmDCENpEqb"
+      "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiI0YWJkY2UzYS1hNGY5LTQxYTAtOWZjNC05ZDdiZTAxNmIxNmIiLCJlbWFpbCI6ImFsZWphbmRyby5tYW1hbmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczNDQ1NTksImV4cCI6MTc4NzQzMDk1OX0.0oqUJsUHaK7PuKMZBIEnBUiN7N6gR5zUXP3i1u2H_d47QmDRnUgGN2ZW1pwatYL7"
     },
     {
       "key": "testToken",
@@ -3221,7 +3197,7 @@
     },
     {
       "key": "testEmail",
-      "value": "camila.mendoza.customer@umss.edu.bo"
+      "value": "alejandro.mamani.test@umss.edu.bo"
     },
     {
       "key": "testPassword",
