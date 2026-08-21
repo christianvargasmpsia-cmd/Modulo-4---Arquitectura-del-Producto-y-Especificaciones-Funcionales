@@ -1,0 +1,1894 @@
+﻿{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "OpenAPI definition",
+                 "version":  "v0"
+             },
+    "servers":  [
+                    {
+                        "url":  "http://localhost:8080",
+                        "description":  "Generated server url"
+                    }
+                ],
+    "paths":  {
+                  "/api/users/{id}":  {
+                                          "get":  {
+                                                      "tags":  [
+                                                                   "user-controller"
+                                                               ],
+                                                      "operationId":  "getUserById",
+                                                      "parameters":  [
+                                                                         {
+                                                                             "name":  "id",
+                                                                             "in":  "path",
+                                                                             "required":  true,
+                                                                             "schema":  {
+                                                                                            "type":  "string",
+                                                                                            "format":  "uuid"
+                                                                                        }
+                                                                         }
+                                                                     ],
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "OK",
+                                                                                    "content":  {
+                                                                                                    "*/*":  {
+                                                                                                                "schema":  {
+                                                                                                                               "$ref":  "#/components/schemas/UserSummaryResponse"
+                                                                                                                           }
+                                                                                                            }
+                                                                                                }
+                                                                                }
+                                                                    }
+                                                  },
+                                          "put":  {
+                                                      "tags":  [
+                                                                   "user-controller"
+                                                               ],
+                                                      "operationId":  "updateUser",
+                                                      "parameters":  [
+                                                                         {
+                                                                             "name":  "id",
+                                                                             "in":  "path",
+                                                                             "required":  true,
+                                                                             "schema":  {
+                                                                                            "type":  "string",
+                                                                                            "format":  "uuid"
+                                                                                        }
+                                                                         }
+                                                                     ],
+                                                      "requestBody":  {
+                                                                          "content":  {
+                                                                                          "application/json":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/UpdateUserRequest"
+                                                                                                                              }
+                                                                                                               }
+                                                                                      },
+                                                                          "required":  true
+                                                                      },
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "OK",
+                                                                                    "content":  {
+                                                                                                    "*/*":  {
+                                                                                                                "schema":  {
+                                                                                                                               "$ref":  "#/components/schemas/UserSummaryResponse"
+                                                                                                                           }
+                                                                                                            }
+                                                                                                }
+                                                                                }
+                                                                    }
+                                                  },
+                                          "delete":  {
+                                                         "tags":  [
+                                                                      "user-controller"
+                                                                  ],
+                                                         "operationId":  "deleteUser",
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "id",
+                                                                                "in":  "path",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK"
+                                                                                   }
+                                                                       }
+                                                     }
+                                      },
+                  "/api/stores/{id}":  {
+                                           "get":  {
+                                                       "tags":  [
+                                                                    "store-controller"
+                                                                ],
+                                                       "operationId":  "getPublicProfile",
+                                                       "parameters":  [
+                                                                          {
+                                                                              "name":  "id",
+                                                                              "in":  "path",
+                                                                              "required":  true,
+                                                                              "schema":  {
+                                                                                             "type":  "string",
+                                                                                             "format":  "uuid"
+                                                                                         }
+                                                                          }
+                                                                      ],
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK",
+                                                                                     "content":  {
+                                                                                                     "*/*":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "$ref":  "#/components/schemas/StorePublicProfileResponse"
+                                                                                                                            }
+                                                                                                             }
+                                                                                                 }
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "put":  {
+                                                       "tags":  [
+                                                                    "store-controller"
+                                                                ],
+                                                       "operationId":  "updateStore",
+                                                       "parameters":  [
+                                                                          {
+                                                                              "name":  "id",
+                                                                              "in":  "path",
+                                                                              "required":  true,
+                                                                              "schema":  {
+                                                                                             "type":  "string",
+                                                                                             "format":  "uuid"
+                                                                                         }
+                                                                          }
+                                                                      ],
+                                                       "requestBody":  {
+                                                                           "content":  {
+                                                                                           "application/json":  {
+                                                                                                                    "schema":  {
+                                                                                                                                   "$ref":  "#/components/schemas/UpdateStoreRequest"
+                                                                                                                               }
+                                                                                                                }
+                                                                                       },
+                                                                           "required":  true
+                                                                       },
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK",
+                                                                                     "content":  {
+                                                                                                     "*/*":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "$ref":  "#/components/schemas/StoreSummaryResponse"
+                                                                                                                            }
+                                                                                                             }
+                                                                                                 }
+                                                                                 }
+                                                                     }
+                                                   },
+                                           "delete":  {
+                                                          "tags":  [
+                                                                       "store-controller"
+                                                                   ],
+                                                          "operationId":  "deleteStore",
+                                                          "parameters":  [
+                                                                             {
+                                                                                 "name":  "id",
+                                                                                 "in":  "path",
+                                                                                 "required":  true,
+                                                                                 "schema":  {
+                                                                                                "type":  "string",
+                                                                                                "format":  "uuid"
+                                                                                            }
+                                                                             }
+                                                                         ],
+                                                          "responses":  {
+                                                                            "200":  {
+                                                                                        "description":  "OK"
+                                                                                    }
+                                                                        }
+                                                      },
+                                           "patch":  {
+                                                         "tags":  [
+                                                                      "store-controller"
+                                                                  ],
+                                                         "operationId":  "patchStore",
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "id",
+                                                                                "in":  "path",
+                                                                                "required":  true,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "requestBody":  {
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/PatchStoreRequest"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         },
+                                                                             "required":  true
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/StoreSummaryResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
+                                       },
+                  "/api/publications/{id}":  {
+                                                 "get":  {
+                                                             "tags":  [
+                                                                          "publication-controller"
+                                                                      ],
+                                                             "operationId":  "findById",
+                                                             "parameters":  [
+                                                                                {
+                                                                                    "name":  "id",
+                                                                                    "in":  "path",
+                                                                                    "required":  true,
+                                                                                    "schema":  {
+                                                                                                   "type":  "string",
+                                                                                                   "format":  "uuid"
+                                                                                               }
+                                                                                }
+                                                                            ],
+                                                             "responses":  {
+                                                                               "200":  {
+                                                                                           "description":  "OK",
+                                                                                           "content":  {
+                                                                                                           "*/*":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/Publication"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                                       }
+                                                                                       }
+                                                                           }
+                                                         },
+                                                 "put":  {
+                                                             "tags":  [
+                                                                          "publication-controller"
+                                                                      ],
+                                                             "operationId":  "updatePublication",
+                                                             "parameters":  [
+                                                                                {
+                                                                                    "name":  "id",
+                                                                                    "in":  "path",
+                                                                                    "required":  true,
+                                                                                    "schema":  {
+                                                                                                   "type":  "string",
+                                                                                                   "format":  "uuid"
+                                                                                               }
+                                                                                }
+                                                                            ],
+                                                             "requestBody":  {
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "$ref":  "#/components/schemas/UpdatePublicationRequest"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             },
+                                                                                 "required":  true
+                                                                             },
+                                                             "responses":  {
+                                                                               "200":  {
+                                                                                           "description":  "OK",
+                                                                                           "content":  {
+                                                                                                           "*/*":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/Publication"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                                       }
+                                                                                       }
+                                                                           }
+                                                         },
+                                                 "delete":  {
+                                                                "tags":  [
+                                                                             "publication-controller"
+                                                                         ],
+                                                                "operationId":  "deletePublication",
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "id",
+                                                                                       "in":  "path",
+                                                                                       "required":  true,
+                                                                                       "schema":  {
+                                                                                                      "type":  "string",
+                                                                                                      "format":  "uuid"
+                                                                                                  }
+                                                                                   }
+                                                                               ],
+                                                                "responses":  {
+                                                                                  "200":  {
+                                                                                              "description":  "OK"
+                                                                                          }
+                                                                              }
+                                                            }
+                                             },
+                  "/api/stores":  {
+                                      "get":  {
+                                                  "tags":  [
+                                                               "store-controller"
+                                                           ],
+                                                  "operationId":  "getAllStores",
+                                                  "responses":  {
+                                                                    "200":  {
+                                                                                "description":  "OK",
+                                                                                "content":  {
+                                                                                                "*/*":  {
+                                                                                                            "schema":  {
+                                                                                                                           "type":  "array",
+                                                                                                                           "items":  {
+                                                                                                                                         "$ref":  "#/components/schemas/StoreSummaryResponse"
+                                                                                                                                     }
+                                                                                                                       }
+                                                                                                        }
+                                                                                            }
+                                                                            }
+                                                                }
+                                              },
+                                      "post":  {
+                                                   "tags":  [
+                                                                "store-controller"
+                                                            ],
+                                                   "operationId":  "createStore",
+                                                   "requestBody":  {
+                                                                       "content":  {
+                                                                                       "application/json":  {
+                                                                                                                "schema":  {
+                                                                                                                               "$ref":  "#/components/schemas/CreateStoreRequest"
+                                                                                                                           }
+                                                                                                            }
+                                                                                   },
+                                                                       "required":  true
+                                                                   },
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "OK",
+                                                                                 "content":  {
+                                                                                                 "*/*":  {
+                                                                                                             "schema":  {
+                                                                                                                            "$ref":  "#/components/schemas/CreateStoreResponse"
+                                                                                                                        }
+                                                                                                         }
+                                                                                             }
+                                                                             }
+                                                                 }
+                                               }
+                                  },
+                  "/api/publications":  {
+                                            "get":  {
+                                                        "tags":  [
+                                                                     "publication-controller"
+                                                                 ],
+                                                        "operationId":  "search",
+                                                        "parameters":  [
+                                                                           {
+                                                                               "name":  "filter",
+                                                                               "in":  "query",
+                                                                               "required":  true,
+                                                                               "schema":  {
+                                                                                              "$ref":  "#/components/schemas/CatalogFilterRequest"
+                                                                                          }
+                                                                           }
+                                                                       ],
+                                                        "responses":  {
+                                                                          "200":  {
+                                                                                      "description":  "OK",
+                                                                                      "content":  {
+                                                                                                      "*/*":  {
+                                                                                                                  "schema":  {
+                                                                                                                                 "type":  "array",
+                                                                                                                                 "items":  {
+                                                                                                                                               "$ref":  "#/components/schemas/PublicationSummaryResponse"
+                                                                                                                                           }
+                                                                                                                             }
+                                                                                                              }
+                                                                                                  }
+                                                                                  }
+                                                                      }
+                                                    },
+                                            "post":  {
+                                                         "tags":  [
+                                                                      "publication-controller"
+                                                                  ],
+                                                         "operationId":  "createPublication",
+                                                         "requestBody":  {
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/CreatePublicationRequest"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         },
+                                                                             "required":  true
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/CreatePublicationResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
+                                        },
+                  "/api/interactions":  {
+                                            "get":  {
+                                                        "tags":  [
+                                                                     "interaction-controller"
+                                                                 ],
+                                                        "operationId":  "findAll",
+                                                        "responses":  {
+                                                                          "200":  {
+                                                                                      "description":  "OK",
+                                                                                      "content":  {
+                                                                                                      "*/*":  {
+                                                                                                                  "schema":  {
+                                                                                                                                 "type":  "array",
+                                                                                                                                 "items":  {
+                                                                                                                                               "$ref":  "#/components/schemas/InteractionResponse"
+                                                                                                                                           }
+                                                                                                                             }
+                                                                                                              }
+                                                                                                  }
+                                                                                  }
+                                                                      }
+                                                    },
+                                            "post":  {
+                                                         "tags":  [
+                                                                      "interaction-controller"
+                                                                  ],
+                                                         "operationId":  "create",
+                                                         "requestBody":  {
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "$ref":  "#/components/schemas/CreateInteractionRequest"
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         },
+                                                                             "required":  true
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "OK",
+                                                                                       "content":  {
+                                                                                                       "*/*":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "$ref":  "#/components/schemas/InteractionResponse"
+                                                                                                                              }
+                                                                                                               }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
+                                        },
+                  "/api/auth/register/entrepreneur":  {
+                                                          "post":  {
+                                                                       "tags":  [
+                                                                                    "auth-controller"
+                                                                                ],
+                                                                       "operationId":  "registerEntrepreneur",
+                                                                       "requestBody":  {
+                                                                                           "content":  {
+                                                                                                           "application/json":  {
+                                                                                                                                    "schema":  {
+                                                                                                                                                   "$ref":  "#/components/schemas/RegisterEntrepreneurRequest"
+                                                                                                                                               }
+                                                                                                                                }
+                                                                                                       },
+                                                                                           "required":  true
+                                                                                       },
+                                                                       "responses":  {
+                                                                                         "200":  {
+                                                                                                     "description":  "OK",
+                                                                                                     "content":  {
+                                                                                                                     "*/*":  {
+                                                                                                                                 "schema":  {
+                                                                                                                                                "$ref":  "#/components/schemas/RegisterEntrepreneurResponse"
+                                                                                                                                            }
+                                                                                                                             }
+                                                                                                                 }
+                                                                                                 }
+                                                                                     }
+                                                                   }
+                                                      },
+                  "/api/auth/register/customer":  {
+                                                      "post":  {
+                                                                   "tags":  [
+                                                                                "auth-controller"
+                                                                            ],
+                                                                   "operationId":  "registerCustomer",
+                                                                   "requestBody":  {
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "$ref":  "#/components/schemas/RegisterCustomerRequest"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   },
+                                                                                       "required":  true
+                                                                                   },
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/RegisterCustomerResponse"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                  },
+                  "/api/auth/register/admin":  {
+                                                   "post":  {
+                                                                "tags":  [
+                                                                             "auth-controller"
+                                                                         ],
+                                                                "operationId":  "registerAdmin",
+                                                                "requestBody":  {
+                                                                                    "content":  {
+                                                                                                    "application/json":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/RegisterAdminRequest"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                },
+                                                                                    "required":  true
+                                                                                },
+                                                                "responses":  {
+                                                                                  "200":  {
+                                                                                              "description":  "OK",
+                                                                                              "content":  {
+                                                                                                              "*/*":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "$ref":  "#/components/schemas/RegisterAdminResponse"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                                          }
+                                                                                          }
+                                                                              }
+                                                            }
+                                               },
+                  "/api/auth/logout":  {
+                                           "post":  {
+                                                        "tags":  [
+                                                                     "auth-controller"
+                                                                 ],
+                                                        "operationId":  "logout",
+                                                        "parameters":  [
+                                                                           {
+                                                                               "name":  "Authorization",
+                                                                               "in":  "header",
+                                                                               "required":  false,
+                                                                               "schema":  {
+                                                                                              "type":  "string"
+                                                                                          }
+                                                                           }
+                                                                       ],
+                                                        "responses":  {
+                                                                          "200":  {
+                                                                                      "description":  "OK"
+                                                                                  }
+                                                                      }
+                                                    }
+                                       },
+                  "/api/auth/login":  {
+                                          "post":  {
+                                                       "tags":  [
+                                                                    "auth-controller"
+                                                                ],
+                                                       "operationId":  "login",
+                                                       "requestBody":  {
+                                                                           "content":  {
+                                                                                           "application/json":  {
+                                                                                                                    "schema":  {
+                                                                                                                                   "$ref":  "#/components/schemas/LoginRequest"
+                                                                                                                               }
+                                                                                                                }
+                                                                                       },
+                                                                           "required":  true
+                                                                       },
+                                                       "responses":  {
+                                                                         "200":  {
+                                                                                     "description":  "OK",
+                                                                                     "content":  {
+                                                                                                     "*/*":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "$ref":  "#/components/schemas/LoginResponse"
+                                                                                                                            }
+                                                                                                             }
+                                                                                                 }
+                                                                                 }
+                                                                     }
+                                                   }
+                                      },
+                  "/api/ai/product-description":  {
+                                                      "post":  {
+                                                                   "tags":  [
+                                                                                "ai-controller"
+                                                                            ],
+                                                                   "operationId":  "generateProductDescription",
+                                                                   "requestBody":  {
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "$ref":  "#/components/schemas/ProductDescriptionRequest"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   },
+                                                                                       "required":  true
+                                                                                   },
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/ProductDescriptionResponse"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                  },
+                  "/api/ai/chat":  {
+                                       "post":  {
+                                                    "tags":  [
+                                                                 "ai-controller"
+                                                             ],
+                                                    "operationId":  "chat",
+                                                    "requestBody":  {
+                                                                        "content":  {
+                                                                                        "application/json":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "$ref":  "#/components/schemas/ChatRequest"
+                                                                                                                            }
+                                                                                                             }
+                                                                                    },
+                                                                        "required":  true
+                                                                    },
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "OK",
+                                                                                  "content":  {
+                                                                                                  "*/*":  {
+                                                                                                              "schema":  {
+                                                                                                                             "type":  "string"
+                                                                                                                         }
+                                                                                                          }
+                                                                                              }
+                                                                              }
+                                                                  }
+                                                }
+                                   },
+                  "/api/admin/embeddings/reindex":  {
+                                                        "post":  {
+                                                                     "tags":  [
+                                                                                  "embedding-admin-controller"
+                                                                              ],
+                                                                     "operationId":  "reindex",
+                                                                     "responses":  {
+                                                                                       "200":  {
+                                                                                                   "description":  "OK",
+                                                                                                   "content":  {
+                                                                                                                   "*/*":  {
+                                                                                                                               "schema":  {
+                                                                                                                                              "$ref":  "#/components/schemas/ReindexResult"
+                                                                                                                                          }
+                                                                                                                           }
+                                                                                                               }
+                                                                                               }
+                                                                                   }
+                                                                 }
+                                                    },
+                  "/api/users/{id}/status":  {
+                                                 "patch":  {
+                                                               "tags":  [
+                                                                            "user-controller"
+                                                                        ],
+                                                               "operationId":  "updateUserStatus",
+                                                               "parameters":  [
+                                                                                  {
+                                                                                      "name":  "id",
+                                                                                      "in":  "path",
+                                                                                      "required":  true,
+                                                                                      "schema":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "uuid"
+                                                                                                 }
+                                                                                  }
+                                                                              ],
+                                                               "requestBody":  {
+                                                                                   "content":  {
+                                                                                                   "application/json":  {
+                                                                                                                            "schema":  {
+                                                                                                                                           "$ref":  "#/components/schemas/UpdateUserStatusRequest"
+                                                                                                                                       }
+                                                                                                                        }
+                                                                                               },
+                                                                                   "required":  true
+                                                                               },
+                                                               "responses":  {
+                                                                                 "200":  {
+                                                                                             "description":  "OK",
+                                                                                             "content":  {
+                                                                                                             "*/*":  {
+                                                                                                                         "schema":  {
+                                                                                                                                        "$ref":  "#/components/schemas/UserSummaryResponse"
+                                                                                                                                    }
+                                                                                                                     }
+                                                                                                         }
+                                                                                         }
+                                                                             }
+                                                           }
+                                             },
+                  "/api/publications/{id}/status":  {
+                                                        "patch":  {
+                                                                      "tags":  [
+                                                                                   "publication-controller"
+                                                                               ],
+                                                                      "operationId":  "updatePublicationStatus",
+                                                                      "parameters":  [
+                                                                                         {
+                                                                                             "name":  "id",
+                                                                                             "in":  "path",
+                                                                                             "required":  true,
+                                                                                             "schema":  {
+                                                                                                            "type":  "string",
+                                                                                                            "format":  "uuid"
+                                                                                                        }
+                                                                                         }
+                                                                                     ],
+                                                                      "requestBody":  {
+                                                                                          "content":  {
+                                                                                                          "application/json":  {
+                                                                                                                                   "schema":  {
+                                                                                                                                                  "$ref":  "#/components/schemas/UpdatePublicationStatusRequest"
+                                                                                                                                              }
+                                                                                                                               }
+                                                                                                      },
+                                                                                          "required":  true
+                                                                                      },
+                                                                      "responses":  {
+                                                                                        "200":  {
+                                                                                                    "description":  "OK",
+                                                                                                    "content":  {
+                                                                                                                    "*/*":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "$ref":  "#/components/schemas/Publication"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                                }
+                                                                                                }
+                                                                                    }
+                                                                  }
+                                                    },
+                  "/api/users":  {
+                                     "get":  {
+                                                 "tags":  [
+                                                              "user-controller"
+                                                          ],
+                                                 "operationId":  "getAllUsers",
+                                                 "responses":  {
+                                                                   "200":  {
+                                                                               "description":  "OK",
+                                                                               "content":  {
+                                                                                               "*/*":  {
+                                                                                                           "schema":  {
+                                                                                                                          "type":  "array",
+                                                                                                                          "items":  {
+                                                                                                                                        "$ref":  "#/components/schemas/UserSummaryResponse"
+                                                                                                                                    }
+                                                                                                                      }
+                                                                                                       }
+                                                                                           }
+                                                                           }
+                                                               }
+                                             }
+                                 },
+                  "/api/publications/semantic":  {
+                                                     "get":  {
+                                                                 "tags":  [
+                                                                              "publication-controller"
+                                                                          ],
+                                                                 "operationId":  "semanticSearch",
+                                                                 "parameters":  [
+                                                                                    {
+                                                                                        "name":  "query",
+                                                                                        "in":  "query",
+                                                                                        "required":  true,
+                                                                                        "schema":  {
+                                                                                                       "type":  "string"
+                                                                                                   }
+                                                                                    },
+                                                                                    {
+                                                                                        "name":  "topK",
+                                                                                        "in":  "query",
+                                                                                        "required":  false,
+                                                                                        "schema":  {
+                                                                                                       "type":  "integer",
+                                                                                                       "format":  "int32",
+                                                                                                       "default":  5
+                                                                                                   }
+                                                                                    }
+                                                                                ],
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "OK",
+                                                                                               "content":  {
+                                                                                                               "*/*":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "type":  "array",
+                                                                                                                                          "items":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/PublicationSummaryResponse"
+                                                                                                                                                    }
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                                           }
+                                                                                           }
+                                                                               }
+                                                             }
+                                                 },
+                  "/api/interactions/{id}":  {
+                                                 "get":  {
+                                                             "tags":  [
+                                                                          "interaction-controller"
+                                                                      ],
+                                                             "operationId":  "findById_1",
+                                                             "parameters":  [
+                                                                                {
+                                                                                    "name":  "id",
+                                                                                    "in":  "path",
+                                                                                    "required":  true,
+                                                                                    "schema":  {
+                                                                                                   "type":  "string",
+                                                                                                   "format":  "uuid"
+                                                                                               }
+                                                                                }
+                                                                            ],
+                                                             "responses":  {
+                                                                               "200":  {
+                                                                                           "description":  "OK",
+                                                                                           "content":  {
+                                                                                                           "*/*":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "$ref":  "#/components/schemas/InteractionResponse"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                                       }
+                                                                                       }
+                                                                           }
+                                                         },
+                                                 "delete":  {
+                                                                "tags":  [
+                                                                             "interaction-controller"
+                                                                         ],
+                                                                "operationId":  "delete",
+                                                                "parameters":  [
+                                                                                   {
+                                                                                       "name":  "id",
+                                                                                       "in":  "path",
+                                                                                       "required":  true,
+                                                                                       "schema":  {
+                                                                                                      "type":  "string",
+                                                                                                      "format":  "uuid"
+                                                                                                  }
+                                                                                   }
+                                                                               ],
+                                                                "responses":  {
+                                                                                  "200":  {
+                                                                                              "description":  "OK"
+                                                                                          }
+                                                                              }
+                                                            }
+                                             },
+                  "/api/auth/me":  {
+                                       "get":  {
+                                                   "tags":  [
+                                                                "auth-controller"
+                                                            ],
+                                                   "operationId":  "me",
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "OK",
+                                                                                 "content":  {
+                                                                                                 "*/*":  {
+                                                                                                             "schema":  {
+                                                                                                                            "$ref":  "#/components/schemas/UserSummaryResponse"
+                                                                                                                        }
+                                                                                                         }
+                                                                                             }
+                                                                             }
+                                                                 }
+                                               }
+                                   },
+                  "/api/admin/embeddings/status":  {
+                                                       "get":  {
+                                                                   "tags":  [
+                                                                                "embedding-admin-controller"
+                                                                            ],
+                                                                   "operationId":  "status",
+                                                                   "responses":  {
+                                                                                     "200":  {
+                                                                                                 "description":  "OK",
+                                                                                                 "content":  {
+                                                                                                                 "*/*":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "$ref":  "#/components/schemas/EmbeddingStatus"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                             }
+                                                                                             }
+                                                                                 }
+                                                               }
+                                                   }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "UpdateUserRequest":  {
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "ru":  {
+                                                                                               "type":  "string",
+                                                                                               "minLength":  1,
+                                                                                               "pattern":  "^[0-9]{9}$"
+                                                                                           },
+                                                                                    "nombre":  {
+                                                                                                   "type":  "string",
+                                                                                                   "minLength":  1
+                                                                                               },
+                                                                                    "apellidoPaterno":  {
+                                                                                                            "type":  "string",
+                                                                                                            "minLength":  1
+                                                                                                        },
+                                                                                    "apellidoMaterno":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                    "email":  {
+                                                                                                  "type":  "string",
+                                                                                                  "minLength":  1,
+                                                                                                  "pattern":  "^[A-Za-z0-9._%+-]+@umss\\.edu\\.bo$"
+                                                                                              },
+                                                                                    "celular":  {
+                                                                                                    "type":  "string",
+                                                                                                    "minLength":  1,
+                                                                                                    "pattern":  "^[0-9]{8}$"
+                                                                                                },
+                                                                                    "facultad":  {
+                                                                                                     "type":  "string",
+                                                                                                     "minLength":  1
+                                                                                                 }
+                                                                                },
+                                                                 "required":  [
+                                                                                  "apellidoPaterno",
+                                                                                  "celular",
+                                                                                  "email",
+                                                                                  "facultad",
+                                                                                  "nombre",
+                                                                                  "ru"
+                                                                              ]
+                                                             },
+                                       "UserSummaryResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "id":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "uuid"
+                                                                                             },
+                                                                                      "ru":  {
+                                                                                                 "type":  "string"
+                                                                                             },
+                                                                                      "nombre":  {
+                                                                                                     "type":  "string"
+                                                                                                 },
+                                                                                      "apellidoPaterno":  {
+                                                                                                              "type":  "string"
+                                                                                                          },
+                                                                                      "apellidoMaterno":  {
+                                                                                                              "type":  "string"
+                                                                                                          },
+                                                                                      "email":  {
+                                                                                                    "type":  "string"
+                                                                                                },
+                                                                                      "celular":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                      "facultad":  {
+                                                                                                       "type":  "string"
+                                                                                                   },
+                                                                                      "role":  {
+                                                                                                   "type":  "string",
+                                                                                                   "enum":  [
+                                                                                                                "EMPRENDEDOR",
+                                                                                                                "COMPRADOR",
+                                                                                                                "ADMIN"
+                                                                                                            ]
+                                                                                               },
+                                                                                      "status":  {
+                                                                                                     "type":  "string",
+                                                                                                     "enum":  [
+                                                                                                                  "ACTIVE",
+                                                                                                                  "INACTIVE"
+                                                                                                              ]
+                                                                                                 },
+                                                                                      "ultimoLogin":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "date-time"
+                                                                                                      },
+                                                                                      "createdAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    },
+                                                                                      "updatedAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    }
+                                                                                  }
+                                                               },
+                                       "UpdateStoreRequest":  {
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "nombre":  {
+                                                                                                    "type":  "string",
+                                                                                                    "minLength":  1
+                                                                                                },
+                                                                                     "descripcion":  {
+                                                                                                         "type":  "string"
+                                                                                                     },
+                                                                                     "categoria":  {
+                                                                                                       "type":  "string"
+                                                                                                   },
+                                                                                     "telefonoContacto":  {
+                                                                                                              "type":  "string",
+                                                                                                              "minLength":  1
+                                                                                                          },
+                                                                                     "emailContacto":  {
+                                                                                                           "type":  "string"
+                                                                                                       },
+                                                                                     "status":  {
+                                                                                                    "type":  "string",
+                                                                                                    "enum":  [
+                                                                                                                 "ACTIVE",
+                                                                                                                 "INACTIVE"
+                                                                                                             ]
+                                                                                                }
+                                                                                 },
+                                                                  "required":  [
+                                                                                   "nombre",
+                                                                                   "telefonoContacto"
+                                                                               ]
+                                                              },
+                                       "StoreSummaryResponse":  {
+                                                                    "type":  "object",
+                                                                    "properties":  {
+                                                                                       "id":  {
+                                                                                                  "type":  "string",
+                                                                                                  "format":  "uuid"
+                                                                                              },
+                                                                                       "userId":  {
+                                                                                                      "type":  "string",
+                                                                                                      "format":  "uuid"
+                                                                                                  },
+                                                                                       "nombre":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                       "descripcion":  {
+                                                                                                           "type":  "string"
+                                                                                                       },
+                                                                                       "categoria":  {
+                                                                                                         "type":  "string"
+                                                                                                     },
+                                                                                       "telefonoContacto":  {
+                                                                                                                "type":  "string"
+                                                                                                            },
+                                                                                       "emailContacto":  {
+                                                                                                             "type":  "string"
+                                                                                                         },
+                                                                                       "status":  {
+                                                                                                      "type":  "string",
+                                                                                                      "enum":  [
+                                                                                                                   "ACTIVE",
+                                                                                                                   "INACTIVE"
+                                                                                                               ]
+                                                                                                  },
+                                                                                       "createdAt":  {
+                                                                                                         "type":  "string",
+                                                                                                         "format":  "date-time"
+                                                                                                     },
+                                                                                       "updatedAt":  {
+                                                                                                         "type":  "string",
+                                                                                                         "format":  "date-time"
+                                                                                                     }
+                                                                                   }
+                                                                },
+                                       "UpdatePublicationRequest":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "nombre":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                           "descripcion":  {
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                           "precio":  {
+                                                                                                          "type":  "number"
+                                                                                                      },
+                                                                                           "tipo":  {
+                                                                                                        "type":  "string",
+                                                                                                        "enum":  [
+                                                                                                                     "PRODUCTO",
+                                                                                                                     "SERVICIO"
+                                                                                                                 ]
+                                                                                                    },
+                                                                                           "stock":  {
+                                                                                                         "type":  "integer",
+                                                                                                         "format":  "int32"
+                                                                                                     },
+                                                                                           "modalidadCobro":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "enum":  [
+                                                                                                                               "ANTICIPADO",
+                                                                                                                               "CONTRA_ENTREGA",
+                                                                                                                               "COMPLETO"
+                                                                                                                           ]
+                                                                                                              }
+                                                                                       }
+                                                                    },
+                                       "Publication":  {
+                                                           "type":  "object",
+                                                           "properties":  {
+                                                                              "id":  {
+                                                                                         "type":  "string",
+                                                                                         "format":  "uuid"
+                                                                                     },
+                                                                              "storeId":  {
+                                                                                              "type":  "string",
+                                                                                              "format":  "uuid"
+                                                                                          },
+                                                                              "nombre":  {
+                                                                                             "type":  "string"
+                                                                                         },
+                                                                              "descripcion":  {
+                                                                                                  "type":  "string"
+                                                                                              },
+                                                                              "precio":  {
+                                                                                             "type":  "number"
+                                                                                         },
+                                                                              "tipo":  {
+                                                                                           "type":  "string",
+                                                                                           "enum":  [
+                                                                                                        "PRODUCTO",
+                                                                                                        "SERVICIO"
+                                                                                                    ]
+                                                                                       },
+                                                                              "stock":  {
+                                                                                            "type":  "integer",
+                                                                                            "format":  "int32"
+                                                                                        },
+                                                                              "modalidadCobro":  {
+                                                                                                     "type":  "string",
+                                                                                                     "enum":  [
+                                                                                                                  "ANTICIPADO",
+                                                                                                                  "CONTRA_ENTREGA",
+                                                                                                                  "COMPLETO"
+                                                                                                              ]
+                                                                                                 },
+                                                                              "activa":  {
+                                                                                             "type":  "boolean"
+                                                                                         },
+                                                                              "createdAt":  {
+                                                                                                "type":  "string",
+                                                                                                "format":  "date-time"
+                                                                                            },
+                                                                              "updatedAt":  {
+                                                                                                "type":  "string",
+                                                                                                "format":  "date-time"
+                                                                                            },
+                                                                              "embedding":  {
+                                                                                                "type":  "string"
+                                                                                            }
+                                                                          }
+                                                       },
+                                       "CreateStoreRequest":  {
+                                                                  "type":  "object",
+                                                                  "properties":  {
+                                                                                     "userId":  {
+                                                                                                    "type":  "string",
+                                                                                                    "format":  "uuid"
+                                                                                                },
+                                                                                     "nombre":  {
+                                                                                                    "type":  "string",
+                                                                                                    "minLength":  1
+                                                                                                },
+                                                                                     "descripcion":  {
+                                                                                                         "type":  "string"
+                                                                                                     },
+                                                                                     "categoria":  {
+                                                                                                       "type":  "string"
+                                                                                                   },
+                                                                                     "telefonoContacto":  {
+                                                                                                              "type":  "string",
+                                                                                                              "minLength":  1
+                                                                                                          },
+                                                                                     "emailContacto":  {
+                                                                                                           "type":  "string"
+                                                                                                       },
+                                                                                     "status":  {
+                                                                                                    "type":  "string",
+                                                                                                    "enum":  [
+                                                                                                                 "ACTIVE",
+                                                                                                                 "INACTIVE"
+                                                                                                             ]
+                                                                                                }
+                                                                                 },
+                                                                  "required":  [
+                                                                                   "nombre",
+                                                                                   "telefonoContacto",
+                                                                                   "userId"
+                                                                               ]
+                                                              },
+                                       "CreateStoreResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "success":  {
+                                                                                                      "type":  "boolean"
+                                                                                                  },
+                                                                                      "message":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                      "storeId":  {
+                                                                                                      "type":  "string",
+                                                                                                      "format":  "uuid"
+                                                                                                  },
+                                                                                      "userId":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "uuid"
+                                                                                                 }
+                                                                                  }
+                                                               },
+                                       "CreatePublicationRequest":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "storeId":  {
+                                                                                                           "type":  "string",
+                                                                                                           "format":  "uuid"
+                                                                                                       },
+                                                                                           "nombre":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                           "descripcion":  {
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                           "precio":  {
+                                                                                                          "type":  "number"
+                                                                                                      },
+                                                                                           "tipo":  {
+                                                                                                        "type":  "string",
+                                                                                                        "enum":  [
+                                                                                                                     "PRODUCTO",
+                                                                                                                     "SERVICIO"
+                                                                                                                 ]
+                                                                                                    },
+                                                                                           "stock":  {
+                                                                                                         "type":  "integer",
+                                                                                                         "format":  "int32"
+                                                                                                     },
+                                                                                           "modalidadCobro":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "enum":  [
+                                                                                                                               "ANTICIPADO",
+                                                                                                                               "CONTRA_ENTREGA",
+                                                                                                                               "COMPLETO"
+                                                                                                                           ]
+                                                                                                              }
+                                                                                       }
+                                                                    },
+                                       "CreatePublicationResponse":  {
+                                                                         "type":  "object",
+                                                                         "properties":  {
+                                                                                            "success":  {
+                                                                                                            "type":  "boolean"
+                                                                                                        },
+                                                                                            "message":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                            "publicationId":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "format":  "uuid"
+                                                                                                              }
+                                                                                        }
+                                                                     },
+                                       "CreateInteractionRequest":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "publicationId":  {
+                                                                                                                 "type":  "string",
+                                                                                                                 "format":  "uuid"
+                                                                                                             },
+                                                                                           "type":  {
+                                                                                                        "type":  "string",
+                                                                                                        "enum":  [
+                                                                                                                     "VIEW",
+                                                                                                                     "FAVORITE",
+                                                                                                                     "LIKE",
+                                                                                                                     "COMMENT",
+                                                                                                                     "PURCHASE"
+                                                                                                                 ]
+                                                                                                    },
+                                                                                           "metadata":  {
+                                                                                                            "type":  "string"
+                                                                                                        }
+                                                                                       },
+                                                                        "required":  [
+                                                                                         "publicationId",
+                                                                                         "type"
+                                                                                     ]
+                                                                    },
+                                       "InteractionResponse":  {
+                                                                   "type":  "object",
+                                                                   "properties":  {
+                                                                                      "id":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "uuid"
+                                                                                             },
+                                                                                      "userId":  {
+                                                                                                     "type":  "string",
+                                                                                                     "format":  "uuid"
+                                                                                                 },
+                                                                                      "publicationId":  {
+                                                                                                            "type":  "string",
+                                                                                                            "format":  "uuid"
+                                                                                                        },
+                                                                                      "type":  {
+                                                                                                   "type":  "string",
+                                                                                                   "enum":  [
+                                                                                                                "VIEW",
+                                                                                                                "FAVORITE",
+                                                                                                                "LIKE",
+                                                                                                                "COMMENT",
+                                                                                                                "PURCHASE"
+                                                                                                            ]
+                                                                                               },
+                                                                                      "metadata":  {
+                                                                                                       "type":  "string"
+                                                                                                   },
+                                                                                      "createdAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    },
+                                                                                      "updatedAt":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "date-time"
+                                                                                                    }
+                                                                                  }
+                                                               },
+                                       "RegisterEntrepreneurRequest":  {
+                                                                           "type":  "object",
+                                                                           "properties":  {
+                                                                                              "ru":  {
+                                                                                                         "type":  "string",
+                                                                                                         "minLength":  1,
+                                                                                                         "pattern":  "^[0-9]{9}$"
+                                                                                                     },
+                                                                                              "nombre":  {
+                                                                                                             "type":  "string",
+                                                                                                             "minLength":  1
+                                                                                                         },
+                                                                                              "apellidoPaterno":  {
+                                                                                                                      "type":  "string",
+                                                                                                                      "minLength":  1
+                                                                                                                  },
+                                                                                              "apellidoMaterno":  {
+                                                                                                                      "type":  "string"
+                                                                                                                  },
+                                                                                              "email":  {
+                                                                                                            "type":  "string",
+                                                                                                            "minLength":  1,
+                                                                                                            "pattern":  "^[A-Za-z0-9._%+-]+@umss\\.edu\\.bo$"
+                                                                                                        },
+                                                                                              "celular":  {
+                                                                                                              "type":  "string",
+                                                                                                              "minLength":  1,
+                                                                                                              "pattern":  "^[0-9]{8}$"
+                                                                                                          },
+                                                                                              "facultad":  {
+                                                                                                               "type":  "string",
+                                                                                                               "minLength":  1
+                                                                                                           },
+                                                                                              "password":  {
+                                                                                                               "type":  "string",
+                                                                                                               "maxLength":  2147483647,
+                                                                                                               "minLength":  6
+                                                                                                           },
+                                                                                              "nombreTienda":  {
+                                                                                                                   "type":  "string",
+                                                                                                                   "minLength":  1
+                                                                                                               }
+                                                                                          },
+                                                                           "required":  [
+                                                                                            "apellidoPaterno",
+                                                                                            "celular",
+                                                                                            "email",
+                                                                                            "facultad",
+                                                                                            "nombre",
+                                                                                            "nombreTienda",
+                                                                                            "password",
+                                                                                            "ru"
+                                                                                        ]
+                                                                       },
+                                       "RegisterEntrepreneurResponse":  {
+                                                                            "type":  "object",
+                                                                            "properties":  {
+                                                                                               "success":  {
+                                                                                                               "type":  "boolean"
+                                                                                                           },
+                                                                                               "message":  {
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                               "usuarioId":  {
+                                                                                                                 "type":  "string",
+                                                                                                                 "format":  "uuid"
+                                                                                                             },
+                                                                                               "tiendaId":  {
+                                                                                                                "type":  "string",
+                                                                                                                "format":  "uuid"
+                                                                                                            }
+                                                                                           }
+                                                                        },
+                                       "RegisterCustomerRequest":  {
+                                                                       "type":  "object",
+                                                                       "properties":  {
+                                                                                          "ru":  {
+                                                                                                     "type":  "string",
+                                                                                                     "minLength":  1,
+                                                                                                     "pattern":  "^[0-9]{9}$"
+                                                                                                 },
+                                                                                          "nombre":  {
+                                                                                                         "type":  "string",
+                                                                                                         "minLength":  1
+                                                                                                     },
+                                                                                          "apellidoPaterno":  {
+                                                                                                                  "type":  "string",
+                                                                                                                  "minLength":  1
+                                                                                                              },
+                                                                                          "apellidoMaterno":  {
+                                                                                                                  "type":  "string"
+                                                                                                              },
+                                                                                          "email":  {
+                                                                                                        "type":  "string",
+                                                                                                        "minLength":  1,
+                                                                                                        "pattern":  "^[A-Za-z0-9._%+-]+@umss\\.edu\\.bo$"
+                                                                                                    },
+                                                                                          "celular":  {
+                                                                                                          "type":  "string",
+                                                                                                          "minLength":  1,
+                                                                                                          "pattern":  "^[0-9]{8}$"
+                                                                                                      },
+                                                                                          "facultad":  {
+                                                                                                           "type":  "string",
+                                                                                                           "minLength":  1
+                                                                                                       },
+                                                                                          "password":  {
+                                                                                                           "type":  "string",
+                                                                                                           "maxLength":  2147483647,
+                                                                                                           "minLength":  6
+                                                                                                       }
+                                                                                      },
+                                                                       "required":  [
+                                                                                        "apellidoPaterno",
+                                                                                        "celular",
+                                                                                        "email",
+                                                                                        "facultad",
+                                                                                        "nombre",
+                                                                                        "password",
+                                                                                        "ru"
+                                                                                    ]
+                                                                   },
+                                       "RegisterCustomerResponse":  {
+                                                                        "type":  "object",
+                                                                        "properties":  {
+                                                                                           "success":  {
+                                                                                                           "type":  "boolean"
+                                                                                                       },
+                                                                                           "message":  {
+                                                                                                           "type":  "string"
+                                                                                                       },
+                                                                                           "usuarioId":  {
+                                                                                                             "type":  "string",
+                                                                                                             "format":  "uuid"
+                                                                                                         }
+                                                                                       }
+                                                                    },
+                                       "RegisterAdminRequest":  {
+                                                                    "type":  "object",
+                                                                    "properties":  {
+                                                                                       "ru":  {
+                                                                                                  "type":  "string",
+                                                                                                  "minLength":  1,
+                                                                                                  "pattern":  "^[0-9]{9}$"
+                                                                                              },
+                                                                                       "nombre":  {
+                                                                                                      "type":  "string",
+                                                                                                      "minLength":  1
+                                                                                                  },
+                                                                                       "apellidoPaterno":  {
+                                                                                                               "type":  "string",
+                                                                                                               "minLength":  1
+                                                                                                           },
+                                                                                       "apellidoMaterno":  {
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                       "email":  {
+                                                                                                     "type":  "string",
+                                                                                                     "minLength":  1,
+                                                                                                     "pattern":  "^[A-Za-z0-9._%+-]+@umss\\.edu\\.bo$"
+                                                                                                 },
+                                                                                       "celular":  {
+                                                                                                       "type":  "string",
+                                                                                                       "minLength":  1,
+                                                                                                       "pattern":  "^[0-9]{8}$"
+                                                                                                   },
+                                                                                       "facultad":  {
+                                                                                                        "type":  "string",
+                                                                                                        "minLength":  1
+                                                                                                    },
+                                                                                       "password":  {
+                                                                                                        "type":  "string",
+                                                                                                        "maxLength":  2147483647,
+                                                                                                        "minLength":  6
+                                                                                                    }
+                                                                                   },
+                                                                    "required":  [
+                                                                                     "apellidoPaterno",
+                                                                                     "celular",
+                                                                                     "email",
+                                                                                     "facultad",
+                                                                                     "nombre",
+                                                                                     "password",
+                                                                                     "ru"
+                                                                                 ]
+                                                                },
+                                       "RegisterAdminResponse":  {
+                                                                     "type":  "object",
+                                                                     "properties":  {
+                                                                                        "success":  {
+                                                                                                        "type":  "boolean"
+                                                                                                    },
+                                                                                        "message":  {
+                                                                                                        "type":  "string"
+                                                                                                    },
+                                                                                        "usuarioId":  {
+                                                                                                          "type":  "string",
+                                                                                                          "format":  "uuid"
+                                                                                                      }
+                                                                                    }
+                                                                 },
+                                       "LoginRequest":  {
+                                                            "type":  "object",
+                                                            "properties":  {
+                                                                               "email":  {
+                                                                                             "type":  "string",
+                                                                                             "minLength":  1
+                                                                                         },
+                                                                               "password":  {
+                                                                                                "type":  "string",
+                                                                                                "minLength":  1
+                                                                                            }
+                                                                           },
+                                                            "required":  [
+                                                                             "email",
+                                                                             "password"
+                                                                         ]
+                                                        },
+                                       "LoginResponse":  {
+                                                             "type":  "object",
+                                                             "properties":  {
+                                                                                "token":  {
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                                "userId":  {
+                                                                                               "type":  "string",
+                                                                                               "format":  "uuid"
+                                                                                           },
+                                                                                "email":  {
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                                "role":  {
+                                                                                             "type":  "string"
+                                                                                         }
+                                                                            }
+                                                         },
+                                       "ProductDescriptionRequest":  {
+                                                                         "type":  "object",
+                                                                         "properties":  {
+                                                                                            "nombre":  {
+                                                                                                           "type":  "string"
+                                                                                                       },
+                                                                                            "categoria":  {
+                                                                                                              "type":  "string"
+                                                                                                          },
+                                                                                            "precio":  {
+                                                                                                           "type":  "number"
+                                                                                                       }
+                                                                                        }
+                                                                     },
+                                       "ProductDescriptionResponse":  {
+                                                                          "type":  "object",
+                                                                          "properties":  {
+                                                                                             "description":  {
+                                                                                                                 "type":  "string"
+                                                                                                             }
+                                                                                         }
+                                                                      },
+                                       "ChatRequest":  {
+                                                           "type":  "object",
+                                                           "properties":  {
+                                                                              "message":  {
+                                                                                              "type":  "string"
+                                                                                          }
+                                                                          }
+                                                       },
+                                       "ReindexResult":  {
+                                                             "type":  "object",
+                                                             "properties":  {
+                                                                                "total":  {
+                                                                                              "type":  "integer",
+                                                                                              "format":  "int32"
+                                                                                          },
+                                                                                "processed":  {
+                                                                                                  "type":  "integer",
+                                                                                                  "format":  "int32"
+                                                                                              },
+                                                                                "errors":  {
+                                                                                               "type":  "integer",
+                                                                                               "format":  "int32"
+                                                                                           }
+                                                                            }
+                                                         },
+                                       "UpdateUserStatusRequest":  {
+                                                                       "type":  "object",
+                                                                       "properties":  {
+                                                                                          "status":  {
+                                                                                                         "type":  "string",
+                                                                                                         "enum":  [
+                                                                                                                      "ACTIVE",
+                                                                                                                      "INACTIVE"
+                                                                                                                  ]
+                                                                                                     }
+                                                                                      },
+                                                                       "required":  [
+                                                                                        "status"
+                                                                                    ]
+                                                                   },
+                                       "PatchStoreRequest":  {
+                                                                 "type":  "object",
+                                                                 "properties":  {
+                                                                                    "nombre":  {
+                                                                                                   "type":  "string"
+                                                                                               },
+                                                                                    "descripcion":  {
+                                                                                                        "type":  "string"
+                                                                                                    },
+                                                                                    "categoria":  {
+                                                                                                      "type":  "string"
+                                                                                                  },
+                                                                                    "telefonoContacto":  {
+                                                                                                             "type":  "string"
+                                                                                                         },
+                                                                                    "emailContacto":  {
+                                                                                                          "type":  "string"
+                                                                                                      },
+                                                                                    "status":  {
+                                                                                                   "type":  "string",
+                                                                                                   "enum":  [
+                                                                                                                "ACTIVE",
+                                                                                                                "INACTIVE"
+                                                                                                            ]
+                                                                                               }
+                                                                                }
+                                                             },
+                                       "UpdatePublicationStatusRequest":  {
+                                                                              "type":  "object",
+                                                                              "properties":  {
+                                                                                                 "activa":  {
+                                                                                                                "type":  "boolean"
+                                                                                                            }
+                                                                                             }
+                                                                          },
+                                       "PublicationInStoreResponse":  {
+                                                                          "type":  "object",
+                                                                          "properties":  {
+                                                                                             "id":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "uuid"
+                                                                                                    },
+                                                                                             "nombre":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                             "precio":  {
+                                                                                                            "type":  "number"
+                                                                                                        },
+                                                                                             "tipo":  {
+                                                                                                          "type":  "string",
+                                                                                                          "enum":  [
+                                                                                                                       "PRODUCTO",
+                                                                                                                       "SERVICIO"
+                                                                                                                   ]
+                                                                                                      },
+                                                                                             "stock":  {
+                                                                                                           "type":  "integer",
+                                                                                                           "format":  "int32"
+                                                                                                       },
+                                                                                             "modalidadCobro":  {
+                                                                                                                    "type":  "string",
+                                                                                                                    "enum":  [
+                                                                                                                                 "ANTICIPADO",
+                                                                                                                                 "CONTRA_ENTREGA",
+                                                                                                                                 "COMPLETO"
+                                                                                                                             ]
+                                                                                                                },
+                                                                                             "activa":  {
+                                                                                                            "type":  "boolean"
+                                                                                                        }
+                                                                                         }
+                                                                      },
+                                       "StorePublicProfileResponse":  {
+                                                                          "type":  "object",
+                                                                          "properties":  {
+                                                                                             "id":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "uuid"
+                                                                                                    },
+                                                                                             "nombre":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                             "descripcion":  {
+                                                                                                                 "type":  "string"
+                                                                                                             },
+                                                                                             "categoria":  {
+                                                                                                               "type":  "string"
+                                                                                                           },
+                                                                                             "telefonoContacto":  {
+                                                                                                                      "type":  "string"
+                                                                                                                  },
+                                                                                             "emailContacto":  {
+                                                                                                                   "type":  "string"
+                                                                                                               },
+                                                                                             "status":  {
+                                                                                                            "type":  "string",
+                                                                                                            "enum":  [
+                                                                                                                         "ACTIVE",
+                                                                                                                         "INACTIVE"
+                                                                                                                     ]
+                                                                                                        },
+                                                                                             "publicaciones":  {
+                                                                                                                   "type":  "array",
+                                                                                                                   "items":  {
+                                                                                                                                 "$ref":  "#/components/schemas/PublicationInStoreResponse"
+                                                                                                                             }
+                                                                                                               }
+                                                                                         }
+                                                                      },
+                                       "CatalogFilterRequest":  {
+                                                                    "type":  "object",
+                                                                    "properties":  {
+                                                                                       "texto":  {
+                                                                                                     "type":  "string"
+                                                                                                 },
+                                                                                       "tipo":  {
+                                                                                                    "type":  "string",
+                                                                                                    "enum":  [
+                                                                                                                 "PRODUCTO",
+                                                                                                                 "SERVICIO"
+                                                                                                             ]
+                                                                                                },
+                                                                                       "precioMin":  {
+                                                                                                         "type":  "number"
+                                                                                                     },
+                                                                                       "precioMax":  {
+                                                                                                         "type":  "number"
+                                                                                                     },
+                                                                                       "storeId":  {
+                                                                                                       "type":  "string",
+                                                                                                       "format":  "uuid"
+                                                                                                   }
+                                                                                   }
+                                                                },
+                                       "PublicationSummaryResponse":  {
+                                                                          "type":  "object",
+                                                                          "properties":  {
+                                                                                             "id":  {
+                                                                                                        "type":  "string",
+                                                                                                        "format":  "uuid"
+                                                                                                    },
+                                                                                             "nombre":  {
+                                                                                                            "type":  "string"
+                                                                                                        },
+                                                                                             "descripcion":  {
+                                                                                                                 "type":  "string"
+                                                                                                             },
+                                                                                             "precio":  {
+                                                                                                            "type":  "number"
+                                                                                                        },
+                                                                                             "tipo":  {
+                                                                                                          "type":  "string",
+                                                                                                          "enum":  [
+                                                                                                                       "PRODUCTO",
+                                                                                                                       "SERVICIO"
+                                                                                                                   ]
+                                                                                                      },
+                                                                                             "stock":  {
+                                                                                                           "type":  "integer",
+                                                                                                           "format":  "int32"
+                                                                                                       },
+                                                                                             "modalidadCobro":  {
+                                                                                                                    "type":  "string",
+                                                                                                                    "enum":  [
+                                                                                                                                 "ANTICIPADO",
+                                                                                                                                 "CONTRA_ENTREGA",
+                                                                                                                                 "COMPLETO"
+                                                                                                                             ]
+                                                                                                                },
+                                                                                             "storeId":  {
+                                                                                                             "type":  "string",
+                                                                                                             "format":  "uuid"
+                                                                                                         },
+                                                                                             "nombreTienda":  {
+                                                                                                                  "type":  "string"
+                                                                                                              },
+                                                                                             "activa":  {
+                                                                                                            "type":  "boolean"
+                                                                                                        }
+                                                                                         }
+                                                                      },
+                                       "EmbeddingStatus":  {
+                                                               "type":  "object",
+                                                               "properties":  {
+                                                                                  "totalPublications":  {
+                                                                                                            "type":  "integer",
+                                                                                                            "format":  "int32"
+                                                                                                        },
+                                                                                  "withEmbeddings":  {
+                                                                                                         "type":  "integer",
+                                                                                                         "format":  "int32"
+                                                                                                     },
+                                                                                  "withoutEmbeddings":  {
+                                                                                                            "type":  "integer",
+                                                                                                            "format":  "int32"
+                                                                                                        }
+                                                                              }
+                                                           }
+                                   }
+                   }
+}

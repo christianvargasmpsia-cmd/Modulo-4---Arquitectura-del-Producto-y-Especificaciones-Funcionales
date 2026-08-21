@@ -1,239 +1,837 @@
-import getWorkspacesSkill from "../skills/getWorkspaces.skill.js";
-import getCollectionsSkill from "../skills/getCollections.skill.js";
-import runCollectionSkill from "../skills/runCollection.skill.js";
-import analyzeResultsSkill from "../skills/analyzeResults.skill.js";
-import { Logger } from "../utils/Logger.js";
+﻿import { Logger } from "../utils/Logger.js";
+
+import postmanService
+    from "../services/postman.service.js";
+
+import dataDiscoveryService
+    from "../services/dataDiscovery.service.js";
+
+import runCollectionSkill
+    from "../skills/runCollection.skill.js";
+
+import analyzeResultsSkill
+    from "../skills/analyzeResults.skill.js";
 
 
-class MCPPostmanAgent {
+class PostmanAgentEnhanced {
 
-    async start(workspaceName = "UMSS Market") {
+    // ==========================================================
+    // ENTRYPOINT
+    // Compatible con index.enhanced.js
+    // ==========================================================
 
-        console.clear();
+    async start(request = "UMSS Market") {
 
-        Logger.title("🔍 MCP POSTMAN AGENT");
+        const result =
+            await this.execute(request);
 
-        Logger.info(
-            "Iniciando descubrimiento de Workspaces...\n"
-        );
+        return result;
+
+    }
+
+
+    // ==========================================================
+    // EJECUTAR AGENTE
+    // ==========================================================
+
+    async execute(userRequest = "") {
 
         try {
 
+            Logger.title(
+                "POSTMAN AI TESTING AGENT"
+            );
+
+
+            Logger.info(
+                `Solicitud: ${
+                    userRequest ||
+                    "Ejecutar pruebas de la API"
+                }`
+            );
+
+
             // ==================================================
-            // STEP 1: OBTENER WORKSPACES
+            // STEP 1
+            // OBTENER TODOS LOS WORKSPACES
             // ==================================================
 
             Logger.info(
-                "Step 1: Descubriendo Workspaces desde Postman API"
+                "\nStep 1: Obteniendo Workspaces de Postman..."
             );
 
+
             const workspaces =
-                await getWorkspacesSkill.execute();
+                await postmanService.getWorkspaces();
 
 
             if (
-                !workspaces ||
+                !Array.isArray(workspaces) ||
                 workspaces.length === 0
             ) {
 
-                Logger.error(
-                    "No workspaces encontrados"
+                throw new Error(
+                    "No se encontraron Workspaces en Postman."
                 );
 
-                return {
-                    success: false,
-                    error: "No workspaces"
-                };
             }
 
 
             Logger.success(
-                `✓ ${workspaces.length} workspaces encontrados\n`
+                `✓ Workspaces encontrados: ${
+                    workspaces.length
+                }`
             );
 
 
-            workspaces.forEach(
-                (w, i) => {
+            // ==================================================
+            // STEP 2
+            // BUSCAR COLLECTION EN TODOS LOS WORKSPACES
+            // ==================================================
 
-                    console.log(
-                        `  ${i + 1}. ${w.name} (ID: ${w.id})`
-                    );
+            Logger.info(
+                "\nStep 2: Buscando Collection UMSS Market..."
+            );
+
+
+            let selectedWorkspace =
+                null;
+
+            let selectedCollection =
+                null;
+
+            let collections =
+                [];
+
+
+            for (
+                const workspace of workspaces
+            ) {
+
+                Logger.info(
+                    `\nConsultando Workspace: ${
+                        workspace.name
+                    }`
+                );
+
+
+                let currentCollections;
+
+
+                try {
+
+                    currentCollections =
+                        await postmanService.getCollections(
+                            workspace.id
+                        );
 
                 }
-            );
+                catch (error) {
+
+                    Logger.warning(
+                        `No se pudo consultar ${
+                            workspace.name
+                        }: ${
+                            error.response?.status ??
+                            error.message
+                        }`
+                    );
+
+                    continue;
+
+                }
 
 
-            // ==================================================
-            // STEP 2: SELECCIONAR WORKSPACE
-            // ==================================================
+                if (
+                    !Array.isArray(
+                        currentCollections
+                    ) ||
+                    currentCollections.length === 0
+                ) {
 
-            Logger.info(
-                `\nStep 2: Seleccionando workspace "${workspaceName}"`
-            );
+                    Logger.info(
+                        "  Sin Collections."
+                    );
+
+                    continue;
+
+                }
 
 
-            const workspace =
-                workspaces.find(
-                    w => w.name === workspaceName
+                Logger.success(
+                    `  ✓ Collections encontradas: ${
+                        currentCollections.length
+                    }`
                 );
 
 
-            if (!workspace) {
+                // ----------------------------------------------
+                // BUSCAR UMSS MARKET
+                // ----------------------------------------------
 
-                Logger.error(
-                    `Workspace "${workspaceName}" no encontrado`
+                const match =
+                    currentCollections.find(
+                        collection => {
+
+                            const name =
+                                collection?.name
+                                    ?.toLowerCase()
+                                    ?.trim() ??
+                                "";
+
+                            return (
+                                name.includes(
+                                    "umss market"
+                                ) ||
+                                name.includes(
+                                    "umss"
+                                )
+                            );
+
+                        }
+                    );
+
+
+                if (match) {
+
+                    selectedWorkspace =
+                        workspace;
+
+                    selectedCollection =
+                        match;
+
+                    collections =
+                        currentCollections;
+
+                    break;
+
+                }
+
+            }
+
+
+            // ==================================================
+            // VALIDAR COLLECTION
+            // ==================================================
+
+            if (
+                !selectedCollection
+            ) {
+
+                throw new Error(
+                    "No se encontró la Collection 'UMSS Market API' en ninguno de los Workspaces disponibles."
                 );
 
-                return {
-                    success: false,
-                    error:
-                        `Workspace not found: ${workspaceName}`
-                };
             }
 
 
             Logger.success(
-                `✓ Workspace seleccionado: ${workspace.name}\n`
+                `\n✓ Workspace encontrado: ${
+                    selectedWorkspace.name
+                }`
+            );
+
+
+            Logger.success(
+                `✓ Collection encontrada: ${
+                    selectedCollection.name
+                }`
+            );
+
+
+            Logger.info(
+                `  Collection UID: ${
+                    selectedCollection.uid
+                }`
             );
 
 
             // ==================================================
-            // STEP 3: OBTENER COLLECTIONS
+            // STEP 3
+            // DESCARGAR COLLECTION COMPLETA
             // ==================================================
 
             Logger.info(
-                "Step 3: Descubriendo Collections"
+                "\nStep 3: Descargando Collection..."
             );
 
 
-            const collections =
-                await getCollectionsSkill.execute(
-                    workspace.id
+            const collection =
+                await postmanService.getCollection(
+                    selectedCollection.uid
                 );
+
+
+            if (!collection) {
+
+                throw new Error(
+                    "Postman no devolvió la Collection."
+                );
+
+            }
 
 
             if (
-                !collections ||
-                collections.length === 0
+                !collection.info
             ) {
 
-                Logger.error(
-                    "No collections encontradas"
+                throw new Error(
+                    "La Collection descargada no contiene información válida."
                 );
 
-                return {
-                    success: false,
-                    error: "No collections"
-                };
             }
 
 
             Logger.success(
-                `✓ ${collections.length} collections encontradas\n`
-            );
-
-
-            collections.forEach(
-                (c, i) => {
-
-                    console.log(
-                        `  ${i + 1}. ${c.name} (ID: ${c.id})`
-                    );
-
-                }
+                `✓ Collection descargada: ${
+                    collection.info.name
+                }`
             );
 
 
             // ==================================================
-            // STEP 4: EJECUTAR PRUEBAS CON NEWMAN
+            // GUARDAR COLLECTION LOCAL
+            // ==================================================
+
+            const collectionPath =
+                await this.saveCollection(
+                    collection
+                );
+
+
+            Logger.success(
+                `✓ Collection guardada en:\n${
+                    collectionPath
+                }`
+            );
+
+
+            // ==================================================
+            // STEP 4
+            // DISCOVERY
             // ==================================================
 
             Logger.info(
-                "\nStep 4: Ejecutando pruebas con Newman"
+                "\nStep 4: Descubriendo datos reales de prueba..."
+            );
+
+
+            const discovery =
+                await dataDiscoveryService.discover();
+
+
+            if (!discovery) {
+
+                throw new Error(
+                    "DataDiscovery no devolvió información."
+                );
+
+            }
+
+
+            if (!discovery.ids) {
+
+                throw new Error(
+                    "DataDiscovery no devolvió los IDs."
+                );
+
+            }
+
+
+            // ==================================================
+            // CONSTRUIR TEST DATA
+            // ==================================================
+
+            const testData = {
+
+                userId:
+                    discovery.ids.userId ??
+                    null,
+
+                storeId:
+                    discovery.ids.storeId ??
+                    null,
+
+                publicationId:
+                    discovery.ids.publicationId ??
+                    null,
+
+                interactionId:
+                    discovery.ids.interactionId ??
+                    null,
+
+                token:
+                    discovery.auth?.token ??
+                    null
+
+            };
+
+
+            // ==================================================
+            // MOSTRAR DATOS DESCUBIERTOS
+            // ==================================================
+
+            Logger.info(
+                "\n================================="
+            );
+
+            Logger.info(
+                "DATOS PARA LAS PRUEBAS"
+            );
+
+            Logger.info(
+                "=================================\n"
+            );
+
+
+            console.log(
+                "USER_ID       :",
+                testData.userId
+            );
+
+
+            console.log(
+                "STORE_ID      :",
+                testData.storeId
+            );
+
+
+            console.log(
+                "PUBLICATION_ID:",
+                testData.publicationId
+            );
+
+
+            console.log(
+                "INTERACTION_ID:",
+                testData.interactionId
+            );
+
+
+            console.log(
+                "JWT           :",
+                testData.token
+                    ? "OK"
+                    : "NO"
+            );
+
+
+            // ==================================================
+            // VALIDACIONES
+            // ==================================================
+
+            if (!testData.userId) {
+
+                throw new Error(
+                    "Discovery no obtuvo userId."
+                );
+
+            }
+
+
+            if (!testData.storeId) {
+
+                throw new Error(
+                    "Discovery no obtuvo storeId."
+                );
+
+            }
+
+
+            if (!testData.publicationId) {
+
+                throw new Error(
+                    "Discovery no obtuvo publicationId."
+                );
+
+            }
+
+
+            if (!testData.interactionId) {
+
+                throw new Error(
+                    "Discovery no obtuvo interactionId."
+                );
+
+            }
+
+
+            if (!testData.token) {
+
+                throw new Error(
+                    "Discovery no obtuvo JWT."
+                );
+
+            }
+
+
+            Logger.success(
+                "\n✓ Datos de prueba válidos."
+            );
+
+
+            // ==================================================
+            // STEP 5
+            // NEWMAN
+            // ==================================================
+
+            Logger.info(
+                "\nStep 5: Ejecutando Collection con Newman..."
             );
 
 
             const newmanResult =
-                await runCollectionSkill.execute();
-
-
-            Logger.success(
-                `✓ Ejecución completada
-  - Requests totales: ${newmanResult.requests}
-  - Assertions: ${newmanResult.assertions}
-  - Fallos: ${newmanResult.failed}\n`
-            );
-
-
-            // ==================================================
-            // STEP 5: ANALIZAR RESULTADOS CON IA
-            // ==================================================
-
-            Logger.info(
-                "Step 5: Analizando resultados con AI"
-            );
-
-
-            const analysis =
-                await analyzeResultsSkill.execute(
-                    newmanResult
+                await runCollectionSkill.execute(
+                    collectionPath,
+                    testData
                 );
 
 
-            Logger.success(
-                "✓ Análisis completado\n"
+            if (!newmanResult) {
+
+                throw new Error(
+                    "Newman no devolvió resultados."
+                );
+
+            }
+
+
+            // ==================================================
+            // NORMALIZAR RESULTADO
+            // ==================================================
+
+            const executionResult =
+                newmanResult.result ??
+                newmanResult;
+
+
+            const requests =
+                executionResult.requests ??
+                0;
+
+
+            const assertions =
+                executionResult.assertions ??
+                0;
+
+
+            const failed =
+                executionResult.failed ??
+                0;
+
+
+            const httpFailures =
+                executionResult.httpFailures ??
+                0;
+
+
+            const assertionFailures =
+                executionResult.assertionFailures ??
+                0;
+
+
+            // ==================================================
+            // MOSTRAR RESULTADO NEWMAN
+            // ==================================================
+
+            Logger.info(
+                "\n================================="
+            );
+
+            Logger.info(
+                "RESULTADO NEWMAN"
+            );
+
+            Logger.info(
+                "=================================\n"
             );
 
 
-            Logger.info(
-                `Estado General: ${analysis.overallStatus}`
+            console.log(
+                `Requests           : ${requests}`
             );
 
 
-            Logger.info(
-                `Resumen: ${analysis.summary}\n`
+            console.log(
+                `Assertions         : ${assertions}`
+            );
+
+
+            console.log(
+                `Failed             : ${failed}`
+            );
+
+
+            console.log(
+                `HTTP failures      : ${httpFailures}`
+            );
+
+
+            console.log(
+                `Assertion failures : ${assertionFailures}`
             );
 
 
             // ==================================================
-            // RESULTADO FINAL DEL AGENTE
+            // STEP 6
+            // AI ANALYSIS
+            // ==================================================
+
+            Logger.info(
+                "\nStep 6: Analizando resultados con AI..."
+            );
+
+
+            let analysis =
+                null;
+
+
+            try {
+
+                analysis =
+                    await analyzeResultsSkill.execute(
+                        executionResult
+                    );
+
+
+                Logger.success(
+                    "✓ Análisis AI completado."
+                );
+
+            }
+            catch (analysisError) {
+
+                Logger.warning(
+                    `No se pudo realizar el análisis AI: ${
+                        analysisError.message
+                    }`
+                );
+
+            }
+
+
+            // ==================================================
+            // RESULTADO FINAL
+            // ==================================================
+
+            const success =
+                failed === 0;
+
+
+            Logger.info(
+                "\n================================="
+            );
+
+            Logger.info(
+                "RESULTADO FINAL"
+            );
+
+            Logger.info(
+                "=================================\n"
+            );
+
+
+            if (success) {
+
+                Logger.success(
+                    "✓ Todas las pruebas HTTP pasaron."
+                );
+
+            }
+            else {
+
+                Logger.warning(
+                    `⚠ Se detectaron ${
+                        failed
+                    } pruebas fallidas.`
+                );
+
+            }
+
+
+            // ==================================================
+            // RETURN
             // ==================================================
 
             return {
 
-                success: true,
+                success,
 
                 workspace:
-                    workspace.name,
+                    selectedWorkspace.name,
+
+                workspaceId:
+                    selectedWorkspace.id,
 
                 collections:
                     collections.length,
 
-                testResults:
+                collection: {
+
+                    id:
+                        selectedCollection.uid,
+
+                    name:
+                        selectedCollection.name,
+
+                    path:
+                        collectionPath
+
+                },
+
+                testData: {
+
+                    userId:
+                        testData.userId,
+
+                    storeId:
+                        testData.storeId,
+
+                    publicationId:
+                        testData.publicationId,
+
+                    interactionId:
+                        testData.interactionId,
+
+                    authenticated:
+                        Boolean(
+                            testData.token
+                        )
+
+                },
+
+                newman:
                     newmanResult,
 
                 analysis
 
             };
 
-
-        } catch (error) {
+        }
+        catch (error) {
 
             Logger.error(
-                `Error en MCP Postman Agent: ${error.message}`
+                "\n================================="
+            );
+
+            Logger.error(
+                "ERROR EN POSTMAN AI TESTING AGENT"
+            );
+
+            Logger.error(
+                "=================================\n"
             );
 
 
-            return {
+            Logger.error(
+                error?.message ??
+                String(error)
+            );
 
-                success: false,
 
-                error:
-                    error.message
+            if (
+                error?.response?.data
+            ) {
 
-            };
+                console.error(
+                    "\nBackend response:"
+                );
+
+                console.error(
+                    error.response.data
+                );
+
+            }
+
+
+            throw error;
 
         }
+
+    }
+
+
+    // ==========================================================
+    // GUARDAR COLLECTION
+    // ==========================================================
+
+    async saveCollection(
+        collection
+    ) {
+
+        const fs =
+            await import("fs");
+
+        const path =
+            await import("path");
+
+        const {
+            fileURLToPath
+        } =
+            await import("url");
+
+
+        const __filename =
+            fileURLToPath(
+                import.meta.url
+            );
+
+
+        const __dirname =
+            path.dirname(
+                __filename
+            );
+
+
+        const projectRoot =
+            path.resolve(
+                __dirname,
+                "../../"
+            );
+
+
+        const collectionsPath =
+            path.join(
+                projectRoot,
+                "collections"
+            );
+
+
+        if (
+            !fs.existsSync(
+                collectionsPath
+            )
+        ) {
+
+            fs.mkdirSync(
+                collectionsPath,
+                {
+                    recursive: true
+                }
+            );
+
+        }
+
+
+        const collectionPath =
+            path.join(
+                collectionsPath,
+                "umss-market-api-generated.json"
+            );
+
+
+        fs.writeFileSync(
+            collectionPath,
+            JSON.stringify(
+                collection,
+                null,
+                2
+            ),
+            "utf8"
+        );
+
+
+        return collectionPath;
 
     }
 
@@ -241,77 +839,7 @@ class MCPPostmanAgent {
 
 
 // ==========================================================
-// CREAR INSTANCIA DEL AGENTE
+// EXPORT
 // ==========================================================
 
-const agent =
-    new MCPPostmanAgent();
-
-
-// ==========================================================
-// EXPORTAR AGENTE
-// ==========================================================
-//
-// Esto mantiene compatible:
-//
-// npm run start:enhanced
-//
-// porque index.enhanced.js puede importar:
-//
-// MCPPostmanAgent.start(...)
-// ==========================================================
-
-export default agent;
-
-
-// ==========================================================
-// EJECUCIÓN DIRECTA
-// ==========================================================
-//
-// Esto permite:
-//
-// npm run mcp
-//
-// ejecutar directamente:
-//
-// agent.start("UMSS Market")
-//
-// IMPORTANTE:
-//
-// Cuando este archivo es importado desde
-// index.enhanced.js, esta condición evita
-// ejecutar automáticamente el agente.
-//
-// ==========================================================
-
-if (
-    process.argv[1] &&
-    process.argv[1].endsWith(
-        "postman.agent.enhanced.js"
-    )
-) {
-
-    agent
-        .start("UMSS Market")
-
-        .then(result => {
-
-            if (!result.success) {
-
-                process.exitCode = 1;
-
-            }
-
-        })
-
-        .catch(error => {
-
-            Logger.error(
-                `Error fatal ejecutando MCP Postman Agent: ${error.message}`
-            );
-
-            process.exitCode = 1;
-
-        });
-
-}
+export default new PostmanAgentEnhanced();

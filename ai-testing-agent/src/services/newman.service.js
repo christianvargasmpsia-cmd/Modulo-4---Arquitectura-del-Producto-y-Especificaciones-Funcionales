@@ -19,23 +19,12 @@ class NewmanService {
                 "../../"
             );
 
-        this.collectionPath =
-            path.join(
-                this.projectRoot,
-                "collections",
-                "openapi-collection.json"
-            );
-
         this.reportsPath =
             path.join(
                 this.projectRoot,
                 "reports"
             );
 
-        /*
-         * Nos aseguramos de que exista
-         * la carpeta de reportes.
-         */
         if (!fs.existsSync(this.reportsPath)) {
 
             fs.mkdirSync(
@@ -48,73 +37,266 @@ class NewmanService {
     }
 
 
-    /*
-     * ==========================================================
-     * EJECUTAR COLLECTION
-     * ==========================================================
-     */
+    // ==========================================================
+    // EJECUTAR COLLECTION
+    // ==========================================================
 
-    async runCollection() {
+    async runCollection(
+        collectionPath,
+        testData = {}
+    ) {
 
-        console.log(
-            "================================="
-        );
+        console.log("=================================");
+        console.log("Ejecutando Newman");
+        console.log("=================================\n");
 
-        console.log(
-            "Ejecutando Newman"
-        );
 
-        console.log(
-            "=================================\n"
-        );
+        // ======================================================
+        // VALIDACIONES
+        // ======================================================
 
-        /*
-         * Validación de collection.
-         */
-        if (
-            !fs.existsSync(
-                this.collectionPath
-            )
-        ) {
+        if (!collectionPath) {
 
             throw new Error(
-                `No se encontró la colección de Postman: ` +
-                `${this.collectionPath}`
+                "No se recibió la ruta de la Collection."
             );
+
         }
+
+
+        if (!fs.existsSync(collectionPath)) {
+
+            throw new Error(
+                `La Collection no existe: ${collectionPath}`
+            );
+
+        }
+
+
+        // ======================================================
+        // LEER COLLECTION
+        // ======================================================
+
+        const collection =
+            JSON.parse(
+                fs.readFileSync(
+                    collectionPath,
+                    "utf8"
+                ).replace(
+                    /^\uFEFF/,
+                    ""
+                )
+            );
+
+
+        console.log(
+            `Collection: ${
+                collection?.info?.name ??
+                "Unknown"
+            }`
+        );
+
+
+        const requestsInCollection =
+            this.countRequests(
+                collection.item
+            );
+
+
+        console.log(
+            `Requests encontrados: ${requestsInCollection}\n`
+        );
+
+
+        if (requestsInCollection === 0) {
+
+            throw new Error(
+                `La Collection "${
+                    collection?.info?.name ??
+                    "Unknown"
+                }" está vacía.`
+            );
+
+        }
+
+
+        // ======================================================
+        // DATOS DESCUBIERTOS
+        // ======================================================
+
+        console.log(
+            "Datos para ejecución:"
+        );
+
+        console.log(
+            `  userId        : ${
+                testData.userId ?? "N/A"
+            }`
+        );
+
+        console.log(
+            `  storeId       : ${
+                testData.storeId ?? "N/A"
+            }`
+        );
+
+        console.log(
+            `  publicationId : ${
+                testData.publicationId ?? "N/A"
+            }`
+        );
+
+        console.log(
+            `  interactionId : ${
+                testData.interactionId ?? "N/A"
+            }`
+        );
+
+        console.log(
+            `  authToken     : ${
+                testData.token ? "OK" : "N/A"
+            }`
+        );
+
+        console.log();
+
+
+        // ======================================================
+        // VARIABLES
+        // ======================================================
+
+        collection.variable =
+            collection.variable ?? [];
+
+
+        this.setCollectionVariable(
+            collection,
+            "baseUrl",
+            "http://localhost:8080"
+        );
+
+
+        this.setCollectionVariable(
+            collection,
+            "userId",
+            testData.userId ?? ""
+        );
+
+
+        this.setCollectionVariable(
+            collection,
+            "storeId",
+            testData.storeId ?? ""
+        );
+
+
+        this.setCollectionVariable(
+            collection,
+            "publicationId",
+            testData.publicationId ?? ""
+        );
+
+
+        this.setCollectionVariable(
+            collection,
+            "interactionId",
+            testData.interactionId ?? ""
+        );
+
+
+        this.setCollectionVariable(
+            collection,
+            "authToken",
+            testData.token ?? ""
+        );
+
+
+        // ======================================================
+        // PREPARAR REQUESTS
+        // ======================================================
+
+        this.prepareCollection(
+            collection.item,
+            testData
+        );
+
+
+        // ======================================================
+        // COLLECTION TEMPORAL
+        // ======================================================
+
+        const preparedPath =
+            path.join(
+                this.projectRoot,
+                "collections",
+                "umss-market-api-newman.json"
+            );
+
+
+        fs.writeFileSync(
+            preparedPath,
+            JSON.stringify(
+                collection,
+                null,
+                2
+            ),
+            "utf8"
+        );
+
+
+        console.log(
+            `Collection preparada: ${preparedPath}`
+        );
+
+
+        console.log(
+            `Requests a ejecutar: ${
+                this.countRequests(
+                    collection.item
+                )
+            }\n`
+        );
+
+
+        // ======================================================
+        // NEWMAN
+        // ======================================================
 
         return new Promise(
             (resolve, reject) => {
 
                 newman.run(
-
                     {
 
-                        /*
-                         * Collection real.
-                         */
                         collection:
-                            this.collectionPath,
+                            preparedPath,
 
-                        /*
-                         * Reporters.
-                         */
-                        reporters: [
-                            "cli",
-                            "json"
-                        ],
+                        reporters:
+                            [
+                                "cli",
+                                "json"
+                            ],
 
-                        reporter: {
+                        reporter:
+                            {
+                                json:
+                                    {
+                                        export:
+                                            path.join(
+                                                this.reportsPath,
+                                                "newman-report.json"
+                                            )
+                                    }
+                            },
 
-                            json: {
+                        timeoutRequest:
+                            15000,
 
-                                export:
-                                    path.join(
-                                        this.reportsPath,
-                                        "newman-report.json"
-                                    )
-                            }
-                        }
+                        timeoutScript:
+                            15000,
+
+                        bail:
+                            false
 
                     },
 
@@ -123,92 +305,45 @@ class NewmanService {
                         summary
                     ) => {
 
-                        /*
-                         * Newman puede devolver error
-                         * de ejecución.
-                         */
                         if (error) {
 
-                            return reject(
-                                error
-                            );
+                            reject(error);
+                            return;
+
                         }
 
 
-                        /*
-                         * ==================================================
-                         * EXECUTIONS
-                         * ==================================================
-                         */
-
                         const executions =
-                            summary
-                                ?.run
-                                ?.executions ??
+                            summary?.run?.executions ??
                             [];
 
 
-                        /*
-                         * ==================================================
-                         * REQUESTS
-                         * ==================================================
-                         */
-
                         const requests =
-                            summary
-                                ?.run
-                                ?.stats
+                            summary?.run?.stats
                                 ?.requests
                                 ?.total ??
-                            executions.length ??
-                            0;
+                            executions.length;
 
-
-                        /*
-                         * ==================================================
-                         * ASSERTIONS
-                         * ==================================================
-                         */
 
                         const assertions =
-                            summary
-                                ?.run
-                                ?.stats
+                            summary?.run?.stats
                                 ?.assertions
                                 ?.total ??
                             0;
 
 
-                        /*
-                         * ==================================================
-                         * ASSERTION FAILURES
-                         * ==================================================
-                         */
-
                         const assertionFailures =
-                            summary
-                                ?.run
-                                ?.failures
+                            summary?.run?.failures
                                 ?.length ??
                             0;
 
 
-                        /*
-                         * ==================================================
-                         * ANALIZAR RESPUESTAS HTTP
-                         * ==================================================
-                         *
-                         * Newman puede no marcar como failure
-                         * una respuesta 4xx/5xx cuando no existen
-                         * assertions.
-                         *
-                         * Por eso analizamos explícitamente
-                         * los códigos HTTP.
-                         */
-
                         const httpResults =
                             executions.map(
-                                (execution, index) => {
+                                (
+                                    execution,
+                                    index
+                                ) => {
 
                                     const response =
                                         execution?.response;
@@ -273,12 +408,6 @@ class NewmanService {
                             );
 
 
-                        /*
-                         * ==================================================
-                         * HTTP FAILURES
-                         * ==================================================
-                         */
-
                         const httpFailures =
                             httpResults.filter(
                                 result =>
@@ -286,34 +415,9 @@ class NewmanService {
                             );
 
 
-                        /*
-                         * ==================================================
-                         * FAILED TOTAL
-                         * ==================================================
-                         *
-                         * Un request HTTP 4xx/5xx debe contar
-                         * como fallo aunque no tenga assertion.
-                         *
-                         * No sumamos:
-                         *
-                         * httpFailures + assertionFailures
-                         *
-                         * porque el mismo request podría aparecer
-                         * en ambos grupos.
-                         *
-                         * Tomamos el número real de ejecuciones
-                         * fallidas.
-                         */
-
                         const failed =
                             httpFailures.length;
 
-
-                        /*
-                         * ==================================================
-                         * RESULTADO FINAL
-                         * ==================================================
-                         */
 
                         const result = {
 
@@ -335,14 +439,20 @@ class NewmanService {
                         };
 
 
-                        /*
-                         * ==================================================
-                         * LOG
-                         * ==================================================
-                         */
+                        // ==================================================
+                        // RESULTADO
+                        // ==================================================
 
                         console.log(
-                            "\nResultado Newman:"
+                            "\n================================="
+                        );
+
+                        console.log(
+                            "Resultado Newman"
+                        );
+
+                        console.log(
+                            "=================================\n"
                         );
 
                         console.log(
@@ -362,9 +472,9 @@ class NewmanService {
                         );
 
 
-                        /*
-                         * Mostrar fallos.
-                         */
+                        // ==================================================
+                        // FALLAS
+                        // ==================================================
 
                         if (
                             httpFailures.length > 0
@@ -374,18 +484,65 @@ class NewmanService {
                                 "\nFallos detectados:"
                             );
 
+
                             httpFailures.forEach(
                                 failure => {
 
                                     console.log(
-                                        `  ${failure.method} ` +
-                                        `${failure.url || failure.request} ` +
-                                        `→ HTTP ${failure.statusCode ?? "N/A"}`
+                                        `  ${
+                                            failure.method
+                                        } ${
+                                            failure.url ||
+                                            failure.request
+                                        } → HTTP ${
+                                            failure.statusCode ??
+                                            "N/A"
+                                        }`
                                     );
 
                                 }
                             );
+
                         }
+
+
+                        // ==================================================
+                        // DETALLE
+                        // ==================================================
+
+                        console.log(
+                            "\n================================="
+                        );
+
+                        console.log(
+                            "Detalle de ejecución"
+                        );
+
+                        console.log(
+                            "=================================\n"
+                        );
+
+
+                        httpResults.forEach(
+                            execution => {
+
+                                console.log(
+                                    `${
+                                        execution.failed
+                                            ? "❌"
+                                            : "✅"
+                                    } ${
+                                        execution.method
+                                    } ${
+                                        execution.test
+                                    } → HTTP ${
+                                        execution.statusCode ??
+                                        "N/A"
+                                    }`
+                                );
+
+                            }
+                        );
 
 
                         resolve(
@@ -393,11 +550,637 @@ class NewmanService {
                         );
 
                     }
+
                 );
 
             }
+
         );
+
     }
+
+
+    // ==========================================================
+    // PREPARAR COLLECTION
+    // ==========================================================
+
+    prepareCollection(
+        items = [],
+        testData = {}
+    ) {
+
+        for (
+            const item of items
+        ) {
+
+            if (item.request) {
+
+                this.prepareRequest(
+                    item.request,
+                    testData
+                );
+
+            }
+
+
+            if (
+                Array.isArray(
+                    item.item
+                )
+            ) {
+
+                this.prepareCollection(
+                    item.item,
+                    testData
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // PREPARAR REQUEST
+    // ==========================================================
+
+    prepareRequest(
+        request,
+        testData
+    ) {
+
+        if (!request) {
+            return;
+        }
+
+
+        // ======================================================
+        // URL
+        // ======================================================
+
+        if (request.url) {
+
+            request.url =
+                this.prepareUrl(
+                    request.url,
+                    testData
+                );
+
+        }
+
+
+        // ======================================================
+        // BODY
+        // ======================================================
+
+        if (request.body?.raw) {
+
+            request.body.raw =
+                this.replaceGenericValues(
+                    request.body.raw,
+                    testData
+                );
+
+        }
+
+
+        // ======================================================
+        // HEADERS
+        // ======================================================
+
+        if (
+            Array.isArray(
+                request.header
+            )
+        ) {
+
+            request.header =
+                request.header.map(
+                    header => {
+
+                        if (header.value) {
+
+                            header.value =
+                                this.replaceGenericValues(
+                                    header.value,
+                                    testData
+                                );
+
+                        }
+
+                        return header;
+
+                    }
+                );
+
+        }
+
+
+        // ======================================================
+        // JWT
+        // ======================================================
+
+        if (
+            testData.token
+        ) {
+
+            const hasAuthorization =
+                Array.isArray(
+                    request.header
+                ) &&
+                request.header.some(
+                    header =>
+                        String(
+                            header.key ?? ""
+                        ).toLowerCase() ===
+                        "authorization"
+                );
+
+
+            if (!hasAuthorization) {
+
+                request.header =
+                    request.header ?? [];
+
+
+                request.header.push(
+                    {
+                        key:
+                            "Authorization",
+
+                        value:
+                            `Bearer ${testData.token}`,
+
+                        type:
+                            "text"
+                    }
+                );
+
+            }
+            else {
+
+                request.header =
+                    request.header.map(
+                        header => {
+
+                            if (
+                                String(
+                                    header.key ?? ""
+                                ).toLowerCase() ===
+                                "authorization"
+                            ) {
+
+                                header.value =
+                                    `Bearer ${testData.token}`;
+
+                            }
+
+                            return header;
+
+                        }
+                    );
+
+            }
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // PREPARAR URL
+    // ==========================================================
+
+    prepareUrl(
+        url,
+        testData
+    ) {
+
+        if (
+            typeof url === "string"
+        ) {
+
+            return this.replaceGenericValues(
+                url,
+                testData
+            );
+
+        }
+
+
+        if (
+            typeof url !== "object" ||
+            url === null
+        ) {
+
+            return url;
+
+        }
+
+
+        // Guardamos los segmentos originales
+        // antes de modificarlos.
+
+        const originalPath =
+            Array.isArray(url.path)
+                ? [...url.path]
+                : [];
+
+
+        // ======================================================
+        // PATH
+        // ======================================================
+
+        if (
+            Array.isArray(url.path)
+        ) {
+
+            url.path =
+                url.path.map(
+                    segment => {
+
+                        if (
+                            segment === ":id" ||
+                            segment === "<uuid>"
+                        ) {
+
+                            return this.resolvePathId(
+                                originalPath,
+                                testData
+                            );
+
+                        }
+
+
+                        return this.replaceGenericValues(
+                            segment,
+                            testData
+                        );
+
+                    }
+                );
+
+        }
+
+
+        // ======================================================
+        // QUERY
+        // ======================================================
+
+        if (
+            Array.isArray(url.query)
+        ) {
+
+            url.query =
+                url.query.map(
+                    parameter => {
+
+                        if (
+                            parameter.value
+                        ) {
+
+                            parameter.value =
+                                this.replaceGenericValues(
+                                    parameter.value,
+                                    testData
+                                );
+
+                        }
+
+                        return parameter;
+
+                    }
+                );
+
+        }
+
+
+        // ======================================================
+        // VARIABLES
+        // ======================================================
+
+        if (
+            Array.isArray(url.variable)
+        ) {
+
+            url.variable =
+                url.variable.map(
+                    variable => {
+
+                        if (
+                            variable.value ===
+                            "<uuid>"
+                        ) {
+
+                            variable.value =
+                                this.resolveVariableId(
+                                    variable.key,
+                                    testData
+                                );
+
+                        }
+
+                        return variable;
+
+                    }
+                );
+
+        }
+
+
+        return url;
+
+    }
+
+
+    // ==========================================================
+    // RESOLVER ID DEL PATH
+    // ==========================================================
+
+    resolvePathId(
+        pathSegments,
+        testData
+    ) {
+
+        const normalizedPath =
+            pathSegments
+                .join("/")
+                .toLowerCase();
+
+
+        if (
+            normalizedPath.includes(
+                "/users/"
+            )
+        ) {
+
+            return (
+                testData.userId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            normalizedPath.includes(
+                "/stores/"
+            )
+        ) {
+
+            return (
+                testData.storeId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            normalizedPath.includes(
+                "/publications/"
+            )
+        ) {
+
+            return (
+                testData.publicationId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            normalizedPath.includes(
+                "/interactions/"
+            )
+        ) {
+
+            return (
+                testData.interactionId ??
+                ""
+            );
+
+        }
+
+
+        return "";
+
+    }
+
+
+    // ==========================================================
+    // RESOLVER VARIABLE ID
+    // ==========================================================
+
+    resolveVariableId(
+        key,
+        testData
+    ) {
+
+        const normalizedKey =
+            String(
+                key ?? ""
+            ).toLowerCase();
+
+
+        if (
+            normalizedKey.includes(
+                "user"
+            )
+        ) {
+
+            return testData.userId ?? "";
+
+        }
+
+
+        if (
+            normalizedKey.includes(
+                "store"
+            )
+        ) {
+
+            return testData.storeId ?? "";
+
+        }
+
+
+        if (
+            normalizedKey.includes(
+                "publication"
+            )
+        ) {
+
+            return testData.publicationId ?? "";
+
+        }
+
+
+        if (
+            normalizedKey.includes(
+                "interaction"
+            )
+        ) {
+
+            return testData.interactionId ?? "";
+
+        }
+
+
+        return "";
+
+    }
+
+
+    // ==========================================================
+    // REEMPLAZAR VALORES
+    // ==========================================================
+
+    replaceGenericValues(
+        value,
+        testData
+    ) {
+
+        if (
+            typeof value !== "string"
+        ) {
+
+            return value;
+
+        }
+
+
+        return value
+
+            .replace(
+                /<string>/gi,
+                "laptop"
+            )
+
+            .replace(
+                /<number>/gi,
+                "100"
+            )
+
+            .replace(
+                /<uuid>/gi,
+                testData.publicationId ??
+                testData.storeId ??
+                testData.userId ??
+                ""
+            )
+
+            .replace(
+                /{{userId}}/gi,
+                testData.userId ??
+                ""
+            )
+
+            .replace(
+                /{{storeId}}/gi,
+                testData.storeId ??
+                ""
+            )
+
+            .replace(
+                /{{publicationId}}/gi,
+                testData.publicationId ??
+                ""
+            )
+
+            .replace(
+                /{{interactionId}}/gi,
+                testData.interactionId ??
+                ""
+            )
+
+            .replace(
+                /{{authToken}}/gi,
+                testData.token ??
+                ""
+            );
+
+    }
+
+
+    // ==========================================================
+    // SET COLLECTION VARIABLE
+    // ==========================================================
+
+    setCollectionVariable(
+        collection,
+        key,
+        value
+    ) {
+
+        const existing =
+            collection.variable.find(
+                variable =>
+                    variable.key === key
+            );
+
+
+        if (existing) {
+
+            existing.value =
+                value;
+
+        }
+        else {
+
+            collection.variable.push(
+                {
+                    key,
+                    value
+                }
+            );
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // CONTAR REQUESTS
+    // ==========================================================
+
+    countRequests(
+        items = []
+    ) {
+
+        let count = 0;
+
+
+        for (
+            const item of items
+        ) {
+
+            if (item.request) {
+
+                count++;
+
+            }
+
+
+            if (item.item) {
+
+                count +=
+                    this.countRequests(
+                        item.item
+                    );
+
+            }
+
+        }
+
+
+        return count;
+
+    }
+
 }
+
 
 export default new NewmanService();
