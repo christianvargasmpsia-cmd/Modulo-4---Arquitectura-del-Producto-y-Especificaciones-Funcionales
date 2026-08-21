@@ -17,24 +17,26 @@ class PostmanAgentEnhanced {
 
     // ==========================================================
     // ENTRYPOINT
-    // Compatible con index.enhanced.js
     // ==========================================================
 
-    async start(request = "UMSS Market") {
+    async start(
+        request = "UMSS Market"
+    ) {
 
-        const result =
-            await this.execute(request);
-
-        return result;
+        return await this.execute(
+            request
+        );
 
     }
 
 
     // ==========================================================
-    // EJECUTAR AGENTE
+    // EXECUTE
     // ==========================================================
 
-    async execute(userRequest = "") {
+    async execute(
+        userRequest = ""
+    ) {
 
         try {
 
@@ -53,7 +55,7 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // STEP 1
-            // OBTENER TODOS LOS WORKSPACES
+            // WORKSPACES
             // ==================================================
 
             Logger.info(
@@ -86,7 +88,7 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // STEP 2
-            // BUSCAR COLLECTION EN TODOS LOS WORKSPACES
+            // COLLECTION
             // ==================================================
 
             Logger.info(
@@ -100,12 +102,12 @@ class PostmanAgentEnhanced {
             let selectedCollection =
                 null;
 
-            let collections =
-                [];
+            let collections = [];
 
 
             for (
-                const workspace of workspaces
+                const workspace
+                of workspaces
             ) {
 
                 Logger.info(
@@ -126,7 +128,9 @@ class PostmanAgentEnhanced {
                         );
 
                 }
-                catch (error) {
+                catch (
+                    error
+                ) {
 
                     Logger.warning(
                         `No se pudo consultar ${
@@ -150,7 +154,7 @@ class PostmanAgentEnhanced {
                 ) {
 
                     Logger.info(
-                        "  Sin Collections."
+                        "   Sin Collections."
                     );
 
                     continue;
@@ -159,40 +163,44 @@ class PostmanAgentEnhanced {
 
 
                 Logger.success(
-                    `  ✓ Collections encontradas: ${
+                    `   ✓ Collections encontradas: ${
                         currentCollections.length
                     }`
                 );
 
-
-                // ----------------------------------------------
-                // BUSCAR UMSS MARKET
-                // ----------------------------------------------
 
                 const match =
                     currentCollections.find(
                         collection => {
 
                             const name =
-                                collection?.name
-                                    ?.toLowerCase()
-                                    ?.trim() ??
-                                "";
+                                String(
+                                    collection?.name ??
+                                    ""
+                                )
+                                    .toLowerCase()
+                                    .trim();
+
 
                             return (
+
                                 name.includes(
                                     "umss market"
                                 ) ||
+
                                 name.includes(
                                     "umss"
                                 )
+
                             );
 
                         }
                     );
 
 
-                if (match) {
+                if (
+                    match
+                ) {
 
                     selectedWorkspace =
                         workspace;
@@ -219,7 +227,7 @@ class PostmanAgentEnhanced {
             ) {
 
                 throw new Error(
-                    "No se encontró la Collection 'UMSS Market API' en ninguno de los Workspaces disponibles."
+                    "No se encontró la Collection 'UMSS Market API'."
                 );
 
             }
@@ -240,7 +248,7 @@ class PostmanAgentEnhanced {
 
 
             Logger.info(
-                `  Collection UID: ${
+                `   Collection UID: ${
                     selectedCollection.uid
                 }`
             );
@@ -248,7 +256,7 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // STEP 3
-            // DESCARGAR COLLECTION COMPLETA
+            // DESCARGAR COLLECTION
             // ==================================================
 
             Logger.info(
@@ -262,7 +270,9 @@ class PostmanAgentEnhanced {
                 );
 
 
-            if (!collection) {
+            if (
+                !collection
+            ) {
 
                 throw new Error(
                     "Postman no devolvió la Collection."
@@ -290,7 +300,7 @@ class PostmanAgentEnhanced {
 
 
             // ==================================================
-            // GUARDAR COLLECTION LOCAL
+            // GUARDAR COLLECTION
             // ==================================================
 
             const collectionPath =
@@ -308,7 +318,7 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // STEP 4
-            // DISCOVERY
+            // DATA DISCOVERY
             // ==================================================
 
             Logger.info(
@@ -320,7 +330,9 @@ class PostmanAgentEnhanced {
                 await dataDiscoveryService.discover();
 
 
-            if (!discovery) {
+            if (
+                !discovery
+            ) {
 
                 throw new Error(
                     "DataDiscovery no devolvió información."
@@ -329,7 +341,9 @@ class PostmanAgentEnhanced {
             }
 
 
-            if (!discovery.ids) {
+            if (
+                !discovery.ids
+            ) {
 
                 throw new Error(
                     "DataDiscovery no devolvió los IDs."
@@ -339,7 +353,7 @@ class PostmanAgentEnhanced {
 
 
             // ==================================================
-            // CONSTRUIR TEST DATA
+            // TEST DATA
             // ==================================================
 
             const testData = {
@@ -368,7 +382,7 @@ class PostmanAgentEnhanced {
 
 
             // ==================================================
-            // MOSTRAR DATOS DESCUBIERTOS
+            // MOSTRAR DATOS
             // ==================================================
 
             Logger.info(
@@ -386,25 +400,29 @@ class PostmanAgentEnhanced {
 
             console.log(
                 "USER_ID       :",
-                testData.userId
+                testData.userId ??
+                "NO ENCONTRADO"
             );
 
 
             console.log(
                 "STORE_ID      :",
-                testData.storeId
+                testData.storeId ??
+                "NO ENCONTRADO"
             );
 
 
             console.log(
                 "PUBLICATION_ID:",
-                testData.publicationId
+                testData.publicationId ??
+                "NO ENCONTRADO"
             );
 
 
             console.log(
                 "INTERACTION_ID:",
-                testData.interactionId
+                testData.interactionId ??
+                "NO ENCONTRADO"
             );
 
 
@@ -417,10 +435,21 @@ class PostmanAgentEnhanced {
 
 
             // ==================================================
-            // VALIDACIONES
+            // VALIDACIONES OBLIGATORIAS
             // ==================================================
 
-            if (!testData.userId) {
+            console.log(
+                "\n🔎 VALIDANDO DATOS NECESARIOS..."
+            );
+
+
+            // --------------------------------------------------
+            // USER
+            // --------------------------------------------------
+
+            if (
+                !testData.userId
+            ) {
 
                 throw new Error(
                     "Discovery no obtuvo userId."
@@ -429,7 +458,18 @@ class PostmanAgentEnhanced {
             }
 
 
-            if (!testData.storeId) {
+            console.log(
+                "   ✓ userId disponible"
+            );
+
+
+            // --------------------------------------------------
+            // STORE
+            // --------------------------------------------------
+
+            if (
+                !testData.storeId
+            ) {
 
                 throw new Error(
                     "Discovery no obtuvo storeId."
@@ -438,7 +478,18 @@ class PostmanAgentEnhanced {
             }
 
 
-            if (!testData.publicationId) {
+            console.log(
+                "   ✓ storeId disponible"
+            );
+
+
+            // --------------------------------------------------
+            // PUBLICATION
+            // --------------------------------------------------
+
+            if (
+                !testData.publicationId
+            ) {
 
                 throw new Error(
                     "Discovery no obtuvo publicationId."
@@ -447,16 +498,18 @@ class PostmanAgentEnhanced {
             }
 
 
-            if (!testData.interactionId) {
-
-                throw new Error(
-                    "Discovery no obtuvo interactionId."
-                );
-
-            }
+            console.log(
+                "   ✓ publicationId disponible"
+            );
 
 
-            if (!testData.token) {
+            // --------------------------------------------------
+            // JWT
+            // --------------------------------------------------
+
+            if (
+                !testData.token
+            ) {
 
                 throw new Error(
                     "Discovery no obtuvo JWT."
@@ -465,8 +518,108 @@ class PostmanAgentEnhanced {
             }
 
 
+            console.log(
+                "   ✓ JWT disponible"
+            );
+
+
+            // ==================================================
+            // INTERACTION
+            //
+            // NO ES OBLIGATORIA PARA DISCOVERY
+            // ==================================================
+
+            if (
+                testData.interactionId
+            ) {
+
+                console.log(
+                    "   ✓ interactionId disponible"
+                );
+
+                console.log(
+                    `   → ${
+                        testData.interactionId
+                    }`
+                );
+
+            }
+            else {
+
+                console.log(
+                    "   ⚠ interactionId no encontrado"
+                );
+
+                console.log(
+                    "   → Se marcará como N/A."
+                );
+
+                console.log(
+                    "   → Discovery puede continuar."
+                );
+
+            }
+
+
             Logger.success(
-                "\n✓ Datos de prueba válidos."
+                "\n✓ Datos de Discovery validados."
+            );
+
+
+            // ==================================================
+            // RESUMEN
+            // ==================================================
+
+            console.log("");
+
+            Logger.info(
+                "================================="
+            );
+
+            Logger.info(
+                "RESUMEN DEL CONTEXTO"
+            );
+
+            Logger.info(
+                "================================="
+            );
+
+
+            console.log(
+                `Usuario        : ${
+                    testData.userId
+                }`
+            );
+
+
+            console.log(
+                `Store          : ${
+                    testData.storeId
+                }`
+            );
+
+
+            console.log(
+                `Publication    : ${
+                    testData.publicationId
+                }`
+            );
+
+
+            console.log(
+                `Interaction    : ${
+                    testData.interactionId ??
+                    "N/A"
+                }`
+            );
+
+
+            console.log(
+                `Autenticación  : ${
+                    testData.token
+                        ? "✓ JWT válido"
+                        : "✗ Sin JWT"
+                }`
             );
 
 
@@ -480,14 +633,31 @@ class PostmanAgentEnhanced {
             );
 
 
+            /*
+             * IMPORTANTE:
+             *
+             * El interactionId puede ser null.
+             *
+             * No hacemos throw aquí.
+             *
+             * runCollectionSkill recibe el contexto
+             * completo y será responsable de determinar
+             * qué requests necesitan realmente ese ID.
+             */
+
             const newmanResult =
                 await runCollectionSkill.execute(
+
                     collectionPath,
+
                     testData
+
                 );
 
 
-            if (!newmanResult) {
+            if (
+                !newmanResult
+            ) {
 
                 throw new Error(
                     "Newman no devolvió resultados."
@@ -530,8 +700,13 @@ class PostmanAgentEnhanced {
                 0;
 
 
+            const skipped =
+                executionResult.skipped ??
+                0;
+
+
             // ==================================================
-            // MOSTRAR RESULTADO NEWMAN
+            // RESULTADO NEWMAN
             // ==================================================
 
             Logger.info(
@@ -572,6 +747,11 @@ class PostmanAgentEnhanced {
             );
 
 
+            console.log(
+                `Skipped            : ${skipped}`
+            );
+
+
             // ==================================================
             // STEP 6
             // AI ANALYSIS
@@ -599,7 +779,9 @@ class PostmanAgentEnhanced {
                 );
 
             }
-            catch (analysisError) {
+            catch (
+                analysisError
+            ) {
 
                 Logger.warning(
                     `No se pudo realizar el análisis AI: ${
@@ -631,10 +813,12 @@ class PostmanAgentEnhanced {
             );
 
 
-            if (success) {
+            if (
+                success
+            ) {
 
                 Logger.success(
-                    "✓ Todas las pruebas HTTP pasaron."
+                    "✓ Todas las pruebas ejecutadas correctamente."
                 );
 
             }
@@ -708,7 +892,9 @@ class PostmanAgentEnhanced {
             };
 
         }
-        catch (error) {
+        catch (
+            error
+        ) {
 
             Logger.error(
                 "\n================================="
@@ -762,8 +948,10 @@ class PostmanAgentEnhanced {
         const fs =
             await import("fs");
 
+
         const path =
             await import("path");
+
 
         const {
             fileURLToPath
@@ -815,19 +1003,26 @@ class PostmanAgentEnhanced {
 
         const collectionPath =
             path.join(
+
                 collectionsPath,
+
                 "umss-market-api-generated.json"
+
             );
 
 
         fs.writeFileSync(
+
             collectionPath,
+
             JSON.stringify(
                 collection,
                 null,
                 2
             ),
+
             "utf8"
+
         );
 
 

@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 
+
 class NewmanService {
 
     constructor() {
@@ -25,20 +26,31 @@ class NewmanService {
                 "reports"
             );
 
-        if (!fs.existsSync(this.reportsPath)) {
-
-            fs.mkdirSync(
-                this.reportsPath,
-                {
-                    recursive: true
-                }
+        this.collectionsPath =
+            path.join(
+                this.projectRoot,
+                "collections"
             );
-        }
+
+        fs.mkdirSync(
+            this.reportsPath,
+            {
+                recursive: true
+            }
+        );
+
+        fs.mkdirSync(
+            this.collectionsPath,
+            {
+                recursive: true
+            }
+        );
+
     }
 
 
     // ==========================================================
-    // EJECUTAR COLLECTION
+    // RUN COLLECTION
     // ==========================================================
 
     async runCollection(
@@ -46,13 +58,13 @@ class NewmanService {
         testData = {}
     ) {
 
-        console.log("=================================");
-        console.log("Ejecutando Newman");
-        console.log("=================================\n");
+        this.title(
+            "NEWMAN TEST RUNNER"
+        );
 
 
         // ======================================================
-        // VALIDACIONES
+        // VALIDAR COLLECTION
         // ======================================================
 
         if (!collectionPath) {
@@ -67,15 +79,58 @@ class NewmanService {
         if (!fs.existsSync(collectionPath)) {
 
             throw new Error(
-                `La Collection no existe: ${collectionPath}`
+                `Collection no encontrada: ${collectionPath}`
             );
 
         }
 
 
         // ======================================================
+        // MOSTRAR TEST DATA
+        // ======================================================
+
+        console.log(
+            "\n📦 TEST DATA"
+        );
+
+        console.log(
+            "--------------------------------------------------"
+        );
+
+        console.log(
+            `USER_ID        : ${testData.userId ?? "N/A"}`
+        );
+
+        console.log(
+            `STORE_ID       : ${testData.storeId ?? "N/A"}`
+        );
+
+        console.log(
+            `PUBLICATION_ID : ${testData.publicationId ?? "N/A"}`
+        );
+
+        console.log(
+            `INTERACTION_ID : ${testData.interactionId ?? "N/A"}`
+        );
+
+        console.log(
+            `JWT            : ${testData.token ? "OK" : "NO"}`
+        );
+
+
+        this.validateTestData(
+            testData
+        );
+
+
+        // ======================================================
         // LEER COLLECTION
         // ======================================================
+
+        console.log(
+            "\n📖 Leyendo Collection..."
+        );
+
 
         const collection =
             JSON.parse(
@@ -89,76 +144,22 @@ class NewmanService {
             );
 
 
-        console.log(
-            `Collection: ${
-                collection?.info?.name ??
-                "Unknown"
-            }`
-        );
-
-
-        const requestsInCollection =
+        const totalRequests =
             this.countRequests(
                 collection.item
             );
 
 
         console.log(
-            `Requests encontrados: ${requestsInCollection}\n`
-        );
-
-
-        if (requestsInCollection === 0) {
-
-            throw new Error(
-                `La Collection "${
-                    collection?.info?.name ??
-                    "Unknown"
-                }" está vacía.`
-            );
-
-        }
-
-
-        // ======================================================
-        // DATOS DESCUBIERTOS
-        // ======================================================
-
-        console.log(
-            "Datos para ejecución:"
-        );
-
-        console.log(
-            `  userId        : ${
-                testData.userId ?? "N/A"
+            `✓ Collection: ${
+                collection.info?.name ??
+                "Sin nombre"
             }`
         );
 
         console.log(
-            `  storeId       : ${
-                testData.storeId ?? "N/A"
-            }`
+            `✓ Requests: ${totalRequests}`
         );
-
-        console.log(
-            `  publicationId : ${
-                testData.publicationId ?? "N/A"
-            }`
-        );
-
-        console.log(
-            `  interactionId : ${
-                testData.interactionId ?? "N/A"
-            }`
-        );
-
-        console.log(
-            `  authToken     : ${
-                testData.token ? "OK" : "N/A"
-            }`
-        );
-
-        console.log();
 
 
         // ======================================================
@@ -166,48 +167,53 @@ class NewmanService {
         // ======================================================
 
         collection.variable =
-            collection.variable ?? [];
+            Array.isArray(
+                collection.variable
+            )
+                ? collection.variable
+                : [];
 
 
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "baseUrl",
             "http://localhost:8080"
         );
 
-
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "userId",
-            testData.userId ?? ""
+            testData.userId
         );
 
-
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "storeId",
-            testData.storeId ?? ""
+            testData.storeId
         );
 
-
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "publicationId",
-            testData.publicationId ?? ""
+            testData.publicationId
         );
 
-
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "interactionId",
-            testData.interactionId ?? ""
+            testData.interactionId
         );
 
-
-        this.setCollectionVariable(
+        this.setVariable(
             collection,
             "authToken",
-            testData.token ?? ""
+            testData.token
+        );
+
+        this.setVariable(
+            collection,
+            "token",
+            testData.token
         );
 
 
@@ -215,20 +221,84 @@ class NewmanService {
         // PREPARAR REQUESTS
         // ======================================================
 
-        this.prepareCollection(
+        console.log(
+            "\n🔧 PREPARANDO REQUESTS"
+        );
+
+        console.log(
+            "--------------------------------------------------"
+        );
+
+
+        this.prepareItems(
             collection.item,
             testData
         );
 
 
         // ======================================================
-        // COLLECTION TEMPORAL
+        // ORDENAR WORKFLOW
+        // ======================================================
+
+        console.log(
+            "\n🧠 ORGANIZANDO WORKFLOW DE PRUEBAS..."
+        );
+
+        console.log(
+            "--------------------------------------------------"
+        );
+
+
+        collection.item =
+            this.organizeCollection(
+                collection.item
+            );
+
+
+        // ======================================================
+        // MOSTRAR ORDEN FINAL
+        // ======================================================
+
+        console.log(
+            "\n📋 ORDEN FINAL DE EJECUCIÓN"
+        );
+
+        console.log(
+            "=================================================="
+        );
+
+
+        const order = [];
+
+        this.collectRequests(
+            collection.item,
+            order
+        );
+
+
+        order.forEach(
+            (
+                request,
+                index
+            ) => {
+
+                console.log(
+                    `${String(index + 1).padStart(2, "0")}. ` +
+                    `${request.method.padEnd(6)} ` +
+                    `${request.name}`
+                );
+
+            }
+        );
+
+
+        // ======================================================
+        // GUARDAR COLLECTION
         // ======================================================
 
         const preparedPath =
             path.join(
-                this.projectRoot,
-                "collections",
+                this.collectionsPath,
                 "umss-market-api-newman.json"
             );
 
@@ -245,25 +315,32 @@ class NewmanService {
 
 
         console.log(
-            `Collection preparada: ${preparedPath}`
+            "\n✓ Collection preparada:"
         );
-
 
         console.log(
-            `Requests a ejecutar: ${
-                this.countRequests(
-                    collection.item
-                )
-            }\n`
+            preparedPath
         );
 
 
         // ======================================================
-        // NEWMAN
+        // EJECUTAR NEWMAN
         // ======================================================
 
+        console.log(
+            "\n🚀 EJECUTANDO NEWMAN"
+        );
+
+        console.log(
+            "=================================================="
+        );
+
+
         return new Promise(
-            (resolve, reject) => {
+            (
+                resolve,
+                reject
+            ) => {
 
                 newman.run(
                     {
@@ -307,7 +384,10 @@ class NewmanService {
 
                         if (error) {
 
-                            reject(error);
+                            reject(
+                                error
+                            );
+
                             return;
 
                         }
@@ -338,7 +418,11 @@ class NewmanService {
                             0;
 
 
-                        const httpResults =
+                        // ==================================================
+                        // RESULTADOS
+                        // ==================================================
+
+                        const results =
                             executions.map(
                                 (
                                     execution,
@@ -355,46 +439,68 @@ class NewmanService {
                                         execution?.item;
 
 
-                                    const statusCode =
+                                    const code =
                                         response?.code ??
                                         null;
 
 
                                     const failed =
                                         !response ||
-                                        (
-                                            statusCode !== null &&
-                                            statusCode >= 400
-                                        );
+                                        code >= 400;
+
+
+                                    let url = "";
+
+
+                                    try {
+
+                                        if (
+                                            typeof request?.url ===
+                                            "string"
+                                        ) {
+
+                                            url =
+                                                request.url;
+
+                                        }
+                                        else if (
+                                            request?.url?.toString
+                                        ) {
+
+                                            url =
+                                                request.url.toString();
+
+                                        }
+
+                                    }
+                                    catch {
+
+                                        url = "";
+
+                                    }
 
 
                                     return {
 
-                                        id:
+                                        index:
                                             index + 1,
 
-                                        test:
+                                        name:
                                             item?.name ??
-                                            "Unknown request",
-
-                                        request:
-                                            item?.name ??
-                                            "Unknown request",
+                                            "Unnamed",
 
                                         method:
                                             request?.method ??
                                             "UNKNOWN",
 
-                                        url:
-                                            request?.url
-                                                ?.toString?.() ??
-                                            "",
+                                        url,
 
                                         status:
                                             response?.status ??
                                             "NO RESPONSE",
 
-                                        statusCode,
+                                        statusCode:
+                                            code,
 
                                         failed,
 
@@ -409,14 +515,10 @@ class NewmanService {
 
 
                         const httpFailures =
-                            httpResults.filter(
+                            results.filter(
                                 result =>
                                     result.failed
                             );
-
-
-                        const failed =
-                            httpFailures.length;
 
 
                         const result = {
@@ -425,14 +527,16 @@ class NewmanService {
 
                             assertions,
 
-                            failed,
+                            failed:
+                                httpFailures.length,
 
                             httpFailures:
                                 httpFailures.length,
 
                             assertionFailures,
 
-                            httpResults,
+                            httpResults:
+                                results,
 
                             summary
 
@@ -440,108 +544,75 @@ class NewmanService {
 
 
                         // ==================================================
-                        // RESULTADO
+                        // RESUMEN
                         // ==================================================
 
-                        console.log(
-                            "\n================================="
-                        );
-
-                        console.log(
-                            "Resultado Newman"
-                        );
-
-                        console.log(
-                            "=================================\n"
-                        );
-
-                        console.log(
-                            `Requests      : ${requests}`
-                        );
-
-                        console.log(
-                            `Assertions    : ${assertions}`
-                        );
-
-                        console.log(
-                            `HTTP failures : ${httpFailures.length}`
-                        );
-
-                        console.log(
-                            `Failed        : ${failed}`
+                        this.title(
+                            "RESULTADO NEWMAN"
                         );
 
 
-                        // ==================================================
-                        // FALLAS
-                        // ==================================================
+                        console.log(
+                            `📡 Requests      : ${requests}`
+                        );
 
-                        if (
-                            httpFailures.length > 0
-                        ) {
+                        console.log(
+                            `🧪 Assertions    : ${assertions}`
+                        );
 
-                            console.log(
-                                "\nFallos detectados:"
-                            );
+                        console.log(
+                            `❌ HTTP failures : ${httpFailures.length}`
+                        );
+
+                        console.log(
+                            `⚠️ Assertions    : ${assertionFailures}`
+                        );
 
 
-                            httpFailures.forEach(
-                                failure => {
+                        console.log(
+                            "\n📋 RESULTADOS"
+                        );
+
+                        console.log(
+                            "--------------------------------------------------"
+                        );
+
+
+                        results.forEach(
+                            item => {
+
+                                console.log(
+                                    `${item.failed ? "❌" : "✅"} ` +
+                                    `${item.method} ` +
+                                    `${item.name} ` +
+                                    `→ ${item.statusCode ?? "N/A"}`
+                                );
+
+
+                                if (
+                                    item.failed
+                                ) {
 
                                     console.log(
-                                        `  ${
-                                            failure.method
-                                        } ${
-                                            failure.url ||
-                                            failure.request
-                                        } → HTTP ${
-                                            failure.statusCode ??
-                                            "N/A"
-                                        }`
+                                        `   ${item.url}`
                                     );
 
                                 }
-                            );
-
-                        }
-
-
-                        // ==================================================
-                        // DETALLE
-                        // ==================================================
-
-                        console.log(
-                            "\n================================="
-                        );
-
-                        console.log(
-                            "Detalle de ejecución"
-                        );
-
-                        console.log(
-                            "=================================\n"
-                        );
-
-
-                        httpResults.forEach(
-                            execution => {
-
-                                console.log(
-                                    `${
-                                        execution.failed
-                                            ? "❌"
-                                            : "✅"
-                                    } ${
-                                        execution.method
-                                    } ${
-                                        execution.test
-                                    } → HTTP ${
-                                        execution.statusCode ??
-                                        "N/A"
-                                    }`
-                                );
 
                             }
+                        );
+
+
+                        console.log(
+                            "\n=================================================="
+                        );
+
+                        console.log(
+                            "📊 NEWMAN FINALIZADO"
+                        );
+
+                        console.log(
+                            "=================================================="
                         );
 
 
@@ -554,29 +625,528 @@ class NewmanService {
                 );
 
             }
-
         );
 
     }
 
 
     // ==========================================================
-    // PREPARAR COLLECTION
+    // ORGANIZAR COLLECTION
     // ==========================================================
 
-    prepareCollection(
+    organizeCollection(
+        items = []
+    ) {
+
+        const requests = [];
+
+
+        // ------------------------------------------------------
+        // APLANAR TODO
+        // ------------------------------------------------------
+
+        this.flattenRequests(
+            items,
+            requests
+        );
+
+
+        console.log(
+            `✓ Requests detectados: ${requests.length}`
+        );
+
+
+        // ------------------------------------------------------
+        // ORDEN DE WORKFLOW
+        // ------------------------------------------------------
+
+        const ordered =
+            requests.sort(
+                (
+                    a,
+                    b
+                ) => {
+
+                    const priorityA =
+                        this.getRequestPriority(
+                            a
+                        );
+
+                    const priorityB =
+                        this.getRequestPriority(
+                            b
+                        );
+
+
+                    if (
+                        priorityA !==
+                        priorityB
+                    ) {
+
+                        return (
+                            priorityA -
+                            priorityB
+                        );
+
+                    }
+
+
+                    return (
+                        a.originalIndex -
+                        b.originalIndex
+                    );
+
+                }
+            );
+
+
+        // ------------------------------------------------------
+        // MOSTRAR CATEGORÍAS
+        // ------------------------------------------------------
+
+        console.log(
+            "\n✓ Workflow organizado:"
+        );
+
+
+        let previousPriority =
+            null;
+
+
+        for (
+            const request of ordered
+        ) {
+
+            const priority =
+                this.getRequestPriority(
+                    request
+                );
+
+
+            if (
+                priority !==
+                previousPriority
+            ) {
+
+                console.log(
+                    `\n  [FASE ${priority}]`
+                );
+
+                previousPriority =
+                    priority;
+
+            }
+
+
+            console.log(
+                `    ${request.method.padEnd(6)} ` +
+                `${request.name}`
+            );
+
+        }
+
+
+        // ------------------------------------------------------
+        // DEVOLVER ITEMS
+        // ------------------------------------------------------
+
+        return ordered.map(
+            request =>
+                request.item
+        );
+
+    }
+
+
+    // ==========================================================
+    // APLANAR REQUESTS
+    // ==========================================================
+
+    flattenRequests(
         items = [],
-        testData = {}
+        result = [],
+        parentFolder = ""
     ) {
 
         for (
             const item of items
         ) {
 
-            if (item.request) {
+            if (
+                item?.request
+            ) {
+
+                result.push(
+                    {
+
+                        item,
+
+                        name:
+                            item.name ??
+                            "Unnamed",
+
+                        method:
+                            String(
+                                item.request.method ??
+                                "UNKNOWN"
+                            ).toUpperCase(),
+
+                        url:
+                            this.getItemUrl(
+                                item
+                            ),
+
+                        folder:
+                            parentFolder,
+
+                        originalIndex:
+                            result.length
+
+                    }
+                );
+
+            }
+
+
+            if (
+                Array.isArray(
+                    item?.item
+                )
+            ) {
+
+                this.flattenRequests(
+                    item.item,
+                    result,
+                    item.name ??
+                    parentFolder
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // PRIORIDAD DEL REQUEST
+    // ==========================================================
+
+    getRequestPriority(
+        request
+    ) {
+
+        const method =
+            String(
+                request.method ??
+                ""
+            ).toUpperCase();
+
+
+        const name =
+            String(
+                request.name ??
+                ""
+            ).toLowerCase();
+
+
+        const url =
+            String(
+                request.url ??
+                ""
+            ).toLowerCase();
+
+
+        // ======================================================
+        // FASE 1
+        // REGISTROS
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/auth/register/"
+            )
+        ) {
+
+            return 1;
+
+        }
+
+
+        // ======================================================
+        // FASE 2
+        // LOGIN
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/auth/login"
+            )
+        ) {
+
+            return 2;
+
+        }
+
+
+        // ======================================================
+        // FASE 3
+        // ME
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/auth/me"
+            )
+        ) {
+
+            return 3;
+
+        }
+
+
+        // ======================================================
+        // FASE 4
+        // USERS
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/users"
+            ) &&
+            method !== "DELETE"
+        ) {
+
+            return 4;
+
+        }
+
+
+        // ======================================================
+        // FASE 5
+        // STORES
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/stores"
+            ) &&
+            method !== "DELETE"
+        ) {
+
+            return 5;
+
+        }
+
+
+        // ======================================================
+        // FASE 6
+        // PUBLICATIONS
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/publications"
+            ) &&
+            method !== "DELETE"
+        ) {
+
+            return 6;
+
+        }
+
+
+        // ======================================================
+        // FASE 7
+        // INTERACTIONS
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/interactions"
+            ) &&
+            method !== "DELETE"
+        ) {
+
+            return 7;
+
+        }
+
+
+        // ======================================================
+        // FASE 8
+        // AI
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/ai/"
+            )
+        ) {
+
+            return 8;
+
+        }
+
+
+        // ======================================================
+        // FASE 9
+        // EMBEDDINGS
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/admin/embeddings/"
+            )
+        ) {
+
+            return 9;
+
+        }
+
+
+        // ======================================================
+        // FASE 10
+        // DELETE
+        // ======================================================
+
+        if (
+            method === "DELETE"
+        ) {
+
+            return 10;
+
+        }
+
+
+        // ======================================================
+        // FASE 11
+        // LOGOUT
+        // ======================================================
+
+        if (
+            url.includes(
+                "/api/auth/logout"
+            )
+        ) {
+
+            return 11;
+
+        }
+
+
+        // ======================================================
+        // DESCONOCIDOS
+        // ======================================================
+
+        return 12;
+
+    }
+
+
+    // ==========================================================
+    // OBTENER URL
+    // ==========================================================
+
+    getItemUrl(
+        item
+    ) {
+
+        const url =
+            item?.request?.url;
+
+
+        if (
+            typeof url ===
+            "string"
+        ) {
+
+            return url;
+
+        }
+
+
+        if (
+            url?.path &&
+            Array.isArray(
+                url.path
+            )
+        ) {
+
+            return (
+                "/" +
+                url.path.join("/")
+            );
+
+        }
+
+
+        return "";
+
+    }
+
+
+    // ==========================================================
+    // VALIDAR TEST DATA
+    // ==========================================================
+
+    validateTestData(
+        testData
+    ) {
+
+        const required = [
+
+            "userId",
+
+            "storeId",
+
+            "publicationId",
+
+            "interactionId",
+
+            "token"
+
+        ];
+
+
+        for (
+            const field of required
+        ) {
+
+            if (
+                !testData[field]
+            ) {
+
+                throw new Error(
+                    `Falta testData.${field}`
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // PREPARAR ITEMS
+    // ==========================================================
+
+    prepareItems(
+        items = [],
+        testData
+    ) {
+
+        for (
+            const item of items
+        ) {
+
+            if (
+                item?.request
+            ) {
 
                 this.prepareRequest(
-                    item.request,
+                    item,
                     testData
                 );
 
@@ -585,11 +1155,11 @@ class NewmanService {
 
             if (
                 Array.isArray(
-                    item.item
+                    item?.item
                 )
             ) {
 
-                this.prepareCollection(
+                this.prepareItems(
                     item.item,
                     testData
                 );
@@ -606,20 +1176,34 @@ class NewmanService {
     // ==========================================================
 
     prepareRequest(
-        request,
+        item,
         testData
     ) {
 
+        const request =
+            item?.request;
+
+
         if (!request) {
+
             return;
+
         }
+
+
+        console.log(
+            `🔧 ${request.method ?? "UNKNOWN"} ` +
+            `${item.name ?? "Unnamed"}`
+        );
 
 
         // ======================================================
         // URL
         // ======================================================
 
-        if (request.url) {
+        if (
+            request.url
+        ) {
 
             request.url =
                 this.prepareUrl(
@@ -634,10 +1218,12 @@ class NewmanService {
         // BODY
         // ======================================================
 
-        if (request.body?.raw) {
+        if (
+            request.body?.raw
+        ) {
 
             request.body.raw =
-                this.replaceGenericValues(
+                this.replaceBody(
                     request.body.raw,
                     testData
                 );
@@ -649,101 +1235,45 @@ class NewmanService {
         // HEADERS
         // ======================================================
 
-        if (
+        request.header =
             Array.isArray(
                 request.header
             )
-        ) {
+                ? request.header
+                : [];
 
-            request.header =
-                request.header.map(
-                    header => {
 
-                        if (header.value) {
+        request.header =
+            request.header.map(
+                header => {
 
-                            header.value =
-                                this.replaceGenericValues(
-                                    header.value,
-                                    testData
-                                );
+                    if (
+                        typeof header?.value ===
+                        "string"
+                    ) {
 
-                        }
-
-                        return header;
+                        header.value =
+                            this.replaceVariables(
+                                header.value,
+                                testData
+                            );
 
                     }
-                );
 
-        }
+                    return header;
+
+                }
+            );
 
 
         // ======================================================
         // JWT
         // ======================================================
 
-        if (
+        this.setAuthorization(
+            request,
             testData.token
-        ) {
-
-            const hasAuthorization =
-                Array.isArray(
-                    request.header
-                ) &&
-                request.header.some(
-                    header =>
-                        String(
-                            header.key ?? ""
-                        ).toLowerCase() ===
-                        "authorization"
-                );
-
-
-            if (!hasAuthorization) {
-
-                request.header =
-                    request.header ?? [];
-
-
-                request.header.push(
-                    {
-                        key:
-                            "Authorization",
-
-                        value:
-                            `Bearer ${testData.token}`,
-
-                        type:
-                            "text"
-                    }
-                );
-
-            }
-            else {
-
-                request.header =
-                    request.header.map(
-                        header => {
-
-                            if (
-                                String(
-                                    header.key ?? ""
-                                ).toLowerCase() ===
-                                "authorization"
-                            ) {
-
-                                header.value =
-                                    `Bearer ${testData.token}`;
-
-                            }
-
-                            return header;
-
-                        }
-                    );
-
-            }
-
-        }
+        );
 
     }
 
@@ -761,8 +1291,11 @@ class NewmanService {
             typeof url === "string"
         ) {
 
-            return this.replaceGenericValues(
-                url,
+            return this.replaceVariables(
+                this.replaceStaticUuid(
+                    url,
+                    testData
+                ),
                 testData
             );
 
@@ -770,8 +1303,8 @@ class NewmanService {
 
 
         if (
-            typeof url !== "object" ||
-            url === null
+            !url ||
+            typeof url !== "object"
         ) {
 
             return url;
@@ -779,42 +1312,29 @@ class NewmanService {
         }
 
 
-        // Guardamos los segmentos originales
-        // antes de modificarlos.
-
-        const originalPath =
-            Array.isArray(url.path)
-                ? [...url.path]
-                : [];
-
-
         // ======================================================
         // PATH
         // ======================================================
 
         if (
-            Array.isArray(url.path)
+            Array.isArray(
+                url.path
+            )
         ) {
+
+            const completePath =
+                url.path.join(
+                    "/"
+                );
+
 
             url.path =
                 url.path.map(
                     segment => {
 
-                        if (
-                            segment === ":id" ||
-                            segment === "<uuid>"
-                        ) {
-
-                            return this.resolvePathId(
-                                originalPath,
-                                testData
-                            );
-
-                        }
-
-
-                        return this.replaceGenericValues(
+                        return this.replacePathSegment(
                             segment,
+                            completePath,
                             testData
                         );
 
@@ -829,7 +1349,9 @@ class NewmanService {
         // ======================================================
 
         if (
-            Array.isArray(url.query)
+            Array.isArray(
+                url.query
+            )
         ) {
 
             url.query =
@@ -837,11 +1359,12 @@ class NewmanService {
                     parameter => {
 
                         if (
-                            parameter.value
+                            typeof parameter?.value ===
+                            "string"
                         ) {
 
                             parameter.value =
-                                this.replaceGenericValues(
+                                this.replaceVariables(
                                     parameter.value,
                                     testData
                                 );
@@ -856,35 +1379,180 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // VARIABLES
-        // ======================================================
+        return url;
+
+    }
+
+
+    // ==========================================================
+    // REEMPLAZAR SEGMENTO
+    // ==========================================================
+
+    replacePathSegment(
+        segment,
+        completePath,
+        testData
+    ) {
+
+        const value =
+            String(
+                segment ?? ""
+            );
+
 
         if (
-            Array.isArray(url.variable)
+            value.includes(
+                "{{userId}}"
+            )
         ) {
 
-            url.variable =
-                url.variable.map(
-                    variable => {
+            return testData.userId;
 
-                        if (
-                            variable.value ===
-                            "<uuid>"
-                        ) {
+        }
 
-                            variable.value =
-                                this.resolveVariableId(
-                                    variable.key,
-                                    testData
-                                );
 
-                        }
+        if (
+            value.includes(
+                "{{storeId}}"
+            )
+        ) {
 
-                        return variable;
+            return testData.storeId;
 
-                    }
-                );
+        }
+
+
+        if (
+            value.includes(
+                "{{publicationId}}"
+            )
+        ) {
+
+            return testData.publicationId;
+
+        }
+
+
+        if (
+            value.includes(
+                "{{interactionId}}"
+            )
+        ) {
+
+            return testData.interactionId;
+
+        }
+
+
+        if (
+            this.isUuid(value)
+        ) {
+
+            return this.resolveUuidByPath(
+                completePath,
+                testData
+            );
+
+        }
+
+
+        if (
+            value === "<uuid>" ||
+            value === ":id"
+        ) {
+
+            return this.resolveUuidByPath(
+                completePath,
+                testData
+            );
+
+        }
+
+
+        return this.replaceVariables(
+            value,
+            testData
+        );
+
+    }
+
+
+    // ==========================================================
+    // UUID ESTÁTICO
+    // ==========================================================
+
+    replaceStaticUuid(
+        url,
+        testData
+    ) {
+
+        const uuidRegex =
+            /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/gi;
+
+
+        if (
+            !uuidRegex.test(
+                url
+            )
+        ) {
+
+            return url;
+
+        }
+
+
+        if (
+            /\/api\/users\//i.test(
+                url
+            )
+        ) {
+
+            return url.replace(
+                uuidRegex,
+                testData.userId
+            );
+
+        }
+
+
+        if (
+            /\/api\/stores\//i.test(
+                url
+            )
+        ) {
+
+            return url.replace(
+                uuidRegex,
+                testData.storeId
+            );
+
+        }
+
+
+        if (
+            /\/api\/publications\//i.test(
+                url
+            )
+        ) {
+
+            return url.replace(
+                uuidRegex,
+                testData.publicationId
+            );
+
+        }
+
+
+        if (
+            /\/api\/interactions\//i.test(
+                url
+            )
+        ) {
+
+            return url.replace(
+                uuidRegex,
+                testData.interactionId
+            );
 
         }
 
@@ -895,136 +1563,60 @@ class NewmanService {
 
 
     // ==========================================================
-    // RESOLVER ID DEL PATH
+    // RESOLVER UUID
     // ==========================================================
 
-    resolvePathId(
-        pathSegments,
+    resolveUuidByPath(
+        completePath,
         testData
     ) {
 
-        const normalizedPath =
-            pathSegments
-                .join("/")
-                .toLowerCase();
-
-
-        if (
-            normalizedPath.includes(
-                "/users/"
-            )
-        ) {
-
-            return (
-                testData.userId ??
-                ""
-            );
-
-        }
-
-
-        if (
-            normalizedPath.includes(
-                "/stores/"
-            )
-        ) {
-
-            return (
-                testData.storeId ??
-                ""
-            );
-
-        }
-
-
-        if (
-            normalizedPath.includes(
-                "/publications/"
-            )
-        ) {
-
-            return (
-                testData.publicationId ??
-                ""
-            );
-
-        }
-
-
-        if (
-            normalizedPath.includes(
-                "/interactions/"
-            )
-        ) {
-
-            return (
-                testData.interactionId ??
-                ""
-            );
-
-        }
-
-
-        return "";
-
-    }
-
-
-    // ==========================================================
-    // RESOLVER VARIABLE ID
-    // ==========================================================
-
-    resolveVariableId(
-        key,
-        testData
-    ) {
-
-        const normalizedKey =
+        const pathValue =
             String(
-                key ?? ""
+                completePath ?? ""
             ).toLowerCase();
 
 
         if (
-            normalizedKey.includes(
-                "user"
+            pathValue.includes(
+                "interactions"
             )
         ) {
 
-            return testData.userId ?? "";
+            return testData.interactionId;
 
         }
 
 
         if (
-            normalizedKey.includes(
-                "store"
+            pathValue.includes(
+                "publications"
             )
         ) {
 
-            return testData.storeId ?? "";
+            return testData.publicationId;
 
         }
 
 
         if (
-            normalizedKey.includes(
-                "publication"
+            pathValue.includes(
+                "stores"
             )
         ) {
 
-            return testData.publicationId ?? "";
+            return testData.storeId;
 
         }
 
 
         if (
-            normalizedKey.includes(
-                "interaction"
+            pathValue.includes(
+                "users"
             )
         ) {
 
-            return testData.interactionId ?? "";
+            return testData.userId;
 
         }
 
@@ -1035,16 +1627,73 @@ class NewmanService {
 
 
     // ==========================================================
-    // REEMPLAZAR VALORES
+    // BODY
     // ==========================================================
 
-    replaceGenericValues(
+    replaceBody(
+        body,
+        testData
+    ) {
+
+        let result =
+            this.replaceVariables(
+                body,
+                testData
+            );
+
+
+        result =
+            result.replace(
+                /<string>/gi,
+                "Testing UMSS Market"
+            );
+
+
+        result =
+            result.replace(
+                /<number>/gi,
+                "100"
+            );
+
+
+        result =
+            result.replace(
+                /<integer>/gi,
+                "10"
+            );
+
+
+        result =
+            result.replace(
+                /<boolean>/gi,
+                "true"
+            );
+
+
+        result =
+            result.replace(
+                /<uuid>/gi,
+                testData.userId ?? ""
+            );
+
+
+        return result;
+
+    }
+
+
+    // ==========================================================
+    // VARIABLES
+    // ==========================================================
+
+    replaceVariables(
         value,
         testData
     ) {
 
         if (
-            typeof value !== "string"
+            typeof value !==
+            "string"
         ) {
 
             return value;
@@ -1055,61 +1704,116 @@ class NewmanService {
         return value
 
             .replace(
-                /<string>/gi,
-                "laptop"
-            )
-
-            .replace(
-                /<number>/gi,
-                "100"
-            )
-
-            .replace(
-                /<uuid>/gi,
-                testData.publicationId ??
-                testData.storeId ??
-                testData.userId ??
-                ""
+                /{{baseUrl}}/gi,
+                "http://localhost:8080"
             )
 
             .replace(
                 /{{userId}}/gi,
-                testData.userId ??
-                ""
+                testData.userId ?? ""
             )
 
             .replace(
                 /{{storeId}}/gi,
-                testData.storeId ??
-                ""
+                testData.storeId ?? ""
             )
 
             .replace(
                 /{{publicationId}}/gi,
-                testData.publicationId ??
-                ""
+                testData.publicationId ?? ""
             )
 
             .replace(
                 /{{interactionId}}/gi,
-                testData.interactionId ??
-                ""
+                testData.interactionId ?? ""
             )
 
             .replace(
                 /{{authToken}}/gi,
-                testData.token ??
-                ""
+                testData.token ?? ""
+            )
+
+            .replace(
+                /{{token}}/gi,
+                testData.token ?? ""
             );
 
     }
 
 
     // ==========================================================
-    // SET COLLECTION VARIABLE
+    // AUTHORIZATION
     // ==========================================================
 
-    setCollectionVariable(
+    setAuthorization(
+        request,
+        token
+    ) {
+
+        if (!token) {
+
+            return;
+
+        }
+
+
+        const headers =
+            Array.isArray(
+                request.header
+            )
+                ? request.header
+                : [];
+
+
+        const authorization =
+            headers.find(
+                header =>
+                    String(
+                        header?.key ?? ""
+                    ).toLowerCase() ===
+                    "authorization"
+            );
+
+
+        if (
+            authorization
+        ) {
+
+            authorization.value =
+                `Bearer ${token}`;
+
+        }
+        else {
+
+            headers.push(
+                {
+
+                    key:
+                        "Authorization",
+
+                    value:
+                        `Bearer ${token}`,
+
+                    type:
+                        "text"
+
+                }
+            );
+
+        }
+
+
+        request.header =
+            headers;
+
+    }
+
+
+    // ==========================================================
+    // VARIABLES DE COLLECTION
+    // ==========================================================
+
+    setVariable(
         collection,
         key,
         value
@@ -1118,11 +1822,14 @@ class NewmanService {
         const existing =
             collection.variable.find(
                 variable =>
-                    variable.key === key
+                    variable.key ===
+                    key
             );
 
 
-        if (existing) {
+        if (
+            existing
+        ) {
 
             existing.value =
                 value;
@@ -1143,6 +1850,63 @@ class NewmanService {
 
 
     // ==========================================================
+    // COLECTAR REQUESTS
+    // ==========================================================
+
+    collectRequests(
+        items = [],
+        result = []
+    ) {
+
+        for (
+            const item of items
+        ) {
+
+            if (
+                item?.request
+            ) {
+
+                result.push(
+                    {
+
+                        name:
+                            item.name ??
+                            "Unnamed",
+
+                        method:
+                            String(
+                                item.request.method ??
+                                "UNKNOWN"
+                            ).toUpperCase()
+
+                    }
+                );
+
+            }
+
+
+            if (
+                Array.isArray(
+                    item?.item
+                )
+            ) {
+
+                this.collectRequests(
+                    item.item,
+                    result
+                );
+
+            }
+
+        }
+
+
+        return result;
+
+    }
+
+
+    // ==========================================================
     // CONTAR REQUESTS
     // ==========================================================
 
@@ -1157,14 +1921,20 @@ class NewmanService {
             const item of items
         ) {
 
-            if (item.request) {
+            if (
+                item?.request
+            ) {
 
                 count++;
 
             }
 
 
-            if (item.item) {
+            if (
+                Array.isArray(
+                    item?.item
+                )
+            ) {
 
                 count +=
                     this.countRequests(
@@ -1177,6 +1947,47 @@ class NewmanService {
 
 
         return count;
+
+    }
+
+
+    // ==========================================================
+    // UUID
+    // ==========================================================
+
+    isUuid(
+        value
+    ) {
+
+        return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+            .test(
+                String(
+                    value
+                )
+            );
+
+    }
+
+
+    // ==========================================================
+    // TITLE
+    // ==========================================================
+
+    title(
+        text
+    ) {
+
+        console.log(
+            "\n=================================================="
+        );
+
+        console.log(
+            `🚀 ${text}`
+        );
+
+        console.log(
+            "=================================================="
+        );
 
     }
 

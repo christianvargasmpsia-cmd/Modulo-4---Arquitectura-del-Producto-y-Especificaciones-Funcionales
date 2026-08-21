@@ -1,229 +1,151 @@
 import newmanService
     from "../services/newman.service.js";
 
-import dataDiscoveryService
-    from "../services/dataDiscovery.service.js";
-
 
 class RunCollectionSkill {
 
-    async execute(collectionPath) {
+    async execute(
+        collectionPath,
+        testData = {}
+    ) {
 
         console.log(
-            "================================="
+            "\n=================================================="
         );
 
         console.log(
-            "Skill: Ejecutar Newman"
+            "🧪 RUN COLLECTION SKILL"
         );
 
         console.log(
-            "=================================\n"
+            "==================================================\n"
         );
 
-
-        // ==================================================
-        // VALIDAR COLLECTION
-        // ==================================================
 
         if (!collectionPath) {
 
             throw new Error(
-                "No se recibió la ruta de la Collection para ejecutar Newman."
+                "No se recibió la ruta de la Collection."
             );
 
         }
 
 
         console.log(
-            `Collection recibida: ${collectionPath}\n`
-        );
-
-
-        // ==================================================
-        // DISCOVERY
-        // ==================================================
-
-        console.log(
-            "================================="
+            "📦 Collection:"
         );
 
         console.log(
-            "Preparando datos de prueba"
+            `   ${collectionPath}`
+        );
+
+
+        // ======================================================
+        // TEST DATA RECIBIDA DESDE POSTMAN AGENT
+        // ======================================================
+
+        console.log(
+            "\n🔎 Test Data recibida:"
+        );
+
+
+        console.log(
+            `   USER_ID        : ${
+                testData.userId ?? "NO"
+            }`
         );
 
         console.log(
-            "=================================\n"
+            `   STORE_ID       : ${
+                testData.storeId ?? "NO"
+            }`
+        );
+
+        console.log(
+            `   PUBLICATION_ID : ${
+                testData.publicationId ?? "NO"
+            }`
+        );
+
+        console.log(
+            `   INTERACTION_ID : ${
+                testData.interactionId ?? "NO"
+            }`
+        );
+
+        console.log(
+            `   JWT            : ${
+                testData.token
+                    ? "OK"
+                    : "NO"
+            }`
         );
 
 
-        const context =
-            await dataDiscoveryService.discover();
+        // ======================================================
+        // VALIDACIONES
+        // ======================================================
 
-
-        if (!context) {
+        if (!testData.userId) {
 
             throw new Error(
-                "Discovery no devolvió ningún contexto."
+                "RunCollectionSkill: falta userId."
             );
 
         }
 
-
-        if (!context.ids) {
+        if (!testData.storeId) {
 
             throw new Error(
-                "Discovery no devolvió los IDs de prueba."
+                "RunCollectionSkill: falta storeId."
             );
 
         }
 
-
-        // ==================================================
-        // VALIDAR IDS
-        // ==================================================
-
-        const {
-            userId,
-            storeId,
-            publicationId,
-            interactionId
-        } = context.ids;
-
-
-        console.log(
-            "\n================================="
-        );
-
-        console.log(
-            "CONTEXTO PARA NEWMAN"
-        );
-
-        console.log(
-            "=================================\n"
-        );
-
-
-        console.log(
-            "userId        :",
-            userId ?? "N/A"
-        );
-
-        console.log(
-            "storeId       :",
-            storeId ?? "N/A"
-        );
-
-        console.log(
-            "publicationId :",
-            publicationId ?? "N/A"
-        );
-
-        console.log(
-            "interactionId :",
-            interactionId ?? "N/A"
-        );
-
-
-        // ==================================================
-        // TOKEN
-        // ==================================================
-
-        const token =
-            context.auth?.token ??
-            null;
-
-
-        console.log(
-            "authToken     :",
-            token
-                ? "OK"
-                : "N/A"
-        );
-
-
-        // ==================================================
-        // VALIDACIONES MÍNIMAS
-        // ==================================================
-
-        if (!userId) {
+        if (!testData.publicationId) {
 
             throw new Error(
-                "Discovery no obtuvo userId."
+                "RunCollectionSkill: falta publicationId."
             );
 
         }
 
-
-        if (!storeId) {
+        if (!testData.interactionId) {
 
             throw new Error(
-                "Discovery no obtuvo storeId."
+                "RunCollectionSkill: falta interactionId."
             );
 
         }
 
-
-        if (!publicationId) {
+        if (!testData.token) {
 
             throw new Error(
-                "Discovery no obtuvo publicationId."
+                "RunCollectionSkill: falta JWT."
             );
 
         }
 
 
-        if (!interactionId) {
-
-            throw new Error(
-                "Discovery no obtuvo interactionId."
-            );
-
-        }
+        console.log(
+            "\n✅ Test Data válida."
+        );
 
 
-        if (!token) {
-
-            throw new Error(
-                "Discovery no obtuvo el JWT."
-            );
-
-        }
-
-
-        // ==================================================
-        // TEST DATA
-        // ==================================================
-
-        const testData = {
-
-            userId,
-
-            storeId,
-
-            publicationId,
-
-            interactionId,
-
-            token
-
-        };
-
-
-        // ==================================================
+        // ======================================================
         // EJECUTAR NEWMAN
-        // ==================================================
+        // ======================================================
 
         console.log(
-            "\n================================="
+            "\n=================================================="
         );
 
         console.log(
-            "INICIANDO NEWMAN"
+            "🚀 EJECUTANDO NEWMAN"
         );
 
         console.log(
-            "=================================\n"
+            "==================================================\n"
         );
 
 
@@ -234,48 +156,67 @@ class RunCollectionSkill {
             );
 
 
-        // ==================================================
+        if (!result) {
+
+            throw new Error(
+                "Newman no devolvió ningún resultado."
+            );
+
+        }
+
+
+        // ======================================================
         // RESULTADO
-        // ==================================================
+        // ======================================================
 
         console.log(
-            "\n================================="
+            "\n=================================================="
         );
 
         console.log(
-            "SKILL COMPLETADO"
+            "📊 NEWMAN FINALIZADO"
         );
 
         console.log(
-            "=================================\n"
+            "==================================================\n"
         );
 
 
         console.log(
-            `Requests   : ${result.requests}`
+            `Requests           : ${
+                result.requests ?? 0
+            }`
         );
 
         console.log(
-            `Assertions : ${result.assertions}`
+            `Assertions         : ${
+                result.assertions ?? 0
+            }`
         );
 
         console.log(
-            `Failed     : ${result.failed}`
+            `Failed             : ${
+                result.failed ?? 0
+            }`
         );
 
         console.log(
-            `HTTP failures       : ${result.httpFailures}`
+            `HTTP failures      : ${
+                result.httpFailures ?? 0
+            }`
         );
 
         console.log(
-            `Assertion failures  : ${result.assertionFailures}`
+            `Assertion failures : ${
+                result.assertionFailures ?? 0
+            }`
         );
 
 
         return {
 
             success:
-                result.failed === 0,
+                (result.failed ?? 0) === 0,
 
             testData,
 
