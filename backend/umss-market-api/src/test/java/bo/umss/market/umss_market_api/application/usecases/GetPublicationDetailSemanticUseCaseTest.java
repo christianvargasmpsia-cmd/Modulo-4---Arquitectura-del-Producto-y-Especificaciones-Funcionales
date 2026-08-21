@@ -2,7 +2,6 @@ package bo.umss.market.umss_market_api.application.usecases;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -146,25 +145,31 @@ class GetPublicationDetailSemanticUseCaseTest {
     }
 
     @Test
-    @DisplayName("Debería lanzar excepción si publicación no existe")
-    void debeLanzarExcepcionSiPublicacionNoExiste() {
+@DisplayName("Debería devolver mensaje si publicación no existe")
+void debeDevolverMensajeSiPublicacionNoExiste() {
 
-        String question = "¿Características?";
+    String question = "¿Características?";
 
-        when(publicationRepository.findById(publicationId))
-                .thenReturn(Optional.empty());
+    when(publicationRepository.findById(publicationId))
+            .thenReturn(Optional.empty());
 
-        assertThrows(
-                Exception.class,
-                () -> useCase.executeWithContext(
-                        publicationId,
-                        question
-                )
-        );
+    String result =
+            useCase.executeWithContext(
+                    publicationId,
+                    question
+            );
 
-        verify(aiProvider, never())
-                .generate(anyString());
-    }
+    assertEquals(
+            "No encontré la publicación solicitada.",
+            result
+    );
+
+    verify(publicationRepository, times(1))
+            .findById(publicationId);
+
+    verify(aiProvider, never())
+            .generate(anyString());
+}
 
     @Test
     @DisplayName("Debería incluir información de precio en el contexto")
@@ -293,67 +298,62 @@ class GetPublicationDetailSemanticUseCaseTest {
     }
 
     @Test
-    @DisplayName("Debería devolver mensaje si no encuentra publicaciones")
-    void debeDevolverMensajeSiNoHayPublicaciones() {
+@DisplayName("Debería devolver mensaje si no encuentra publicaciones")
+void debeDevolverMensajeSiNoHayPublicaciones() {
 
-        String query = "xyz123abc";
+    String query = "xyz123abc";
 
-        when(aiProvider.generateEmbedding(query))
-                .thenReturn(List.of(
-                        0.1,
-                        0.2
-                ));
+    when(publicationRepository.findAll())
+            .thenReturn(List.of());
 
-        when(publicationRepository.findAll())
-                .thenReturn(List.of());
+    String result =
+            useCase.executeSemanticSearch(query);
 
-        String result =
-                useCase.executeSemanticSearch(query);
+    assertNotNull(result);
 
-        assertNotNull(result);
+    assertTrue(
+            result.contains("No encontré")
+                    || result.isEmpty()
+    );
 
-        assertTrue(
-                result.contains("No encontré")
-                        || result.isEmpty()
-        );
+    verify(publicationRepository, times(1))
+            .findAll();
 
-        verify(aiProvider, times(1))
-                .generateEmbedding(query);
+    verify(aiProvider, never())
+            .generateEmbedding(anyString());
+}
 
-        verify(publicationRepository, times(1))
-                .findAll();
-    }
+@Test
+@DisplayName("Debería generar embedding de la consulta")
+void debeGenerarEmbeddingDeLaConsulta() {
 
-    @Test
-    @DisplayName("Debería generar embedding de la consulta")
-    void debeGenerarEmbeddingDeLaConsulta() {
+    String query =
+            "equipo portátil para desarrollo de software";
 
-        String query =
-                "características laptop";
+    List<Double> embedding = List.of(
+            0.1,
+            0.2,
+            0.3
+    );
 
-        List<Double> embedding = List.of(
-                0.1,
-                0.2,
-                0.3
-        );
+    when(aiProvider.generateEmbedding(query))
+            .thenReturn(embedding);
 
-        when(aiProvider.generateEmbedding(query))
-                .thenReturn(embedding);
+    when(publicationRepository.findAll())
+            .thenReturn(List.of(testPublication));
 
-        /*
-         * No necesitamos una publicación para este test.
-         * Solo queremos comprobar que el embedding
-         * de la consulta sea solicitado.
-         */
-        when(publicationRepository.findAll())
-                .thenReturn(List.of());
+    when(storeRepository.findById(storeId))
+            .thenReturn(Optional.of(testStore));
 
-        useCase.executeSemanticSearch(query);
+    when(aiProvider.generate(anyString()))
+            .thenReturn("Respuesta");
 
-        verify(aiProvider, times(1))
-                .generateEmbedding(query);
+    useCase.executeSemanticSearch(query);
 
-        verify(publicationRepository, times(1))
-                .findAll();
-    }
+    verify(aiProvider, times(1))
+            .generateEmbedding(query);
+
+    verify(publicationRepository, times(1))
+            .findAll();
+}
 }

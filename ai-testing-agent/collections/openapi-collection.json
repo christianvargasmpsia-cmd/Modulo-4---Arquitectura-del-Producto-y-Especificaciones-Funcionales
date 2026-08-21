@@ -39,7 +39,7 @@
                       "variable": [
                         {
                           "key": "id",
-                          "value": "fa64e55f-7629-4ddd-8eff-04ea2f072034"
+                          "value": "b0b294c8-b602-488a-a4f6-930c5e4b2bf6"
                         }
                       ]
                     }
@@ -93,7 +93,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"storeId\": \"99999999-9999-9999-9999-999999999999\",\n  \"nombre\": \"Servicio de prueba UMSS Market\",\n  \"descripcion\": \"Publicacion creada automaticamente para pruebas del agente MCP Postman\",\n  \"precio\": 100.00,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": null,\n  \"modalidadCobro\": \"COMPLETO\"\n}",
+                  "raw": "{\n  \"storeId\": \"d6a93163-6e9f-463c-bcc1-4fa10d3974c0\",\n  \"nombre\": \"Servicio de prueba UMSS Market\",\n  \"descripcion\": \"Publicacion creada automaticamente para pruebas del agente MCP Postman\",\n  \"precio\": 100.00,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": null,\n  \"modalidadCobro\": \"COMPLETO\"\n}",
                   "options": {
                     "raw": {
                       "headerFamily": "json",
@@ -214,7 +214,7 @@
                       "variable": [
                         {
                           "key": "id",
-                          "value": "99999999-9999-9999-9999-999999999999"
+                          "value": "d6a93163-6e9f-463c-bcc1-4fa10d3974c0"
                         }
                       ]
                     }

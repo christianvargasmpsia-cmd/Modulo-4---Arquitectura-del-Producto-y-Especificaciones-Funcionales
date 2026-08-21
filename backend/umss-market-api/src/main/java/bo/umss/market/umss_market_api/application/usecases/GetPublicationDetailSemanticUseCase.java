@@ -111,186 +111,148 @@ public class GetPublicationDetailSemanticUseCase {
 
     public String executeSemanticSearch(String query) {
 
-        if (query == null || query.isBlank()) {
-            return "No recibí una consulta válida.";
-        }
-
-        String cleanQuery = query.trim();
-
-        // ========================================================
-        // PASO 1
-        // INTENTAR ENCONTRAR LA PUBLICACIÓN POR TEXTO
-        // ========================================================
-
-        Publication publication =
-                findPublicationByText(cleanQuery);
-
-        if (publication != null) {
-
-            System.out.println(
-                    "RAG #2 -> publicación encontrada por texto: "
-                            + publication.getNombre()
-            );
-
-            return generatePublicationAnswer(
-                    publication,
-                    cleanQuery
-            );
-        }
-
-        // ========================================================
-        // PASO 2
-        // SI NO HAY MATCH TEXTUAL -> BÚSQUEDA SEMÁNTICA
-        // ========================================================
-
-        System.out.println(
-                "RAG #2 -> no hubo match textual."
-        );
-
-        System.out.println(
-                "RAG #2 -> intentando búsqueda semántica."
-        );
-
-        return executeEmbeddingSearch(cleanQuery);
+    if (query == null || query.isBlank()) {
+        return "No recibí una consulta válida.";
     }
 
+    String cleanQuery = query.trim();
+
+    List<Publication> publications =
+            publicationRepository.findAll();
+
+    // ========================================================
+    // NO HAY PUBLICACIONES
+    // ========================================================
+
+    if (publications == null || publications.isEmpty()) {
+
+        System.out.println(
+                "RAG #2 -> no hay publicaciones disponibles."
+        );
+
+        return "No encontré publicaciones disponibles.";
+    }
+
+    // ========================================================
+    // 1. BÚSQUEDA TEXTUAL
+    // ========================================================
+
+    Publication publication =
+            findPublicationByText(
+                    cleanQuery,
+                    publications
+            );
+
+    if (publication != null) {
+
+        System.out.println(
+                "RAG #2 -> publicación encontrada por texto: "
+                        + publication.getNombre()
+        );
+
+        return generatePublicationAnswer(
+                publication,
+                cleanQuery
+        );
+    }
+
+    // ========================================================
+    // 2. BÚSQUEDA SEMÁNTICA
+    // ========================================================
+
+    System.out.println(
+            "RAG #2 -> no hubo match textual."
+    );
+
+    System.out.println(
+            "RAG #2 -> intentando búsqueda semántica."
+    );
+
+    return executeEmbeddingSearch(
+            cleanQuery,
+            publications
+    );
+}
     // ============================================================
     // BÚSQUEDA TEXTUAL
     // ============================================================
 
     private Publication findPublicationByText(
-            String query) {
+        String query,
+        List<Publication> publications) {
 
-        /*
-         * Primero intentamos extraer el nombre del producto
-         * desde la pregunta.
-         *
-         * Ejemplo:
-         *
-         * "¿Cuánto cuesta el Mouse Inalambrico?"
-         *
-         * se transforma en:
-         *
-         * "Mouse Inalambrico"
-         */
+    String normalizedQuery =
+            normalize(query);
 
-        String normalizedQuery =
-                normalize(query);
-
-        List<Publication> publications =
-                publicationRepository.findAll();
-
-        if (publications == null || publications.isEmpty()) {
-            return null;
-        }
-
-        // --------------------------------------------------------
-        // 1. MATCH EXACTO DEL NOMBRE
-        // --------------------------------------------------------
-
-        for (Publication publication : publications) {
-
-            if (!Boolean.TRUE.equals(publication.getActiva())) {
-                continue;
-            }
-
-            String nombre =
-                    normalize(publication.getNombre());
-
-            if (nombre.isBlank()) {
-                continue;
-            }
-
-            if (normalizedQuery.contains(nombre)) {
-
-                return publication;
-            }
-        }
-
-        // --------------------------------------------------------
-        // 2. MATCH POR PALABRAS DEL NOMBRE
-        // --------------------------------------------------------
-
-        List<String> words =
-                extractMeaningfulWords(normalizedQuery);
-
-        if (words.isEmpty()) {
-            return null;
-        }
-
-        Publication bestPublication = null;
-        int bestScore = 0;
-
-        for (Publication publication : publications) {
-
-            if (!Boolean.TRUE.equals(publication.getActiva())) {
-                continue;
-            }
-
-            String nombre =
-                    normalize(publication.getNombre());
-
-            if (nombre.isBlank()) {
-                continue;
-            }
-
-            int score = 0;
-
-            for (String word : words) {
-
-                if (word.length() < 3) {
-                    continue;
-                }
-
-                if (nombre.contains(word)) {
-                    score++;
-                }
-            }
-
-            if (score > bestScore) {
-
-                bestScore = score;
-                bestPublication = publication;
-            }
-        }
-
-        /*
-         * Exigimos al menos una coincidencia.
-         */
-        return bestScore > 0
-                ? bestPublication
-                : null;
+    if (publications == null || publications.isEmpty()) {
+        return null;
     }
+
+    // ========================================================
+    // MATCH EXACTO / CONTENIDO COMPLETO DEL NOMBRE
+    // ========================================================
+
+    for (Publication publication : publications) {
+
+        if (!Boolean.TRUE.equals(publication.getActiva())) {
+            continue;
+        }
+
+        String nombre =
+                normalize(publication.getNombre());
+
+        if (nombre.isBlank()) {
+            continue;
+        }
+
+        /*
+         * Solo consideramos match textual cuando el nombre
+         * completo de la publicación aparece dentro de la
+         * consulta.
+         *
+         * Ejemplo válido:
+         *
+         * "¿Cuánto cuesta la Laptop Lenovo ThinkPad?"
+         *
+         * contiene:
+         *
+         * "laptop lenovo thinkpad"
+         */
+        if (normalizedQuery.contains(nombre)) {
+            return publication;
+        }
+    }
+
+    return null;
+}
 
     // ============================================================
     // BÚSQUEDA POR EMBEDDINGS
     // ============================================================
 
     private String executeEmbeddingSearch(
-            String query) {
+        String query,
+        List<Publication> publications) {
 
-        List<Double> queryEmbedding =
-                aiProvider.generateEmbedding(query);
+    List<Double> queryEmbedding =
+            aiProvider.generateEmbedding(query);
 
-        if (queryEmbedding == null
-                || queryEmbedding.isEmpty()) {
+    if (queryEmbedding == null
+            || queryEmbedding.isEmpty()) {
 
-            return """
-                    No pude procesar semánticamente tu consulta.
-                    """;
-        }
+        return """
+                No pude procesar semánticamente tu consulta.
+                """;
+    }
 
-        List<Publication> publications =
-                publicationRepository.findAll();
+    if (publications == null
+            || publications.isEmpty()) {
 
-        if (publications == null
-                || publications.isEmpty()) {
+        return "No encontré publicaciones disponibles.";
+    }
 
-            return "No encontré publicaciones disponibles.";
-        }
-
-        List<SemanticResult> results =
-                new ArrayList<>();
+    List<SemanticResult> results =
+            new ArrayList<>();
 
         for (Publication publication : publications) {
 
@@ -639,23 +601,6 @@ public class GetPublicationDetailSemanticUseCase {
                 )
                 .replaceAll("\\s+", " ")
                 .trim();
-    }
-
-    // ============================================================
-    // EXTRAER PALABRAS SIGNIFICATIVAS
-    // ============================================================
-
-    private List<String> extractMeaningfulWords(
-            String text) {
-
-        if (text == null || text.isBlank()) {
-            return List.of();
-        }
-
-        return List.of(text.split("\\s+"))
-                .stream()
-                .filter(word -> word.length() >= 3)
-                .toList();
     }
 
     // ============================================================
