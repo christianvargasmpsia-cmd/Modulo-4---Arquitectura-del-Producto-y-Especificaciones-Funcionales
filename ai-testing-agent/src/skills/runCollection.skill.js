@@ -4,6 +4,10 @@ import newmanService
 
 class RunCollectionSkill {
 
+    // ==========================================================
+    // EJECUTAR COLLECTION
+    // ==========================================================
+
     async execute(
         collectionPath,
         testData = {}
@@ -21,6 +25,10 @@ class RunCollectionSkill {
             "==================================================\n"
         );
 
+
+        // ======================================================
+        // VALIDAR COLLECTION
+        // ======================================================
 
         if (!collectionPath) {
 
@@ -41,94 +49,46 @@ class RunCollectionSkill {
 
 
         // ======================================================
-        // TEST DATA RECIBIDA DESDE POSTMAN AGENT
+        // MOSTRAR TEST DATA
         // ======================================================
 
-        console.log(
-            "\n🔎 Test Data recibida:"
-        );
-
-
-        console.log(
-            `   USER_ID        : ${
-                testData.userId ?? "NO"
-            }`
-        );
-
-        console.log(
-            `   STORE_ID       : ${
-                testData.storeId ?? "NO"
-            }`
-        );
-
-        console.log(
-            `   PUBLICATION_ID : ${
-                testData.publicationId ?? "NO"
-            }`
-        );
-
-        console.log(
-            `   INTERACTION_ID : ${
-                testData.interactionId ?? "NO"
-            }`
-        );
-
-        console.log(
-            `   JWT            : ${
-                testData.token
-                    ? "OK"
-                    : "NO"
-            }`
+        this.printTestData(
+            testData
         );
 
 
         // ======================================================
-        // VALIDACIONES
+        // VALIDAR DATOS BASE
+        //
+        // IMPORTANTE:
+        //
+        // interactionId NO es obligatorio.
+        //
+        // storeId y publicationId tampoco deben bloquear
+        // toda la colección si alguna prueba específica
+        // no los necesita.
         // ======================================================
 
-        if (!testData.userId) {
-
-            throw new Error(
-                "RunCollectionSkill: falta userId."
-            );
-
-        }
-
-        if (!testData.storeId) {
-
-            throw new Error(
-                "RunCollectionSkill: falta storeId."
-            );
-
-        }
-
-        if (!testData.publicationId) {
-
-            throw new Error(
-                "RunCollectionSkill: falta publicationId."
-            );
-
-        }
-
-        if (!testData.interactionId) {
-
-            throw new Error(
-                "RunCollectionSkill: falta interactionId."
-            );
-
-        }
-
-        if (!testData.token) {
-
-            throw new Error(
-                "RunCollectionSkill: falta JWT."
-            );
-
-        }
+        this.validateBaseData(
+            testData
+        );
 
 
-        console.log(
-            "\n✅ Test Data válida."
+        // ======================================================
+        // INTERACTION OPCIONAL
+        // ======================================================
+
+        this.printInteractionStatus(
+            testData
+        );
+
+
+        // ======================================================
+        // DATOS VÁLIDOS
+        // ======================================================
+
+        this.printValidData(
+            testData
         );
 
 
@@ -136,8 +96,10 @@ class RunCollectionSkill {
         // EJECUTAR NEWMAN
         // ======================================================
 
+        console.log("");
+
         console.log(
-            "\n=================================================="
+            "=================================================="
         );
 
         console.log(
@@ -145,16 +107,45 @@ class RunCollectionSkill {
         );
 
         console.log(
-            "==================================================\n"
+            "=================================================="
         );
 
+        console.log("");
 
-        const result =
-            await newmanService.runCollection(
-                collectionPath,
-                testData
+
+        let result;
+
+
+        try {
+
+            result =
+                await newmanService.runCollection(
+                    collectionPath,
+                    testData
+                );
+
+        }
+        catch (error) {
+
+            console.log("");
+
+            console.log(
+                "❌ NEWMAN FALLÓ"
             );
 
+            console.log(
+                `   ${error.message}`
+            );
+
+
+            throw error;
+
+        }
+
+
+        // ======================================================
+        // VALIDAR RESULTADO
+        // ======================================================
 
         if (!result) {
 
@@ -166,11 +157,44 @@ class RunCollectionSkill {
 
 
         // ======================================================
+        // NORMALIZAR RESULTADOS
+        // ======================================================
+
+        const requests =
+            result.requests ?? 0;
+
+
+        const assertions =
+            result.assertions ?? 0;
+
+
+        const failed =
+            result.failed ?? 0;
+
+
+        const httpFailures =
+            result.httpFailures ??
+            failed;
+
+
+        const assertionFailures =
+            result.assertionFailures ??
+            0;
+
+
+        const skipped =
+            result.skipped ??
+            0;
+
+
+        // ======================================================
         // RESULTADO
         // ======================================================
 
+        console.log("");
+
         console.log(
-            "\n=================================================="
+            "=================================================="
         );
 
         console.log(
@@ -178,51 +202,508 @@ class RunCollectionSkill {
         );
 
         console.log(
-            "==================================================\n"
+            "=================================================="
+        );
+
+        console.log("");
+
+
+        console.log(
+            `Requests           : ${requests}`
         );
 
 
         console.log(
-            `Requests           : ${
-                result.requests ?? 0
-            }`
+            `Assertions         : ${assertions}`
         );
+
 
         console.log(
-            `Assertions         : ${
-                result.assertions ?? 0
-            }`
+            `Failed             : ${failed}`
         );
+
 
         console.log(
-            `Failed             : ${
-                result.failed ?? 0
-            }`
+            `HTTP failures      : ${httpFailures}`
         );
+
 
         console.log(
-            `HTTP failures      : ${
-                result.httpFailures ?? 0
-            }`
+            `Assertion failures : ${assertionFailures}`
         );
+
 
         console.log(
-            `Assertion failures : ${
-                result.assertionFailures ?? 0
-            }`
+            `Skipped            : ${skipped}`
         );
 
+
+        // ======================================================
+        // MOSTRAR DETALLE
+        // ======================================================
+
+        this.printResults(
+            result
+        );
+
+
+        // ======================================================
+        // ESTADO FINAL
+        // ======================================================
+
+        const success =
+            failed === 0 &&
+            assertionFailures === 0;
+
+
+        console.log("");
+
+
+        if (success) {
+
+            console.log(
+                "=================================================="
+            );
+
+            console.log(
+                "✅ PIPELINE DE NEWMAN COMPLETADO"
+            );
+
+            console.log(
+                "=================================================="
+            );
+
+        }
+        else {
+
+            console.log(
+                "=================================================="
+            );
+
+            console.log(
+                "⚠️ PIPELINE COMPLETADO CON FALLAS"
+            );
+
+            console.log(
+                "=================================================="
+            );
+
+        }
+
+
+        // ======================================================
+        // RETORNO
+        // ======================================================
 
         return {
 
-            success:
-                (result.failed ?? 0) === 0,
+            success,
 
-            testData,
+            testData: {
+
+                ...testData,
+
+                interactionId:
+                    testData.interactionId ??
+                    null
+
+            },
 
             result
 
         };
+
+    }
+
+
+    // ==========================================================
+    // MOSTRAR TEST DATA
+    // ==========================================================
+
+    printTestData(
+        testData
+    ) {
+
+        console.log(
+            "\n🔎 Test Data recibida:"
+        );
+
+        console.log(
+            "--------------------------------------------------"
+        );
+
+
+        console.log(
+            `   USER_ID        : ${
+                testData.userId ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   STORE_ID       : ${
+                testData.storeId ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   PUBLICATION_ID : ${
+                testData.publicationId ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   INTERACTION_ID : ${
+                testData.interactionId ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   EMAIL          : ${
+                testData.email ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   ROLE           : ${
+                testData.role ??
+                "NO"
+            }`
+        );
+
+
+        console.log(
+            `   JWT            : ${
+                testData.token
+                    ? "OK"
+                    : "NO"
+            }`
+        );
+
+    }
+
+
+    // ==========================================================
+    // VALIDAR DATOS BASE
+    // ==========================================================
+
+    validateBaseData(
+        testData
+    ) {
+
+        const missing =
+            [];
+
+
+        // ------------------------------------------------------
+        // USER
+        // ------------------------------------------------------
+
+        if (
+            !testData.userId
+        ) {
+
+            missing.push(
+                "userId"
+            );
+
+        }
+
+
+        // ------------------------------------------------------
+        // JWT
+        // ------------------------------------------------------
+
+        if (
+            !testData.token
+        ) {
+
+            missing.push(
+                "JWT"
+            );
+
+        }
+
+
+        // ------------------------------------------------------
+        // EMAIL
+        //
+        // No es estrictamente obligatorio para Newman,
+        // pero sí es necesario para el POST /login que queremos
+        // probar.
+        // ------------------------------------------------------
+
+        if (
+            !testData.email
+        ) {
+
+            console.log(
+                "⚠️ No se recibió email de testing."
+            );
+
+            console.log(
+                "   POST /login podría no ejecutarse correctamente."
+            );
+
+        }
+
+
+        // ------------------------------------------------------
+        // VALIDACIÓN FINAL
+        // ------------------------------------------------------
+
+        if (
+            missing.length > 0
+        ) {
+
+            console.log("");
+
+            console.log(
+                "❌ DATOS BASE OBLIGATORIOS FALTANTES"
+            );
+
+
+            missing.forEach(
+                field => {
+
+                    console.log(
+                        `   ❌ ${field}`
+                    );
+
+                }
+            );
+
+
+            throw new Error(
+                `RunCollectionSkill: faltan datos obligatorios: ${
+                    missing.join(", ")
+                }.`
+            );
+
+        }
+
+
+        console.log("");
+
+        console.log(
+            "✓ Datos base válidos."
+        );
+
+    }
+
+
+    // ==========================================================
+    // ESTADO DE INTERACTION
+    // ==========================================================
+
+    printInteractionStatus(
+        testData
+    ) {
+
+        console.log("");
+
+
+        if (
+            testData.interactionId
+        ) {
+
+            console.log(
+                "✓ Interaction disponible."
+            );
+
+
+            console.log(
+                `  ID: ${testData.interactionId}`
+            );
+
+        }
+        else {
+
+            console.log(
+                "⚠️ No existe interactionId."
+            );
+
+
+            console.log(
+                "   Esto NO detiene la ejecución."
+            );
+
+
+            console.log(
+                "   Las pruebas que requieran interaction serán omitidas."
+            );
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // MOSTRAR DATOS VÁLIDOS
+    // ==========================================================
+
+    printValidData(
+        testData
+    ) {
+
+        console.log("");
+
+        console.log(
+            "=================================================="
+        );
+
+        console.log(
+            "✅ DATOS BASE VÁLIDOS"
+        );
+
+        console.log(
+            "=================================================="
+        );
+
+
+        console.log(
+            `✓ Usuario       : ${
+                testData.email ??
+                testData.userId
+            }`
+        );
+
+
+        console.log(
+            `✓ Rol           : ${
+                testData.role ??
+                "N/A"
+            }`
+        );
+
+
+        console.log(
+            `✓ User ID       : ${
+                testData.userId
+            }`
+        );
+
+
+        console.log(
+            `✓ Store ID      : ${
+                testData.storeId ??
+                "N/A — pruebas dependientes serán omitidas"
+            }`
+        );
+
+
+        console.log(
+            `✓ Publication ID: ${
+                testData.publicationId ??
+                "N/A — pruebas dependientes serán omitidas"
+            }`
+        );
+
+
+        console.log(
+            `✓ Interaction ID: ${
+                testData.interactionId ??
+                "N/A — pruebas dependientes serán omitidas"
+            }`
+        );
+
+
+        console.log(
+            `✓ Discovery JWT  : ${
+                testData.token
+                    ? "OK"
+                    : "NO"
+            }`
+        );
+
+    }
+
+
+    // ==========================================================
+    // MOSTRAR RESULTADOS
+    // ==========================================================
+
+    printResults(
+        result
+    ) {
+
+        const results =
+            result.httpResults ??
+            [];
+
+
+        if (
+            !Array.isArray(results) ||
+            results.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        console.log("");
+
+        console.log(
+            "📋 DETALLE DE REQUESTS"
+        );
+
+        console.log(
+            "--------------------------------------------------"
+        );
+
+
+        results.forEach(
+            request => {
+
+                const icon =
+                    request.failed
+                        ? "❌"
+                        : "✅";
+
+
+                const status =
+                    request.statusCode ??
+                    "N/A";
+
+
+                console.log(
+
+                    `${icon} ` +
+                    `${request.method} ` +
+                    `${request.name} ` +
+                    `→ ${status}`
+
+                );
+
+
+                if (
+                    request.failed
+                ) {
+
+                    if (
+                        request.url
+                    ) {
+
+                        console.log(
+                            `   URL: ${request.url}`
+                        );
+
+                    }
+
+                }
+
+            }
+        );
 
     }
 

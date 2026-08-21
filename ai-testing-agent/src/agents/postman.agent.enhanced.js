@@ -96,12 +96,8 @@ class PostmanAgentEnhanced {
             );
 
 
-            let selectedWorkspace =
-                null;
-
-            let selectedCollection =
-                null;
-
+            let selectedWorkspace = null;
+            let selectedCollection = null;
             let collections = [];
 
 
@@ -128,9 +124,7 @@ class PostmanAgentEnhanced {
                         );
 
                 }
-                catch (
-                    error
-                ) {
+                catch (error) {
 
                     Logger.warning(
                         `No se pudo consultar ${
@@ -183,15 +177,12 @@ class PostmanAgentEnhanced {
 
 
                             return (
-
                                 name.includes(
                                     "umss market"
                                 ) ||
-
                                 name.includes(
                                     "umss"
                                 )
-
                             );
 
                         }
@@ -354,29 +345,64 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // TEST DATA
+            //
+            // IMPORTANTE:
+            //
+            // Antes solo se copiaban:
+            //
+            // userId
+            // storeId
+            // publicationId
+            // interactionId
+            // token
+            //
+            // Eso hacía que email y role se perdieran.
+            //
+            // Ahora conservamos TODO el contexto necesario.
             // ==================================================
 
             const testData = {
 
+                // ------------------------------------------------
+                // IDS REALES
+                // ------------------------------------------------
+
                 userId:
-                    discovery.ids.userId ??
+                    discovery.ids?.userId ??
                     null,
 
                 storeId:
-                    discovery.ids.storeId ??
+                    discovery.ids?.storeId ??
                     null,
 
                 publicationId:
-                    discovery.ids.publicationId ??
+                    discovery.ids?.publicationId ??
                     null,
 
                 interactionId:
-                    discovery.ids.interactionId ??
+                    discovery.ids?.interactionId ??
+                    null,
+
+
+                // ------------------------------------------------
+                // AUTENTICACIÓN
+                // ------------------------------------------------
+
+                email:
+                    discovery.auth?.email ??
+                    null,
+
+                role:
+                    discovery.auth?.role ??
                     null,
 
                 token:
                     discovery.auth?.token ??
-                    null
+                    null,
+
+                password:
+                    process.env.TEST_USER_PASSWORD ??
+                    "12345678"
 
             };
 
@@ -423,6 +449,28 @@ class PostmanAgentEnhanced {
                 "INTERACTION_ID:",
                 testData.interactionId ??
                 "NO ENCONTRADO"
+            );
+
+
+            console.log(
+                "EMAIL         :",
+                testData.email ??
+                "NO ENCONTRADO"
+            );
+
+
+            console.log(
+                "ROLE          :",
+                testData.role ??
+                "NO ENCONTRADO"
+            );
+
+
+            console.log(
+                "PASSWORD      :",
+                testData.password
+                    ? "OK"
+                    : "NO"
             );
 
 
@@ -504,6 +552,73 @@ class PostmanAgentEnhanced {
 
 
             // --------------------------------------------------
+            // EMAIL
+            // --------------------------------------------------
+
+            if (
+                !testData.email
+            ) {
+
+                throw new Error(
+                    "Discovery no obtuvo email del comprador."
+                );
+
+            }
+
+
+            console.log(
+                "   ✓ email del comprador disponible"
+            );
+
+
+            // --------------------------------------------------
+            // ROLE
+            // --------------------------------------------------
+
+            if (
+                String(
+                    testData.role ??
+                    ""
+                ).toUpperCase() !==
+                "COMPRADOR"
+            ) {
+
+                throw new Error(
+                    `El usuario de testing debe ser COMPRADOR. Role recibido: ${
+                        testData.role ??
+                        "N/A"
+                    }`
+                );
+
+            }
+
+
+            console.log(
+                "   ✓ usuario COMPRADOR válido"
+            );
+
+
+            // --------------------------------------------------
+            // PASSWORD
+            // --------------------------------------------------
+
+            if (
+                !testData.password
+            ) {
+
+                throw new Error(
+                    "No existe password para el usuario de testing."
+                );
+
+            }
+
+
+            console.log(
+                "   ✓ password disponible"
+            );
+
+
+            // --------------------------------------------------
             // JWT
             // --------------------------------------------------
 
@@ -523,11 +638,9 @@ class PostmanAgentEnhanced {
             );
 
 
-            // ==================================================
+            // --------------------------------------------------
             // INTERACTION
-            //
-            // NO ES OBLIGATORIA PARA DISCOVERY
-            // ==================================================
+            // --------------------------------------------------
 
             if (
                 testData.interactionId
@@ -551,11 +664,7 @@ class PostmanAgentEnhanced {
                 );
 
                 console.log(
-                    "   → Se marcará como N/A."
-                );
-
-                console.log(
-                    "   → Discovery puede continuar."
+                    "   → Se permitirá continuar."
                 );
 
             }
@@ -588,6 +697,20 @@ class PostmanAgentEnhanced {
             console.log(
                 `Usuario        : ${
                     testData.userId
+                }`
+            );
+
+
+            console.log(
+                `Email          : ${
+                    testData.email
+                }`
+            );
+
+
+            console.log(
+                `Role           : ${
+                    testData.role
                 }`
             );
 
@@ -638,11 +761,8 @@ class PostmanAgentEnhanced {
              *
              * El interactionId puede ser null.
              *
-             * No hacemos throw aquí.
-             *
-             * runCollectionSkill recibe el contexto
-             * completo y será responsable de determinar
-             * qué requests necesitan realmente ese ID.
+             * RunCollectionSkill decide qué pruebas
+             * necesitan realmente ese ID.
              */
 
             const newmanResult =
@@ -762,8 +882,7 @@ class PostmanAgentEnhanced {
             );
 
 
-            let analysis =
-                null;
+            let analysis = null;
 
 
             try {
@@ -876,6 +995,12 @@ class PostmanAgentEnhanced {
 
                     interactionId:
                         testData.interactionId,
+
+                    email:
+                        testData.email,
+
+                    role:
+                        testData.role,
 
                     authenticated:
                         Boolean(
@@ -1003,11 +1128,8 @@ class PostmanAgentEnhanced {
 
         const collectionPath =
             path.join(
-
                 collectionsPath,
-
                 "umss-market-api-generated.json"
-
             );
 
 

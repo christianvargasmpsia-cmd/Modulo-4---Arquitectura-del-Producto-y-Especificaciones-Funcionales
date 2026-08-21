@@ -1,6 +1,7 @@
 import fs from "fs";
 import testDataService from "./testData.service.js";
 
+
 class CollectionPreparer {
 
     constructor() {
@@ -21,23 +22,17 @@ class CollectionPreparer {
         providedTestData = null
     ) {
 
-        console.log(
-            "================================="
-        );
-
-        console.log(
-            "PREPARANDO COLLECTION PARA NEWMAN"
-        );
-
-        console.log(
-            "=================================\n"
-        );
+        console.log("");
+        console.log("==================================================");
+        console.log("🛠️ PREPARANDO COLLECTION PARA NEWMAN");
+        console.log("==================================================");
+        console.log("");
 
 
         if (!collectionPath) {
 
             throw new Error(
-                "No se recibió la ruta de la Collection."
+                "CollectionPreparer: no se recibió collectionPath."
             );
 
         }
@@ -46,14 +41,19 @@ class CollectionPreparer {
         if (!fs.existsSync(collectionPath)) {
 
             throw new Error(
-                `No existe la Collection: ${collectionPath}`
+                `Collection no encontrada: ${collectionPath}`
             );
 
         }
 
 
+        // ======================================================
+        // LEER COLLECTION
+        // ======================================================
+
         const collection =
             JSON.parse(
+
                 fs.readFileSync(
                     collectionPath,
                     "utf8"
@@ -61,21 +61,13 @@ class CollectionPreparer {
                     /^\uFEFF/,
                     ""
                 )
+
             );
 
 
         // ======================================================
-        // DATOS DE PRUEBA
+        // OBTENER DATOS DE DISCOVERY
         // ======================================================
-
-        /*
-         * IMPORTANTE:
-         *
-         * Si RunCollectionSkill ya descubrió los datos,
-         * utilizamos esos datos directamente.
-         *
-         * Solo usamos testDataService como fallback.
-         */
 
         let values =
             providedTestData;
@@ -87,7 +79,17 @@ class CollectionPreparer {
             !values.userId
         ) {
 
+            console.log(
+                "⚠️ No se recibieron datos completos."
+            );
+
+            console.log(
+                "🔎 Recuperando datos desde TestDataService..."
+            );
+
+
             await testDataService.initialize();
+
 
             values =
                 testDataService.get();
@@ -96,7 +98,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // VALIDACIONES
+        // VALIDAR DATOS BASE
         // ======================================================
 
         if (!values?.userId) {
@@ -108,94 +110,108 @@ class CollectionPreparer {
         }
 
 
-        if (!values?.storeId) {
-
-            throw new Error(
-                "CollectionPreparer: falta storeId."
-            );
-
-        }
-
-
-        if (!values?.publicationId) {
-
-            throw new Error(
-                "CollectionPreparer: falta publicationId."
-            );
-
-        }
-
-
-        if (!values?.interactionId) {
-
-            throw new Error(
-                "CollectionPreparer: falta interactionId."
-            );
-
-        }
-
-
         if (!values?.token) {
 
             throw new Error(
-                "CollectionPreparer: falta JWT."
+                "CollectionPreparer: falta JWT de Discovery."
+            );
+
+        }
+
+
+        if (
+            String(
+                values.role ?? ""
+            ).toUpperCase() !== "COMPRADOR"
+        ) {
+
+            throw new Error(
+                `CollectionPreparer: el usuario debe ser COMPRADOR. Role recibido: ${values.role}`
             );
 
         }
 
 
         // ======================================================
-        // MOSTRAR DATOS
+        // STORE Y PUBLICATION
+        //
+        // No detenemos toda la colección si alguno no existe.
+        // Las pruebas que dependan de ellos podrán omitirse.
         // ======================================================
 
-        console.log(
-            "DATOS PARA LAS PRUEBAS"
-        );
+        if (!values.storeId) {
 
-        console.log(
-            "---------------------------------"
-        );
+            console.log(
+                "⚠️ No existe storeId en Discovery."
+            );
 
-        console.log(
-            "USER_ID        :",
-            values.userId
-        );
+            console.log(
+                "   Las pruebas dependientes de Store serán omitidas."
+            );
 
-        console.log(
-            "STORE_ID       :",
-            values.storeId
-        );
+        }
 
-        console.log(
-            "PUBLICATION_ID :",
-            values.publicationId
-        );
 
-        console.log(
-            "INTERACTION_ID :",
-            values.interactionId
-        );
+        if (!values.publicationId) {
 
-        console.log(
-            "EMAIL          :",
-            values.email ?? "N/A"
-        );
+            console.log(
+                "⚠️ No existe publicationId en Discovery."
+            );
 
-        console.log(
-            "ROLE           :",
-            values.role ?? "N/A"
-        );
+            console.log(
+                "   Las pruebas dependientes de Publication serán omitidas."
+            );
 
-        console.log(
-            "JWT            :",
-            values.token
-                ? "OK"
-                : "NO"
-        );
+        }
 
 
         // ======================================================
-        // VARIABLES DE COLLECTION
+        // MOSTRAR CONTEXTO
+        // ======================================================
+
+        console.log("");
+        console.log("==================================================");
+        console.log("📦 DATOS DE DISCOVERY");
+        console.log("==================================================");
+
+
+        console.log(
+            `USER_ID        : ${values.userId}`
+        );
+
+
+        console.log(
+            `STORE_ID       : ${values.storeId ?? "N/A"}`
+        );
+
+
+        console.log(
+            `PUBLICATION_ID : ${values.publicationId ?? "N/A"}`
+        );
+
+
+        console.log(
+            `INTERACTION_ID : ${values.interactionId ?? "N/A"}`
+        );
+
+
+        console.log(
+            `EMAIL          : ${values.email ?? "N/A"}`
+        );
+
+
+        console.log(
+            `ROLE           : ${values.role ?? "N/A"}`
+        );
+
+
+        console.log(
+            `DISCOVERY JWT  : ${values.token ? "OK" : "NO"}`
+        );
+
+
+        // ======================================================
+        // VARIABLES
         // ======================================================
 
         collection.variable =
@@ -213,12 +229,20 @@ class CollectionPreparer {
         );
 
 
+        // ======================================================
+        // JWT DE DISCOVERY
+        // ======================================================
+
         this.setVariable(
             collection,
-            "token",
-            values.token
+            "discoveryToken",
+            values.token ?? ""
         );
 
+
+        // ======================================================
+        // IDS REALES
+        // ======================================================
 
         this.setVariable(
             collection,
@@ -230,23 +254,27 @@ class CollectionPreparer {
         this.setVariable(
             collection,
             "storeId",
-            values.storeId
+            values.storeId ?? ""
         );
 
 
         this.setVariable(
             collection,
             "publicationId",
-            values.publicationId
+            values.publicationId ?? ""
         );
 
 
         this.setVariable(
             collection,
             "interactionId",
-            values.interactionId
+            values.interactionId ?? ""
         );
 
+
+        // ======================================================
+        // CREDENCIALES DEL COMPRADOR
+        // ======================================================
 
         this.setVariable(
             collection,
@@ -259,13 +287,53 @@ class CollectionPreparer {
             collection,
             "testPassword",
             values.password ??
+            process.env.TEST_USER_PASSWORD ??
             "12345678"
         );
 
 
         // ======================================================
-        // IDS DE RECURSOS CREADOS DURANTE LA PRUEBA
+        // JWT DEL LOGIN DE NEWMAN
         // ======================================================
+
+        this.setVariable(
+            collection,
+            "testToken",
+            ""
+        );
+
+
+        // ======================================================
+        // IDS GENERADOS DURANTE NEWMAN
+        // ======================================================
+
+        this.setVariable(
+            collection,
+            "testUserId",
+            ""
+        );
+
+
+        this.setVariable(
+            collection,
+            "testAdminUserId",
+            ""
+        );
+
+
+        this.setVariable(
+            collection,
+            "testCustomerUserId",
+            ""
+        );
+
+
+        this.setVariable(
+            collection,
+            "testEntrepreneurUserId",
+            ""
+        );
+
 
         this.setVariable(
             collection,
@@ -310,57 +378,110 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // DATOS ÚNICOS PARA REGISTROS
+        // DATOS ÚNICOS PARA REGISTER
         // ======================================================
 
-        const stamp =
+        const timestamp =
             Date.now();
+
+
+        const registerAdminEmail =
+            `admin.testing.${timestamp}@umss.edu.bo`;
+
+
+        const registerCustomerEmail =
+            `customer.testing.${timestamp}@umss.edu.bo`;
+
+
+        const registerEntrepreneurEmail =
+            `entrepreneur.testing.${timestamp}@umss.edu.bo`;
 
 
         this.setVariable(
             collection,
             "registerAdminEmail",
-            `admin.testing.${stamp}@umss.edu.bo`
+            registerAdminEmail
         );
 
 
         this.setVariable(
             collection,
             "registerCustomerEmail",
-            `customer.testing.${stamp}@umss.edu.bo`
+            registerCustomerEmail
         );
 
 
         this.setVariable(
             collection,
             "registerEntrepreneurEmail",
-            `entrepreneur.testing.${stamp}@umss.edu.bo`
+            registerEntrepreneurEmail
         );
+
+
+        // ======================================================
+        // RU
+        // ======================================================
+
+        const registerAdminRu =
+            `20${String(timestamp).slice(-7)}`;
+
+
+        const registerCustomerRu =
+            `21${String(timestamp + 1).slice(-7)}`;
+
+
+        const registerEntrepreneurRu =
+            `22${String(timestamp + 2).slice(-7)}`;
 
 
         this.setVariable(
             collection,
             "registerAdminRu",
-            `20${String(stamp).slice(-7)}`
+            registerAdminRu
         );
 
 
         this.setVariable(
             collection,
             "registerCustomerRu",
-            `21${String(stamp + 1).slice(-7)}`
+            registerCustomerRu
         );
 
 
         this.setVariable(
             collection,
             "registerEntrepreneurRu",
-            `22${String(stamp + 2).slice(-7)}`
+            registerEntrepreneurRu
         );
 
 
         // ======================================================
-        // APLANAR COLLECTION
+        // TELEFONOS
+        // ======================================================
+
+        this.setVariable(
+            collection,
+            "registerCustomerPhone",
+            `7${String(timestamp).slice(-7)}`
+        );
+
+
+        this.setVariable(
+            collection,
+            "registerEntrepreneurPhone",
+            `8${String(timestamp + 1).slice(-7)}`
+        );
+
+
+        this.setVariable(
+            collection,
+            "registerAdminPhone",
+            `9${String(timestamp + 2).slice(-7)}`
+        );
+
+
+        // ======================================================
+        // FLATTEN
         // ======================================================
 
         const requests =
@@ -369,8 +490,10 @@ class CollectionPreparer {
             );
 
 
+        console.log("");
+
         console.log(
-            `Requests originales: ${requests.length}`
+            `📋 Requests originales: ${requests.length}`
         );
 
 
@@ -386,24 +509,23 @@ class CollectionPreparer {
             of requests
         ) {
 
-            const endpoint =
-                this.getEndpoint(
-                    item.request
-                );
-
-
             const method =
                 this.getMethod(
                     item.request
                 );
 
 
-            /*
-             * NO probar POST /api/stores.
-             *
-             * El registro entrepreneur ya crea
-             * automáticamente la tienda.
-             */
+            const endpoint =
+                this.getEndpoint(
+                    item.request
+                );
+
+
+            // --------------------------------------------------
+            // CREATE STORE
+            //
+            // El entrepreneur ya crea la tienda.
+            // --------------------------------------------------
 
             if (
                 method === "POST" &&
@@ -411,11 +533,11 @@ class CollectionPreparer {
             ) {
 
                 console.log(
-                    "✓ Eliminado POST /api/stores."
+                    "⏭️ ELIMINANDO POST /api/stores"
                 );
 
                 console.log(
-                    "  Entrepreneur ya crea la tienda."
+                    "   La tienda se crea mediante REGISTER ENTREPRENEUR."
                 );
 
                 continue;
@@ -423,9 +545,9 @@ class CollectionPreparer {
             }
 
 
-            /*
-             * NO eliminar usuarios reales.
-             */
+            // --------------------------------------------------
+            // DELETE USER
+            // --------------------------------------------------
 
             if (
                 method === "DELETE" &&
@@ -435,7 +557,11 @@ class CollectionPreparer {
             ) {
 
                 console.log(
-                    "✓ Eliminado DELETE /api/users/:id."
+                    "⏭️ ELIMINANDO DELETE /api/users/:id"
+                );
+
+                console.log(
+                    "   No se eliminarán usuarios reales."
                 );
 
                 continue;
@@ -451,7 +577,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // ORDENAR
+        // ORDEN
         // ======================================================
 
         const ordered =
@@ -473,17 +599,93 @@ class CollectionPreparer {
             of collection.item
         ) {
 
+            const method =
+                this.getMethod(
+                    item.request
+                );
+
+
             const endpoint =
                 this.getEndpoint(
                     item.request
                 );
 
 
-            const method =
-                this.getMethod(
-                    item.request
+            // --------------------------------------------------
+            // SI REQUIERE STORE
+            // --------------------------------------------------
+
+            if (
+                this.requiresStoreId(
+                    endpoint
+                ) &&
+                !values.storeId
+            ) {
+
+                this.addPreRequestSkip(
+                    item,
+                    "No existe storeId disponible."
                 );
 
+                continue;
+
+            }
+
+
+            // --------------------------------------------------
+            // SI REQUIERE PUBLICATION
+            // --------------------------------------------------
+
+            if (
+                this.requiresPublicationId(
+                    endpoint,
+                    method
+                ) &&
+                !values.publicationId
+            ) {
+
+                this.addPreRequestSkip(
+                    item,
+                    "No existe publicationId disponible."
+                );
+
+                continue;
+
+            }
+
+
+            // --------------------------------------------------
+            // INTERACTION
+            //
+            // Si ya existe una interaction:
+            //
+            //     {{interactionId}}
+            //
+            // Si NO existe:
+            //
+            //     {{testInteractionId}}
+            //
+            // Este último será creado por POST /interactions.
+            // --------------------------------------------------
+
+            if (
+                this.requiresInteractionId(
+                    endpoint
+                )
+            ) {
+
+                this.prepareInteractionRequest(
+                    item,
+                    endpoint,
+                    values
+                );
+
+            }
+
+
+            // --------------------------------------------------
+            // PREPARAR REQUEST
+            // --------------------------------------------------
 
             this.prepareRequest(
                 item,
@@ -491,6 +693,10 @@ class CollectionPreparer {
                 collection
             );
 
+
+            // --------------------------------------------------
+            // ASSERTIONS
+            // --------------------------------------------------
 
             this.addAssertionsAndCaptures(
                 item,
@@ -502,7 +708,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // GUARDAR COLLECTION
+        // GUARDAR
         // ======================================================
 
         fs.writeFileSync(
@@ -521,21 +727,21 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // MOSTRAR ORDEN FINAL
+        // RESUMEN
         // ======================================================
 
         console.log("");
 
         console.log(
-            "================================="
+            "=================================================="
         );
 
         console.log(
-            "✓ COLLECTION PREPARADA"
+            "✅ COLLECTION PREPARADA"
         );
 
         console.log(
-            "================================="
+            "=================================================="
         );
 
 
@@ -546,9 +752,48 @@ class CollectionPreparer {
 
         console.log("");
 
+        console.log(
+            "🔐 FLUJO DE AUTENTICACIÓN:"
+        );
+
+
+        console.log(
+            "   1. Register Customer"
+        );
+
+
+        console.log(
+            "   2. Register Entrepreneur"
+        );
+
+
+        console.log(
+            "   3. Register Admin"
+        );
+
+
+        console.log(
+            "   4. Login comprador REAL"
+        );
+
+
+        console.log(
+            "   5. GET /me con JWT generado por login"
+        );
+
+
+        console.log(
+            "   6. Logout"
+        );
+
+
+        console.log("");
 
         collection.item.forEach(
-            (item, index) => {
+            (
+                item,
+                index
+            ) => {
 
                 console.log(
 
@@ -623,14 +868,14 @@ class CollectionPreparer {
 
 
     // ==========================================================
-    // ORDEN DE EJECUCIÓN
+    // ORDEN
     // ==========================================================
 
     orderRequests(
         items
     ) {
 
-        const priority =
+        const getPriority =
             item => {
 
                 const method =
@@ -645,14 +890,12 @@ class CollectionPreparer {
                     );
 
 
-                // ==================================================
-                // AUTH
-                // ==================================================
+                // REGISTER
 
                 if (
                     method === "POST" &&
                     endpoint ===
-                    "/api/auth/register/entrepreneur"
+                    "/api/auth/register/customer"
                 ) {
 
                     return 10;
@@ -663,7 +906,7 @@ class CollectionPreparer {
                 if (
                     method === "POST" &&
                     endpoint ===
-                    "/api/auth/register/customer"
+                    "/api/auth/register/entrepreneur"
                 ) {
 
                     return 11;
@@ -682,6 +925,8 @@ class CollectionPreparer {
                 }
 
 
+                // LOGIN
+
                 if (
                     method === "POST" &&
                     endpoint ===
@@ -692,6 +937,8 @@ class CollectionPreparer {
 
                 }
 
+
+                // ME
 
                 if (
                     method === "GET" &&
@@ -704,9 +951,7 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
                 // USERS
-                // ==================================================
 
                 if (
                     method === "GET" &&
@@ -755,9 +1000,7 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
                 // STORES
-                // ==================================================
 
                 if (
                     method === "GET" &&
@@ -806,9 +1049,7 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
                 // PUBLICATIONS
-                // ==================================================
 
                 if (
                     method === "GET" &&
@@ -837,27 +1078,12 @@ class CollectionPreparer {
 
 
                 if (
-                    method === "GET" &&
-                    endpoint.startsWith(
-                        "/api/stores/"
-                    ) &&
-                    endpoint.endsWith(
-                        "/publications"
-                    )
-                ) {
-
-                    return 52;
-
-                }
-
-
-                if (
                     method === "POST" &&
                     endpoint ===
                     "/api/publications"
                 ) {
 
-                    return 53;
+                    return 52;
 
                 }
 
@@ -869,7 +1095,7 @@ class CollectionPreparer {
                     )
                 ) {
 
-                    return 54;
+                    return 53;
 
                 }
 
@@ -881,7 +1107,7 @@ class CollectionPreparer {
                     )
                 ) {
 
-                    return 55;
+                    return 54;
 
                 }
 
@@ -892,14 +1118,16 @@ class CollectionPreparer {
                     "/api/publications/semantic"
                 ) {
 
-                    return 56;
+                    return 55;
 
                 }
 
 
-                // ==================================================
                 // INTERACTIONS
-                // ==================================================
+                //
+                // IMPORTANTE:
+                // POST primero para poder generar
+                // testInteractionId.
 
                 if (
                     method === "GET" &&
@@ -935,14 +1163,24 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
+                if (
+                    method === "DELETE" &&
+                    endpoint.startsWith(
+                        "/api/interactions/"
+                    )
+                ) {
+
+                    return 63;
+
+                }
+
+
                 // AI
-                // ==================================================
 
                 if (
                     method === "POST" &&
                     endpoint ===
-                    "/api/ai/chat"
+                    "/api/ai/product-description"
                 ) {
 
                     return 70;
@@ -953,7 +1191,7 @@ class CollectionPreparer {
                 if (
                     method === "POST" &&
                     endpoint ===
-                    "/api/ai/product-description"
+                    "/api/ai/chat"
                 ) {
 
                     return 71;
@@ -961,9 +1199,7 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
                 // EMBEDDINGS
-                // ==================================================
 
                 if (
                     method === "GET" &&
@@ -987,14 +1223,10 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
-                // LOGOUT
-                // ==================================================
+                // DELETE
 
                 if (
-                    method === "POST" &&
-                    endpoint ===
-                    "/api/auth/logout"
+                    method === "DELETE"
                 ) {
 
                     return 900;
@@ -1002,20 +1234,15 @@ class CollectionPreparer {
                 }
 
 
-                // ==================================================
-                // DELETE
-                // ==================================================
+                // LOGOUT SIEMPRE AL FINAL
 
                 if (
-                    method === "DELETE"
+                    method === "POST" &&
+                    endpoint ===
+                    "/api/auth/logout"
                 ) {
 
-                    return (
-                        1000 +
-                        this.getDeletePriority(
-                            endpoint
-                        )
-                    );
+                    return 1000;
 
                 }
 
@@ -1038,7 +1265,7 @@ class CollectionPreparer {
                     index,
 
                     priority:
-                        priority(item)
+                        getPriority(item)
 
                 })
             )
@@ -1071,66 +1298,83 @@ class CollectionPreparer {
             )
 
             .map(
-                x =>
-                    x.item
+                entry =>
+                    entry.item
             );
 
     }
 
 
     // ==========================================================
-    // DELETE PRIORITY
+    // PREPARAR INTERACTION
     // ==========================================================
 
-    getDeletePriority(
-        endpoint
+    prepareInteractionRequest(
+        item,
+        endpoint,
+        values
     ) {
 
+        const request =
+            item.request;
+
+
         if (
-            endpoint.startsWith(
-                "/api/interactions/"
-            )
+            !request?.url ||
+            typeof request.url === "string"
         ) {
 
-            return 10;
+            return;
 
         }
 
 
         if (
-            endpoint.startsWith(
-                "/api/publications/"
+            !Array.isArray(
+                request.url.path
             )
         ) {
 
-            return 20;
+            return;
 
         }
 
 
-        if (
-            endpoint.startsWith(
-                "/api/stores/"
-            )
-        ) {
+        request.url.path =
+            request.url.path.map(
+                segment => {
 
-            return 30;
-
-        }
-
-
-        if (
-            endpoint.startsWith(
-                "/api/users/"
-            )
-        ) {
-
-            return 40;
-
-        }
+                    const value =
+                        String(
+                            segment ?? ""
+                        );
 
 
-        return 50;
+                    if (
+                        endpoint.startsWith(
+                            "/api/interactions/"
+                        ) &&
+                        this.isDynamicId(value)
+                    ) {
+
+                        if (
+                            values.interactionId
+                        ) {
+
+                            return "{{interactionId}}";
+
+                        }
+
+
+                        return "{{testInteractionId}}";
+
+                    }
+
+
+                    return segment;
+
+                }
+            );
 
     }
 
@@ -1170,11 +1414,10 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // JWT
+        // AUTHORIZATION
         // ======================================================
 
         if (
-            values.token &&
             !endpoint.startsWith(
                 "/api/auth/login"
             ) &&
@@ -1186,11 +1429,15 @@ class CollectionPreparer {
             this.setHeader(
                 request,
                 "Authorization",
-                "Bearer {{token}}"
+                "Bearer {{testToken}}"
             );
 
         }
 
+
+        // ======================================================
+        // CONTENT TYPE
+        // ======================================================
 
         if (
             request.body
@@ -1205,6 +1452,10 @@ class CollectionPreparer {
         }
 
 
+        // ======================================================
+        // URL
+        // ======================================================
+
         this.prepareUrl(
             request,
             endpoint,
@@ -1212,11 +1463,14 @@ class CollectionPreparer {
         );
 
 
+        // ======================================================
+        // BODY
+        // ======================================================
+
         this.prepareBody(
             request,
             endpoint,
-            method,
-            collection
+            method
         );
 
     }
@@ -1233,7 +1487,7 @@ class CollectionPreparer {
     ) {
 
         if (
-            !request.url ||
+            !request?.url ||
             typeof request.url === "string"
         ) {
 
@@ -1258,13 +1512,13 @@ class CollectionPreparer {
                             );
 
 
+                        // USERS
+
                         if (
                             endpoint.startsWith(
                                 "/api/users/"
                             ) &&
-                            this.isDynamicId(
-                                value
-                            )
+                            this.isDynamicId(value)
                         ) {
 
                             return "{{userId}}";
@@ -1272,69 +1526,53 @@ class CollectionPreparer {
                         }
 
 
+                        // STORES
+
                         if (
                             endpoint.startsWith(
                                 "/api/stores/"
                             ) &&
-                            this.isDynamicId(
-                                value
-                            )
+                            this.isDynamicId(value)
                         ) {
-
-                            if (
-                                method ===
-                                "DELETE"
-                            ) {
-
-                                return "{{testEntrepreneurStoreId}}";
-
-                            }
 
                             return "{{storeId}}";
 
                         }
 
 
+                        // PUBLICATIONS
+
                         if (
                             endpoint.startsWith(
                                 "/api/publications/"
                             ) &&
-                            this.isDynamicId(
-                                value
-                            )
+                            this.isDynamicId(value)
                         ) {
-
-                            if (
-                                method ===
-                                "DELETE"
-                            ) {
-
-                                return "{{testPublicationId}}";
-
-                            }
 
                             return "{{publicationId}}";
 
                         }
 
 
+                        // INTERACTIONS
+
                         if (
                             endpoint.startsWith(
                                 "/api/interactions/"
                             ) &&
-                            this.isDynamicId(
-                                value
-                            )
+                            this.isDynamicId(value)
                         ) {
 
                             if (
-                                method ===
-                                "DELETE"
+                                endpoint.includes(
+                                    "{{testInteractionId}}"
+                                )
                             ) {
 
                                 return "{{testInteractionId}}";
 
                             }
+
 
                             return "{{interactionId}}";
 
@@ -1350,7 +1588,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // QUERY PARAMETERS
+        // QUERY
         // ======================================================
 
         if (
@@ -1363,7 +1601,9 @@ class CollectionPreparer {
                 request.url.query.map(
                     query => {
 
-                        if (!query) {
+                        if (
+                            !query
+                        ) {
 
                             return query;
 
@@ -1449,14 +1689,12 @@ class CollectionPreparer {
     prepareBody(
         request,
         endpoint,
-        method,
-        collection
+        method
     ) {
 
         if (
-            !request.body ||
-            request.body.mode !==
-            "raw"
+            !request?.body ||
+            request.body.mode !== "raw"
         ) {
 
             return;
@@ -1469,53 +1707,10 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // REGISTER ENTREPRENEUR
-        // ======================================================
-
-        if (
-            endpoint ===
-            "/api/auth/register/entrepreneur"
-        ) {
-
-            body = {
-
-                ru:
-                    "{{registerEntrepreneurRu}}",
-
-                nombre:
-                    "Luciana",
-
-                apellidoPaterno:
-                    "Rojas",
-
-                apellidoMaterno:
-                    "Cabrera",
-
-                email:
-                    "{{registerEntrepreneurEmail}}",
-
-                celular:
-                    "73345678",
-
-                facultad:
-                    "Ciencias y Tecnologia",
-
-                password:
-                    "12345678",
-
-                nombreTienda:
-                    "Innovacion Digital MCP"
-
-            };
-
-        }
-
-
-        // ======================================================
         // REGISTER CUSTOMER
         // ======================================================
 
-        else if (
+        if (
             endpoint ===
             "/api/auth/register/customer"
         ) {
@@ -1538,13 +1733,56 @@ class CollectionPreparer {
                     "{{registerCustomerEmail}}",
 
                 celular:
-                    "72234567",
+                    "{{registerCustomerPhone}}",
 
                 facultad:
                     "Ciencias y Tecnologia",
 
                 password:
                     "12345678"
+
+            };
+
+        }
+
+
+        // ======================================================
+        // REGISTER ENTREPRENEUR
+        // ======================================================
+
+        else if (
+            endpoint ===
+            "/api/auth/register/entrepreneur"
+        ) {
+
+            body = {
+
+                ru:
+                    "{{registerEntrepreneurRu}}",
+
+                nombre:
+                    "Luciana",
+
+                apellidoPaterno:
+                    "Rojas",
+
+                apellidoMaterno:
+                    "Cabrera",
+
+                email:
+                    "{{registerEntrepreneurEmail}}",
+
+                celular:
+                    "{{registerEntrepreneurPhone}}",
+
+                facultad:
+                    "Ciencias y Tecnologia",
+
+                password:
+                    "12345678",
+
+                nombreTienda:
+                    "Innovacion Digital MCP"
 
             };
 
@@ -1578,7 +1816,7 @@ class CollectionPreparer {
                     "{{registerAdminEmail}}",
 
                 celular:
-                    "71123456",
+                    "{{registerAdminPhone}}",
 
                 facultad:
                     "Ciencias Economicas",
@@ -1592,7 +1830,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // LOGIN
+        // LOGIN COMPRADOR
         // ======================================================
 
         else if (
@@ -1614,7 +1852,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // USER UPDATE
+        // UPDATE USER
         // ======================================================
 
         else if (
@@ -1674,7 +1912,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // STORE UPDATE
+        // UPDATE STORE
         // ======================================================
 
         else if (
@@ -1710,7 +1948,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // STORE PATCH
+        // PATCH STORE
         // ======================================================
 
         else if (
@@ -1850,37 +2088,27 @@ class CollectionPreparer {
             "/api/interactions"
         ) {
 
-            body = {
+            if (!this.currentPublicationAvailable) {
 
-                publicationId:
-                    "{{publicationId}}",
+                body = null;
 
-                type:
-                    "VIEW",
+            }
+            else {
 
-                metadata:
-                    "Prueba automatica MCP"
+                body = {
 
-            };
+                    publicationId:
+                        "{{publicationId}}",
 
-        }
+                    type:
+                        "VIEW",
 
+                    metadata:
+                        "Prueba automatica MCP"
 
-        // ======================================================
-        // AI CHAT
-        // ======================================================
+                };
 
-        else if (
-            endpoint ===
-            "/api/ai/chat"
-        ) {
-
-            body = {
-
-                message:
-                    "¿Qué productos existen disponibles?"
-
-            };
+            }
 
         }
 
@@ -1910,19 +2138,41 @@ class CollectionPreparer {
         }
 
 
-        if (!body) {
+        // ======================================================
+        // AI CHAT
+        // ======================================================
 
-            return;
+        else if (
+            endpoint ===
+            "/api/ai/chat"
+        ) {
+
+            body = {
+
+                message:
+                    "¿Qué productos existen disponibles?"
+
+            };
 
         }
 
 
-        request.body.raw =
-            JSON.stringify(
-                body,
-                null,
-                2
-            );
+        // ======================================================
+        // ESCRIBIR BODY
+        // ======================================================
+
+        if (
+            body
+        ) {
+
+            request.body.raw =
+                JSON.stringify(
+                    body,
+                    null,
+                    2
+                );
+
+        }
 
     }
 
@@ -1941,7 +2191,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // ASSERTION HTTP
+        // HTTP
         // ======================================================
 
         scripts.push(
@@ -1953,6 +2203,109 @@ class CollectionPreparer {
             "});"
 
         );
+
+
+        // ======================================================
+        // REGISTER CUSTOMER
+        // ======================================================
+
+        if (
+            method === "POST" &&
+            endpoint ===
+            "/api/auth/register/customer"
+        ) {
+
+            scripts.push(
+
+                "",
+
+                "pm.test('Customer registrado correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
+
+                "    const data = pm.response.json();",
+
+                "    console.log('✓ Customer registrado correctamente');",
+
+                "    if (data?.id) pm.collectionVariables.set('testCustomerUserId', data.id);",
+
+                "    if (data?.userId) pm.collectionVariables.set('testCustomerUserId', data.userId);",
+
+                "});"
+
+            );
+
+        }
+
+
+        // ======================================================
+        // REGISTER ENTREPRENEUR
+        // ======================================================
+
+        if (
+            method === "POST" &&
+            endpoint ===
+            "/api/auth/register/entrepreneur"
+        ) {
+
+            scripts.push(
+
+                "",
+
+                "pm.test('Entrepreneur registrado correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
+
+                "    const data = pm.response.json();",
+
+                "    console.log('✓ Entrepreneur registrado correctamente');",
+
+                "    if (data?.id) pm.collectionVariables.set('testEntrepreneurUserId', data.id);",
+
+                "    if (data?.userId) pm.collectionVariables.set('testEntrepreneurUserId', data.userId);",
+
+                "    if (data?.store?.id) pm.collectionVariables.set('testEntrepreneurStoreId', data.store.id);",
+
+                "    if (data?.storeId) pm.collectionVariables.set('testEntrepreneurStoreId', data.storeId);",
+
+                "});"
+
+            );
+
+        }
+
+
+        // ======================================================
+        // REGISTER ADMIN
+        // ======================================================
+
+        if (
+            method === "POST" &&
+            endpoint ===
+            "/api/auth/register/admin"
+        ) {
+
+            scripts.push(
+
+                "",
+
+                "pm.test('Admin registrado correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
+
+                "    const data = pm.response.json();",
+
+                "    console.log('✓ Admin registrado correctamente');",
+
+                "    if (data?.id) pm.collectionVariables.set('testAdminUserId', data.id);",
+
+                "    if (data?.userId) pm.collectionVariables.set('testAdminUserId', data.userId);",
+
+                "});"
+
+            );
+
+        }
 
 
         // ======================================================
@@ -1971,15 +2324,19 @@ class CollectionPreparer {
 
                 "pm.test('Login devuelve JWT', function () {",
 
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
+
                 "    const data = pm.response.json();",
 
-                "    pm.expect(data).to.have.property('token');",
+                "    const token = data?.token || data?.accessToken || data?.jwt;",
 
-                "    pm.expect(data.token).to.be.a('string').and.not.empty;",
+                "    pm.expect(token).to.be.a('string').and.not.empty;",
 
-                "    pm.collectionVariables.set('token', data.token);",
+                "    pm.collectionVariables.set('testToken', token);",
 
-                "    if (data.userId) pm.collectionVariables.set('userId', data.userId);",
+                "    if (data?.userId) pm.collectionVariables.set('testUserId', data.userId);",
+
+                "    console.log('✓ JWT_TEST obtenido mediante POST /login');",
 
                 "});"
 
@@ -1989,30 +2346,28 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // ENTREPRENEUR
+        // GET ME
         // ======================================================
 
         if (
-            method === "POST" &&
+            method === "GET" &&
             endpoint ===
-            "/api/auth/register/entrepreneur"
+            "/api/auth/me"
         ) {
 
             scripts.push(
 
                 "",
 
-                "pm.test('Entrepreneur registrado', function () {",
-
-                "    const data = pm.response.json();",
+                "pm.test('GET /me exitoso', function () {",
 
                 "    pm.expect(pm.response.code).to.be.within(200, 299);",
 
-                "    console.log('✓ Entrepreneur registrado correctamente');",
+                "    const data = pm.response.json();",
 
-                "    if (data?.store?.id) pm.collectionVariables.set('testEntrepreneurStoreId', data.store.id);",
+                "    console.log('✓ GET /me ejecutado con JWT_TEST');",
 
-                "    if (data?.storeId) pm.collectionVariables.set('testEntrepreneurStoreId', data.storeId);",
+                "    console.log('✓ Usuario autenticado:', data?.email || data?.user?.email || 'OK');",
 
                 "});"
 
@@ -2022,7 +2377,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // PUBLICATION CREATE
+        // CREATE PUBLICATION
         // ======================================================
 
         if (
@@ -2035,13 +2390,17 @@ class CollectionPreparer {
 
                 "",
 
-                "pm.test('Publication creada', function () {",
+                "pm.test('Publication creada correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
 
                 "    const data = pm.response.json();",
 
+                "    console.log('✓ Publication creada');",
+
                 "    if (data?.id) pm.collectionVariables.set('testPublicationId', data.id);",
 
-                "    console.log('✓ Publication creada correctamente');",
+                "    if (data?.publicationId) pm.collectionVariables.set('testPublicationId', data.publicationId);",
 
                 "});"
 
@@ -2051,7 +2410,7 @@ class CollectionPreparer {
 
 
         // ======================================================
-        // INTERACTION CREATE
+        // CREATE INTERACTION
         // ======================================================
 
         if (
@@ -2064,13 +2423,44 @@ class CollectionPreparer {
 
                 "",
 
-                "pm.test('Interaction creada', function () {",
+                "pm.test('Interaction creada correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
 
                 "    const data = pm.response.json();",
 
+                "    console.log('✓ Interaction creada');",
+
                 "    if (data?.id) pm.collectionVariables.set('testInteractionId', data.id);",
 
-                "    console.log('✓ Interaction creada correctamente');",
+                "    if (data?.interactionId) pm.collectionVariables.set('testInteractionId', data.interactionId);",
+
+                "});"
+
+            );
+
+        }
+
+
+        // ======================================================
+        // LOGOUT
+        // ======================================================
+
+        if (
+            method === "POST" &&
+            endpoint ===
+            "/api/auth/logout"
+        ) {
+
+            scripts.push(
+
+                "",
+
+                "pm.test('Logout ejecutado correctamente', function () {",
+
+                "    pm.expect(pm.response.code).to.be.within(200, 299);",
+
+                "    console.log('✓ Logout ejecutado con JWT_TEST');",
 
                 "});"
 
@@ -2082,6 +2472,273 @@ class CollectionPreparer {
         this.ensureTestEvent(
             item,
             scripts
+        );
+
+    }
+
+
+    // ==========================================================
+    // SKIP REAL MEDIANTE PRE-REQUEST
+    //
+    // ESTA ES LA CORRECCIÓN IMPORTANTE.
+    //
+    // pm.execution.skipRequest()
+    // evita que Newman envíe el HTTP request.
+    // ==========================================================
+
+    addPreRequestSkip(
+        item,
+        reason
+    ) {
+
+        item.event =
+            Array.isArray(
+                item.event
+            )
+                ? item.event
+                : [];
+
+
+        const existing =
+            item.event.find(
+                event =>
+                    event.listen ===
+                    "prerequest"
+            );
+
+
+        const script = {
+
+            type:
+                "text/javascript",
+
+            exec: [
+
+                `console.log('⏭️ SKIPPED REQUEST: ${this.escapeScriptString(reason)}');`,
+
+                "pm.execution.skipRequest();"
+
+            ]
+
+        };
+
+
+        if (
+            existing
+        ) {
+
+            existing.script =
+                script;
+
+        }
+        else {
+
+            item.event.push({
+
+                listen:
+                    "prerequest",
+
+                script
+
+            });
+
+        }
+
+
+        item.__skipReason =
+            reason;
+
+
+        console.log(
+            `⏭️ SKIP REAL ${this.getMethod(item.request)} ${this.getEndpoint(item.request)}`
+        );
+
+
+        console.log(
+            `   Motivo: ${reason}`
+        );
+
+    }
+
+
+    // ==========================================================
+    // PREPARAR INTERACTION DEPENDIENTE
+    // ==========================================================
+
+    prepareInteractionDependentRequest(
+        item,
+        endpoint,
+        values
+    ) {
+
+        if (
+            values.interactionId
+        ) {
+
+            return;
+
+        }
+
+
+        // Si no existe interaction de Discovery,
+        // usamos la interaction que pueda crear
+        // POST /api/interactions.
+
+        this.addPreRequestSkipIfVariableEmpty(
+            item,
+            "testInteractionId",
+            "No existe interactionId y no se pudo crear una interaction."
+        );
+
+    }
+
+
+    // ==========================================================
+    // SKIP SI VARIABLE VACÍA
+    // ==========================================================
+
+    addPreRequestSkipIfVariableEmpty(
+        item,
+        variable,
+        reason
+    ) {
+
+        item.event =
+            Array.isArray(
+                item.event
+            )
+                ? item.event
+                : [];
+
+
+        const existing =
+            item.event.find(
+                event =>
+                    event.listen ===
+                    "prerequest"
+            );
+
+
+        const lines = [
+
+            `const value = pm.collectionVariables.get('${variable}');`,
+
+            "if (!value) {",
+
+            `    console.log('⏭️ SKIPPED: ${this.escapeScriptString(reason)}');`,
+
+            "    pm.execution.skipRequest();",
+
+            "}"
+
+        ];
+
+
+        if (
+            existing
+        ) {
+
+            const previous =
+                Array.isArray(
+                    existing.script?.exec
+                )
+                    ? existing.script.exec
+                    : [];
+
+
+            existing.script = {
+
+                type:
+                    "text/javascript",
+
+                exec: [
+
+                    ...previous,
+
+                    ...lines
+
+                ]
+
+            };
+
+        }
+        else {
+
+            item.event.push({
+
+                listen:
+                    "prerequest",
+
+                script: {
+
+                    type:
+                        "text/javascript",
+
+                    exec:
+                        lines
+
+                }
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // REQUIERE INTERACTION
+    // ==========================================================
+
+    requiresInteractionId(
+        endpoint
+    ) {
+
+        return (
+            endpoint.startsWith(
+                "/api/interactions/"
+            )
+        );
+
+    }
+
+
+    // ==========================================================
+    // REQUIERE STORE
+    // ==========================================================
+
+    requiresStoreId(
+        endpoint
+    ) {
+
+        return (
+
+            endpoint.startsWith(
+                "/api/stores/"
+            )
+
+        );
+
+    }
+
+
+    // ==========================================================
+    // REQUIERE PUBLICATION
+    // ==========================================================
+
+    requiresPublicationId(
+        endpoint,
+        method
+    ) {
+
+        return (
+
+            (
+                endpoint.startsWith(
+                    "/api/publications/"
+                )
+            )
+
         );
 
     }
@@ -2129,7 +2786,9 @@ class CollectionPreparer {
         };
 
 
-        if (existing) {
+        if (
+            existing
+        ) {
 
             Object.assign(
                 existing,
@@ -2166,7 +2825,9 @@ class CollectionPreparer {
             );
 
 
-        if (existing) {
+        if (
+            existing
+        ) {
 
             existing.value =
                 value;
@@ -2206,7 +2867,9 @@ class CollectionPreparer {
             );
 
 
-        if (existing) {
+        if (
+            existing
+        ) {
 
             existing.value =
                 value;
@@ -2386,6 +3049,10 @@ class CollectionPreparer {
 
             text === "<uuid>" ||
 
+            text === "<string>" ||
+
+            text === "<number>" ||
+
             this.isUuid(text)
 
         );
@@ -2408,6 +3075,33 @@ class CollectionPreparer {
             )
 
         );
+
+    }
+
+
+    // ==========================================================
+    // ESCAPAR TEXTO PARA SCRIPT
+    // ==========================================================
+
+    escapeScriptString(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /\\/g,
+                "\\\\"
+            )
+            .replace(
+                /'/g,
+                "\\'"
+            )
+            .replace(
+                /\r?\n/g,
+                "\\n"
+            );
 
     }
 

@@ -10,106 +10,6 @@
   },
   "item": [
     {
-      "name": "register Entrepreneur",
-      "id": "7298570d-3a18-45eb-85a2-9749b3887203",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept",
-            "value": "*/*"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"apellidoPaterno\": \"Testing UMSS Market\",\n  \"celular\": \"Testing UMSS Market\",\n  \"email\": \"Testing UMSS Market\",\n  \"facultad\": \"Testing UMSS Market\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"nombreTienda\": \"Testing UMSS Market\",\n  \"password\": \"Testing UMSS Market\",\n  \"ru\": \"Testing UMSS Market\",\n  \"apellidoMaterno\": \"Testing UMSS Market\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "auth",
-            "register",
-            "entrepreneur"
-          ]
-        }
-      },
-      "response": [
-        {
-          "id": "663a65a4-6803-4e97-b25a-e6504d713c76",
-          "name": "OK",
-          "originalRequest": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"nombreTienda\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register",
-                "entrepreneur"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "*/*"
-            }
-          ],
-          "cookie": [],
-          "responseTime": null,
-          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"0b55ee53-55cf-a50d-175c-f9e88e9afa0e\",\n  \"tiendaId\": \"ffb6522c-c026-b130-122d-fa19382b76ad\"\n}",
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-663a65a4-6803-4e97-b25a-e6504d713c76"
-        }
-      ],
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-7298570d-3a18-45eb-85a2-9749b3887203"
-    },
-    {
       "name": "register Customer",
       "id": "17cf5447-61c9-4ddf-ba6b-9586f8fb61d8",
       "protocolProfileBehavior": {
@@ -125,16 +25,11 @@
           {
             "key": "Accept",
             "value": "*/*"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
-            "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"apellidoPaterno\": \"Testing UMSS Market\",\n  \"celular\": \"Testing UMSS Market\",\n  \"email\": \"Testing UMSS Market\",\n  \"facultad\": \"Testing UMSS Market\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"password\": \"Testing UMSS Market\",\n  \"ru\": \"Testing UMSS Market\",\n  \"apellidoMaterno\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"ru\": \"2026134182677\",\n  \"nombre\": \"Cliente\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"customer.testing.134182677@umss.edu.bo\",\n  \"celular\": \"70422848\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -210,6 +105,101 @@
       "uid": "17497186-17cf5447-61c9-4ddf-ba6b-9586f8fb61d8"
     },
     {
+      "name": "register Entrepreneur",
+      "id": "7298570d-3a18-45eb-85a2-9749b3887203",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ru\": \"2026134181759\",\n  \"nombre\": \"Emprendedor\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"entrepreneur.testing.134181759@umss.edu.bo\",\n  \"celular\": \"70459831\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register",
+            "entrepreneur"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "663a65a4-6803-4e97-b25a-e6504d713c76",
+          "name": "OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"nombreTienda\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register",
+                "entrepreneur"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"0b55ee53-55cf-a50d-175c-f9e88e9afa0e\",\n  \"tiendaId\": \"ffb6522c-c026-b130-122d-fa19382b76ad\"\n}",
+          "createdAt": "2026-08-21T08:58:25.000Z",
+          "updatedAt": "2026-08-21T08:58:25.000Z",
+          "uid": "17497186-663a65a4-6803-4e97-b25a-e6504d713c76"
+        }
+      ],
+      "createdAt": "2026-08-21T08:58:25.000Z",
+      "updatedAt": "2026-08-21T08:58:25.000Z",
+      "uid": "17497186-7298570d-3a18-45eb-85a2-9749b3887203"
+    },
+    {
       "name": "register Admin",
       "id": "22626317-d283-4854-9f02-e2f14c042240",
       "protocolProfileBehavior": {
@@ -225,16 +215,11 @@
           {
             "key": "Accept",
             "value": "*/*"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
-            "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"apellidoPaterno\": \"Testing UMSS Market\",\n  \"celular\": \"Testing UMSS Market\",\n  \"email\": \"Testing UMSS Market\",\n  \"facultad\": \"Testing UMSS Market\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"password\": \"Testing UMSS Market\",\n  \"ru\": \"Testing UMSS Market\",\n  \"apellidoMaterno\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"ru\": \"2026134182521\",\n  \"nombre\": \"Administrador\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"admin.testing.134182521@umss.edu.bo\",\n  \"celular\": \"70365532\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -325,16 +310,11 @@
           {
             "key": "Accept",
             "value": "*/*"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
-            "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"email\": \"Testing UMSS Market\",\n  \"password\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"email\": \"mateo.cabrera.test@umss.edu.bo\",\n  \"password\": \"12345678\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -405,7 +385,42 @@
       ],
       "createdAt": "2026-08-21T08:58:25.000Z",
       "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-46eb87d0-bdcb-4e65-b339-c34a214ef592"
+      "uid": "17497186-46eb87d0-bdcb-4e65-b339-c34a214ef592",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('POST /login - Login exitoso', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});",
+              "",
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    const data = pm.response.json();",
+              "",
+              "    const jwt =",
+              "        data?.token ||",
+              "        data?.accessToken ||",
+              "        data?.jwt ||",
+              "        data?.data?.token ||",
+              "        data?.data?.accessToken ||",
+              "        null;",
+              "",
+              "    if (!jwt) {",
+              "        throw new Error('LOGIN OK pero no se encontró JWT.');",
+              "    }",
+              "",
+              "    pm.collectionVariables.set('testToken', jwt);",
+              "    pm.collectionVariables.set('authToken', jwt);",
+              "    pm.collectionVariables.set('token', jwt);",
+              "",
+              "    console.log('✓ JWT DEL LOGIN CAPTURADO');",
+              "}"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "me",
@@ -422,7 +437,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -481,7 +496,20 @@
       ],
       "createdAt": "2026-08-21T08:58:25.000Z",
       "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-36693d46-97e7-4152-9b52-f4f07d7a3f36"
+      "uid": "17497186-36693d46-97e7-4152-9b52-f4f07d7a3f36",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('GET /me - Usuario autenticado', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "get User By Id",
@@ -498,7 +526,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -510,7 +538,7 @@
           "path": [
             "api",
             "users",
-            "cf77959b-2ea3-4ff4-a252-53c3d34af7f6"
+            "b744aff3-6e1a-44c7-b96b-0ad5325aa52b"
           ],
           "variable": [
             {
@@ -593,7 +621,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -614,7 +642,7 @@
           "path": [
             "api",
             "users",
-            "cf77959b-2ea3-4ff4-a252-53c3d34af7f6"
+            "b744aff3-6e1a-44c7-b96b-0ad5325aa52b"
           ],
           "variable": [
             {
@@ -706,7 +734,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -727,7 +755,7 @@
           "path": [
             "api",
             "users",
-            "cf77959b-2ea3-4ff4-a252-53c3d34af7f6",
+            "b744aff3-6e1a-44c7-b96b-0ad5325aa52b",
             "status"
           ],
           "variable": [
@@ -817,7 +845,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -891,7 +919,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -903,7 +931,7 @@
           "path": [
             "api",
             "stores",
-            "c3913059-ff9b-4ccc-8d9d-1325fa6774df"
+            "fb9ef2e9-44e3-466e-af30-a2ed383c6077"
           ],
           "variable": [
             {
@@ -986,7 +1014,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1007,7 +1035,7 @@
           "path": [
             "api",
             "stores",
-            "c3913059-ff9b-4ccc-8d9d-1325fa6774df"
+            "fb9ef2e9-44e3-466e-af30-a2ed383c6077"
           ],
           "variable": [
             {
@@ -1099,7 +1127,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1120,7 +1148,7 @@
           "path": [
             "api",
             "stores",
-            "c3913059-ff9b-4ccc-8d9d-1325fa6774df"
+            "fb9ef2e9-44e3-466e-af30-a2ed383c6077"
           ],
           "variable": [
             {
@@ -1208,7 +1236,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1268,102 +1296,6 @@
       "uid": "17497186-aa235ffd-7014-4ce8-b369-784c8230ea8e"
     },
     {
-      "name": "create Store",
-      "id": "8b0e9472-5c51-4468-8af2-a908b66cd6f6",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Accept",
-            "value": "*/*"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nombre\": \"Testing UMSS Market\",\n  \"telefonoContacto\": \"Testing UMSS Market\",\n  \"userId\": \"cf77959b-2ea3-4ff4-a252-53c3d34af7f6\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"categoria\": \"Testing UMSS Market\",\n  \"emailContacto\": \"Testing UMSS Market\",\n  \"status\": \"Testing UMSS Market\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/stores",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "stores"
-          ]
-        }
-      },
-      "response": [
-        {
-          "id": "6585b680-bc2b-4c2f-a894-822a7acf7abd",
-          "name": "OK",
-          "originalRequest": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"userId\": \"<uuid>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/stores",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": "json",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "*/*"
-            }
-          ],
-          "cookie": [],
-          "responseTime": null,
-          "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"storeId\": \"801455f3-c7a7-0ae2-cf9b-fb210f9ce948\",\n  \"userId\": \"3ceb8f27-bf0f-302e-01e3-7557e5bd1c93\"\n}",
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-6585b680-bc2b-4c2f-a894-822a7acf7abd"
-        }
-      ],
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-8b0e9472-5c51-4468-8af2-a908b66cd6f6"
-    },
-    {
       "name": "find By Id",
       "id": "3963aad7-45ee-47b7-9332-46aaf9c9cc00",
       "protocolProfileBehavior": {
@@ -1378,7 +1310,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1390,7 +1322,7 @@
           "path": [
             "api",
             "publications",
-            "c6c8a028-6844-4768-8fa4-703c83d0df26"
+            "4724df9d-cf4d-43df-a181-4cf056fdc710"
           ],
           "variable": [
             {
@@ -1473,7 +1405,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1494,7 +1426,7 @@
           "path": [
             "api",
             "publications",
-            "c6c8a028-6844-4768-8fa4-703c83d0df26"
+            "4724df9d-cf4d-43df-a181-4cf056fdc710"
           ],
           "variable": [
             {
@@ -1582,7 +1514,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1598,27 +1530,27 @@
           "query": [
             {
               "key": "texto",
-              "value": "<string>",
+              "value": "producto",
               "description": "(Required) "
             },
             {
               "key": "tipo",
-              "value": "<string>",
+              "value": "PRODUCTO",
               "description": "(Required) "
             },
             {
               "key": "precioMin",
-              "value": "<number>",
+              "value": "0",
               "description": "(Required) "
             },
             {
               "key": "precioMax",
-              "value": "<number>",
+              "value": "10000",
               "description": "(Required) "
             },
             {
               "key": "storeId",
-              "value": "<uuid>",
+              "value": "fb9ef2e9-44e3-466e-af30-a2ed383c6077",
               "description": "(Required) "
             }
           ]
@@ -1709,13 +1641,13 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"storeId\": \"cf77959b-2ea3-4ff4-a252-53c3d34af7f6\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"storeId\": \"4724df9d-cf4d-43df-a181-4cf056fdc710\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -1805,7 +1737,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1826,7 +1758,7 @@
           "path": [
             "api",
             "publications",
-            "c6c8a028-6844-4768-8fa4-703c83d0df26",
+            "4724df9d-cf4d-43df-a181-4cf056fdc710",
             "status"
           ],
           "variable": [
@@ -1916,7 +1848,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -1933,7 +1865,7 @@
           "query": [
             {
               "key": "query",
-              "value": "<string>",
+              "value": "producto UMSS",
               "description": "(Required) "
             },
             {
@@ -2013,7 +1945,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2091,13 +2023,13 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"publicationId\": \"cf77959b-2ea3-4ff4-a252-53c3d34af7f6\",\n  \"type\": \"Testing UMSS Market\",\n  \"metadata\": \"Testing UMSS Market\"\n}",
+          "raw": "{\n  \"publicationId\": \"4724df9d-cf4d-43df-a181-4cf056fdc710\",\n  \"type\": \"Testing UMSS Market\",\n  \"metadata\": \"Testing UMSS Market\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -2183,7 +2115,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2195,7 +2127,7 @@
           "path": [
             "api",
             "interactions",
-            "ce3cd70a-67de-4012-ab5b-80a233a41751"
+            "fd6919bd-8821-4f03-80e9-136e3528d120"
           ],
           "variable": [
             {
@@ -2278,7 +2210,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2376,7 +2308,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2470,7 +2402,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2548,7 +2480,7 @@
           },
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2622,7 +2554,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2634,7 +2566,7 @@
           "path": [
             "api",
             "users",
-            "cf77959b-2ea3-4ff4-a252-53c3d34af7f6"
+            "b744aff3-6e1a-44c7-b96b-0ad5325aa52b"
           ],
           "variable": [
             {
@@ -2704,7 +2636,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2716,7 +2648,7 @@
           "path": [
             "api",
             "stores",
-            "c3913059-ff9b-4ccc-8d9d-1325fa6774df"
+            "fb9ef2e9-44e3-466e-af30-a2ed383c6077"
           ],
           "variable": [
             {
@@ -2786,7 +2718,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2798,7 +2730,7 @@
           "path": [
             "api",
             "publications",
-            "c6c8a028-6844-4768-8fa4-703c83d0df26"
+            "4724df9d-cf4d-43df-a181-4cf056fdc710"
           ],
           "variable": [
             {
@@ -2868,7 +2800,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -2880,7 +2812,7 @@
           "path": [
             "api",
             "interactions",
-            "ce3cd70a-67de-4012-ab5b-80a233a41751"
+            "fd6919bd-8821-4f03-80e9-136e3528d120"
           ],
           "variable": [
             {
@@ -2950,7 +2882,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc",
+            "value": "Bearer {{testToken}}",
             "type": "text"
           }
         ],
@@ -3009,7 +2941,20 @@
       ],
       "createdAt": "2026-08-21T08:58:25.000Z",
       "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-1625e881-6ff6-45ab-b8bc-34741b9232e2"
+      "uid": "17497186-1625e881-6ff6-45ab-b8bc-34741b9232e2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('POST /logout - Logout exitoso', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});"
+            ]
+          }
+        }
+      ]
     }
   ],
   "variable": [
@@ -3020,27 +2965,43 @@
     },
     {
       "key": "userId",
-      "value": "cf77959b-2ea3-4ff4-a252-53c3d34af7f6"
+      "value": "b744aff3-6e1a-44c7-b96b-0ad5325aa52b"
     },
     {
       "key": "storeId",
-      "value": "c3913059-ff9b-4ccc-8d9d-1325fa6774df"
+      "value": "fb9ef2e9-44e3-466e-af30-a2ed383c6077"
     },
     {
       "key": "publicationId",
-      "value": "c6c8a028-6844-4768-8fa4-703c83d0df26"
+      "value": "4724df9d-cf4d-43df-a181-4cf056fdc710"
     },
     {
       "key": "interactionId",
-      "value": "ce3cd70a-67de-4012-ab5b-80a233a41751"
+      "value": "fd6919bd-8821-4f03-80e9-136e3528d120"
+    },
+    {
+      "key": "discoveryToken",
+      "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJiNzQ0YWZmMy02ZTFhLTQ0YzctYjk2Yi0wYWQ1MzI1YWE1MmIiLCJlbWFpbCI6Im1hdGVvLmNhYnJlcmEudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMzYxMzQsImV4cCI6MTc4NzQyMjUzNH0.2uLBNjN7lD9YglN6TB1crSmRNN1w8mVO8kpPR0BZAAIjHm2O2Ld3ge3LUFwVmPzf"
+    },
+    {
+      "key": "testToken",
+      "value": ""
     },
     {
       "key": "authToken",
-      "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc"
+      "value": ""
     },
     {
       "key": "token",
-      "value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJjZjc3OTU5Yi0yZWEzLTRmZjQtYTI1Mi01M2MzZDM0YWY3ZjYiLCJlbWFpbCI6InBhb2xhLmNvbmRvcmkudGVzdEB1bXNzLmVkdS5ibyIsInJvbGUiOiJDT01QUkFET1IiLCJpYXQiOjE3ODczMjgzNTYsImV4cCI6MTc4NzQxNDc1Nn0.ImYHGFEkLKRreinbCfay2g7azfooBAVQd-ET7lLOgFHkeLGgn9uZ0LnNIUQKyRZc"
+      "value": ""
+    },
+    {
+      "key": "testEmail",
+      "value": "mateo.cabrera.test@umss.edu.bo"
+    },
+    {
+      "key": "testPassword",
+      "value": "12345678"
     }
   ]
 }
