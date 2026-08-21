@@ -16,4 +16,6 @@ public interface PublicationRepositoryPort {
     Optional<Publication> findById(UUID id);
 
     List<Publication> findByFilters(CatalogFilter filter);
+
+    void deleteById(UUID id);
 }

@@ -148,3 +148,4 @@ class GetStorePublicProfileUseCaseTest {
         verifyNoInteractions(publicationRepository);
     }
 }
+

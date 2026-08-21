@@ -1,5 +1,6 @@
 package bo.umss.market.umss_market_api.infrastructure.adapters;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,6 +34,14 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
+    public List<User> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(UserMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public Optional<User> findByRu(String ru) {
         return repository.findByRu(ru)
                 .map(UserMapper::toDomain);
@@ -52,5 +61,10 @@ public class JpaUserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
     }
 }

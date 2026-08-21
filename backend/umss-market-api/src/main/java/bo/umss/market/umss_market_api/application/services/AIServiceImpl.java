@@ -12,6 +12,8 @@ import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,8 +43,8 @@ public class AIServiceImpl implements AIService {
 
     public AIServiceImpl(
             AIProviderPort provider,
-            SearchCatalogUseCase searchCatalogUseCase
-    ) {
+            SearchCatalogUseCase searchCatalogUseCase) {
+
         this.provider = provider;
         this.searchCatalogUseCase = searchCatalogUseCase;
     }
@@ -55,7 +57,12 @@ public class AIServiceImpl implements AIService {
     public String generate(String prompt) {
 
         if (!iaEnabled) {
-            return "La IA está deshabilitada. Solo puedo ayudarte con búsquedas del catálogo.";
+            return """
+                    La IA está deshabilitada.
+
+                    Solo puedo ayudarte con búsquedas
+                    del catálogo.
+                    """;
         }
 
         return provider.generate(prompt);
@@ -79,10 +86,10 @@ public class AIServiceImpl implements AIService {
         if (texto.isBlank()) {
 
             return """
-                    No puedo responder esa consulta.
+                    No puedo responder una consulta vacía.
 
                     Puedo ayudarte con:
-                    - Buscar publicaciones
+
                     - Buscar productos
                     - Buscar servicios
                     - Consultar detalles de publicaciones
@@ -113,6 +120,7 @@ public class AIServiceImpl implements AIService {
                     La IA está deshabilitada.
 
                     Puedo ayudarte con:
+
                     - Buscar publicaciones
                     - Buscar productos
                     - Buscar servicios
@@ -128,10 +136,11 @@ public class AIServiceImpl implements AIService {
         if (decision == null || decision.getTool() == null) {
 
             return """
-                    No puedo responder esa consulta.
+                    No pude determinar qué herramienta
+                    utilizar para tu consulta.
 
                     Puedo ayudarte con:
-                    - Buscar publicaciones
+
                     - Buscar productos
                     - Buscar servicios
                     - Consultar detalles de publicaciones
@@ -145,10 +154,7 @@ public class AIServiceImpl implements AIService {
                 .trim()
                 .toUpperCase(Locale.ROOT);
 
-        // ========================================================
-        // MOSTRAR DECISIÓN DEL ROUTER
-        // ========================================================
-
+        System.out.println();
         System.out.println("=================================");
         System.out.println("AI TOOL ROUTER");
         System.out.println("=================================");
@@ -158,13 +164,14 @@ public class AIServiceImpl implements AIService {
         System.out.println("=================================");
 
         // ========================================================
-        // ROUTER DE HERRAMIENTAS / RAGS
+        // ROUTER
         // ========================================================
 
         switch (tool) {
 
             // ====================================================
-            // RAG #1 - SEARCH CATALOG
+            // RAG #1
+            // SEARCH CATALOG
             // ====================================================
 
             case "SEARCH_CATALOG":
@@ -175,7 +182,8 @@ public class AIServiceImpl implements AIService {
                 );
 
             // ====================================================
-            // RAG #2 - PUBLICATION DETAIL
+            // RAG #2
+            // PUBLICATION DETAIL
             // ====================================================
 
             case "PUBLICATION_DETAIL":
@@ -188,62 +196,59 @@ public class AIServiceImpl implements AIService {
                             """;
                 }
 
-                /*
-                 * Primero intentamos determinar si el LLM entregó
-                 * directamente el UUID de una publicación.
-                 */
-                UUID pubId = extractPublicationId(decision);
+                UUID publicationId =
+                        extractPublicationId(decision);
 
-                if (pubId != null) {
+                // ------------------------------------------------
+                // UUID DIRECTO
+                // ------------------------------------------------
+
+                if (publicationId != null) {
 
                     System.out.println(
-                            "RAG #2: UUID de publicación detectado: "
-                                    + pubId
+                            "RAG #2 -> UUID encontrado: "
+                                    + publicationId
                     );
 
                     return publicationDetailUseCase
                             .executeWithContext(
-                                    pubId,
+                                    publicationId,
                                     texto
                             );
                 }
 
-                /*
-                 * Si el LLM no entregó un UUID, significa que
-                 * probablemente devolvió una consulta semántica,
-                 * por ejemplo:
-                 *
-                 * "características laptop"
-                 *
-                 * En ese caso realizamos búsqueda semántica.
-                 */
+                // ------------------------------------------------
+                // BÚSQUEDA SEMÁNTICA
+                // ------------------------------------------------
+
                 System.out.println(
-                        "RAG #2: No se encontró UUID. "
-                                + "Ejecutando búsqueda semántica."
+                        "RAG #2 -> búsqueda semántica"
                 );
 
                 return publicationDetailUseCase
                         .executeSemanticSearch(texto);
 
             // ====================================================
-            // RAG #3 - SEARCH STORES
+            // RAG #3
+            // SEARCH STORES
             // ====================================================
 
             case "SEARCH_STORES":
 
-                if (searchStoresUseCase != null) {
+                if (searchStoresUseCase == null) {
 
-                    return searchStoresUseCase
-                            .executeSemanticSearch(texto);
+                    return """
+                            El módulo de búsqueda de tiendas
+                            no está disponible actualmente.
+                            """;
                 }
 
-                return """
-                        No pude buscar tiendas
-                        en este momento.
-                        """;
+                return searchStoresUseCase
+                        .executeSemanticSearch(texto);
 
             // ====================================================
-            // RAG #4 - USER INTERACTIONS
+            // RAG #4
+            // USER INTERACTIONS
             // ====================================================
 
             case "USER_INTERACTIONS":
@@ -251,29 +256,36 @@ public class AIServiceImpl implements AIService {
                 if (userInteractionsUseCase == null) {
 
                     return """
-                            El módulo de historial
-                            no está disponible.
+                            El módulo de historial de usuario
+                            no está disponible actualmente.
                             """;
                 }
 
-                UUID userId = getCurrentUserId();
+                UUID currentUserId =
+                        getCurrentUserId();
 
-                if (userId != null) {
+                if (currentUserId == null) {
 
-                    return userInteractionsUseCase
-                            .executeUserHistory(
-                                    userId,
-                                    texto
-                            );
+                    return """
+                            Debes iniciar sesión para consultar
+                            tu historial de interacciones.
+                            """;
                 }
 
-                return """
-                        No pude identificar al usuario actual
-                        para consultar su historial.
-                        """;
+                System.out.println(
+                        "RAG #4 -> Usuario autenticado: "
+                                + currentUserId
+                );
+
+                return userInteractionsUseCase
+                        .executeUserHistory(
+                                currentUserId,
+                                texto
+                        );
 
             // ====================================================
-            // RAG #5 - RECOMMENDATIONS
+            // RAG #5
+            // RECOMMENDATIONS
             // ====================================================
 
             case "RECOMMENDATIONS":
@@ -282,25 +294,31 @@ public class AIServiceImpl implements AIService {
 
                     return """
                             El módulo de recomendaciones
-                            no está disponible.
+                            no está disponible actualmente.
                             """;
                 }
 
-                UUID currentUserId = getCurrentUserId();
+                UUID recommendationUserId =
+                        getCurrentUserId();
 
-                if (currentUserId != null) {
+                if (recommendationUserId == null) {
 
-                    return recommendationsUseCase
-                            .getRecommendations(
-                                    currentUserId,
-                                    texto
-                            );
+                    return """
+                            Debes iniciar sesión para recibir
+                            recomendaciones personalizadas.
+                            """;
                 }
 
-                return """
-                        No pude identificar al usuario actual
-                        para generar recomendaciones.
-                        """;
+                System.out.println(
+                        "RAG #5 -> Usuario autenticado: "
+                                + recommendationUserId
+                );
+
+                return recommendationsUseCase
+                        .getRecommendations(
+                                recommendationUserId,
+                                texto
+                        );
 
             // ====================================================
             // NO TOOL
@@ -313,6 +331,7 @@ public class AIServiceImpl implements AIService {
                         que corresponda a tu consulta.
 
                         Puedo ayudarte con:
+
                         - Buscar productos
                         - Buscar servicios
                         - Consultar detalles de publicaciones
@@ -328,7 +347,7 @@ public class AIServiceImpl implements AIService {
             default:
 
                 System.out.println(
-                        "Tool desconocida recibida: "
+                        "Tool desconocida: "
                                 + tool
                 );
 
@@ -336,7 +355,7 @@ public class AIServiceImpl implements AIService {
                         No puedo responder esa consulta.
 
                         Puedo ayudarte con:
-                        - Buscar publicaciones
+
                         - Buscar productos
                         - Buscar servicios
                         - Consultar detalles de publicaciones
@@ -348,12 +367,14 @@ public class AIServiceImpl implements AIService {
     }
 
     // ============================================================
-    // DETECCIÓN DE BÚSQUEDA DE CATÁLOGO
+    // DETECTAR BÚSQUEDA DE CATÁLOGO
     // ============================================================
 
-    private boolean isCatalogSearchRequest(String message) {
+    private boolean isCatalogSearchRequest(
+            String message) {
 
-        String texto = message.toLowerCase(Locale.ROOT);
+        String texto =
+                message.toLowerCase(Locale.ROOT);
 
         return texto.contains("buscar")
                 || texto.contains("busco")
@@ -374,8 +395,7 @@ public class AIServiceImpl implements AIService {
     private String executeCatalogSearch(
             String message,
             String camino,
-            boolean showDisabledBanner
-    ) {
+            boolean showDisabledBanner) {
 
         CatalogFilterRequest request =
                 new CatalogFilterRequest();
@@ -439,28 +459,30 @@ public class AIServiceImpl implements AIService {
                 .append("\n");
 
                 respuesta.append(
-                        "📦 Stock disponible: "
+                        "   Stock disponible: "
                 )
                 .append(p.getStock())
                 .append("\n");
-            }
 
-            respuesta.append(
-                    "\n────────────────────────────────────\n\n"
-            );
+                respuesta.append(
+                        "   Tienda: "
+                )
+                .append(p.getNombreTienda())
+                .append("\n\n");
+            }
         }
 
         return respuesta.toString();
     }
 
     // ============================================================
-    // RAG #1 - BÚSQUEDA SEMÁNTICA DE CATÁLOGO
+    // RAG #1
+    // BÚSQUEDA SEMÁNTICA DE CATÁLOGO
     // ============================================================
 
     private String executeSemanticCatalogSearch(
             String message,
-            String camino
-    ) {
+            String camino) {
 
         List<PublicationSummaryResponse> publicaciones =
                 searchCatalogUseCase.executeSemanticSearch(
@@ -479,8 +501,7 @@ public class AIServiceImpl implements AIService {
                 || publicaciones.isEmpty()) {
 
             respuesta.append(
-                    "No encontré publicaciones que coincidan "
-                            + "con tu búsqueda.\n"
+                    "No encontré publicaciones relevantes.\n"
             );
 
         } else {
@@ -505,15 +526,17 @@ public class AIServiceImpl implements AIService {
                 .append("\n");
 
                 respuesta.append(
-                        "📦 Stock disponible: "
+                        "   Stock disponible: "
                 )
                 .append(p.getStock())
                 .append("\n");
-            }
 
-            respuesta.append(
-                    "\n────────────────────────────────────\n\n"
-            );
+                respuesta.append(
+                        "   Tienda: "
+                )
+                .append(p.getNombreTienda())
+                .append("\n\n");
+            }
         }
 
         return respuesta.toString();
@@ -524,68 +547,73 @@ public class AIServiceImpl implements AIService {
     // ============================================================
 
     private UUID extractPublicationId(
-            ToolDecision decision
-    ) {
+            ToolDecision decision) {
 
         if (decision == null) {
             return null;
         }
 
-        String query = decision.getQuery();
+        String query =
+                decision.getQuery();
 
-        if (query == null || query.isBlank()) {
+        if (query == null
+                || query.isBlank()) {
+
             return null;
         }
 
-        String cleanQuery = query.trim();
+        String cleanQuery =
+                query.trim();
 
-        /*
-         * Caso ideal:
-         *
-         * {
-         *   "tool": "PUBLICATION_DETAIL",
-         *   "query": "550e8400-e29b-41d4-a716-446655440000"
-         * }
-         */
         try {
 
             return UUID.fromString(cleanQuery);
 
         } catch (IllegalArgumentException ignored) {
 
-            /*
-             * El query no es UUID.
-             *
-             * Esto es esperado cuando el modelo responde:
-             *
-             * "características laptop"
-             *
-             * En ese caso el flujo continúa con
-             * executeSemanticSearch().
-             */
-
             return null;
         }
     }
 
     // ============================================================
-    // USUARIO ACTUAL
+    // OBTENER USUARIO AUTENTICADO
     // ============================================================
 
     private UUID getCurrentUserId() {
 
-        /*
-         * TODO:
-         *
-         * Obtener el userId desde:
-         *
-         * SecurityContextHolder
-         * JWT
-         * Authentication
-         *
-         * Actualmente se mantiene null para no alterar
-         * la arquitectura existente.
-         */
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        if (authentication == null) {
+            return null;
+        }
+
+        if (!authentication.isAuthenticated()) {
+            return null;
+        }
+
+        Object principal =
+                authentication.getPrincipal();
+
+        if (principal instanceof UUID) {
+            return (UUID) principal;
+        }
+
+        if (principal instanceof String) {
+
+            try {
+
+                return UUID.fromString(
+                        (String) principal
+                );
+
+            } catch (IllegalArgumentException ignored) {
+
+                return null;
+            }
+        }
 
         return null;
     }

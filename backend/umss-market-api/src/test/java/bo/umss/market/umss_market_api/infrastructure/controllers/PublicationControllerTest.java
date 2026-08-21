@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -23,13 +24,21 @@ import bo.umss.market.umss_market_api.application.dto.CatalogFilterRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationRequest;
 import bo.umss.market.umss_market_api.application.dto.CreatePublicationResponse;
 import bo.umss.market.umss_market_api.application.dto.PublicationSummaryResponse;
+import bo.umss.market.umss_market_api.application.dto.UpdatePublicationRequest;
+import bo.umss.market.umss_market_api.application.dto.UpdatePublicationStatusRequest;
+
 import bo.umss.market.umss_market_api.application.usecases.CreatePublicationUseCase;
+import bo.umss.market.umss_market_api.application.usecases.DeletePublicationUseCase;
 import bo.umss.market.umss_market_api.application.usecases.GetPublicationByIdUseCase;
 import bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCase;
+import bo.umss.market.umss_market_api.application.usecases.UpdatePublicationStatusUseCase;
+import bo.umss.market.umss_market_api.application.usecases.UpdatePublicationUseCase;
+
 import bo.umss.market.umss_market_api.domain.enums.PublicationType;
 import bo.umss.market.umss_market_api.domain.exceptions.InvalidPriceRangeException;
 import bo.umss.market.umss_market_api.domain.model.Publication;
-import bo.umss.market.umss_market_api.infrastructure.config.LegacyGlobalExceptionHandler;
+
+import bo.umss.market.umss_market_api.shared.GlobalExceptionHandler;
 
 class PublicationControllerTest {
 
@@ -38,6 +47,12 @@ class PublicationControllerTest {
     private SearchCatalogUseCase searchUseCase;
 
     private GetPublicationByIdUseCase getByIdUseCase;
+
+    private UpdatePublicationUseCase updateUseCase;
+
+    private UpdatePublicationStatusUseCase updateStatusUseCase;
+
+    private DeletePublicationUseCase deleteUseCase;
 
     private PublicationController controller;
 
@@ -55,28 +70,44 @@ class PublicationControllerTest {
         getByIdUseCase =
                 mock(GetPublicationByIdUseCase.class);
 
-        controller = new PublicationController(
-                createUseCase,
-                searchUseCase,
-                getByIdUseCase
-        );
+        updateUseCase =
+                mock(UpdatePublicationUseCase.class);
 
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
-                .setControllerAdvice(
-                        new LegacyGlobalExceptionHandler()
-                )
-                .build();
+        updateStatusUseCase =
+                mock(UpdatePublicationStatusUseCase.class);
+
+        deleteUseCase =
+                mock(DeletePublicationUseCase.class);
+
+        controller =
+                new PublicationController(
+                        createUseCase,
+                        searchUseCase,
+                        getByIdUseCase,
+                        updateUseCase,
+                        updateStatusUseCase,
+                        deleteUseCase
+                );
+
+        mockMvc =
+                MockMvcBuilders
+                        .standaloneSetup(controller)
+                        .setControllerAdvice(
+                                new GlobalExceptionHandler()
+                        )
+                        .build();
     }
 
     // ============================================================
+    // POST /api/publications
     // CREAR PUBLICACIÓN
     // ============================================================
 
     @Test
     void shouldCreatePublication() {
 
-        UUID publicationId = UUID.randomUUID();
+        UUID publicationId =
+                UUID.randomUUID();
 
         CreatePublicationResponse response =
                 CreatePublicationResponse.builder()
@@ -85,9 +116,11 @@ class PublicationControllerTest {
                         .publicationId(publicationId)
                         .build();
 
-        when(createUseCase.execute(
-                any(CreatePublicationRequest.class)
-        )).thenReturn(response);
+        when(
+                createUseCase.execute(
+                        any(CreatePublicationRequest.class)
+                )
+        ).thenReturn(response);
 
         var result =
                 controller.createPublication(
@@ -99,7 +132,9 @@ class PublicationControllerTest {
                 result.getStatusCode().value()
         );
 
-        assertNotNull(result.getBody());
+        assertNotNull(
+                result.getBody()
+        );
 
         assertTrue(
                 result.getBody().isSuccess()
@@ -112,6 +147,7 @@ class PublicationControllerTest {
     }
 
     // ============================================================
+    // GET /api/publications
     // BUSCAR CATÁLOGO
     // ============================================================
 
@@ -126,9 +162,11 @@ class PublicationControllerTest {
                         .tipo(PublicationType.PRODUCTO)
                         .build();
 
-        when(searchUseCase.execute(
-                any(CatalogFilterRequest.class)
-        )).thenReturn(
+        when(
+                searchUseCase.execute(
+                        any(CatalogFilterRequest.class)
+                )
+        ).thenReturn(
                 List.of(summary)
         );
 
@@ -155,13 +193,15 @@ class PublicationControllerTest {
     }
 
     // ============================================================
+    // GET /api/publications/{id}
     // OBTENER PUBLICACIÓN POR ID
     // ============================================================
 
     @Test
     void shouldGetPublicationById() {
 
-        UUID id = UUID.randomUUID();
+        UUID id =
+                UUID.randomUUID();
 
         Publication publication =
                 Publication.builder()
@@ -194,6 +234,155 @@ class PublicationControllerTest {
     }
 
     // ============================================================
+    // PUT /api/publications/{id}
+    // ACTUALIZAR PUBLICACIÓN
+    // ============================================================
+
+    @Test
+    void shouldUpdatePublication() {
+
+        UUID id =
+                UUID.randomUUID();
+
+        UpdatePublicationRequest request =
+                new UpdatePublicationRequest();
+
+        Publication updatedPublication =
+                Publication.builder()
+                        .id(id)
+                        .nombre("Brownie Renovado")
+                        .descripcion(
+                                "Brownie actualizado"
+                        )
+                        .precio(
+                                BigDecimal.valueOf(15)
+                        )
+                        .tipo(
+                                PublicationType.PRODUCTO
+                        )
+                        .stock(20)
+                        .activa(true)
+                        .build();
+
+        when(
+                updateUseCase.execute(
+                        id,
+                        request
+                )
+        ).thenReturn(updatedPublication);
+
+        var result =
+                controller.updatePublication(
+                        id,
+                        request
+                );
+
+        assertEquals(
+                200,
+                result.getStatusCode().value()
+        );
+
+        assertNotNull(
+                result.getBody()
+        );
+
+        assertEquals(
+                id,
+                result.getBody().getId()
+        );
+
+        assertEquals(
+                "Brownie Renovado",
+                result.getBody().getNombre()
+        );
+
+        verify(updateUseCase)
+                .execute(id, request);
+    }
+
+    // ============================================================
+    // PATCH /api/publications/{id}/status
+    // ACTIVAR / DESACTIVAR
+    // ============================================================
+
+    @Test
+    void shouldUpdatePublicationStatus() {
+
+        UUID id =
+                UUID.randomUUID();
+
+        UpdatePublicationStatusRequest request =
+                new UpdatePublicationStatusRequest();
+
+        Publication publication =
+                Publication.builder()
+                        .id(id)
+                        .nombre("Brownie")
+                        .precio(BigDecimal.TEN)
+                        .tipo(PublicationType.PRODUCTO)
+                        .activa(false)
+                        .build();
+
+        when(
+                updateStatusUseCase.execute(
+                        id,
+                        request
+                )
+        ).thenReturn(publication);
+
+        var result =
+                controller.updatePublicationStatus(
+                        id,
+                        request
+                );
+
+        assertEquals(
+                200,
+                result.getStatusCode().value()
+        );
+
+        assertNotNull(
+                result.getBody()
+        );
+
+        assertEquals(
+                id,
+                result.getBody().getId()
+        );
+
+        assertEquals(
+                false,
+                result.getBody().getActiva()
+        );
+
+        verify(updateStatusUseCase)
+                .execute(id, request);
+    }
+
+    // ============================================================
+    // DELETE /api/publications/{id}
+    // ELIMINAR PUBLICACIÓN
+    // ============================================================
+
+    @Test
+    void shouldDeletePublication() {
+
+        UUID id =
+                UUID.randomUUID();
+
+        var result =
+                controller.deletePublication(id);
+
+        assertEquals(
+                204,
+                result.getStatusCode().value()
+        );
+
+        verify(deleteUseCase)
+                .execute(id);
+    }
+
+    // ============================================================
     // GET /api/publications
     // SIN RESULTADOS
     // ============================================================
@@ -220,7 +409,8 @@ class PublicationControllerTest {
                         jsonPath("$").isArray()
                 )
                 .andExpect(
-                        jsonPath("$.length()").value(0)
+                        jsonPath("$.length()")
+                                .value(0)
                 );
     }
 
@@ -257,7 +447,8 @@ class PublicationControllerTest {
                         status().isOk()
                 )
                 .andExpect(
-                        jsonPath("$.length()").value(1)
+                        jsonPath("$.length()")
+                                .value(1)
                 )
                 .andExpect(
                         jsonPath("$[0].nombre")
@@ -277,8 +468,12 @@ class PublicationControllerTest {
                 PublicationSummaryResponse.builder()
                         .id(UUID.randomUUID())
                         .nombre("Torta")
-                        .precio(BigDecimal.valueOf(20))
-                        .tipo(PublicationType.PRODUCTO)
+                        .precio(
+                                BigDecimal.valueOf(20)
+                        )
+                        .tipo(
+                                PublicationType.PRODUCTO
+                        )
                         .activa(true)
                         .build();
 
@@ -434,7 +629,7 @@ class PublicationControllerTest {
                         status().isBadRequest()
                 )
                 .andExpect(
-                        jsonPath("$.error")
+                        jsonPath("$.message")
                                 .value(
                                         "precioMin no puede ser mayor que precioMax"
                                 )

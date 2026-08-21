@@ -15,6 +15,8 @@ public interface StoreRepositoryPort {
     Optional<Store> findByUserId(UUID userId);
 
     boolean existsByUserId(UUID userId);
-    
+
     List<Store> findAll();
+
+    void deleteById(UUID id);
 }

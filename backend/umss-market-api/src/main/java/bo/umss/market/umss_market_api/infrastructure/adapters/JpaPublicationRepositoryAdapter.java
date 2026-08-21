@@ -29,6 +29,10 @@ public class JpaPublicationRepositoryAdapter
     }
 
     @Override
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
+    @Override
     public List<Publication> findAll() {
 
         return repository.findAll()

@@ -1,5 +1,6 @@
 package bo.umss.market.umss_market_api.domain.ports;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,6 +12,8 @@ public interface UserRepositoryPort {
 
     Optional<User> findById(UUID id);
 
+    List<User> findAll();
+
     Optional<User> findByRu(String ru);
 
     Optional<User> findByEmail(String email);
@@ -18,4 +21,6 @@ public interface UserRepositoryPort {
     boolean existsByRu(String ru);
 
     boolean existsByEmail(String email);
+
+    void deleteById(UUID id);
 }

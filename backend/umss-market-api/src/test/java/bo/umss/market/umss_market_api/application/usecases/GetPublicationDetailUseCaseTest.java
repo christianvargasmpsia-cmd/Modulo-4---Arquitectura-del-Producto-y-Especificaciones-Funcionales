@@ -152,3 +152,4 @@ class GetPublicationDetailUseCaseTest {
         verifyNoInteractions(storeRepository);
     }
 }
+

@@ -1,0 +1,27 @@
+package bo.umss.market.umss_market_api.application.dto;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import bo.umss.market.umss_market_api.domain.enums.InteractionType;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class InteractionResponse {
+
+    private UUID id;
+
+    private UUID userId;
+
+    private UUID publicationId;
+
+    private InteractionType type;
+
+    private String metadata;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+}

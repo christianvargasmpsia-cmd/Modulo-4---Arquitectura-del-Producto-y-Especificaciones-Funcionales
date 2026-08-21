@@ -1,11 +1,14 @@
 package bo.umss.market.umss_market_api.application.usecases;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import bo.umss.market.umss_market_api.domain.model.CatalogFilter;
 import bo.umss.market.umss_market_api.domain.model.Publication;
 import bo.umss.market.umss_market_api.domain.model.Store;
 import bo.umss.market.umss_market_api.domain.ports.AIProviderPort;
@@ -22,74 +25,249 @@ public class GetPublicationDetailSemanticUseCase {
     private final AIProviderPort aiProvider;
 
     // ============================================================
-    // RAG #2 - DETALLE DIRECTO DE PUBLICACIÓN
+    // RAG #2 - DETALLE DIRECTO POR UUID
     // ============================================================
 
     public String executeWithContext(
             UUID publicationId,
-            String question
-    ) {
+            String question) {
 
         Publication pub = publicationRepository.findById(publicationId)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Publicación no encontrada"
-                        )
-                );
+                .orElse(null);
+
+        if (pub == null) {
+            return "No encontré la publicación solicitada.";
+        }
 
         Store store = storeRepository.findById(pub.getStoreId())
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Tienda no encontrada"
-                        )
-                );
+                .orElse(null);
+
+        String nombreTienda =
+                store != null
+                        ? store.getNombre()
+                        : "Tienda no disponible";
+
+        String descripcionTienda =
+                store != null
+                        ? store.getDescripcion()
+                        : "";
 
         String contexto = String.format("""
-                Publicación: %s
-
+                Publicación:
+                Nombre: %s
                 Descripción: %s
                 Precio: Bs. %s
                 Stock disponible: %d
                 Tipo: %s
                 Modalidad de pago: %s
-                Tienda: %s (%s)
 
-                Pregunta del usuario: %s
+                Tienda:
+                Nombre: %s
+                Descripción: %s
+
+                Pregunta del usuario:
+                %s
                 """,
-                pub.getNombre(),
-                pub.getDescripcion(),
+                safe(pub.getNombre()),
+                safe(pub.getDescripcion()),
                 pub.getPrecio(),
                 pub.getStock(),
                 pub.getTipo(),
                 pub.getModalidadCobro(),
-                store.getNombre(),
-                store.getDescripcion(),
-                question
+                nombreTienda,
+                descripcionTienda,
+                safe(question)
         );
 
         String prompt = """
-                Eres asistente de UMSS Market.
+                Eres el asistente de UMSS Market.
 
-                Tienes la siguiente información de una publicación:
+                Responde la pregunta utilizando únicamente
+                la información proporcionada en el contexto.
 
+                CONTEXTO:
                 %s
 
-                Responde la pregunta del usuario de forma clara y concisa,
-                basándote únicamente en la información proporcionada.
+                REGLAS:
+                - Si preguntan por el precio, indica el precio.
+                - Si preguntan por el stock, indica el stock.
+                - Si preguntan por características, utiliza únicamente
+                  la descripción disponible.
+                - Si preguntan por la tienda, indica el nombre.
+                - No inventes características.
+                - No inventes precios.
+                - No inventes stock.
+                - Sé claro y conciso.
+
+                Respuesta:
                 """.formatted(contexto);
 
         return aiProvider.generate(prompt);
     }
 
     // ============================================================
-    // RAG #2 - BÚSQUEDA SEMÁNTICA
+    // RAG #2 - BÚSQUEDA SEMÁNTICA / TEXTUAL
     // ============================================================
 
     public String executeSemanticSearch(String query) {
 
+        if (query == null || query.isBlank()) {
+            return "No recibí una consulta válida.";
+        }
+
+        String cleanQuery = query.trim();
+
+        // ========================================================
+        // PASO 1
+        // INTENTAR ENCONTRAR LA PUBLICACIÓN POR TEXTO
+        // ========================================================
+
+        Publication publication =
+                findPublicationByText(cleanQuery);
+
+        if (publication != null) {
+
+            System.out.println(
+                    "RAG #2 -> publicación encontrada por texto: "
+                            + publication.getNombre()
+            );
+
+            return generatePublicationAnswer(
+                    publication,
+                    cleanQuery
+            );
+        }
+
+        // ========================================================
+        // PASO 2
+        // SI NO HAY MATCH TEXTUAL -> BÚSQUEDA SEMÁNTICA
+        // ========================================================
+
+        System.out.println(
+                "RAG #2 -> no hubo match textual."
+        );
+
+        System.out.println(
+                "RAG #2 -> intentando búsqueda semántica."
+        );
+
+        return executeEmbeddingSearch(cleanQuery);
+    }
+
+    // ============================================================
+    // BÚSQUEDA TEXTUAL
+    // ============================================================
+
+    private Publication findPublicationByText(
+            String query) {
+
+        /*
+         * Primero intentamos extraer el nombre del producto
+         * desde la pregunta.
+         *
+         * Ejemplo:
+         *
+         * "¿Cuánto cuesta el Mouse Inalambrico?"
+         *
+         * se transforma en:
+         *
+         * "Mouse Inalambrico"
+         */
+
+        String normalizedQuery =
+                normalize(query);
+
+        List<Publication> publications =
+                publicationRepository.findAll();
+
+        if (publications == null || publications.isEmpty()) {
+            return null;
+        }
+
         // --------------------------------------------------------
-        // 1. GENERAR EMBEDDING DE LA CONSULTA
+        // 1. MATCH EXACTO DEL NOMBRE
         // --------------------------------------------------------
+
+        for (Publication publication : publications) {
+
+            if (!Boolean.TRUE.equals(publication.getActiva())) {
+                continue;
+            }
+
+            String nombre =
+                    normalize(publication.getNombre());
+
+            if (nombre.isBlank()) {
+                continue;
+            }
+
+            if (normalizedQuery.contains(nombre)) {
+
+                return publication;
+            }
+        }
+
+        // --------------------------------------------------------
+        // 2. MATCH POR PALABRAS DEL NOMBRE
+        // --------------------------------------------------------
+
+        List<String> words =
+                extractMeaningfulWords(normalizedQuery);
+
+        if (words.isEmpty()) {
+            return null;
+        }
+
+        Publication bestPublication = null;
+        int bestScore = 0;
+
+        for (Publication publication : publications) {
+
+            if (!Boolean.TRUE.equals(publication.getActiva())) {
+                continue;
+            }
+
+            String nombre =
+                    normalize(publication.getNombre());
+
+            if (nombre.isBlank()) {
+                continue;
+            }
+
+            int score = 0;
+
+            for (String word : words) {
+
+                if (word.length() < 3) {
+                    continue;
+                }
+
+                if (nombre.contains(word)) {
+                    score++;
+                }
+            }
+
+            if (score > bestScore) {
+
+                bestScore = score;
+                bestPublication = publication;
+            }
+        }
+
+        /*
+         * Exigimos al menos una coincidencia.
+         */
+        return bestScore > 0
+                ? bestPublication
+                : null;
+    }
+
+    // ============================================================
+    // BÚSQUEDA POR EMBEDDINGS
+    // ============================================================
+
+    private String executeEmbeddingSearch(
+            String query) {
 
         List<Double> queryEmbedding =
                 aiProvider.generateEmbedding(query);
@@ -97,12 +275,10 @@ public class GetPublicationDetailSemanticUseCase {
         if (queryEmbedding == null
                 || queryEmbedding.isEmpty()) {
 
-            return "No pude generar el embedding de tu consulta.";
+            return """
+                    No pude procesar semánticamente tu consulta.
+                    """;
         }
-
-        // --------------------------------------------------------
-        // 2. OBTENER PUBLICACIONES
-        // --------------------------------------------------------
 
         List<Publication> publications =
                 publicationRepository.findAll();
@@ -110,20 +286,23 @@ public class GetPublicationDetailSemanticUseCase {
         if (publications == null
                 || publications.isEmpty()) {
 
-            return "No encontré publicaciones con esa descripción.";
+            return "No encontré publicaciones disponibles.";
         }
 
-        // --------------------------------------------------------
-        // 3. BUSCAR LA PUBLICACIÓN MÁS RELEVANTE
-        // --------------------------------------------------------
-
-        Publication bestPublication = null;
-        double bestSimilarity = -1.0;
+        List<SemanticResult> results =
+                new ArrayList<>();
 
         for (Publication publication : publications) {
 
-            if (publication.getEmbedding() == null
-                    || publication.getEmbedding().isBlank()) {
+            if (!Boolean.TRUE.equals(publication.getActiva())) {
+                continue;
+            }
+
+            String embedding =
+                    publication.getEmbedding();
+
+            if (embedding == null
+                    || embedding.isBlank()) {
 
                 continue;
             }
@@ -131,9 +310,7 @@ public class GetPublicationDetailSemanticUseCase {
             try {
 
                 List<Double> publicationEmbedding =
-                        parseEmbedding(
-                                publication.getEmbedding()
-                        );
+                        parseEmbedding(embedding);
 
                 if (publicationEmbedding.isEmpty()) {
                     continue;
@@ -145,116 +322,181 @@ public class GetPublicationDetailSemanticUseCase {
                                 publicationEmbedding
                         );
 
-                if (similarity > bestSimilarity) {
-
-                    bestSimilarity = similarity;
-                    bestPublication = publication;
-                }
+                results.add(
+                        new SemanticResult(
+                                publication,
+                                similarity
+                        )
+                );
 
             } catch (Exception e) {
 
                 System.out.println(
-                        "⚠ No se pudo procesar embedding "
-                                + "de publicación "
+                        "RAG #2 -> Error procesando embedding de "
                                 + publication.getId()
                 );
 
                 System.out.println(
-                        "   Error: "
-                                + e.getMessage()
+                        "Error: " + e.getMessage()
                 );
             }
         }
 
-        // --------------------------------------------------------
-        // 4. VALIDAR RESULTADO
-        // --------------------------------------------------------
-
-        if (bestPublication == null) {
+        if (results.isEmpty()) {
 
             return """
-                    No encontré publicaciones con esa descripción.
-
-                    No existen publicaciones con embeddings
-                    válidos para realizar la búsqueda semántica.
+                    No encontré publicaciones con información
+                    suficiente para responder tu consulta.
                     """;
         }
 
-        // --------------------------------------------------------
-        // 5. OBTENER TIENDA
-        // --------------------------------------------------------
+        /*
+         * Ordenar por similitud.
+         */
+        results.sort(
+                Comparator.comparingDouble(
+                        SemanticResult::similarity
+                ).reversed()
+        );
 
-        Store store = storeRepository
-                .findById(bestPublication.getStoreId())
-                .orElse(null);
+        SemanticResult best =
+                results.get(0);
+
+        /*
+         * Umbral mínimo.
+         *
+         * Evita devolver una publicación completamente
+         * irrelevante para una pregunta de detalle.
+         */
+        if (best.similarity() < 0.25) {
+
+            return """
+                    No encontré una publicación suficientemente
+                    relacionada con tu consulta.
+                    """;
+        }
+
+        System.out.println(
+                "RAG #2 -> publicación semántica: "
+                        + best.publication().getNombre()
+        );
+
+        System.out.println(
+                "RAG #2 -> similitud: "
+                        + best.similarity()
+        );
+
+        return generatePublicationAnswer(
+                best.publication(),
+                query
+        );
+    }
+
+    // ============================================================
+    // GENERAR RESPUESTA DEL DETALLE
+    // ============================================================
+
+    private String generatePublicationAnswer(
+            Publication publication,
+            String question) {
+
+        Store store =
+                storeRepository.findById(
+                        publication.getStoreId()
+                ).orElse(null);
 
         String nombreTienda =
                 store != null
                         ? store.getNombre()
                         : "Tienda no disponible";
 
-        // --------------------------------------------------------
-        // 6. CONSTRUIR CONTEXTO RAG
-        // --------------------------------------------------------
+        String descripcionTienda =
+                store != null
+                        ? store.getDescripcion()
+                        : "";
 
         String contexto = String.format("""
-                Publicación encontrada:
-                
-                Nombre: %s
-                Precio: Bs. %s
-                Stock: %d unidades
-                Tipo: %s
-                Modalidad de pago: %s
-                Tienda: %s
-                Descripción: %s
+                PUBLICACIÓN
 
-                Similitud semántica: %.4f
+                Nombre:
+                %s
+
+                Descripción:
+                %s
+
+                Precio:
+                Bs. %s
+
+                Stock:
+                %d unidades
+
+                Tipo:
+                %s
+
+                Modalidad de pago:
+                %s
+
+                TIENDA
+
+                Nombre:
+                %s
+
+                Descripción:
+                %s
                 """,
-                bestPublication.getNombre(),
-                bestPublication.getPrecio(),
-                bestPublication.getStock(),
-                bestPublication.getTipo(),
-                bestPublication.getModalidadCobro(),
+                safe(publication.getNombre()),
+                safe(publication.getDescripcion()),
+                publication.getPrecio(),
+                publication.getStock(),
+                publication.getTipo(),
+                publication.getModalidadCobro(),
                 nombreTienda,
-                bestPublication.getDescripcion(),
-                bestSimilarity
+                descripcionTienda
         );
 
-        // --------------------------------------------------------
-        // 7. GENERAR RESPUESTA CON IA
-        // --------------------------------------------------------
-
         String prompt = """
-                Eres asistente de UMSS Market.
+                Eres el asistente de UMSS Market.
 
-                El usuario realizó la siguiente consulta:
+                El usuario pregunta:
 
                 "%s"
 
-                Mediante búsqueda semántica se encontró
-                la siguiente publicación:
+                La información recuperada del catálogo es:
 
                 %s
 
-                Responde de forma clara, útil y concisa.
+                Responde utilizando ÚNICAMENTE la información
+                recuperada.
 
-                Utiliza únicamente la información de la
-                publicación proporcionada.
+                Reglas:
 
-                Si preguntó por características, explica
-                la descripción disponible.
+                1. Si pregunta por el precio:
+                   responde únicamente con el precio disponible.
 
-                Si preguntó por precio, proporciona el precio.
+                2. Si pregunta por stock:
+                   responde con la cantidad disponible.
 
-                Si preguntó por stock, proporciona el stock.
+                3. Si pregunta por características:
+                   utiliza la descripción de la publicación.
 
-                Si preguntó por la tienda, proporciona
-                el nombre de la tienda.
+                4. Si pregunta por la tienda:
+                   indica el nombre de la tienda.
 
-                No inventes información que no esté
-                presente en el contexto.
+                5. Si pregunta por modalidad de pago:
+                   indica la modalidad registrada.
+
+                6. No inventes información.
+
+                7. Si la información solicitada no está disponible,
+                   dilo claramente.
+
+                8. Responde en español.
+
+                9. Sé claro y conciso.
+
+                Respuesta:
                 """.formatted(
-                query,
+                question,
                 contexto
         );
 
@@ -262,10 +504,11 @@ public class GetPublicationDetailSemanticUseCase {
     }
 
     // ============================================================
-    // PARSEAR EMBEDDING JSON
+    // PARSEAR EMBEDDING
     // ============================================================
 
-    private List<Double> parseEmbedding(String embedding) {
+    private List<Double> parseEmbedding(
+            String embedding) {
 
         if (embedding == null
                 || embedding.isBlank()) {
@@ -276,14 +519,19 @@ public class GetPublicationDetailSemanticUseCase {
         String normalized =
                 embedding.trim();
 
-        // Eliminar corchetes
+        /*
+         * Formato:
+         *
+         * [0.123,0.456,0.789]
+         */
         if (normalized.startsWith("[")
                 && normalized.endsWith("]")) {
 
-            normalized = normalized.substring(
-                    1,
-                    normalized.length() - 1
-            );
+            normalized =
+                    normalized.substring(
+                            1,
+                            normalized.length() - 1
+                    );
         }
 
         if (normalized.isBlank()) {
@@ -319,8 +567,7 @@ public class GetPublicationDetailSemanticUseCase {
 
     private double cosineSimilarity(
             List<Double> vectorA,
-            List<Double> vectorB
-    ) {
+            List<Double> vectorB) {
 
         if (vectorA == null
                 || vectorB == null
@@ -330,7 +577,15 @@ public class GetPublicationDetailSemanticUseCase {
             return 0.0;
         }
 
-        if (vectorA.size() != vectorB.size()) {
+        if (vectorA.size()
+                != vectorB.size()) {
+
+            System.out.println(
+                    "RAG #2 -> embeddings con dimensiones diferentes: "
+                            + vectorA.size()
+                            + " vs "
+                            + vectorB.size()
+            );
 
             return 0.0;
         }
@@ -363,5 +618,63 @@ public class GetPublicationDetailSemanticUseCase {
                         Math.sqrt(magnitudeA)
                                 * Math.sqrt(magnitudeB)
                 );
+    }
+
+    // ============================================================
+    // NORMALIZACIÓN
+    // ============================================================
+
+    private String normalize(String text) {
+
+        if (text == null) {
+            return "";
+        }
+
+        return text
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("[¿?¡!.,;:()\\[\\]\"']", " ")
+                .replaceAll(
+                        "\\b(cuanto|cuesta|precio|vale|valor|caracteristicas|características|del|de|la|el|un|una|que|qué|tiene|tienen|como|cómo|es|son)\\b",
+                        " "
+                )
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
+    // ============================================================
+    // EXTRAER PALABRAS SIGNIFICATIVAS
+    // ============================================================
+
+    private List<String> extractMeaningfulWords(
+            String text) {
+
+        if (text == null || text.isBlank()) {
+            return List.of();
+        }
+
+        return List.of(text.split("\\s+"))
+                .stream()
+                .filter(word -> word.length() >= 3)
+                .toList();
+    }
+
+    // ============================================================
+    // SAFE
+    // ============================================================
+
+    private String safe(String value) {
+
+        return value == null
+                ? "No disponible"
+                : value;
+    }
+
+    // ============================================================
+    // RESULTADO SEMÁNTICO
+    // ============================================================
+
+    private record SemanticResult(
+            Publication publication,
+            double similarity) {
     }
 }

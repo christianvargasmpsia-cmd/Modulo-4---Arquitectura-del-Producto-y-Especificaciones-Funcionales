@@ -51,4 +51,9 @@ public class JpaStoreRepositoryAdapter implements StoreRepositoryPort {
                 .map(StoreMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        repository.deleteById(id);
+    }
 }

@@ -1,6 +1,7 @@
 package bo.umss.market.umss_market_api.infrastructure.adapters;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -63,5 +64,18 @@ public class JpaInteractionRepositoryAdapter
                 .stream()
                 .map(InteractionMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Optional<Interaction> findById(UUID id) {
+
+        return repository.findById(id)
+                .map(InteractionMapper::toDomain);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+
+        repository.deleteById(id);
     }
 }
