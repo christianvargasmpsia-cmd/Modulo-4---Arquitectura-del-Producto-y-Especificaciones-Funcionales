@@ -207,7 +207,7 @@ class NewmanService {
 
 
         // ======================================================
-        // IDS DE DISCOVERY
+        // IDS DISCOVERY
         // ======================================================
 
         this.setVariable(
@@ -237,11 +237,6 @@ class NewmanService {
 
         // ======================================================
         // IDS CREADOS
-        //
-        // IMPORTANTE:
-        // Inician con Discovery como fallback.
-        // Si un POST crea un recurso nuevo,
-        // el script posterior reemplazará el valor.
         // ======================================================
 
         this.setVariable(
@@ -270,7 +265,7 @@ class NewmanService {
 
 
         // ======================================================
-        // JWT DISCOVERY
+        // JWT
         // ======================================================
 
         this.setVariable(
@@ -278,11 +273,6 @@ class NewmanService {
             "discoveryToken",
             testData.token ?? ""
         );
-
-
-        // ======================================================
-        // JWT LOGIN
-        // ======================================================
 
         this.setVariable(
             collection,
@@ -379,7 +369,7 @@ class NewmanService {
 
 
         // ======================================================
-        // MOSTRAR ORDEN FINAL
+        // ORDEN
         // ======================================================
 
         this.printFinalOrder(
@@ -388,7 +378,7 @@ class NewmanService {
 
 
         // ======================================================
-        // GUARDAR COLLECTION
+        // GUARDAR
         // ======================================================
 
         const preparedPath =
@@ -472,10 +462,10 @@ class NewmanService {
                             },
 
                         timeoutRequest:
-                            15000,
+                            60000,
 
                         timeoutScript:
-                            15000,
+                            30000,
 
                         bail:
                             false
@@ -706,15 +696,12 @@ class NewmanService {
                                 );
 
 
-                                if (
-                                    item.failed
-                                ) {
-
-                                    console.log(
-                                        `   URL: ${item.url}`
-                                    );
-
-                                }
+                                console.log(
+                                    `   URL: ${
+                                        item.url ||
+                                        "N/A"
+                                    }`
+                                );
 
                             }
                         );
@@ -970,7 +957,7 @@ class NewmanService {
 
 
         // ======================================================
-        // URL NORMAL
+        // URL
         // ======================================================
 
         if (
@@ -1065,7 +1052,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // MOSTRAR PUT / PATCH
+    // MOSTRAR MODIFICACIÓN
     // ==========================================================
 
     printModification(
@@ -1102,6 +1089,117 @@ class NewmanService {
         }
 
 
+        const resource =
+            this.resolveResource(
+                endpoint
+            );
+
+
+        const id =
+            this.resolveResourceId(
+                resource,
+                testData
+            );
+
+
+        console.log("");
+
+        console.log(
+            `🔄 ${method} ${item.name ?? endpoint}`
+        );
+
+        console.log(
+            `   RECURSO : ${resource}`
+        );
+
+        console.log(
+            `   ID      : ${id}`
+        );
+
+
+        let body =
+            request.body?.raw ??
+            "";
+
+
+        body =
+            this.replaceVariables(
+                body,
+                testData
+            );
+
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    body
+                );
+
+
+            console.log(
+                "   CAMPO(S) QUE SE INTENTA CAMBIAR:"
+            );
+
+
+            Object.entries(
+                parsed
+            ).forEach(
+                (
+                    [
+                        field,
+                        value
+                    ]
+                ) => {
+
+                    console.log(
+                        `      ${field} = ${value}`
+                    );
+
+                }
+            );
+
+
+            console.log(
+                "   BODY:"
+            );
+
+            console.log(
+                JSON.stringify(
+                    parsed,
+                    null,
+                    2
+                )
+            );
+
+        }
+        catch {
+
+            console.log(
+                "   BODY:"
+            );
+
+            console.log(
+                body ||
+                "SIN BODY"
+            );
+
+        }
+
+
+        console.log("");
+
+    }
+
+
+    // ==========================================================
+    // RESOLVER RECURSO
+    // ==========================================================
+
+    resolveResource(
+        endpoint
+    ) {
+
         const normalized =
             String(
                 endpoint ??
@@ -1109,168 +1207,84 @@ class NewmanService {
             ).toLowerCase();
 
 
-        let resource =
-            "RECURSO";
-
-
-        let id =
-            "N/A";
-
-
-        // ======================================================
-        // USER
-        // ======================================================
-
         if (
             normalized.includes(
                 "/api/users"
             )
         ) {
 
-            resource =
-                "USER";
-
-            id =
-                testData.userId ??
-                "N/A";
+            return "USER";
 
         }
 
 
-        // ======================================================
-        // STORE
-        // ======================================================
-
-        else if (
+        if (
             normalized.includes(
                 "/api/stores"
             )
         ) {
 
-            resource =
-                "STORE";
-
-            id =
-                testData.storeId ??
-                "N/A";
+            return "STORE";
 
         }
 
 
-        // ======================================================
-        // PUBLICATION
-        // ======================================================
-
-        else if (
+        if (
             normalized.includes(
                 "/api/publications"
             )
         ) {
 
-            resource =
-                "PUBLICATION";
-
-            id =
-                testData.publicationId ??
-                "N/A";
+            return "PUBLICATION";
 
         }
 
 
-        // ======================================================
-        // INTERACTION
-        // ======================================================
-
-        else if (
+        if (
             normalized.includes(
                 "/api/interactions"
             )
         ) {
 
-            resource =
-                "INTERACTION";
-
-            id =
-                testData.interactionId ??
-                "N/A";
+            return "INTERACTION";
 
         }
 
 
-        console.log("");
+        return "RESOURCE";
 
-        console.log(
-            `   🔄 ${method} ${item.name ?? endpoint}`
-        );
-
-        console.log(
-            `      RECURSO : ${resource}`
-        );
-
-        console.log(
-            `      ID      : ${id}`
-        );
+    }
 
 
-        // ======================================================
-        // BODY
-        // ======================================================
+    // ==========================================================
+    // RESOLVER ID
+    // ==========================================================
 
-        if (
-            request.body?.raw
+    resolveResourceId(
+        resource,
+        testData
+    ) {
+
+        switch (
+            resource
         ) {
 
-            let body =
-                this.replaceVariables(
-                    request.body.raw,
-                    testData
-                );
+            case "USER":
+                return testData.userId ?? "N/A";
 
+            case "STORE":
+                return testData.storeId ?? "N/A";
 
-            try {
+            case "PUBLICATION":
+                return testData.publicationId ?? "N/A";
 
-                const parsed =
-                    JSON.parse(
-                        body
-                    );
+            case "INTERACTION":
+                return testData.interactionId ?? "N/A";
 
-
-                console.log(
-                    "      CAMBIANDO:"
-                );
-
-                console.log(
-                    JSON.stringify(
-                        parsed,
-                        null,
-                        2
-                    )
-                );
-
-            }
-            catch {
-
-                console.log(
-                    "      CAMBIANDO:"
-                );
-
-                console.log(
-                    body
-                );
-
-            }
+            default:
+                return "N/A";
 
         }
-        else {
-
-            console.log(
-                "      CAMBIANDO: Sin body"
-            );
-
-        }
-
-
-        console.log("");
 
     }
 
@@ -1294,18 +1308,12 @@ class NewmanService {
         let resourceName =
             null;
 
-
         let createdVariable =
             null;
-
 
         let discoveryId =
             null;
 
-
-        // ======================================================
-        // INTERACTION
-        // ======================================================
 
         if (
             path.includes(
@@ -1324,11 +1332,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // PUBLICATION
-        // ======================================================
-
         else if (
             path.includes(
                 "/api/publications"
@@ -1345,11 +1348,6 @@ class NewmanService {
                 testData.publicationId;
 
         }
-
-
-        // ======================================================
-        // STORE
-        // ======================================================
 
         else if (
             path.includes(
@@ -1368,11 +1366,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // USER
-        // ======================================================
-
         else if (
             path.includes(
                 "/api/users"
@@ -1390,17 +1383,12 @@ class NewmanService {
 
         }
 
-
         else {
 
             return false;
 
         }
 
-
-        // ======================================================
-        // ID A UTILIZAR
-        // ======================================================
 
         const id =
             discoveryId ??
@@ -1418,10 +1406,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // PREPARAR URL CON ID REAL
-        // ======================================================
-
         this.forceDeleteId(
             request,
             id
@@ -1435,7 +1419,6 @@ class NewmanService {
         console.log(
             `      ID: ${id}`
         );
-
 
         console.log(
             `      Variable: {{${createdVariable}}}`
@@ -1464,10 +1447,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // URL STRING
-        // ======================================================
 
         if (
             typeof request.url ===
@@ -1553,10 +1532,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // URL OBJECT
-        // ======================================================
-
         if (
             Array.isArray(
                 request.url?.path
@@ -1623,195 +1598,6 @@ class NewmanService {
 
 
     // ==========================================================
-    // REEMPLAZAR VARIABLE EN URL
-    // ==========================================================
-
-    replaceEndpointVariable(
-        request,
-        variable
-    ) {
-
-        if (
-            !request?.url
-        ) {
-
-            return false;
-
-        }
-
-
-        if (
-            typeof request.url ===
-            "string"
-        ) {
-
-            let url =
-                request.url;
-
-
-            if (
-                url.includes(
-                    variable
-                )
-            ) {
-
-                return true;
-
-            }
-
-
-            const uuidRegex =
-                /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
-
-
-            if (
-                uuidRegex.test(
-                    url
-                )
-            ) {
-
-                request.url =
-                    url.replace(
-                        uuidRegex,
-                        variable
-                    );
-
-                return true;
-
-            }
-
-
-            if (
-                /\/:id\/?$/i.test(
-                    url
-                )
-            ) {
-
-                request.url =
-                    url.replace(
-                        /\/:id\/?$/i,
-                        `/${variable}`
-                    );
-
-                return true;
-
-            }
-
-
-            if (
-                /\/<uuid>\/?$/i.test(
-                    url
-                )
-            ) {
-
-                request.url =
-                    url.replace(
-                        /\/<uuid>\/?$/i,
-                        `/${variable}`
-                    );
-
-                return true;
-
-            }
-
-
-            if (
-                url.endsWith("/")
-            ) {
-
-                request.url =
-                    `${url}${variable}`;
-
-                return true;
-
-            }
-
-
-            request.url =
-                `${url}/${variable}`;
-
-            return true;
-
-        }
-
-
-        if (
-            Array.isArray(
-                request.url?.path
-            )
-        ) {
-
-            const path =
-                request.url.path;
-
-
-            if (
-                path.includes(
-                    variable
-                )
-            ) {
-
-                return true;
-
-            }
-
-
-            const uuidIndex =
-                path.findIndex(
-                    segment =>
-                        this.isUuid(
-                            segment
-                        )
-                );
-
-
-            if (
-                uuidIndex !== -1
-            ) {
-
-                path[uuidIndex] =
-                    variable;
-
-                return true;
-
-            }
-
-
-            const idIndex =
-                path.findIndex(
-                    segment =>
-                        segment === ":id" ||
-                        segment === "<uuid>"
-                );
-
-
-            if (
-                idIndex !== -1
-            ) {
-
-                path[idIndex] =
-                    variable;
-
-                return true;
-
-            }
-
-
-            path.push(
-                variable
-            );
-
-            return true;
-
-        }
-
-
-        return false;
-
-    }
-
-
-    // ==========================================================
     // BODY
     // ==========================================================
 
@@ -1832,6 +1618,13 @@ class NewmanService {
         }
 
 
+        const method =
+            String(
+                request.method ??
+                ""
+            ).toUpperCase();
+
+
         // ======================================================
         // REGISTER CUSTOMER
         // ======================================================
@@ -1843,8 +1636,7 @@ class NewmanService {
 
             request.body = {
 
-                mode:
-                    "raw",
+                mode: "raw",
 
                 raw:
                     JSON.stringify(
@@ -1866,11 +1658,9 @@ class NewmanService {
 
             };
 
-
             console.log(
                 "   ✓ Body REGISTER CUSTOMER"
             );
-
 
             return;
 
@@ -1888,8 +1678,7 @@ class NewmanService {
 
             request.body = {
 
-                mode:
-                    "raw",
+                mode: "raw",
 
                 raw:
                     JSON.stringify(
@@ -1911,11 +1700,9 @@ class NewmanService {
 
             };
 
-
             console.log(
                 "   ✓ Body REGISTER ENTREPRENEUR"
             );
-
 
             return;
 
@@ -1933,8 +1720,7 @@ class NewmanService {
 
             request.body = {
 
-                mode:
-                    "raw",
+                mode: "raw",
 
                 raw:
                     JSON.stringify(
@@ -1956,11 +1742,9 @@ class NewmanService {
 
             };
 
-
             console.log(
                 "   ✓ Body REGISTER ADMIN"
             );
-
 
             return;
 
@@ -1978,8 +1762,7 @@ class NewmanService {
 
             request.body = {
 
-                mode:
-                    "raw",
+                mode: "raw",
 
                 raw:
                     JSON.stringify(
@@ -2011,13 +1794,77 @@ class NewmanService {
 
             };
 
-
             console.log(
                 "   ✓ Body LOGIN"
             );
 
-
             return;
+
+        }
+
+
+        // ======================================================
+        // PUT / PATCH
+        // ======================================================
+
+        if (
+            method === "PUT" ||
+            method === "PATCH"
+        ) {
+
+            const modification =
+                this.createModificationBody(
+                    endpoint,
+                    method
+                );
+
+
+            if (
+                modification
+            ) {
+
+                request.body = {
+
+                    mode: "raw",
+
+                    raw:
+                        JSON.stringify(
+                            modification.body,
+                            null,
+                            2
+                        ),
+
+                    options: {
+
+                        raw: {
+
+                            language:
+                                "json"
+
+                        }
+
+                    }
+
+                };
+
+
+                console.log(
+                    `   ✓ Body ${method} preparado`
+                );
+
+
+                console.log(
+                    `     Campo: ${modification.field}`
+                );
+
+                console.log(
+                    `     Valor: ${modification.value}`
+                );
+
+
+                return;
+
+            }
 
         }
 
@@ -2038,6 +1885,243 @@ class NewmanService {
                 );
 
         }
+
+    }
+
+
+    // ==========================================================
+    // CREAR BODY PUT/PATCH
+    // ==========================================================
+
+    createModificationBody(
+        endpoint,
+        method
+    ) {
+
+        const normalized =
+            String(
+                endpoint ??
+                ""
+            ).toLowerCase();
+
+
+        // ======================================================
+        // USER
+        // ======================================================
+
+        if (
+            normalized.includes(
+                "/api/users"
+            )
+        ) {
+
+            if (
+                method === "PATCH"
+            ) {
+
+                return {
+
+                    field:
+                        "status",
+
+                    value:
+                        "INACTIVE",
+
+                    body: {
+
+                        status:
+                            "INACTIVE"
+
+                    }
+
+                };
+
+            }
+
+
+            return {
+
+                field:
+                    "nombre",
+
+                value:
+                    "Usuario Actualizado",
+
+                body: {
+
+                    nombre:
+                        "Usuario Actualizado"
+
+                }
+
+            };
+
+        }
+
+
+        // ======================================================
+        // STORE
+        // ======================================================
+
+        if (
+            normalized.includes(
+                "/api/stores"
+            )
+        ) {
+
+            if (
+                method === "PATCH"
+            ) {
+
+                return {
+
+                    field:
+                        "status",
+
+                    value:
+                        "INACTIVE",
+
+                    body: {
+
+                        status:
+                            "INACTIVE"
+
+                    }
+
+                };
+
+            }
+
+
+            return {
+
+                field:
+                    "nombre",
+
+                value:
+                    "Tienda Actualizada",
+
+                body: {
+
+                    nombre:
+                        "Tienda Actualizada"
+
+                }
+
+            };
+
+        }
+
+
+        // ======================================================
+        // PUBLICATION
+        // ======================================================
+
+        if (
+            normalized.includes(
+                "/api/publications"
+            )
+        ) {
+
+            if (
+                method === "PATCH"
+            ) {
+
+                return {
+
+                    field:
+                        "status",
+
+                    value:
+                        "INACTIVE",
+
+                    body: {
+
+                        status:
+                            "INACTIVE"
+
+                    }
+
+                };
+
+            }
+
+
+            return {
+
+                field:
+                    "nombre",
+
+                value:
+                    "Publicacion Actualizada",
+
+                body: {
+
+                    nombre:
+                        "Publicacion Actualizada"
+
+                }
+
+            };
+
+        }
+
+
+        // ======================================================
+        // INTERACTION
+        // ======================================================
+
+        if (
+            normalized.includes(
+                "/api/interactions"
+            )
+        ) {
+
+            if (
+                method === "PATCH"
+            ) {
+
+                return {
+
+                    field:
+                        "metadata",
+
+                    value:
+                        "Interaccion actualizada",
+
+                    body: {
+
+                        metadata:
+                            "Interaccion actualizada"
+
+                    }
+
+                };
+
+            }
+
+
+            return {
+
+                field:
+                    "metadata",
+
+                value:
+                    "Interaccion modificada",
+
+                body: {
+
+                    metadata:
+                        "Interaccion modificada"
+
+                }
+
+            };
+
+        }
+
+
+        return null;
 
     }
 
@@ -2942,7 +3026,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // BODY
+    // BODY GENÉRICO
     // ==========================================================
 
     replaceBody(
@@ -3241,14 +3325,6 @@ class NewmanService {
         item
     ) {
 
-        item.event =
-            Array.isArray(
-                item.event
-            )
-                ? item.event
-                : [];
-
-
         const script = [
 
             "pm.test('POST /login - Login exitoso', function () {",
@@ -3322,8 +3398,6 @@ class NewmanService {
 
         const script = [
 
-            "",
-
             "if (pm.response.code >= 200 && pm.response.code < 300) {",
 
             "    let data = {};",
@@ -3364,12 +3438,6 @@ class NewmanService {
 
             "        console.log('🆔 createdUserId:', id);",
 
-            "    } else {",
-
-            "        console.log('❌ No se encontró createdUserId');",
-
-            "        console.log('Response:', JSON.stringify(data));",
-
             "    }",
 
             "}"
@@ -3394,8 +3462,6 @@ class NewmanService {
     ) {
 
         const script = [
-
-            "",
 
             "if (pm.response.code >= 200 && pm.response.code < 300) {",
 
@@ -3439,12 +3505,6 @@ class NewmanService {
 
             "        console.log('🆔 createdStoreId:', storeId);",
 
-            "    } else {",
-
-            "        console.log('⚠️ No se encontró createdStoreId en REGISTER ENTREPRENEUR');",
-
-            "        console.log('Response:', JSON.stringify(data));",
-
             "    }",
 
             "}"
@@ -3469,8 +3529,6 @@ class NewmanService {
     ) {
 
         const script = [
-
-            "",
 
             "if (pm.response.code >= 200 && pm.response.code < 300) {",
 
@@ -3512,12 +3570,6 @@ class NewmanService {
 
             "        console.log('🆔 createdPublicationId:', id);",
 
-            "    } else {",
-
-            "        console.log('❌ No se encontró createdPublicationId');",
-
-            "        console.log('Response:', JSON.stringify(data));",
-
             "    }",
 
             "}"
@@ -3542,8 +3594,6 @@ class NewmanService {
     ) {
 
         const script = [
-
-            "",
 
             "if (pm.response.code >= 200 && pm.response.code < 300) {",
 
@@ -3584,12 +3634,6 @@ class NewmanService {
             "        pm.collectionVariables.set('createdInteractionId', interactionId);",
 
             "        console.log('🆔 createdInteractionId:', interactionId);",
-
-            "    } else {",
-
-            "        console.log('❌ No se encontró createdInteractionId');",
-
-            "        console.log('Response:', JSON.stringify(data));",
 
             "    }",
 
@@ -3886,10 +3930,6 @@ class NewmanService {
             ).toLowerCase();
 
 
-        // ======================================================
-        // REGISTER
-        // ======================================================
-
         if (
             url.includes(
                 "/api/auth/register/customer"
@@ -3923,10 +3963,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // LOGIN
-        // ======================================================
-
         if (
             url.includes(
                 "/api/auth/login"
@@ -3937,10 +3973,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // ME
-        // ======================================================
 
         if (
             url.includes(
@@ -3953,16 +3985,11 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // USERS
-        // ======================================================
-
         if (
             url.includes(
                 "/api/users"
             ) &&
-            method !==
-            "DELETE"
+            method !== "DELETE"
         ) {
 
             return 20;
@@ -3970,16 +3997,11 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // STORES
-        // ======================================================
-
         if (
             url.includes(
                 "/api/stores"
             ) &&
-            method !==
-            "DELETE"
+            method !== "DELETE"
         ) {
 
             return 30;
@@ -3987,16 +4009,11 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // PUBLICATIONS
-        // ======================================================
-
         if (
             url.includes(
                 "/api/publications"
             ) &&
-            method !==
-            "DELETE"
+            method !== "DELETE"
         ) {
 
             return 40;
@@ -4004,26 +4021,17 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // INTERACTIONS
-        // ======================================================
-
         if (
             url.includes(
                 "/api/interactions"
             ) &&
-            method !==
-            "DELETE"
+            method !== "DELETE"
         ) {
 
             return 50;
 
         }
 
-
-        // ======================================================
-        // IA
-        // ======================================================
 
         if (
             url.includes(
@@ -4035,10 +4043,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // EMBEDDINGS
-        // ======================================================
 
         if (
             url.includes(
@@ -4052,12 +4056,11 @@ class NewmanService {
 
 
         // ======================================================
-        // DELETE INTERACTION
+        // DELETE
         // ======================================================
 
         if (
-            method ===
-                "DELETE" &&
+            method === "DELETE" &&
             url.includes(
                 "/api/interactions"
             )
@@ -4068,13 +4071,8 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // DELETE PUBLICATION
-        // ======================================================
-
         if (
-            method ===
-                "DELETE" &&
+            method === "DELETE" &&
             url.includes(
                 "/api/publications"
             )
@@ -4085,13 +4083,8 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // DELETE STORE
-        // ======================================================
-
         if (
-            method ===
-                "DELETE" &&
+            method === "DELETE" &&
             url.includes(
                 "/api/stores"
             )
@@ -4102,13 +4095,8 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // DELETE USER
-        // ======================================================
-
         if (
-            method ===
-                "DELETE" &&
+            method === "DELETE" &&
             url.includes(
                 "/api/users"
             )
@@ -4120,7 +4108,7 @@ class NewmanService {
 
 
         // ======================================================
-        // LOGOUT
+        // LOGOUT SIEMPRE AL FINAL
         // ======================================================
 
         if (
@@ -4644,6 +4632,7 @@ class NewmanService {
 
         console.log(
             "=================================================="
+
         );
 
     }

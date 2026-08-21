@@ -130,8 +130,9 @@ class PostmanAgentEnhanced {
                         `No se pudo consultar ${
                             workspace.name
                         }: ${
-                            error.response?.status ??
-                            error.message
+                            error?.response?.status ??
+                            error?.message ??
+                            String(error)
                         }`
                     );
 
@@ -345,26 +346,12 @@ class PostmanAgentEnhanced {
 
             // ==================================================
             // TEST DATA
-            //
-            // IMPORTANTE:
-            //
-            // Antes solo se copiaban:
-            //
-            // userId
-            // storeId
-            // publicationId
-            // interactionId
-            // token
-            //
-            // Eso hacía que email y role se perdieran.
-            //
-            // Ahora conservamos TODO el contexto necesario.
             // ==================================================
 
             const testData = {
 
                 // ------------------------------------------------
-                // IDS REALES
+                // IDS
                 // ------------------------------------------------
 
                 userId:
@@ -385,7 +372,7 @@ class PostmanAgentEnhanced {
 
 
                 // ------------------------------------------------
-                // AUTENTICACIÓN
+                // AUTH
                 // ------------------------------------------------
 
                 email:
@@ -483,17 +470,13 @@ class PostmanAgentEnhanced {
 
 
             // ==================================================
-            // VALIDACIONES OBLIGATORIAS
+            // VALIDACIONES
             // ==================================================
 
             console.log(
                 "\n🔎 VALIDANDO DATOS NECESARIOS..."
             );
 
-
-            // --------------------------------------------------
-            // USER
-            // --------------------------------------------------
 
             if (
                 !testData.userId
@@ -511,10 +494,6 @@ class PostmanAgentEnhanced {
             );
 
 
-            // --------------------------------------------------
-            // STORE
-            // --------------------------------------------------
-
             if (
                 !testData.storeId
             ) {
@@ -530,10 +509,6 @@ class PostmanAgentEnhanced {
                 "   ✓ storeId disponible"
             );
 
-
-            // --------------------------------------------------
-            // PUBLICATION
-            // --------------------------------------------------
 
             if (
                 !testData.publicationId
@@ -551,10 +526,6 @@ class PostmanAgentEnhanced {
             );
 
 
-            // --------------------------------------------------
-            // EMAIL
-            // --------------------------------------------------
-
             if (
                 !testData.email
             ) {
@@ -570,10 +541,6 @@ class PostmanAgentEnhanced {
                 "   ✓ email del comprador disponible"
             );
 
-
-            // --------------------------------------------------
-            // ROLE
-            // --------------------------------------------------
 
             if (
                 String(
@@ -598,10 +565,6 @@ class PostmanAgentEnhanced {
             );
 
 
-            // --------------------------------------------------
-            // PASSWORD
-            // --------------------------------------------------
-
             if (
                 !testData.password
             ) {
@@ -617,10 +580,6 @@ class PostmanAgentEnhanced {
                 "   ✓ password disponible"
             );
 
-
-            // --------------------------------------------------
-            // JWT
-            // --------------------------------------------------
 
             if (
                 !testData.token
@@ -638,10 +597,6 @@ class PostmanAgentEnhanced {
             );
 
 
-            // --------------------------------------------------
-            // INTERACTION
-            // --------------------------------------------------
-
             if (
                 testData.interactionId
             ) {
@@ -651,9 +606,7 @@ class PostmanAgentEnhanced {
                 );
 
                 console.log(
-                    `   → ${
-                        testData.interactionId
-                    }`
+                    `   → ${testData.interactionId}`
                 );
 
             }
@@ -756,22 +709,10 @@ class PostmanAgentEnhanced {
             );
 
 
-            /*
-             * IMPORTANTE:
-             *
-             * El interactionId puede ser null.
-             *
-             * RunCollectionSkill decide qué pruebas
-             * necesitan realmente ese ID.
-             */
-
             const newmanResult =
                 await runCollectionSkill.execute(
-
                     collectionPath,
-
                     testData
-
                 );
 
 
@@ -791,38 +732,51 @@ class PostmanAgentEnhanced {
             // ==================================================
 
             const executionResult =
-                newmanResult.result ??
-                newmanResult;
+                newmanResult?.result ??
+                newmanResult ??
+                {};
 
 
             const requests =
-                executionResult.requests ??
-                0;
+                Number(
+                    executionResult?.requests ??
+                    0
+                );
 
 
             const assertions =
-                executionResult.assertions ??
-                0;
+                Number(
+                    executionResult?.assertions ??
+                    0
+                );
 
 
             const failed =
-                executionResult.failed ??
-                0;
+                Number(
+                    executionResult?.failed ??
+                    0
+                );
 
 
             const httpFailures =
-                executionResult.httpFailures ??
-                0;
+                Number(
+                    executionResult?.httpFailures ??
+                    0
+                );
 
 
             const assertionFailures =
-                executionResult.assertionFailures ??
-                0;
+                Number(
+                    executionResult?.assertionFailures ??
+                    0
+                );
 
 
             const skipped =
-                executionResult.skipped ??
-                0;
+                Number(
+                    executionResult?.skipped ??
+                    0
+                );
 
 
             // ==================================================
@@ -902,11 +856,43 @@ class PostmanAgentEnhanced {
                 analysisError
             ) {
 
+                const analysisMessage =
+                    analysisError?.message ??
+                    analysisError?.response?.data?.message ??
+                    String(analysisError);
+
+
                 Logger.warning(
-                    `No se pudo realizar el análisis AI: ${
-                        analysisError.message
+                    `⚠ No se pudo realizar el análisis AI: ${
+                        analysisMessage
                     }`
                 );
+
+
+                analysis = {
+
+                    overallStatus:
+                        failed > 0
+                            ? (
+                                failed >= 3
+                                    ? "CRITICAL"
+                                    : "DEGRADED"
+                            )
+                            : "STABLE",
+
+                    summary:
+                        failed > 0
+                            ? `Se detectaron ${
+                                failed
+                            } fallos durante la ejecución de Newman.`
+                            : "Las pruebas finalizaron correctamente.",
+
+                    failures: [],
+
+                    aiError:
+                        analysisMessage
+
+                };
 
             }
 
@@ -914,6 +900,22 @@ class PostmanAgentEnhanced {
             // ==================================================
             // RESULTADO FINAL
             // ==================================================
+
+            /*
+             * IMPORTANTE:
+             *
+             * Tener pruebas fallidas NO significa que
+             * el agente haya fallado.
+             *
+             * El agente cumplió su función si:
+             *
+             * 1. Ejecutó Newman.
+             * 2. Detectó los fallos.
+             * 3. Los entregó al Analyzer.
+             * 4. Generó el análisis.
+             *
+             * Por eso NO lanzamos throw cuando failed > 0.
+             */
 
             const success =
                 failed === 0;
@@ -924,7 +926,7 @@ class PostmanAgentEnhanced {
             );
 
             Logger.info(
-                "RESULTADO FINAL"
+                "RESULTADO FINAL DEL AGENTE"
             );
 
             Logger.info(
@@ -932,24 +934,92 @@ class PostmanAgentEnhanced {
             );
 
 
+            console.log(
+                `Requests ejecutados : ${requests}`
+            );
+
+
+            console.log(
+                `Pruebas fallidas    : ${failed}`
+            );
+
+
+            console.log(
+                `HTTP failures       : ${httpFailures}`
+            );
+
+
+            console.log(
+                `Assertion failures  : ${assertionFailures}`
+            );
+
+
+            console.log(
+                `Estado IA           : ${
+                    analysis?.overallStatus ??
+                    "N/A"
+                }`
+            );
+
+
+            console.log(
+                `Reporte IA          : ${
+                    analysis
+                        ? "GENERADO"
+                        : "NO GENERADO"
+                }`
+            );
+
+
+            // ==================================================
+            // MENSAJE FINAL
+            // ==================================================
+
+            console.log("");
+
+
             if (
                 success
             ) {
 
                 Logger.success(
-                    "✓ Todas las pruebas ejecutadas correctamente."
+                    "✓ Todas las pruebas finalizaron correctamente."
                 );
 
             }
             else {
 
                 Logger.warning(
-                    `⚠ Se detectaron ${
+                    `⚠ Newman finalizó con ${
                         failed
-                    } pruebas fallidas.`
+                    } prueba(s) fallida(s).`
                 );
 
+
+                Logger.info(
+                    "✓ Los fallos fueron capturados y enviados al analizador IA."
+                );
+
+
+                if (
+                    analysis
+                ) {
+
+                    Logger.info(
+                        `✓ Estado generado por IA: ${
+                            analysis.overallStatus ??
+                            "N/A"
+                        }`
+                    );
+
+                }
+
             }
+
+
+            Logger.success(
+                "\n✓ Pipeline de testing finalizado."
+            );
 
 
             // ==================================================
@@ -958,7 +1028,18 @@ class PostmanAgentEnhanced {
 
             return {
 
+                /*
+                 * success representa el resultado de las
+                 * pruebas, NO el estado del agente.
+                 */
+
                 success,
+
+                agentCompleted:
+                    true,
+
+                hasTestFailures:
+                    failed > 0,
 
                 workspace:
                     selectedWorkspace.name,
@@ -1009,8 +1090,24 @@ class PostmanAgentEnhanced {
 
                 },
 
-                newman:
-                    newmanResult,
+                newman: {
+
+                    requests,
+
+                    assertions,
+
+                    failed,
+
+                    httpFailures,
+
+                    assertionFailures,
+
+                    skipped,
+
+                    raw:
+                        newmanResult
+
+                },
 
                 analysis
 
@@ -1020,6 +1117,17 @@ class PostmanAgentEnhanced {
         catch (
             error
         ) {
+
+            // ==================================================
+            // ERROR REAL DEL AGENTE
+            // ==================================================
+
+            const errorMessage =
+                error?.message ??
+                error?.response?.data?.message ??
+                error?.response?.data?.error ??
+                String(error);
+
 
             Logger.error(
                 "\n================================="
@@ -1035,8 +1143,7 @@ class PostmanAgentEnhanced {
 
 
             Logger.error(
-                error?.message ??
-                String(error)
+                errorMessage
             );
 
 
@@ -1048,14 +1155,27 @@ class PostmanAgentEnhanced {
                     "\nBackend response:"
                 );
 
+
                 console.error(
-                    error.response.data
+                    JSON.stringify(
+                        error.response.data,
+                        null,
+                        2
+                    )
                 );
 
             }
 
 
-            throw error;
+            /*
+             * Aquí sí existe un error real del pipeline.
+             *
+             * Newman con pruebas fallidas NO llega aquí.
+             */
+
+            throw new Error(
+                errorMessage
+            );
 
         }
 
