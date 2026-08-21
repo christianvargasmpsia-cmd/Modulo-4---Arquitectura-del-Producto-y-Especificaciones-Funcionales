@@ -81,6 +81,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // TEST DATA
+        // ======================================================
+
         console.log(
             "\n📦 TEST DATA"
         );
@@ -135,7 +139,7 @@ class NewmanService {
 
 
         // ======================================================
-        // VALIDAR TEST DATA
+        // VALIDAR
         // ======================================================
 
         this.validateTestData(
@@ -150,7 +154,6 @@ class NewmanService {
         console.log(
             "\n📖 Leyendo Collection..."
         );
-
 
         const collection =
             JSON.parse(
@@ -203,30 +206,65 @@ class NewmanService {
         );
 
 
+        // ======================================================
+        // IDS DE DISCOVERY
+        // ======================================================
+
         this.setVariable(
             collection,
             "userId",
-            testData.userId
+            testData.userId ?? ""
         );
-
 
         this.setVariable(
             collection,
             "storeId",
-            testData.storeId
+            testData.storeId ?? ""
         );
-
 
         this.setVariable(
             collection,
             "publicationId",
-            testData.publicationId
+            testData.publicationId ?? ""
         );
-
 
         this.setVariable(
             collection,
             "interactionId",
+            testData.interactionId ?? ""
+        );
+
+
+        // ======================================================
+        // IDS CREADOS
+        //
+        // IMPORTANTE:
+        // Inician con Discovery como fallback.
+        // Si un POST crea un recurso nuevo,
+        // el script posterior reemplazará el valor.
+        // ======================================================
+
+        this.setVariable(
+            collection,
+            "createdUserId",
+            testData.userId ?? ""
+        );
+
+        this.setVariable(
+            collection,
+            "createdStoreId",
+            testData.storeId ?? ""
+        );
+
+        this.setVariable(
+            collection,
+            "createdPublicationId",
+            testData.publicationId ?? ""
+        );
+
+        this.setVariable(
+            collection,
+            "createdInteractionId",
             testData.interactionId ?? ""
         );
 
@@ -238,7 +276,7 @@ class NewmanService {
         this.setVariable(
             collection,
             "discoveryToken",
-            testData.token
+            testData.token ?? ""
         );
 
 
@@ -252,13 +290,11 @@ class NewmanService {
             ""
         );
 
-
         this.setVariable(
             collection,
             "authToken",
             ""
         );
-
 
         this.setVariable(
             collection,
@@ -277,15 +313,12 @@ class NewmanService {
             testData.email ?? ""
         );
 
-
         this.setVariable(
             collection,
             "testPassword",
-
             testData.password ??
             process.env.TEST_USER_PASSWORD ??
             "12345678"
-
         );
 
 
@@ -309,7 +342,7 @@ class NewmanService {
 
 
         // ======================================================
-        // SCRIPTS LOGIN / ME / LOGOUT
+        // SCRIPTS
         // ======================================================
 
         this.ensureAuthenticationScripts(
@@ -318,7 +351,7 @@ class NewmanService {
 
 
         // ======================================================
-        // ORGANIZAR COLLECTION
+        // ORGANIZAR
         // ======================================================
 
         console.log(
@@ -339,14 +372,23 @@ class NewmanService {
 
 
         console.log(
-            `✓ Requests después de exclusiones: ${
+            `✓ Requests después de preparación: ${
                 preparedRequests
             }`
         );
 
 
         // ======================================================
-        // GUARDAR COLLECTION PREPARADA
+        // MOSTRAR ORDEN FINAL
+        // ======================================================
+
+        this.printFinalOrder(
+            collection.item
+        );
+
+
+        // ======================================================
+        // GUARDAR COLLECTION
         // ======================================================
 
         const preparedPath =
@@ -381,7 +423,7 @@ class NewmanService {
 
 
         // ======================================================
-        // EJECUTAR NEWMAN
+        // NEWMAN
         // ======================================================
 
         console.log(
@@ -669,7 +711,7 @@ class NewmanService {
                                 ) {
 
                                     console.log(
-                                        `   ${item.url}`
+                                        `   URL: ${item.url}`
                                     );
 
                                 }
@@ -810,10 +852,6 @@ class NewmanService {
                     ).toUpperCase();
 
 
-                // ==================================================
-                // EXCLUIR POST /api/stores
-                // ==================================================
-
                 if (
                     this.isExcludedRequest(
                         method,
@@ -822,7 +860,7 @@ class NewmanService {
                 ) {
 
                     console.log(
-                        `⏭️ Omitiendo ${method} ${endpoint} — prueba excluida`
+                        `⏭️ Omitiendo ${method} ${endpoint}`
                     );
 
                 }
@@ -895,7 +933,44 @@ class NewmanService {
 
 
         // ======================================================
-        // URL
+        // DELETE
+        // ======================================================
+
+        if (
+            method ===
+            "DELETE"
+        ) {
+
+            const prepared =
+                this.prepareDeleteRequest(
+                    request,
+                    endpoint,
+                    testData
+                );
+
+
+            if (!prepared) {
+
+                console.log(
+                    `   ⚠️ DELETE no preparado: ${endpoint}`
+                );
+
+            }
+
+
+            this.prepareAuthentication(
+                request,
+                endpoint
+            );
+
+
+            return;
+
+        }
+
+
+        // ======================================================
+        // URL NORMAL
         // ======================================================
 
         if (
@@ -968,11 +1043,776 @@ class NewmanService {
             endpoint
         );
 
+
+        // ======================================================
+        // MOSTRAR PUT / PATCH
+        // ======================================================
+
+        if (
+            method === "PUT" ||
+            method === "PATCH"
+        ) {
+
+            this.printModification(
+                item,
+                endpoint,
+                testData
+            );
+
+        }
+
     }
 
 
     // ==========================================================
-    // PREPARAR BODY
+    // MOSTRAR PUT / PATCH
+    // ==========================================================
+
+    printModification(
+        item,
+        endpoint,
+        testData
+    ) {
+
+        const request =
+            item?.request;
+
+
+        if (!request) {
+
+            return;
+
+        }
+
+
+        const method =
+            String(
+                request.method ??
+                ""
+            ).toUpperCase();
+
+
+        if (
+            method !== "PUT" &&
+            method !== "PATCH"
+        ) {
+
+            return;
+
+        }
+
+
+        const normalized =
+            String(
+                endpoint ??
+                ""
+            ).toLowerCase();
+
+
+        let resource =
+            "RECURSO";
+
+
+        let id =
+            "N/A";
+
+
+        // ======================================================
+        // USER
+        // ======================================================
+
+        if (
+            normalized.includes(
+                "/api/users"
+            )
+        ) {
+
+            resource =
+                "USER";
+
+            id =
+                testData.userId ??
+                "N/A";
+
+        }
+
+
+        // ======================================================
+        // STORE
+        // ======================================================
+
+        else if (
+            normalized.includes(
+                "/api/stores"
+            )
+        ) {
+
+            resource =
+                "STORE";
+
+            id =
+                testData.storeId ??
+                "N/A";
+
+        }
+
+
+        // ======================================================
+        // PUBLICATION
+        // ======================================================
+
+        else if (
+            normalized.includes(
+                "/api/publications"
+            )
+        ) {
+
+            resource =
+                "PUBLICATION";
+
+            id =
+                testData.publicationId ??
+                "N/A";
+
+        }
+
+
+        // ======================================================
+        // INTERACTION
+        // ======================================================
+
+        else if (
+            normalized.includes(
+                "/api/interactions"
+            )
+        ) {
+
+            resource =
+                "INTERACTION";
+
+            id =
+                testData.interactionId ??
+                "N/A";
+
+        }
+
+
+        console.log("");
+
+        console.log(
+            `   🔄 ${method} ${item.name ?? endpoint}`
+        );
+
+        console.log(
+            `      RECURSO : ${resource}`
+        );
+
+        console.log(
+            `      ID      : ${id}`
+        );
+
+
+        // ======================================================
+        // BODY
+        // ======================================================
+
+        if (
+            request.body?.raw
+        ) {
+
+            let body =
+                this.replaceVariables(
+                    request.body.raw,
+                    testData
+                );
+
+
+            try {
+
+                const parsed =
+                    JSON.parse(
+                        body
+                    );
+
+
+                console.log(
+                    "      CAMBIANDO:"
+                );
+
+                console.log(
+                    JSON.stringify(
+                        parsed,
+                        null,
+                        2
+                    )
+                );
+
+            }
+            catch {
+
+                console.log(
+                    "      CAMBIANDO:"
+                );
+
+                console.log(
+                    body
+                );
+
+            }
+
+        }
+        else {
+
+            console.log(
+                "      CAMBIANDO: Sin body"
+            );
+
+        }
+
+
+        console.log("");
+
+    }
+
+
+    // ==========================================================
+    // PREPARAR DELETE
+    // ==========================================================
+
+    prepareDeleteRequest(
+        request,
+        endpoint,
+        testData = {}
+    ) {
+
+        const path =
+            String(
+                endpoint ?? ""
+            ).toLowerCase();
+
+
+        let resourceName =
+            null;
+
+
+        let createdVariable =
+            null;
+
+
+        let discoveryId =
+            null;
+
+
+        // ======================================================
+        // INTERACTION
+        // ======================================================
+
+        if (
+            path.includes(
+                "/api/interactions"
+            )
+        ) {
+
+            resourceName =
+                "Interaction";
+
+            createdVariable =
+                "createdInteractionId";
+
+            discoveryId =
+                testData.interactionId;
+
+        }
+
+
+        // ======================================================
+        // PUBLICATION
+        // ======================================================
+
+        else if (
+            path.includes(
+                "/api/publications"
+            )
+        ) {
+
+            resourceName =
+                "Publication";
+
+            createdVariable =
+                "createdPublicationId";
+
+            discoveryId =
+                testData.publicationId;
+
+        }
+
+
+        // ======================================================
+        // STORE
+        // ======================================================
+
+        else if (
+            path.includes(
+                "/api/stores"
+            )
+        ) {
+
+            resourceName =
+                "Store";
+
+            createdVariable =
+                "createdStoreId";
+
+            discoveryId =
+                testData.storeId;
+
+        }
+
+
+        // ======================================================
+        // USER
+        // ======================================================
+
+        else if (
+            path.includes(
+                "/api/users"
+            )
+        ) {
+
+            resourceName =
+                "User";
+
+            createdVariable =
+                "createdUserId";
+
+            discoveryId =
+                testData.userId;
+
+        }
+
+
+        else {
+
+            return false;
+
+        }
+
+
+        // ======================================================
+        // ID A UTILIZAR
+        // ======================================================
+
+        const id =
+            discoveryId ??
+            "";
+
+
+        if (!id) {
+
+            console.log(
+                `   ❌ DELETE ${resourceName}: no existe ID`
+            );
+
+            return false;
+
+        }
+
+
+        // ======================================================
+        // PREPARAR URL CON ID REAL
+        // ======================================================
+
+        this.forceDeleteId(
+            request,
+            id
+        );
+
+
+        console.log(
+            `   🗑️ DELETE ${resourceName}`
+        );
+
+        console.log(
+            `      ID: ${id}`
+        );
+
+
+        console.log(
+            `      Variable: {{${createdVariable}}}`
+        );
+
+
+        return true;
+
+    }
+
+
+    // ==========================================================
+    // FORZAR ID DELETE
+    // ==========================================================
+
+    forceDeleteId(
+        request,
+        id
+    ) {
+
+        if (
+            !request?.url
+        ) {
+
+            return false;
+
+        }
+
+
+        // ======================================================
+        // URL STRING
+        // ======================================================
+
+        if (
+            typeof request.url ===
+            "string"
+        ) {
+
+            let url =
+                request.url;
+
+
+            const uuidRegex =
+                /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+
+
+            if (
+                uuidRegex.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        uuidRegex,
+                        id
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                /\/:id\/?$/i.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        /\/:id\/?$/i,
+                        `/${id}`
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                /\/<uuid>\/?$/i.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        /\/<uuid>\/?$/i,
+                        `/${id}`
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                url.endsWith("/")
+            ) {
+
+                request.url =
+                    `${url}${id}`;
+
+                return true;
+
+            }
+
+
+            request.url =
+                `${url}/${id}`;
+
+            return true;
+
+        }
+
+
+        // ======================================================
+        // URL OBJECT
+        // ======================================================
+
+        if (
+            Array.isArray(
+                request.url?.path
+            )
+        ) {
+
+            const path =
+                request.url.path;
+
+
+            const uuidIndex =
+                path.findIndex(
+                    segment =>
+                        this.isUuid(
+                            segment
+                        )
+                );
+
+
+            if (
+                uuidIndex !== -1
+            ) {
+
+                path[uuidIndex] =
+                    id;
+
+                return true;
+
+            }
+
+
+            const idIndex =
+                path.findIndex(
+                    segment =>
+                        segment === ":id" ||
+                        segment === "<uuid>"
+                );
+
+
+            if (
+                idIndex !== -1
+            ) {
+
+                path[idIndex] =
+                    id;
+
+                return true;
+
+            }
+
+
+            path.push(
+                id
+            );
+
+            return true;
+
+        }
+
+
+        return false;
+
+    }
+
+
+    // ==========================================================
+    // REEMPLAZAR VARIABLE EN URL
+    // ==========================================================
+
+    replaceEndpointVariable(
+        request,
+        variable
+    ) {
+
+        if (
+            !request?.url
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            typeof request.url ===
+            "string"
+        ) {
+
+            let url =
+                request.url;
+
+
+            if (
+                url.includes(
+                    variable
+                )
+            ) {
+
+                return true;
+
+            }
+
+
+            const uuidRegex =
+                /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+
+
+            if (
+                uuidRegex.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        uuidRegex,
+                        variable
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                /\/:id\/?$/i.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        /\/:id\/?$/i,
+                        `/${variable}`
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                /\/<uuid>\/?$/i.test(
+                    url
+                )
+            ) {
+
+                request.url =
+                    url.replace(
+                        /\/<uuid>\/?$/i,
+                        `/${variable}`
+                    );
+
+                return true;
+
+            }
+
+
+            if (
+                url.endsWith("/")
+            ) {
+
+                request.url =
+                    `${url}${variable}`;
+
+                return true;
+
+            }
+
+
+            request.url =
+                `${url}/${variable}`;
+
+            return true;
+
+        }
+
+
+        if (
+            Array.isArray(
+                request.url?.path
+            )
+        ) {
+
+            const path =
+                request.url.path;
+
+
+            if (
+                path.includes(
+                    variable
+                )
+            ) {
+
+                return true;
+
+            }
+
+
+            const uuidIndex =
+                path.findIndex(
+                    segment =>
+                        this.isUuid(
+                            segment
+                        )
+                );
+
+
+            if (
+                uuidIndex !== -1
+            ) {
+
+                path[uuidIndex] =
+                    variable;
+
+                return true;
+
+            }
+
+
+            const idIndex =
+                path.findIndex(
+                    segment =>
+                        segment === ":id" ||
+                        segment === "<uuid>"
+                );
+
+
+            if (
+                idIndex !== -1
+            ) {
+
+                path[idIndex] =
+                    variable;
+
+                return true;
+
+            }
+
+
+            path.push(
+                variable
+            );
+
+            return true;
+
+        }
+
+
+        return false;
+
+    }
+
+
+    // ==========================================================
+    // BODY
     // ==========================================================
 
     prepareRequestBody(
@@ -1008,12 +1848,9 @@ class NewmanService {
 
                 raw:
                     JSON.stringify(
-
                         this.createCustomerBody(),
-
                         null,
                         2
-
                     ),
 
                 options: {
@@ -1031,7 +1868,7 @@ class NewmanService {
 
 
             console.log(
-                "   ✓ Body generado para REGISTER CUSTOMER"
+                "   ✓ Body REGISTER CUSTOMER"
             );
 
 
@@ -1056,12 +1893,9 @@ class NewmanService {
 
                 raw:
                     JSON.stringify(
-
                         this.createEntrepreneurBody(),
-
                         null,
                         2
-
                     ),
 
                 options: {
@@ -1079,7 +1913,7 @@ class NewmanService {
 
 
             console.log(
-                "   ✓ Body generado para REGISTER ENTREPRENEUR"
+                "   ✓ Body REGISTER ENTREPRENEUR"
             );
 
 
@@ -1104,12 +1938,9 @@ class NewmanService {
 
                 raw:
                     JSON.stringify(
-
                         this.createAdminBody(),
-
                         null,
                         2
-
                     ),
 
                 options: {
@@ -1127,7 +1958,7 @@ class NewmanService {
 
 
             console.log(
-                "   ✓ Body generado para REGISTER ADMIN"
+                "   ✓ Body REGISTER ADMIN"
             );
 
 
@@ -1152,7 +1983,6 @@ class NewmanService {
 
                 raw:
                     JSON.stringify(
-
                         {
 
                             email:
@@ -1164,10 +1994,8 @@ class NewmanService {
                                 "12345678"
 
                         },
-
                         null,
                         2
-
                     ),
 
                 options: {
@@ -1185,11 +2013,7 @@ class NewmanService {
 
 
             console.log(
-                "   ✓ Body generado para LOGIN"
-            );
-
-            console.log(
-                `     Email: ${testData.email}`
+                "   ✓ Body LOGIN"
             );
 
 
@@ -1199,7 +2023,7 @@ class NewmanService {
 
 
         // ======================================================
-        // OTROS REQUESTS
+        // BODY GENÉRICO
         // ======================================================
 
         if (
@@ -1219,7 +2043,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // CUSTOMER BODY
+    // CUSTOMER
     // ==========================================================
 
     createCustomerBody() {
@@ -1260,7 +2084,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // ENTREPRENEUR BODY
+    // ENTREPRENEUR
     // ==========================================================
 
     createEntrepreneurBody() {
@@ -1293,7 +2117,10 @@ class NewmanService {
                 "Ciencias y Tecnologia",
 
             password:
-                "12345678"
+                "12345678",
+
+            nombreTienda:
+                `Tienda Testing ${unique}`
 
         };
 
@@ -1301,7 +2128,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // ADMIN BODY
+    // ADMIN
     // ==========================================================
 
     createAdminBody() {
@@ -1391,17 +2218,13 @@ class NewmanService {
 
 
     // ==========================================================
-    // AUTHENTICATION
+    // AUTH
     // ==========================================================
 
     prepareAuthentication(
         request,
         endpoint
     ) {
-
-        // ------------------------------------------------------
-        // REGISTER
-        // ------------------------------------------------------
 
         if (
             endpoint.startsWith(
@@ -1418,10 +2241,6 @@ class NewmanService {
         }
 
 
-        // ------------------------------------------------------
-        // LOGIN
-        // ------------------------------------------------------
-
         if (
             endpoint ===
             "/api/auth/login"
@@ -1435,10 +2254,6 @@ class NewmanService {
 
         }
 
-
-        // ------------------------------------------------------
-        // RESTO
-        // ------------------------------------------------------
 
         this.setAuthorizationVariable(
             request,
@@ -1540,7 +2355,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // PREPARAR URL
+    // URL
     // ==========================================================
 
     prepareUrl(
@@ -1579,10 +2394,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // PATH
-        // ======================================================
-
         if (
             Array.isArray(
                 url.path
@@ -1614,10 +2425,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // QUERY
-        // ======================================================
 
         if (
             Array.isArray(
@@ -1664,7 +2471,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // PATH SEGMENT
+    // PATH
     // ==========================================================
 
     replacePathSegment(
@@ -1719,7 +2526,66 @@ class NewmanService {
             )
         ) {
 
-            return testData.interactionId ?? "";
+            return (
+                testData.interactionId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            value.includes(
+                "{{createdUserId}}"
+            )
+        ) {
+
+            return (
+                testData.userId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            value.includes(
+                "{{createdStoreId}}"
+            )
+        ) {
+
+            return (
+                testData.storeId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            value.includes(
+                "{{createdPublicationId}}"
+            )
+        ) {
+
+            return (
+                testData.publicationId ??
+                ""
+            );
+
+        }
+
+
+        if (
+            value.includes(
+                "{{createdInteractionId}}"
+            )
+        ) {
+
+            return (
+                testData.interactionId ??
+                ""
+            );
 
         }
 
@@ -1773,7 +2639,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // RESOLVER UUID SEGÚN ENDPOINT
+    // UUID RESOLVER
     // ==========================================================
 
     resolveUuidByPath(
@@ -1787,10 +2653,6 @@ class NewmanService {
                 ""
             ).toLowerCase();
 
-
-        // ======================================================
-        // INTERACTIONS
-        // ======================================================
 
         if (
             pathValue.includes(
@@ -1806,10 +2668,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // PUBLICATIONS
-        // ======================================================
-
         if (
             pathValue.includes(
                 "publications"
@@ -1824,10 +2682,6 @@ class NewmanService {
         }
 
 
-        // ======================================================
-        // STORES
-        // ======================================================
-
         if (
             pathValue.includes(
                 "stores"
@@ -1841,10 +2695,6 @@ class NewmanService {
 
         }
 
-
-        // ======================================================
-        // USERS
-        // ======================================================
 
         if (
             pathValue.includes(
@@ -1866,7 +2716,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // REQUESTS EXCLUIDAS
+    // EXCLUSIONES
     // ==========================================================
 
     isExcludedRequest(
@@ -1874,28 +2724,37 @@ class NewmanService {
         endpoint
     ) {
 
-        return (
-
+        const normalizedMethod =
             String(
-                method ??
-                ""
-            ).toUpperCase() ===
-            "POST"
+                method ?? ""
+            ).toUpperCase();
 
-            &&
 
+        const normalizedEndpoint =
             this.normalizeEndpoint(
                 endpoint
-            ) ===
-            "/api/stores"
+            );
 
-        );
+
+        if (
+            normalizedMethod ===
+                "POST" &&
+            normalizedEndpoint ===
+                "/api/stores"
+        ) {
+
+            return true;
+
+        }
+
+
+        return false;
 
     }
 
 
     // ==========================================================
-    // REEMPLAZAR UUID ESTÁTICO
+    // UUID ESTÁTICO
     // ==========================================================
 
     replaceStaticUuid(
@@ -1966,18 +2825,10 @@ class NewmanService {
             )
         ) {
 
-            if (
-                !testData.interactionId
-            ) {
-
-                return url;
-
-            }
-
-
             return url.replace(
                 uuidRegex,
-                testData.interactionId
+                testData.interactionId ??
+                ""
             );
 
         }
@@ -1989,7 +2840,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // QUERY VALUES
+    // QUERY
     // ==========================================================
 
     replaceQueryValue(
@@ -2091,7 +2942,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // BODY GENÉRICO
+    // BODY
     // ==========================================================
 
     replaceBody(
@@ -2197,6 +3048,26 @@ class NewmanService {
             )
 
             .replace(
+                /{{createdUserId}}/gi,
+                testData.userId ?? ""
+            )
+
+            .replace(
+                /{{createdStoreId}}/gi,
+                testData.storeId ?? ""
+            )
+
+            .replace(
+                /{{createdPublicationId}}/gi,
+                testData.publicationId ?? ""
+            )
+
+            .replace(
+                /{{createdInteractionId}}/gi,
+                testData.interactionId ?? ""
+            )
+
+            .replace(
                 /{{discoveryToken}}/gi,
                 testData.token ?? ""
             )
@@ -2217,7 +3088,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // AUTHENTICATION SCRIPTS
+    // AUTH SCRIPTS
     // ==========================================================
 
     ensureAuthenticationScripts(
@@ -2247,9 +3118,10 @@ class NewmanService {
 
 
                 if (
-                    method === "POST" &&
+                    method ===
+                        "POST" &&
                     endpoint ===
-                    "/api/auth/login"
+                        "/api/auth/login"
                 ) {
 
                     this.addLoginCapture(
@@ -2260,9 +3132,10 @@ class NewmanService {
 
 
                 if (
-                    method === "GET" &&
+                    method ===
+                        "GET" &&
                     endpoint ===
-                    "/api/auth/me"
+                        "/api/auth/me"
                 ) {
 
                     this.addMeValidation(
@@ -2278,6 +3151,63 @@ class NewmanService {
                 ) {
 
                     this.addLogoutValidation(
+                        item
+                    );
+
+                }
+
+
+                if (
+                    method ===
+                        "POST" &&
+                    endpoint.startsWith(
+                        "/api/auth/register/"
+                    )
+                ) {
+
+                    this.addCreatedUserCapture(
+                        item
+                    );
+
+                }
+
+
+                if (
+                    method ===
+                        "POST" &&
+                    endpoint ===
+                        "/api/auth/register/entrepreneur"
+                ) {
+
+                    this.addCreatedStoreCapture(
+                        item
+                    );
+
+                }
+
+
+                if (
+                    method ===
+                        "POST" &&
+                    endpoint ===
+                        "/api/publications"
+                ) {
+
+                    this.addCreatedPublicationCapture(
+                        item
+                    );
+
+                }
+
+
+                if (
+                    method ===
+                        "POST" &&
+                    endpoint ===
+                        "/api/interactions"
+                ) {
+
+                    this.addInteractionCapture(
                         item
                     );
 
@@ -2374,68 +3304,315 @@ class NewmanService {
         ];
 
 
-        const existing =
-            item.event.find(
-                event =>
-                    event.listen ===
-                    "test"
-            );
-
-
-        if (
-            existing
-        ) {
-
-            existing.script = {
-
-                type:
-                    "text/javascript",
-
-                exec:
-                    script
-
-            };
-
-        }
-        else {
-
-            item.event.push({
-
-                listen:
-                    "test",
-
-                script: {
-
-                    type:
-                        "text/javascript",
-
-                    exec:
-                        script
-
-                }
-
-            });
-
-        }
+        this.setTestScript(
+            item,
+            script
+        );
 
     }
 
 
     // ==========================================================
-    // ME VALIDATION
+    // USER ID
+    // ==========================================================
+
+    addCreatedUserCapture(
+        item
+    ) {
+
+        const script = [
+
+            "",
+
+            "if (pm.response.code >= 200 && pm.response.code < 300) {",
+
+            "    let data = {};",
+
+            "",
+
+            "    try {",
+
+            "        data = pm.response.json();",
+
+            "    } catch (e) {",
+
+            "        console.log('⚠️ REGISTER USER no devolvió JSON');",
+
+            "    }",
+
+            "",
+
+            "    const id =",
+
+            "        data?.id ||",
+
+            "        data?.data?.id ||",
+
+            "        data?.user?.id ||",
+
+            "        data?.data?.user?.id ||",
+
+            "        data?.result?.id ||",
+
+            "        null;",
+
+            "",
+
+            "    if (id) {",
+
+            "        pm.collectionVariables.set('createdUserId', id);",
+
+            "        console.log('🆔 createdUserId:', id);",
+
+            "    } else {",
+
+            "        console.log('❌ No se encontró createdUserId');",
+
+            "        console.log('Response:', JSON.stringify(data));",
+
+            "    }",
+
+            "}"
+
+        ];
+
+
+        this.appendTestScript(
+            item,
+            script
+        );
+
+    }
+
+
+    // ==========================================================
+    // STORE ID
+    // ==========================================================
+
+    addCreatedStoreCapture(
+        item
+    ) {
+
+        const script = [
+
+            "",
+
+            "if (pm.response.code >= 200 && pm.response.code < 300) {",
+
+            "    let data = {};",
+
+            "",
+
+            "    try {",
+
+            "        data = pm.response.json();",
+
+            "    } catch (e) {",
+
+            "        console.log('⚠️ REGISTER ENTREPRENEUR no devolvió JSON');",
+
+            "    }",
+
+            "",
+
+            "    const storeId =",
+
+            "        data?.store?.id ||",
+
+            "        data?.data?.store?.id ||",
+
+            "        data?.entrepreneur?.store?.id ||",
+
+            "        data?.data?.entrepreneur?.store?.id ||",
+
+            "        data?.storeId ||",
+
+            "        data?.data?.storeId ||",
+
+            "        null;",
+
+            "",
+
+            "    if (storeId) {",
+
+            "        pm.collectionVariables.set('createdStoreId', storeId);",
+
+            "        console.log('🆔 createdStoreId:', storeId);",
+
+            "    } else {",
+
+            "        console.log('⚠️ No se encontró createdStoreId en REGISTER ENTREPRENEUR');",
+
+            "        console.log('Response:', JSON.stringify(data));",
+
+            "    }",
+
+            "}"
+
+        ];
+
+
+        this.appendTestScript(
+            item,
+            script
+        );
+
+    }
+
+
+    // ==========================================================
+    // PUBLICATION ID
+    // ==========================================================
+
+    addCreatedPublicationCapture(
+        item
+    ) {
+
+        const script = [
+
+            "",
+
+            "if (pm.response.code >= 200 && pm.response.code < 300) {",
+
+            "    let data = {};",
+
+            "",
+
+            "    try {",
+
+            "        data = pm.response.json();",
+
+            "    } catch (e) {",
+
+            "        console.log('⚠️ POST publication no devolvió JSON');",
+
+            "    }",
+
+            "",
+
+            "    const id =",
+
+            "        data?.id ||",
+
+            "        data?.data?.id ||",
+
+            "        data?.publication?.id ||",
+
+            "        data?.data?.publication?.id ||",
+
+            "        data?.result?.id ||",
+
+            "        null;",
+
+            "",
+
+            "    if (id) {",
+
+            "        pm.collectionVariables.set('createdPublicationId', id);",
+
+            "        console.log('🆔 createdPublicationId:', id);",
+
+            "    } else {",
+
+            "        console.log('❌ No se encontró createdPublicationId');",
+
+            "        console.log('Response:', JSON.stringify(data));",
+
+            "    }",
+
+            "}"
+
+        ];
+
+
+        this.appendTestScript(
+            item,
+            script
+        );
+
+    }
+
+
+    // ==========================================================
+    // INTERACTION ID
+    // ==========================================================
+
+    addInteractionCapture(
+        item
+    ) {
+
+        const script = [
+
+            "",
+
+            "if (pm.response.code >= 200 && pm.response.code < 300) {",
+
+            "    let data = {};",
+
+            "",
+
+            "    try {",
+
+            "        data = pm.response.json();",
+
+            "    } catch (e) {",
+
+            "        console.log('⚠️ POST interaction no devolvió JSON');",
+
+            "    }",
+
+            "",
+
+            "    const interactionId =",
+
+            "        data?.id ||",
+
+            "        data?.data?.id ||",
+
+            "        data?.interaction?.id ||",
+
+            "        data?.data?.interaction?.id ||",
+
+            "        data?.result?.id ||",
+
+            "        null;",
+
+            "",
+
+            "    if (interactionId) {",
+
+            "        pm.collectionVariables.set('createdInteractionId', interactionId);",
+
+            "        console.log('🆔 createdInteractionId:', interactionId);",
+
+            "    } else {",
+
+            "        console.log('❌ No se encontró createdInteractionId');",
+
+            "        console.log('Response:', JSON.stringify(data));",
+
+            "    }",
+
+            "}"
+
+        ];
+
+
+        this.appendTestScript(
+            item,
+            script
+        );
+
+    }
+
+
+    // ==========================================================
+    // ME
     // ==========================================================
 
     addMeValidation(
         item
     ) {
-
-        item.event =
-            Array.isArray(
-                item.event
-            )
-                ? item.event
-                : [];
-
 
         const script = [
 
@@ -2448,68 +3625,21 @@ class NewmanService {
         ];
 
 
-        const existing =
-            item.event.find(
-                event =>
-                    event.listen ===
-                    "test"
-            );
-
-
-        if (
-            existing
-        ) {
-
-            existing.script = {
-
-                type:
-                    "text/javascript",
-
-                exec:
-                    script
-
-            };
-
-        }
-        else {
-
-            item.event.push({
-
-                listen:
-                    "test",
-
-                script: {
-
-                    type:
-                        "text/javascript",
-
-                    exec:
-                        script
-
-                }
-
-            });
-
-        }
+        this.setTestScript(
+            item,
+            script
+        );
 
     }
 
 
     // ==========================================================
-    // LOGOUT VALIDATION
+    // LOGOUT
     // ==========================================================
 
     addLogoutValidation(
         item
     ) {
-
-        item.event =
-            Array.isArray(
-                item.event
-            )
-                ? item.event
-                : [];
-
 
         const script = [
 
@@ -2522,6 +3652,31 @@ class NewmanService {
         ];
 
 
+        this.setTestScript(
+            item,
+            script
+        );
+
+    }
+
+
+    // ==========================================================
+    // TEST SCRIPT
+    // ==========================================================
+
+    setTestScript(
+        item,
+        script
+    ) {
+
+        item.event =
+            Array.isArray(
+                item.event
+            )
+                ? item.event
+                : [];
+
+
         const existing =
             item.event.find(
                 event =>
@@ -2570,7 +3725,79 @@ class NewmanService {
 
 
     // ==========================================================
-    // ORGANIZAR COLLECTION
+    // APPEND TEST SCRIPT
+    // ==========================================================
+
+    appendTestScript(
+        item,
+        script
+    ) {
+
+        item.event =
+            Array.isArray(
+                item.event
+            )
+                ? item.event
+                : [];
+
+
+        const existing =
+            item.event.find(
+                event =>
+                    event.listen ===
+                    "test"
+            );
+
+
+        if (
+            existing
+        ) {
+
+            existing.script = {
+
+                type:
+                    "text/javascript",
+
+                exec:
+                    [
+
+                        ...(existing.script?.exec ?? []),
+
+                        "",
+
+                        ...script
+
+                    ]
+
+            };
+
+        }
+        else {
+
+            item.event.push({
+
+                listen:
+                    "test",
+
+                script: {
+
+                    type:
+                        "text/javascript",
+
+                    exec:
+                        script
+
+                }
+
+            });
+
+        }
+
+    }
+
+
+    // ==========================================================
+    // ORGANIZAR
     // ==========================================================
 
     organizeCollection(
@@ -2629,11 +3856,6 @@ class NewmanService {
             );
 
 
-        console.log(
-            `✓ Requests detectados: ${ordered.length}`
-        );
-
-
         return ordered.map(
             request =>
                 request.item
@@ -2643,7 +3865,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // PRIORIDAD
+    // PRIORIDADES
     // ==========================================================
 
     getRequestPriority(
@@ -2663,6 +3885,10 @@ class NewmanService {
                 ""
             ).toLowerCase();
 
+
+        // ======================================================
+        // REGISTER
+        // ======================================================
 
         if (
             url.includes(
@@ -2697,6 +3923,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // LOGIN
+        // ======================================================
+
         if (
             url.includes(
                 "/api/auth/login"
@@ -2708,6 +3938,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // ME
+        // ======================================================
+
         if (
             url.includes(
                 "/api/auth/me"
@@ -2718,6 +3952,10 @@ class NewmanService {
 
         }
 
+
+        // ======================================================
+        // USERS
+        // ======================================================
 
         if (
             url.includes(
@@ -2732,6 +3970,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // STORES
+        // ======================================================
+
         if (
             url.includes(
                 "/api/stores"
@@ -2744,6 +3986,10 @@ class NewmanService {
 
         }
 
+
+        // ======================================================
+        // PUBLICATIONS
+        // ======================================================
 
         if (
             url.includes(
@@ -2758,6 +4004,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // INTERACTIONS
+        // ======================================================
+
         if (
             url.includes(
                 "/api/interactions"
@@ -2771,6 +4021,10 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // IA
+        // ======================================================
+
         if (
             url.includes(
                 "/api/ai/"
@@ -2781,6 +4035,10 @@ class NewmanService {
 
         }
 
+
+        // ======================================================
+        // EMBEDDINGS
+        // ======================================================
 
         if (
             url.includes(
@@ -2793,15 +4051,77 @@ class NewmanService {
         }
 
 
+        // ======================================================
+        // DELETE INTERACTION
+        // ======================================================
+
         if (
             method ===
-            "DELETE"
+                "DELETE" &&
+            url.includes(
+                "/api/interactions"
+            )
         ) {
 
             return 90;
 
         }
 
+
+        // ======================================================
+        // DELETE PUBLICATION
+        // ======================================================
+
+        if (
+            method ===
+                "DELETE" &&
+            url.includes(
+                "/api/publications"
+            )
+        ) {
+
+            return 91;
+
+        }
+
+
+        // ======================================================
+        // DELETE STORE
+        // ======================================================
+
+        if (
+            method ===
+                "DELETE" &&
+            url.includes(
+                "/api/stores"
+            )
+        ) {
+
+            return 92;
+
+        }
+
+
+        // ======================================================
+        // DELETE USER
+        // ======================================================
+
+        if (
+            method ===
+                "DELETE" &&
+            url.includes(
+                "/api/users"
+            )
+        ) {
+
+            return 93;
+
+        }
+
+
+        // ======================================================
+        // LOGOUT
+        // ======================================================
 
         if (
             url.includes(
@@ -2820,7 +4140,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // FLATTEN REQUESTS
+    // FLATTEN
     // ==========================================================
 
     flattenRequests(
@@ -2851,10 +4171,6 @@ class NewmanService {
                     ).toUpperCase();
 
 
-                // ==================================================
-                // EXCLUIR POST /api/stores
-                // ==================================================
-
                 if (
                     this.isExcludedRequest(
                         method,
@@ -2877,8 +4193,7 @@ class NewmanService {
                             item.name ??
                             "Unnamed",
 
-                        method:
-                            method,
+                        method,
 
                         url:
                             this.getItemUrl(
@@ -2923,7 +4238,79 @@ class NewmanService {
 
 
     // ==========================================================
-    // COLLECT REQUESTS
+    // MOSTRAR ORDEN
+    // ==========================================================
+
+    printFinalOrder(
+        items = []
+    ) {
+
+        const requests = [];
+
+
+        this.flattenRequests(
+            items,
+            requests
+        );
+
+
+        console.log("");
+
+        console.log(
+            "=================================================="
+        );
+
+        console.log(
+            "📋 ORDEN FINAL DE EJECUCIÓN"
+        );
+
+        console.log(
+            "=================================================="
+        );
+
+
+        requests.forEach(
+            (
+                request,
+                index
+            ) => {
+
+                const priority =
+                    this.getRequestPriority(
+                        request
+                    );
+
+
+                console.log(
+
+                    `${String(
+                        index + 1
+                    ).padStart(
+                        2,
+                        "0"
+                    )}. ` +
+
+                    `${request.method} ` +
+
+                    `${request.name} ` +
+
+                    `(P${priority})`
+
+                );
+
+            }
+        );
+
+
+        console.log(
+            "=================================================="
+        );
+
+    }
+
+
+    // ==========================================================
+    // COLLECT
     // ==========================================================
 
     collectRequests(
@@ -2979,7 +4366,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // COUNT REQUESTS
+    // COUNT
     // ==========================================================
 
     countRequests(
@@ -3173,7 +4560,7 @@ class NewmanService {
 
 
     // ==========================================================
-    // NORMALIZE ENDPOINT
+    // NORMALIZE
     // ==========================================================
 
     normalizeEndpoint(
