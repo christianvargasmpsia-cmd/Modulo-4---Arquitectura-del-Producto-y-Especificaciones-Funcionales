@@ -1,226 +1,1191 @@
-# UMSS Market
-## AI-Native Product Architecture & Functional Specifications
-## 1. Introducción
-UMSS Market es un marketplace universitario multi-tenant diseñado para digitalizar y estructurar operativamente los emprendimientos estudiantiles de la Universidad Mayor de San Simón (UMSS).
+# 🛒 UMSS Market
 
-La plataforma busca resolver la informalidad operativa presente en procesos comerciales gestionados actualmente mediante WhatsApp, redes sociales y mecanismos manuales de coordinación, integrando catálogo digital, pagos QR, gestión de pedidos y trazabilidad operativa dentro de un ecosistema centralizado.
+> Marketplace universitario para la comunidad de la Universidad Mayor de San Simón (UMSS).
 
-El proyecto evoluciona bajo un enfoque AI-Native Engineering, integrando arquitectura distribuida, documentación evolutiva, decisiones arquitectónicas trazables y flujos de especificación funcional alineados a metodologías modernas de ingeniería de software asistida por inteligencia artificial.
+## 📌 Descripción
 
-Este repositorio concentra la arquitectura documental, especificaciones funcionales, decisiones arquitectónicas, prompts especializados, artefactos AI-assisted y diagramas asociados al ciclo de vida arquitectónico del sistema.
+UMSS Market es un marketplace universitario orientado a digitalizar y centralizar la oferta de productos y servicios de emprendimientos estudiantiles.
 
-## 2. Problema identificado
+La plataforma permite gestionar usuarios, tiendas, publicaciones, catálogo e interacciones. Sobre esta base se incorporaron capacidades de Inteligencia Artificial para realizar consultas en lenguaje natural, búsqueda semántica y recuperación contextual de información mediante RAG.
 
-Actualmente muchos emprendimientos universitarios operan mediante herramientas no diseñadas para comercio digital estructurado, como WhatsApp, Instagram y procesos manuales de validación de pagos.
+Además, se desarrolló un **AI Testing Agent** que integra herramientas para pruebas de API, pruebas End-to-End y análisis asistido por Inteligencia Artificial.
 
-Esto genera:
-
-- pérdida de pedidos
-- desorganización operativa
-- alta carga cognitiva
-- falta de trazabilidad
-- control manual de inventario
-- baja escalabilidad
-- dependencia operativa del usuario
-
-UMSS Market surge como una propuesta de digitalización estructurada orientada a transformar el ecosistema emprendedor universitario mediante automatización y centralización operativa.
-
-## 3. Objetivo del módulo
-El objetivo de este módulo consiste en construir la arquitectura funcional y documental del sistema UMSS Market mediante un enfoque AI-SDLC, integrando procesos de modelado de negocio, especificación de producto, diseño arquitectónico, documentación técnica y generación asistida por inteligencia artificial.
-
-La estructura del repositorio busca mantener trazabilidad entre necesidades de negocio, capacidades funcionales, decisiones arquitectónicas y artefactos técnicos derivados durante el ciclo evolutivo del producto.
-
-## 4. Contexto del sistema
-UMSS Market opera como un marketplace universitario multi-tenant orientado a consumidores, emprendedores estudiantiles y capacidades administrativas institucionales.
-
-El sistema contempla procesos asociados a:
-
-- gestión de catálogo
-- procesamiento de órdenes
-- pagos digitales
-- notificaciones
-- seguimiento de pedidos
-- administración comercial
-- trazabilidad operativa
-
-Debido al crecimiento funcional esperado, el sistema requiere una arquitectura desacoplada, resiliente y evolutiva que permita escalar capacidades de negocio de forma independiente.
-
-## 5. Arquitectura objetivo
-La arquitectura objetivo del sistema se encuentra alineada a principios de arquitectura distribuida moderna, capacidades distribuidas orientadas a eventos y patrones de integración asíncrona.
-
-El enfoque arquitectónico prioriza:
-
-- desacoplamiento funcional
-- consistencia eventual
-- resiliencia
-- observabilidad
-- escalabilidad horizontal
-- integración basada en eventos
-- separación por bounded contexts
-- evolución incremental del sistema
-
-La solución arquitectónica incorpora principios de Clean Architecture, Domain-Driven Design (DDD) y Event-Driven Architecture (EDA) como base estructural del ecosistema.
-
-## 6. Arquitectura documental
-La arquitectura documental del proyecto sigue un enfoque incremental y trazable alineado al ciclo AI-SDLC planteado durante el módulo.
-
-El flujo documental implementado contempla la evolución de los siguientes artefactos:
+La evolución de la solución fue:
 
 ```text
-BRD → MRD → PRD → ADR → FSD → DTI → POC 
+Marketplace
+    ↓
+Tool Calling
+    ↓
+RAG #1
+    ↓
+RAG #2
+    ↓
+RAG #3
+    ↓
+RAG #4
+    ↓
+RAG #5
+    ↓
+AI Testing Agent
+    ↓
+MCP + Postman + Playwright
+    ↓
+AI Test Analyzer
 ```
 
-## 7. Estructura del repositorio
-El repositorio se organiza siguiendo separación de responsabilidades entre documentación funcional, arquitectura, prompts, evidencias y artefactos AI-assisted.
+---
 
-```text
-docs/
-├── adr/
-├── aportes/
-├── architecture/
-├── dti/
-├── plantillas/
+# 📋 Índice
 
-prompts/
-skills/
-diagrams/
-evidencias/
-poc/
-research/
-```
+- [Problema](#-problema)
+- [Solución](#-solución)
+- [Objetivos](#-objetivos)
+- [Usuarios](#-usuarios)
+- [Funcionalidades](#-funcionalidades)
+- [Arquitectura](#-arquitectura)
+- [Stack tecnológico](#-stack-tecnológico)
+- [Inteligencia Artificial](#-inteligencia-artificial)
+- [Evolución de la solución](#-evolución-de-la-solución)
+- [Capacidades RAG](#-capacidades-rag)
+- [AI Testing Agent](#-ai-testing-agent)
+- [Requisitos previos](#-requisitos-previos)
+- [Configuración](#-configuración)
+- [Instalación y ejecución](#-instalación-y-ejecución)
+- [Pruebas](#-pruebas)
+- [Variables de entorno](#-variables-de-entorno)
+- [Seguridad](#-seguridad)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Alcance](#-alcance)
+- [Mejoras futuras](#-mejoras-futuras)
+- [Equipo](#-equipo)
+- [Checklist de entrega](#-checklist-de-entrega)
 
-## 8. Documentos principales
-| Documento | Propósito |
+---
+
+# ❗ Problema
+
+Los emprendimientos universitarios necesitan un medio centralizado para mostrar sus productos y servicios.
+
+Actualmente, parte de esta información puede gestionarse mediante:
+
+- Redes sociales.
+- Mensajería.
+- Publicaciones manuales.
+- Comunicación directa entre compradores y emprendedores.
+
+Esto dificulta:
+
+- Encontrar productos.
+- Consultar información específica.
+- Descubrir emprendimientos.
+- Centralizar la oferta disponible.
+- Aprovechar el historial de interacción del usuario.
+
+Por otro lado, una búsqueda tradicional basada únicamente en coincidencias de texto no siempre permite interpretar correctamente la intención del usuario.
+
+---
+
+# 💡 Solución
+
+UMSS Market centraliza la información de:
+
+- Usuarios.
+- Tiendas.
+- Publicaciones.
+- Catálogo.
+- Interacciones.
+
+La solución incorpora Inteligencia Artificial para permitir consultas en lenguaje natural y recuperar información relevante desde los datos existentes.
+
+El sistema no utiliza IA como sustituto de la base de datos.
+
+La IA se utiliza para:
+
+1. Interpretar la consulta.
+2. Seleccionar la capacidad apropiada.
+3. Recuperar información relevante.
+4. Construir contexto.
+5. Generar una respuesta basada en dicho contexto.
+
+---
+
+# 🎯 Objetivos
+
+## Objetivo general
+
+Desarrollar un marketplace universitario que permita centralizar emprendimientos estudiantiles y mejorar la consulta de información mediante capacidades de Inteligencia Artificial.
+
+## Objetivos específicos
+
+- Centralizar tiendas y publicaciones.
+- Facilitar la búsqueda de productos.
+- Permitir consultas en lenguaje natural.
+- Implementar recuperación semántica.
+- Utilizar información existente como contexto para la IA.
+- Incorporar capacidades RAG.
+- Automatizar pruebas mediante un AI Testing Agent.
+- Integrar pruebas de API y End-to-End.
+- Incorporar análisis asistido por IA sobre los resultados de testing.
+
+---
+
+# 👥 Usuarios
+
+| Usuario | Descripción |
 |---|---|
-| BRD | Definición de necesidades de negocio |
-| MRD | Modelado de requerimientos del mercado |
-| PRD | Especificación funcional del producto |
-| ADR | Registro de decisiones arquitectónicas |
-| FSD | Especificación funcional detallada |
-| DTI | Documento técnico inicial |
-| POC | Validaciones técnicas y prototipos |
+| **Comprador** | Consulta publicaciones, tiendas y realiza interacciones con el catálogo. |
+| **Emprendedor** | Administra una tienda y sus publicaciones. |
+| **Administrador** | Gestiona y supervisa información de la plataforma. |
 
-## 9. Arquitectura distribuida
-La arquitectura objetivo propuesta para UMSS Market adopta principios de arquitectura distribuida moderna orientada a evolución incremental.
+---
 
-El diseño arquitectónico contempla microservicios desacoplados, integración asíncrona y patrones Event-Driven como base evolutiva para futuras implementaciones escalables del sistema.
+# ✨ Funcionalidades
 
-La solución busca minimizar dependencias rígidas entre componentes, facilitando:
+## Usuarios
 
-- evolución incremental
-- despliegues independientes
-- tolerancia a fallos
-- resiliencia operacional
-- integración distribuida
-- escalabilidad por dominio funcional
+- Registro.
+- Inicio de sesión.
+- Autenticación.
+- Gestión de usuarios.
+- Gestión de roles.
+- Gestión de estados.
 
-Se consideran patrones modernos como Saga Pattern, mensajería basada en eventos y bounded contexts derivados de capacidades de negocio.
+## Tiendas
 
-## 10. AI-native engineering
-El proyecto incorpora un enfoque AI-Native Engineering basado en prompts estructurados, documentación asistida por IA y especialización funcional mediante skills reutilizables.
+- Creación de tiendas.
+- Actualización de tiendas.
+- Consulta de tiendas.
+- Consulta del perfil público.
+- Asociación de publicaciones.
 
-La estrategia implementa:
+## Publicaciones
 
-- generación asistida de documentación
-- prompts como contratos funcionales
-- arquitectura guiada por IA
-- workflows AI-assisted
-- trazabilidad evolutiva
-- automatización documental incremental
+- Creación.
+- Actualización.
+- Consulta.
+- Consulta detallada.
+- Gestión de estado.
+- Precio.
+- Stock.
 
-Los prompts y skills contenidos en el repositorio funcionan como artefactos operacionales para procesos de diseño arquitectónico, validación funcional y especificación técnica.
+## Catálogo
 
-## 11. Diagramas
-El repositorio incorpora diagramas arquitectónicos orientados a modelar:
+- Consulta de publicaciones.
+- Filtrado.
+- Búsqueda semántica.
 
-- contexto del sistema
-- contenedores C4
-- bounded contexts
-- flujos asíncronos
-- integración distribuida
-- eventos de dominio
-- relaciones entre servicios
+## Interacciones
 
-Los diagramas se desarrollan utilizando Mermaid como mecanismo declarativo de documentación arquitectónica.
+El sistema registra interacciones de los usuarios con publicaciones.
 
-## 12. ADRs
-Los Architecture Decision Records (ADR) documentan las decisiones arquitectónicas relevantes adoptadas durante el diseño evolutivo del sistema.
+Estas interacciones pueden utilizarse posteriormente como contexto para las capacidades de IA.
 
-Cada ADR registra:
+---
 
-- contexto
-- problema arquitectónico
-- alternativas evaluadas
-- decisión adoptada
-- tradeoffs
-- impacto técnico
-- consecuencias evolutivas
+# 🏗️ Arquitectura
 
-Este enfoque permite mantener trazabilidad sobre la evolución técnica y funcional de la solución.
-
-## 13. Prompts y Skills
-El ecosistema documental incorpora prompts especializados y skills reutilizables orientados a automatizar tareas de análisis arquitectónico, especificación funcional y diseño distribuido.
-
-Los skills implementan responsabilidades específicas como:
-
-- diseño de sagas
-- revisión de arquitectura distribuida
-- modelado orientado a eventos
-- análisis de resiliencia
-- diseño de integración async
-- generación de catálogos de eventos
-
-Este enfoque permite construir workflows AI-assisted alineados a metodologías modernas de ingeniería de software.
-
-## 14. Flujo documental
-El flujo documental del proyecto sigue una evolución incremental desde necesidades de negocio hasta especificaciones funcionales y decisiones arquitectónicas.
+El backend está organizado separando las responsabilidades principales:
 
 ```text
-Business Need
-   ↓
-BRD
-   ↓
-MRD
-   ↓
-PRD
-   ↓
-ADR
-   ↓
-FSD
-   ↓
-DTI
-   ↓
-POC
+                    ┌──────────────────────┐
+                    │      REST API        │
+                    └──────────┬───────────┘
+                               ↓
+                    ┌──────────────────────┐
+                    │     Controllers      │
+                    └──────────┬───────────┘
+                               ↓
+                    ┌──────────────────────┐
+                    │      Use Cases       │
+                    └──────────┬───────────┘
+                               ↓
+                    ┌──────────────────────┐
+                    │       Domain         │
+                    └──────────┬───────────┘
+                               ↓
+                    ┌──────────────────────┐
+                    │       Ports          │
+                    └──────────┬───────────┘
+                               ↓
+              ┌────────────────┴────────────────┐
+              ↓                                 ↓
+   ┌──────────────────────┐          ┌──────────────────────┐
+   │ PostgreSQL Adapters  │          │    Ollama Adapter    │
+   └──────────────────────┘          └──────────────────────┘
 ```
-## 16. Alcance actual
 
-El presente repositorio se enfoca principalmente en arquitectura funcional, especificaciones del producto, modelado distribuido, documentación evolutiva y validación conceptual del ecosistema UMSS Market.
+La implementación utiliza conceptos de:
 
-Las capacidades distribuidas descritas representan la arquitectura objetivo propuesta para futuras implementaciones incrementales del sistema.
+- Clean Architecture.
+- Dependency Rule.
+- Ports & Adapters.
+- Separación entre dominio e infraestructura.
+- Casos de uso.
+- Adaptadores de persistencia.
+- Adaptador para Ollama.
 
-## 17. Tecnologías y enfoques arquitectónicos
-Las tecnologías y herramientas utilizadas dentro del proceso documental y arquitectónico incluyen:
+---
 
-- Markdown
-- Mermaid
-- Git
-- GitHub
-- Python
-- Arquitectura orientada a eventos
-- Clean Architecture
-- Domain-Driven Design
-- AI-assisted engineering
-- workflows AI-assisted
+# 🛠️ Stack tecnológico
 
-## 18. Estado actual
-El proyecto se encuentra en evolución incremental bajo un enfoque AI-SDLC, integrando refinamiento continuo de arquitectura, documentación funcional y automatización asistida por inteligencia artificial.
+| Capa | Tecnología | Uso |
+|---|---|---|
+| Backend | Spring Boot | API y lógica del sistema |
+| Lenguaje | Java | Desarrollo del backend |
+| Build | Maven | Compilación y pruebas |
+| Base de datos | PostgreSQL | Persistencia |
+| API | REST | Comunicación con el backend |
+| Seguridad | JWT | Autenticación |
+| IA | Ollama | Ejecución local de modelos |
+| Embeddings | `nomic-embed-text` | Representación semántica |
+| LLM | `qwen2.5-coder:7b` | Generación y análisis |
+| API Testing | Postman / Newman | Pruebas de API |
+| E2E Testing | Playwright | Pruebas End-to-End |
+| AI Testing Agent | Node.js / npm | Automatización del testing |
+| Integración | MCP | Conexión del agente con herramientas |
 
-Las iteraciones actuales contemplan mejoras progresivas sobre:
+> Las versiones exactas deben mantenerse alineadas con `pom.xml`, `package.json` y las configuraciones reales del proyecto.
 
-- arquitectura distribuida
-- modelado funcional
-- decisiones arquitectónicas
-- observabilidad
-- resiliencia
-- integración async
-- workflows AI-assisted
+---
+
+# 🤖 Inteligencia Artificial
+
+La integración de IA se construyó de manera incremental.
+
+## Embeddings
+
+```text
+nomic-embed-text
+```
+
+Se utiliza para transformar información textual en representaciones vectoriales que permiten realizar recuperación semántica.
+
+## Modelo generativo
+
+```text
+qwen2.5-coder:7b
+```
+
+Se utiliza mediante Ollama para procesar consultas y generar respuestas a partir del contexto recuperado.
+
+---
+
+# 🔄 Evolución de la solución
+
+## Etapa 1 — Tool Calling
+
+La primera aproximación consistió en conectar el lenguaje natural con herramientas reales del backend.
+
+El modelo podía determinar qué capacidad debía utilizar según la consulta.
+
+```text
+Consulta del usuario
+        ↓
+Tool Calling
+        ↓
+Selección de herramienta
+        ↓
+Backend
+        ↓
+Información
+        ↓
+Respuesta
+```
+
+Esta etapa permitió establecer el vínculo entre la consulta en lenguaje natural y las capacidades reales del sistema.
+
+## Etapa 2 — RAG
+
+Posteriormente se evolucionó la solución hacia Retrieval-Augmented Generation.
+
+```text
+Pregunta del usuario
+        ↓
+Interpretación
+        ↓
+Retrieval
+        ↓
+Información relevante
+        ↓
+Contexto
+        ↓
+LLM
+        ↓
+Respuesta
+```
+
+La ventaja principal es que el modelo no necesita responder únicamente desde su conocimiento general, sino que utiliza información recuperada desde UMSS Market.
+
+---
+
+# 🧠 Capacidades RAG
+
+La solución implementa cinco capacidades RAG.
+
+## RAG #1 — Búsqueda semántica del catálogo
+
+Permite buscar publicaciones mediante el significado de la consulta.
+
+### Ejemplo
+
+Consulta:
+
+```text
+Necesito algo para programar
+```
+
+Resultado validado:
+
+```text
+Laptop Lenovo ThinkPad
+```
+
+### Flujo
+
+```text
+Usuario
+   ↓
+SEARCH_CATALOG
+   ↓
+Embedding
+   ↓
+nomic-embed-text
+   ↓
+Retrieval semántico
+   ↓
+Top-K publicaciones
+   ↓
+Contexto
+   ↓
+qwen2.5-coder:7b
+   ↓
+Respuesta
+```
+
+### Componentes relacionados
+
+```text
+SearchCatalogUseCase
+SearchCatalogSemanticTest
+OllamaAdapterEmbeddingTest
+```
+
+---
+
+## RAG #2 — Detalle de publicación
+
+Permite responder preguntas sobre una publicación concreta.
+
+### Ejemplos
+
+```text
+¿Qué características tiene la laptop?
+
+¿Cuánto cuesta?
+
+¿Cuánto stock tiene?
+
+¿Qué información tiene esta publicación?
+```
+
+### Información utilizada
+
+- Publicación.
+- Precio.
+- Stock.
+- Descripción.
+- Información disponible del producto.
+
+### Componentes relacionados
+
+```text
+GetPublicationDetailUseCase
+GetPublicationDetailSemanticUseCase
+PublicationEntity
+GetPublicationDetailSemanticUseCaseTest
+```
+
+---
+
+## RAG #3 — Tiendas y emprendedores
+
+Permite consultar información relacionada con tiendas y emprendimientos.
+
+### Ejemplos
+
+```text
+¿Qué tienda vende productos para programación?
+
+¿Qué ofrece esta tienda?
+
+¿Qué productos tiene este emprendimiento?
+```
+
+### Componentes relacionados
+
+```text
+GetStorePublicProfileUseCase
+SearchStoresBySemanticUseCase
+GetStoresUseCase
+```
+
+---
+
+## RAG #4 — Interacciones del usuario
+
+Permite utilizar el historial de interacciones almacenado en el sistema como contexto.
+
+### Ejemplos
+
+```text
+¿Con qué publicaciones interactué?
+
+¿Qué productos me interesaron?
+
+¿Qué publicaciones consulté anteriormente?
+```
+
+### Componentes relacionados
+
+```text
+GetUserInteractionsUseCase
+GetUserInteractionsSemanticUseCase
+CreateInteractionUseCase
+```
+
+---
+
+## RAG #5 — Recomendaciones
+
+Utiliza información recuperada desde diferentes fuentes para generar recomendaciones.
+
+Puede utilizar información relacionada con:
+
+- Publicaciones.
+- Tiendas.
+- Interacciones.
+- Consultas del usuario.
+
+### Ejemplos
+
+```text
+¿Qué me recomiendas para estudiar programación?
+
+¿Qué productos podrían interesarme?
+
+Recomiéndame productos similares.
+```
+
+### Componente relacionado
+
+```text
+GetRecommendationsUseCase
+```
+
+---
+
+# 🧪 Validación de los RAG
+
+Los RAG fueron validados mediante pruebas automatizadas y pruebas funcionales.
+
+Entre las pruebas relacionadas con IA y recuperación se encuentran:
+
+```text
+SearchCatalogSemanticTest
+GetPublicationDetailSemanticUseCaseTest
+OllamaAdapterEmbeddingTest
+OllamaAdapterToolSelectionTest
+```
+
+La ejecución general de las pruebas del backend se realiza mediante:
+
+```powershell
+cd .\backend\umss-market-api\
+.\mvnw.cmd test
+```
+
+La prueba funcional del RAG #1 puede validarse mediante:
+
+```text
+Necesito algo para programar
+```
+
+y comprobando la recuperación de una publicación semánticamente relacionada.
+
+---
+
+# 🤖 AI Testing Agent
+
+El proyecto incluye un AI Testing Agent desarrollado con Node.js.
+
+Su objetivo es centralizar la ejecución y análisis de pruebas mediante diferentes agentes y servicios.
+
+El flujo general es:
+
+```text
+AI Testing Agent
+       ↓
+   Menú principal
+       ↓
+ ┌─────┼──────────────┐
+ ↓     ↓              ↓
+MCP   Playwright    Analyzer
+ ↓     ↓              ↓
+API   E2E           IA
+Tests Tests        Analysis
+```
+
+## Ejecución
+
+```powershell
+cd .\ai-testing-agent\
+npm install
+npm run start:enhanced
+```
+
+El sistema presenta un menú desde el cual se seleccionan las diferentes capacidades.
+
+---
+
+# 🔌 MCP Postman Agent
+
+El MCP Postman Agent permite trabajar con colecciones de Postman y ejecutar pruebas de API mediante Newman.
+
+Flujo:
+
+```text
+Colección Postman
+        ↓
+MCP
+        ↓
+Postman Agent
+        ↓
+Newman
+        ↓
+Resultados
+        ↓
+AI Test Analyzer
+```
+
+La API key de Postman se configura mediante una variable de entorno.
+
+La API key real nunca debe almacenarse en el repositorio.
+
+---
+
+# 🌐 AI Playwright Testing Agent
+
+El AI Playwright Testing Agent permite ejecutar pruebas End-to-End.
+
+Puede trabajar con escenarios como:
+
+- Login.
+- Búsqueda de publicaciones.
+- Consulta de productos.
+- Consulta de tiendas.
+- Otros escenarios disponibles en la suite.
+
+Flujo:
+
+```text
+Escenario
+   ↓
+AI Playwright Agent
+   ↓
+Playwright
+   ↓
+Aplicación
+   ↓
+Resultado
+```
+
+---
+
+# 🧠 AI Test Analyzer
+
+El AI Test Analyzer analiza los resultados obtenidos por las pruebas.
+
+Puede utilizar IA para:
+
+- Analizar resultados.
+- Identificar fallos.
+- Clasificar problemas.
+- Identificar posibles causas.
+- Generar recomendaciones.
+
+Flujo:
+
+```text
+Resultados de pruebas
+        ↓
+AI Test Analyzer
+        ↓
+Ollama
+        ↓
+Análisis
+        ↓
+Reporte
+```
+
+---
+
+# 📦 Requisitos previos
+
+Antes de ejecutar el proyecto se requiere:
+
+- Git.
+- Java JDK.
+- Maven o Maven Wrapper.
+- Node.js.
+- npm.
+- PostgreSQL.
+- Ollama.
+
+Para las capacidades de IA se requiere disponer de Ollama y los modelos configurados por el proyecto.
+
+---
+
+# 🗄️ PostgreSQL
+
+Crear una base de datos:
+
+```text
+umss_market
+```
+
+Configuración utilizada por el backend:
+
+```text
+Host: localhost
+Puerto: 5432
+Base de datos: umss_market
+Usuario: postgres
+```
+
+La contraseña debe configurarse localmente.
+
+---
+
+# ⚙️ Configuración del backend
+
+Archivo:
+
+```text
+backend/umss-market-api/src/main/resources/application.properties
+```
+
+Configuración:
+
+```properties
+spring.application.name=umss-market-api
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/umss_market
+spring.datasource.username=postgres
+spring.datasource.password=${DATABASE_PASSWORD}
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+server.port=8080
+
+logging.level.org.springframework.security=DEBUG
+
+ia.enabled=${IA_HABILITADA:true}
+```
+
+Configurar la contraseña localmente.
+
+### PowerShell
+
+```powershell
+$env:DATABASE_PASSWORD="TU_PASSWORD_LOCAL"
+$env:IA_HABILITADA="true"
+```
+
+No introducir la contraseña real en el repositorio.
+
+---
+
+# 🧠 Configuración de Ollama
+
+El proyecto utiliza Ollama para las funcionalidades de IA.
+
+URL:
+
+```text
+http://localhost:11434
+```
+
+Modelos:
+
+```text
+nomic-embed-text
+qwen2.5-coder:7b
+```
+
+El AI Testing Agent utiliza:
+
+```text
+http://localhost:11434/v1
+```
+
+---
+
+# 🚀 Instalación
+
+## 1. Clonar
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+```
+
+Entrar al proyecto:
+
+```bash
+cd Modulo-4---Arquitectura-del-Producto-y-Especificaciones-Funcionales
+```
+
+---
+
+# ▶️ Ejecutar backend
+
+Entrar al backend:
+
+```powershell
+cd .\backend\umss-market-api\
+```
+
+Preparar dependencias:
+
+```powershell
+.\mvnw.cmd clean install
+```
+
+Ejecutar:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+Servidor:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# ▶️ Ejecutar AI Testing Agent
+
+En otra terminal:
+
+```powershell
+cd .\ai-testing-agent\
+```
+
+Instalar dependencias:
+
+```powershell
+npm install
+```
+
+Ejecutar:
+
+```powershell
+npm run start:enhanced
+```
+
+---
+
+# 🧪 Pruebas
+
+## Pruebas del backend
+
+```powershell
+cd .\backend\umss-market-api\
+.\mvnw.cmd test
+```
+
+Esta ejecución permite validar la suite automatizada del backend.
+
+## Pruebas RAG
+
+Se validan las capacidades:
+
+```text
+RAG #1 — Catálogo
+RAG #2 — Detalle de publicación
+RAG #3 — Tiendas y emprendedores
+RAG #4 — Interacciones
+RAG #5 — Recomendaciones
+```
+
+Las pruebas relacionadas con IA incluyen:
+
+```text
+SearchCatalogSemanticTest
+GetPublicationDetailSemanticUseCaseTest
+OllamaAdapterEmbeddingTest
+OllamaAdapterToolSelectionTest
+```
+
+## Pruebas del AI Testing Agent
+
+Ejecutar:
+
+```powershell
+cd .\ai-testing-agent\
+npm run start:enhanced
+```
+
+Desde el menú se pueden ejecutar:
+
+```text
+MCP Postman Agent
+AI Playwright Testing Agent
+AI Test Analyzer
+```
+
+---
+
+# 📊 Reportes
+
+Los reportes generados por el sistema pueden almacenarse en:
+
+```text
+ai-testing-agent/reports/
+```
+
+Los reportes generados automáticamente deben mantenerse fuera del repositorio cuando estén incluidos en `.gitignore`.
+
+Los reportes que se conserven para documentación no deben contener:
+
+- API keys.
+- Contraseñas.
+- Tokens.
+- JWT.
+- Credenciales.
+
+---
+
+# 🔑 Variables de entorno
+
+## AI Testing Agent
+
+Archivo local:
+
+```text
+ai-testing-agent/.env
+```
+
+Plantilla:
+
+```text
+ai-testing-agent/.env.example
+```
+
+Contenido de referencia:
+
+```env
+POSTMAN_API_KEY=TU_POSTMAN_API_KEY
+
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_MODEL=qwen2.5-coder:7b
+
+PLAYWRIGHT_API_BASE_URL=http://localhost:8080
+
+TEST_USER_EMAIL=usuario_de_prueba@umss.edu.bo
+TEST_USER_PASSWORD=TU_PASSWORD_DE_PRUEBA
+```
+
+### Regla
+
+```text
+.env.example → SÍ se sube
+.env         → NO se sube
+```
+
+El archivo `.env.example` nunca debe contener valores sensibles reales.
+
+---
+
+# 🔒 Seguridad
+
+El proyecto utiliza:
+
+- JWT.
+- Control de acceso por roles.
+- Validación de datos.
+- Protección de endpoints.
+- Manejo centralizado de excepciones.
+- Variables de entorno para secretos.
+
+## Nunca subir
+
+```text
+API Keys
+Passwords
+Tokens
+JWT Secrets
+Credenciales PostgreSQL
+Credenciales de usuarios
+Secretos de servicios externos
+```
+
+---
+
+# 🛡️ Seguridad de Git
+
+Antes de realizar un commit:
+
+```powershell
+git status
+```
+
+Verificar que `.env` no aparezca como archivo pendiente.
+
+Comprobar que `.env` esté siendo ignorado:
+
+```powershell
+git check-ignore -v .env
+```
+
+Revisar si `.env` aparece en el historial:
+
+```powershell
+git log --all --oneline -- .env
+```
+
+Buscar posibles API keys:
+
+```powershell
+git grep -n -i "api_key" $(git rev-list --all)
+```
+
+Buscar patrones de Postman:
+
+```powershell
+git grep -n -i "PMAK-" $(git rev-list --all)
+```
+
+Si una credencial fue expuesta:
+
+1. Revocarla.
+2. Generar una nueva.
+3. Eliminar el secreto de los archivos versionados.
+4. Revisar el historial.
+5. Configurar la nueva credencial localmente.
+6. Verificar nuevamente `.gitignore`.
+
+---
+
+# 📁 Estructura principal
+
+```text
+Modulo-4---Arquitectura-del-Producto-y-Especificaciones-Funcionales/
+│
+├── backend/
+│   └── umss-market-api/
+│       ├── src/
+│       │   ├── main/
+│       │   └── test/
+│       ├── pom.xml
+│       ├── mvnw
+│       └── mvnw.cmd
+│
+├── ai-testing-agent/
+│   ├── src/
+│   │   ├── agents/
+│   │   ├── analyzers/
+│   │   ├── config/
+│   │   ├── generators/
+│   │   ├── reporters/
+│   │   ├── runners/
+│   │   ├── services/
+│   │   └── skills/
+│   ├── collections/
+│   ├── docs/
+│   ├── generated-tests/
+│   ├── reports/
+│   ├── test-results/
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── playwright.config.js
+│   ├── .env.example
+│   └── .gitignore
+│
+├── README.md
+└── .gitignore
+```
+
+Los directorios generados como `target/`, `node_modules/`, `test-results/` y otros archivos temporales deben permanecer ignorados según el `.gitignore`.
+
+---
+
+# 📌 Alcance de esta entrega
+
+## Implementado y demostrable
+
+- Registro e inicio de sesión.
+- Gestión de usuarios.
+- Gestión de roles.
+- Gestión de tiendas.
+- Gestión de publicaciones.
+- Catálogo.
+- Interacciones.
+- Tool Calling.
+- Búsqueda semántica.
+- RAG #1 — Catálogo.
+- RAG #2 — Detalle de publicación.
+- RAG #3 — Tiendas y emprendedores.
+- RAG #4 — Interacciones.
+- RAG #5 — Recomendaciones.
+- Embeddings con `nomic-embed-text`.
+- Integración con Ollama.
+- AI Testing Agent.
+- MCP Postman Agent.
+- AI Playwright Testing Agent.
+- AI Test Analyzer.
+
+## Fuera del alcance demostrado
+
+No forman parte de la funcionalidad principal demostrada en esta entrega:
+
+- Pasarela de pago en línea completa.
+- Seguimiento logístico de entregas.
+- Sistema completo de calificaciones y reseñas.
+- Chat comprador-emprendedor.
+- Analytics avanzados.
+
+Estas funcionalidades pueden ser consideradas para futuras iteraciones.
+
+---
+
+# 🚀 Mejoras futuras
+
+Entre las posibles mejoras se encuentran:
+
+- Analytics avanzados.
+- Recomendaciones más personalizadas.
+- Chat inteligente.
+- Predicción de demanda.
+- Aplicación móvil.
+- Dashboards analíticos.
+- Mayor automatización.
+- Escalamiento de las capacidades de IA.
+
+---
+
+# 👨‍💻 Equipo
+
+**Grupo:** E-Commerce UMSS
+
+**Integrantes:**
+
+- Abad Melani Rodriguez Gonzales
+- Christian Bernardo Vargas Sandoval
+
+---
+
+# 📊 Estado del proyecto
+
+La solución integra el marketplace y las capacidades de Inteligencia Artificial de manera progresiva.
+
+```text
+┌─────────────────────────┐
+│      UMSS MARKET        │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│      TOOL CALLING       │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│        RAG #1            │
+│        Catálogo          │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│        RAG #2            │
+│  Detalle publicación     │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│        RAG #3            │
+│ Tiendas / emprendedores  │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│        RAG #4            │
+│     Interacciones        │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│        RAG #5            │
+│    Recomendaciones       │
+└────────────┬────────────┘
+             ↓
+┌─────────────────────────┐
+│   AI TESTING AGENT      │
+└────────────┬────────────┘
+             ↓
+      ┌──────┼──────┐
+      ↓      ↓      ↓
+   Postman Playwright Analyzer
+      │      │      │
+      └──────┼──────┘
+             ↓
+       Resultados + IA
+```
+
+---
+
+# ✅ Checklist de entrega
+
+> Este checklist debe reflejar el estado real del repositorio. No marcar un punto únicamente porque esté escrito en el README.
+
+- [x] El docente tiene acceso al repositorio.
+- [x] Existe un `README.md`.
+- [x] El README explica cómo levantar el proyecto.
+- [x] Existe un `.env.example`.
+- [x] `.env` está incluido en `.gitignore`.
+- [x] No existen API keys reales en el código versionado.
+- [x] No existen contraseñas reales en el repositorio.
+- [x] No existen tokens o secretos JWT en Git.
+- [x] Se revisó el historial de Git.
+- [x] Las claves comprometidas fueron revocadas y reemplazadas cuando correspondía.
+- [x] El backend puede levantarse correctamente.
+- [x] PostgreSQL está documentado y configurado.
+- [x] Los cinco RAG están documentados y cuentan con pruebas.
+- [x] RAG #1 — Búsqueda semántica del catálogo.
+- [x] RAG #2 — Detalle de publicación.
+- [x] RAG #3 — Tiendas y emprendedores.
+- [x] RAG #4 — Interacciones del usuario.
+- [x] RAG #5 — Recomendaciones.
+- [x] El AI Testing Agent está documentado.
+- [x] El MCP Postman Agent puede ejecutarse correctamente.
+- [x] El AI Playwright Testing Agent puede ejecutarse correctamente.
+- [x] El AI Test Analyzer puede analizar los resultados.
+- [x] Los reportes de testing están documentados.
+- [x] Las pruebas principales están documentadas.
+- [x] Las versiones están alineadas con los archivos reales del proyecto.
+- [x] Los comandos principales de instalación y ejecución fueron probados.
+- [x] No existen credenciales sensibles en README, capturas, logs ni archivos versionados.
+
+---
+
+# 🔐 Regla final
+
+```text
+.env.example → SÍ se sube
+.env         → NO se sube
+
+API Keys     → NUNCA
+Passwords    → NUNCA
+Tokens       → NUNCA
+JWT Secrets  → NUNCA
+```
+
+El repositorio debe poder ser clonado y configurado por otro integrante o por el docente sin necesidad de acceder a credenciales privadas.
