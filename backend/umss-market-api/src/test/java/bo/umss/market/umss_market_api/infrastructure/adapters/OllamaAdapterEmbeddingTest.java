@@ -8,14 +8,18 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
+@org.junit.jupiter.api.Tag("ollama")
 class OllamaAdapterEmbeddingTest {
 
     @Test
     void debeGenerarEmbeddingDesdeOllama() {
 
         // Arrange
+        var requestFactory = new org.springframework.http.client.SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(5000);
+        requestFactory.setReadTimeout(Integer.getInteger("ollama.test.readTimeoutMillis", 60000));
         OllamaAdapter adapter =
-                new OllamaAdapter(new RestTemplate());
+                new OllamaAdapter(new RestTemplate(requestFactory));
 
         String texto =
                 "Laptop para programación con buena memoria";

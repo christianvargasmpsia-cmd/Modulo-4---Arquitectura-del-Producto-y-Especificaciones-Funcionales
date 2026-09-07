@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contrato observado de POST /api/ai/chat (capa MVC, sin filtros de seguridad)",
+  "description": "El documento validado es una observación HTTP: status, mediaType sin charset y body decodificado. No valida el contenido del texto generado. No representa un nuevo formato de respuesta del endpoint.",
+  "type": "object",
+  "required": [
+    "status",
+    "mediaType",
+    "body"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "type": "integer",
+      "enum": [
+        200,
+        500
+      ]
+    },
+    "mediaType": {
+      "type": "string",
+      "enum": [
+        "text/plain",
+        "application/json"
+      ]
+    },
+    "body": {}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "status": {
+          "const": 200
+        },
+        "mediaType": {
+          "const": "text/plain"
+        },
+        "body": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "properties": {
+        "status": {
+          "const": 500
+        },
+        "mediaType": {
+          "const": "application/json"
+        },
+        "body": {
+          "type": "object",
+          "required": [
+            "success",
+            "message",
+            "timestamp"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "success": {
+              "type": "boolean",
+              "const": false
+            },
+            "message": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "timestamp": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,9})?$"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -19,6 +19,7 @@ import bo.umss.market.umss_market_api.domain.ports.PublicationRepositoryPort;
 import bo.umss.market.umss_market_api.domain.ports.StoreRepositoryPort;
 import bo.umss.market.umss_market_api.infrastructure.adapters.OllamaAdapter;
 
+@org.junit.jupiter.api.Tag("ollama")
 class SearchCatalogSemanticTest {
 
     @Test
@@ -28,8 +29,11 @@ class SearchCatalogSemanticTest {
         // ARRANGE
         // =====================================================
 
+        var requestFactory = new org.springframework.http.client.SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(5000);
+        requestFactory.setReadTimeout(Integer.getInteger("ollama.test.readTimeoutMillis", 60000));
         AIProviderPort aiProvider =
-                new OllamaAdapter(new RestTemplate());
+                new OllamaAdapter(new RestTemplate(requestFactory));
 
         PublicationRepositoryPort publicationRepository =
                 mock(PublicationRepositoryPort.class);

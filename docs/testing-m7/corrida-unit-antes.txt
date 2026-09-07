@@ -1,0 +1,24 @@
+﻿[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.760 s -- in AIServiceImpl - Router de Herramientas (RAGs 1-5)
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.838 s -- in bo.umss.market.umss_market_api.application.usecases.CreatePublicationUseCaseTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in bo.umss.market.umss_market_api.application.usecases.GetAllPublicationsUseCaseTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in bo.umss.market.umss_market_api.application.usecases.GetPublicationByIdUseCaseTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.182 s -- in GetPublicationDetailSemanticUseCase - RAG #2
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in bo.umss.market.umss_market_api.application.usecases.GetPublicationDetailUseCaseTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.126 s -- in bo.umss.market.umss_market_api.application.usecases.GetStorePublicProfileUseCaseTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.340 s -- in bo.umss.market.umss_market_api.application.usecases.RegisterEntrepreneurUseCaseTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.099 s -- in bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCaseTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.454 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaPublicationRepositoryAdapterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.286 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaStoreRepositoryAdapterTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.267 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaUserRepositoryAdapterTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.720 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.AuthControllerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.GlobalExceptionHandlerConfigTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.611 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.PublicationControllerTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.625 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.StoreControllerTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.PublicationMapperTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.StoreMapperTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.UserMapperTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in bo.umss.market.umss_market_api.shared.GlobalExceptionHandlerTest
+[INFO] Tests run: 113, Failures: 0, Errors: 0, Skipped: 17
+[INFO] BUILD SUCCESS
+[INFO] Total time:  29.095 s
+[INFO] Finished at: 2026-09-05T02:22:49-04:00

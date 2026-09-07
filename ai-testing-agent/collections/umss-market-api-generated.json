@@ -1,2151 +1,94 @@
 {
   "info": {
-    "_postman_id": "04a1ace8-d16f-4146-b41a-3173300f029f",
+    "_postman_id": "99f11ce0-6160-4fbf-96ce-a18cad92ceac",
     "name": "UMSS Market API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "createdAt": "2026-07-03T19:31:45.000Z",
-    "updatedAt": "2026-08-21T08:58:25.000Z",
-    "lastUpdatedBy": "17497186",
-    "uid": "17497186-04a1ace8-d16f-4146-b41a-3173300f029f"
+    "createdAt": "2026-08-22T00:12:06.000Z",
+    "updatedAt": "2026-08-22T00:26:10.000Z",
+    "lastUpdatedBy": "56399228",
+    "uid": "56399228-99f11ce0-6160-4fbf-96ce-a18cad92ceac"
   },
   "item": [
     {
-      "name": "user-controller",
-      "item": [
+      "name": "register Customer",
+      "event": [
         {
-          "name": "get User By Id",
-          "id": "7f15b27e-efb2-4bd9-a9fa-f947dcbc74d5",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ REGISTER USER no devolvió JSON');",
+              "    }",
+              "",
+              "    const id =",
+              "        data?.id ||",
+              "        data?.data?.id ||",
+              "        data?.user?.id ||",
+              "        data?.data?.user?.id ||",
+              "        data?.result?.id ||",
+              "        null;",
+              "",
+              "    if (id) {",
+              "        pm.collectionVariables.set('createdUserId', id);",
+              "        console.log('🆔 createdUserId:', id);",
+              "    }",
+              "}"
             ],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "140e89fa-e54c-4b9f-9cc8-4cabf0000fc6",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "d02388fc-19e2-4b3c-89f1-4f4b1697b016",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-d02388fc-19e2-4b3c-89f1-4f4b1697b016"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-7f15b27e-efb2-4bd9-a9fa-f947dcbc74d5"
-        },
-        {
-          "name": "update User",
-          "id": "4b4a7d67-dd30-4f8b-84d7-2edc180c25a4",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "d59c242a-2c55-4eab-a52b-817d0ee69464",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "c41952f5-71af-44d8-8d22-4af5ee106abd",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-c41952f5-71af-44d8-8d22-4af5ee106abd"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-4b4a7d67-dd30-4f8b-84d7-2edc180c25a4"
-        },
-        {
-          "name": "delete User",
-          "id": "796a9fe6-09cf-4f73-a4e8-e7fd28393ef0",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/users/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "25ff826b-d3b5-4d0f-869c-8b090b631d12",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "6723fd97-c2bd-435d-8481-c4ae5d7222b2",
-              "name": "OK",
-              "originalRequest": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/api/users/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-6723fd97-c2bd-435d-8481-c4ae5d7222b2"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-796a9fe6-09cf-4f73-a4e8-e7fd28393ef0"
-        },
-        {
-          "name": "update User Status",
-          "id": "75ded561-a823-46a2-953a-a334805ae91b",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/users/:id/status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users",
-                ":id",
-                "status"
-              ],
-              "variable": [
-                {
-                  "id": "0c21b3f0-db86-4d1d-ad28-b903e75c061d",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "bb9009b2-6742-4b99-82da-27301b9d15bd",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"status\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/users/:id/status",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users",
-                    ":id",
-                    "status"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-bb9009b2-6742-4b99-82da-27301b9d15bd"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-75ded561-a823-46a2-953a-a334805ae91b"
-        },
-        {
-          "name": "get All Users",
-          "id": "70943810-e44a-4523-8743-905190ee31a3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "users"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "7df34d54-d25d-49fc-90c9-81f431673ebf",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/users",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "[\n  {\n    \"id\": \"4cd73b86-f016-7347-63a6-664491bf49ea\",\n    \"ru\": \"string\",\n    \"nombre\": \"string\",\n    \"apellidoPaterno\": \"string\",\n    \"apellidoMaterno\": \"string\",\n    \"email\": \"string\",\n    \"celular\": \"string\",\n    \"facultad\": \"string\",\n    \"role\": \"COMPRADOR\",\n    \"status\": \"ACTIVE\",\n    \"ultimoLogin\": \"1954-12-18T13:26:16.586Z\",\n    \"createdAt\": \"1960-10-04T06:21:53.593Z\",\n    \"updatedAt\": \"1996-03-19T19:51:07.564Z\"\n  },\n  {\n    \"id\": \"d72f9f45-31ee-e6e7-5e6c-0a9e80b1816a\",\n    \"ru\": \"string\",\n    \"nombre\": \"string\",\n    \"apellidoPaterno\": \"string\",\n    \"apellidoMaterno\": \"string\",\n    \"email\": \"string\",\n    \"celular\": \"string\",\n    \"facultad\": \"string\",\n    \"role\": \"COMPRADOR\",\n    \"status\": \"ACTIVE\",\n    \"ultimoLogin\": \"1966-01-02T18:23:31.177Z\",\n    \"createdAt\": \"1958-07-23T05:42:18.577Z\",\n    \"updatedAt\": \"2006-11-13T21:01:55.431Z\"\n  }\n]",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-7df34d54-d25d-49fc-90c9-81f431673ebf"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-70943810-e44a-4523-8743-905190ee31a3"
+            "id": "92e79a59-2a7a-4e89-97b1-6b7d2a109d64"
+          }
         }
       ],
-      "id": "bb688bce-a19e-42fe-ae5f-09c67caa2db2",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-bb688bce-a19e-42fe-ae5f-09c67caa2db2"
-    },
-    {
-      "name": "store-controller",
-      "item": [
-        {
-          "name": "get Public Profile",
-          "id": "cffa0177-6e3b-4ac2-a59e-8d0ebed8ab26",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+      "id": "36fa9e1d-38ca-4aba-877c-549d10194956",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/stores/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "5ba4e5a3-2916-4ff3-905f-f8e6c91853ba",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ru\": \"2026215525112\",\n  \"nombre\": \"Cliente\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"customer.testing.215525112@umss.edu.bo\",\n  \"celular\": \"70285272\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
             }
-          },
-          "response": [
-            {
-              "id": "7411cdfd-3cbb-498e-b100-7442152f9912",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"5f88f7c4-2eac-701a-6a54-240e8960c78a\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"INACTIVE\",\n  \"publicaciones\": [\n    {\n      \"id\": \"44a982e9-90f6-b9cb-3d01-6b91dd7ca247\",\n      \"nombre\": \"string\",\n      \"precio\": 1915.4962397562704,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 9987,\n      \"modalidadCobro\": \"COMPLETO\",\n      \"activa\": true\n    },\n    {\n      \"id\": \"f2f88858-10a7-b5f4-1417-d8289bb58ae6\",\n      \"nombre\": \"string\",\n      \"precio\": 5157.514604841838,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 252,\n      \"modalidadCobro\": \"COMPLETO\",\n      \"activa\": true\n    }\n  ]\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-7411cdfd-3cbb-498e-b100-7442152f9912"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-cffa0177-6e3b-4ac2-a59e-8d0ebed8ab26"
+          }
         },
-        {
-          "name": "update Store",
-          "id": "74e3ff2d-4538-438c-a2ae-16b09ccde6f7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/stores/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "af005fcd-cfd8-47a0-95a8-ef0f1c039e1d",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "3979e51a-ab9a-42ec-b305-e2436fc6dae9",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"3870bd4d-93f3-e820-8333-642488c937bf\",\n  \"userId\": \"104d8caa-0889-14ef-2613-584443dfbd64\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2004-10-10T01:19:24.630Z\",\n  \"updatedAt\": \"1971-01-27T02:35:06.266Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-3979e51a-ab9a-42ec-b305-e2436fc6dae9"
-            }
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register/customer",
+          "host": [
+            "{{baseUrl}}"
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-74e3ff2d-4538-438c-a2ae-16b09ccde6f7"
-        },
-        {
-          "name": "delete Store",
-          "id": "6b1f16f4-d99c-4b0b-b8ec-baed7da096dd",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/stores/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "8d3cd1d7-b4ff-4a83-b6b5-56d3e6e86616",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "f8138c61-5fcc-4a4e-8e11-a81b84c3891e",
-              "name": "OK",
-              "originalRequest": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-f8138c61-5fcc-4a4e-8e11-a81b84c3891e"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-6b1f16f4-d99c-4b0b-b8ec-baed7da096dd"
-        },
-        {
-          "name": "patch Store",
-          "id": "196e279e-fbde-4029-8129-2707e5680cd2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/stores/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "4de80e9f-7d4a-4559-b381-626d8d3d50fc",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "7fb186c6-eb9f-4adf-9692-02970382bcc0",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"3870bd4d-93f3-e820-8333-642488c937bf\",\n  \"userId\": \"104d8caa-0889-14ef-2613-584443dfbd64\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2004-10-10T01:19:24.630Z\",\n  \"updatedAt\": \"1971-01-27T02:35:06.266Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-7fb186c6-eb9f-4adf-9692-02970382bcc0"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-196e279e-fbde-4029-8129-2707e5680cd2"
-        },
-        {
-          "name": "get All Stores",
-          "id": "aa235ffd-7014-4ce8-b369-784c8230ea8e",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/stores",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "c82952a2-0edb-493a-806f-1b212f49517b",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "[\n  {\n    \"id\": \"9e38b204-72ce-ee78-4fd2-e32dfcea1943\",\n    \"userId\": \"0dc54801-9fbd-cf53-2a91-2dc1d8732e67\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"categoria\": \"string\",\n    \"telefonoContacto\": \"string\",\n    \"emailContacto\": \"string\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": \"1964-05-03T17:01:58.008Z\",\n    \"updatedAt\": \"1963-12-04T18:10:15.655Z\"\n  },\n  {\n    \"id\": \"c0c15f45-7947-283c-dbd4-36eaf7f37bd4\",\n    \"userId\": \"957ebd38-26b4-1d47-6562-69c923e09881\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"categoria\": \"string\",\n    \"telefonoContacto\": \"string\",\n    \"emailContacto\": \"string\",\n    \"status\": \"INACTIVE\",\n    \"createdAt\": \"2014-11-06T09:07:53.045Z\",\n    \"updatedAt\": \"1966-05-06T16:07:16.460Z\"\n  }\n]",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-c82952a2-0edb-493a-806f-1b212f49517b"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-aa235ffd-7014-4ce8-b369-784c8230ea8e"
-        },
-        {
-          "name": "create Store",
-          "id": "8b0e9472-5c51-4468-8af2-a908b66cd6f6",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"userId\": \"<uuid>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/stores",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "stores"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "6585b680-bc2b-4c2f-a894-822a7acf7abd",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"userId\": \"<uuid>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/stores",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "stores"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"success\": true,\n  \"message\": \"string\",\n  \"storeId\": \"801455f3-c7a7-0ae2-cf9b-fb210f9ce948\",\n  \"userId\": \"3ceb8f27-bf0f-302e-01e3-7557e5bd1c93\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-6585b680-bc2b-4c2f-a894-822a7acf7abd"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-8b0e9472-5c51-4468-8af2-a908b66cd6f6"
+          "path": [
+            "api",
+            "auth",
+            "register",
+            "customer"
+          ]
         }
-      ],
-      "id": "6493258b-8cae-4eaf-85ca-f4747afc954a",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-6493258b-8cae-4eaf-85ca-f4747afc954a"
-    },
-    {
-      "name": "publication-controller",
-      "item": [
+      },
+      "response": [
         {
-          "name": "find By Id",
-          "id": "3963aad7-45ee-47b7-9332-46aaf9c9cc00",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/publications/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "c83cbbdf-9aab-419b-9a89-53b814918dec",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "fbfbcc2a-bbff-4690-ba16-57cc08380b6a",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-fbfbcc2a-bbff-4690-ba16-57cc08380b6a"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-3963aad7-45ee-47b7-9332-46aaf9c9cc00"
-        },
-        {
-          "name": "update Publication",
-          "id": "ecb1c5be-0b35-4dc8-a88e-fa7d7813c4b0",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/publications/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "e4d03957-0f62-47ab-a8ac-815afd72b414",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "9ccc1382-7637-4f35-ad90-660060aa5396",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PUT",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-9ccc1382-7637-4f35-ad90-660060aa5396"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-ecb1c5be-0b35-4dc8-a88e-fa7d7813c4b0"
-        },
-        {
-          "name": "delete Publication",
-          "id": "efed0ef2-7306-4a6c-afd0-1e078d772fb3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/publications/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "b46576bc-52dc-496a-b2ec-f60489deecc4",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "e6f1ce35-4d88-4d65-b308-eda38a72e2fd",
-              "name": "OK",
-              "originalRequest": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-e6f1ce35-4d88-4d65-b308-eda38a72e2fd"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-efed0ef2-7306-4a6c-afd0-1e078d772fb3"
-        },
-        {
-          "name": "search",
-          "id": "55537fe3-b912-439b-b447-b14d2bd3819e",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/publications?texto=<string>&tipo=<string>&precioMin=<number>&precioMax=<number>&storeId=<uuid>",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications"
-              ],
-              "query": [
-                {
-                  "key": "texto",
-                  "value": "<string>",
-                  "description": "(Required) "
-                },
-                {
-                  "key": "tipo",
-                  "value": "<string>",
-                  "description": "(Required) "
-                },
-                {
-                  "key": "precioMin",
-                  "value": "<number>",
-                  "description": "(Required) "
-                },
-                {
-                  "key": "precioMax",
-                  "value": "<number>",
-                  "description": "(Required) "
-                },
-                {
-                  "key": "storeId",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "5b90bc7e-c998-406d-8203-a43497fe659e",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications?texto=string&tipo=PRODUCTO&precioMin=524.5361547647165&precioMax=3928.6130487695937&storeId=5841fd7a-e076-e285-c1e7-05db46da5e50",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications"
-                  ],
-                  "query": [
-                    {
-                      "key": "texto",
-                      "value": "string"
-                    },
-                    {
-                      "key": "tipo",
-                      "value": "PRODUCTO"
-                    },
-                    {
-                      "key": "precioMin",
-                      "value": "524.5361547647165"
-                    },
-                    {
-                      "key": "precioMax",
-                      "value": "3928.6130487695937"
-                    },
-                    {
-                      "key": "storeId",
-                      "value": "5841fd7a-e076-e285-c1e7-05db46da5e50"
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "[\n  {\n    \"id\": \"77eb2c8d-b67d-422f-0e41-98f577931b8d\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 9819.782436923953,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 9332,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"6db0cd59-40f6-d4a9-d52b-5901553b67da\",\n    \"nombreTienda\": \"string\",\n    \"activa\": true\n  },\n  {\n    \"id\": \"fefbf987-9c2a-440c-17a2-5def7d51f3aa\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8620.29331296693,\n    \"tipo\": \"PRODUCTO\",\n    \"stock\": 2004,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"ae3a6a0b-6b75-a904-0aab-56728436c19f\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-5b90bc7e-c998-406d-8203-a43497fe659e"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-55537fe3-b912-439b-b447-b14d2bd3819e"
-        },
-        {
-          "name": "create Publication",
-          "id": "60956895-7722-42da-b566-e6c9c651b0ff",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
+          "id": "c6c6e5de-cf02-4684-9643-5dc607f538dd",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"storeId\": \"<uuid>\",\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/publications",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "a6813800-47ba-442c-9e0b-a14f58242fb3",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"storeId\": \"<uuid>\",\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"publicationId\": \"7466ed53-9cdf-fff6-14d7-a6c1f5e022a9\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-a6813800-47ba-442c-9e0b-a14f58242fb3"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-60956895-7722-42da-b566-e6c9c651b0ff"
-        },
-        {
-          "name": "update Publication Status",
-          "id": "d0e6fd24-4b1c-4340-b4c0-9b0fb4ae9a88",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"activa\": \"<boolean>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/publications/:id/status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications",
-                ":id",
-                "status"
-              ],
-              "variable": [
-                {
-                  "id": "7bbcab62-b115-45c6-9f1f-829d27bc1747",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "ecde4d4f-bc92-4037-b308-ca4e623b4202",
-              "name": "OK",
-              "originalRequest": {
-                "method": "PATCH",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"activa\": \"<boolean>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications/:id/status",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications",
-                    ":id",
-                    "status"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-ecde4d4f-bc92-4037-b308-ca4e623b4202"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-d0e6fd24-4b1c-4340-b4c0-9b0fb4ae9a88"
-        },
-        {
-          "name": "semantic Search",
-          "id": "9b6cb848-adf3-4786-bf83-2fcb2331c866",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/publications/semantic?query=<string>&topK=5",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "publications",
-                "semantic"
-              ],
-              "query": [
-                {
-                  "key": "query",
-                  "value": "<string>",
-                  "description": "(Required) "
-                },
-                {
-                  "key": "topK",
-                  "value": "5"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "c7c87ec0-0c10-4911-a5e9-f595d2384f23",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/publications/semantic?query=<string>&topK=5",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "publications",
-                    "semantic"
-                  ],
-                  "query": [
-                    {
-                      "key": "query",
-                      "value": "<string>"
-                    },
-                    {
-                      "key": "topK",
-                      "value": "5"
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "[\n  {\n    \"id\": \"77eb2c8d-b67d-422f-0e41-98f577931b8d\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 9819.782436923953,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 9332,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"6db0cd59-40f6-d4a9-d52b-5901553b67da\",\n    \"nombreTienda\": \"string\",\n    \"activa\": true\n  },\n  {\n    \"id\": \"fefbf987-9c2a-440c-17a2-5def7d51f3aa\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8620.29331296693,\n    \"tipo\": \"PRODUCTO\",\n    \"stock\": 2004,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"ae3a6a0b-6b75-a904-0aab-56728436c19f\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-c7c87ec0-0c10-4911-a5e9-f595d2384f23"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-9b6cb848-adf3-4786-bf83-2fcb2331c866"
-        }
-      ],
-      "id": "2cca85da-e6b0-4447-9562-42f281a06909",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-2cca85da-e6b0-4447-9562-42f281a06909"
-    },
-    {
-      "name": "interaction-controller",
-      "item": [
-        {
-          "name": "find All",
-          "id": "973c9110-4397-4cd6-8bb5-d49903e6f5e6",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/interactions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "interactions"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "c6f24ce2-c683-4dae-9598-2ab844f72407",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/interactions",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "interactions"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "[\n  {\n    \"id\": \"979d93b0-d2d1-1618-b35b-88e6195765d7\",\n    \"userId\": \"ab92e45c-eaba-8547-c687-dd5d003b2696\",\n    \"publicationId\": \"2665c697-d488-004a-a5e7-1a6fcb11746a\",\n    \"type\": \"PURCHASE\",\n    \"metadata\": \"string\",\n    \"createdAt\": \"2026-04-30T06:26:20.018Z\",\n    \"updatedAt\": \"1982-06-29T18:48:25.893Z\"\n  },\n  {\n    \"id\": \"028d7605-4298-346b-59dd-7b6deac73d2c\",\n    \"userId\": \"06ea5289-b0ff-10c7-24c1-b3d6d31f54a9\",\n    \"publicationId\": \"94e87ed6-4f0f-04a1-cf52-ec85b42d3f25\",\n    \"type\": \"LIKE\",\n    \"metadata\": \"string\",\n    \"createdAt\": \"2005-03-26T12:24:03.797Z\",\n    \"updatedAt\": \"1955-12-15T05:45:50.851Z\"\n  }\n]",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-c6f24ce2-c683-4dae-9598-2ab844f72407"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-973c9110-4397-4cd6-8bb5-d49903e6f5e6"
-        },
-        {
-          "name": "create",
-          "id": "8afbcf6d-26c6-4e5e-a4f0-e97f802da266",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"publicationId\": \"<uuid>\",\n  \"type\": \"<string>\",\n  \"metadata\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/interactions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "interactions"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "c1c8904e-b063-42e0-ba6d-8c21ab96fa39",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"publicationId\": \"<uuid>\",\n  \"type\": \"<string>\",\n  \"metadata\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/interactions",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "interactions"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"50923c34-e381-695a-640d-64dec4c14065\",\n  \"userId\": \"ca12cedb-4032-70b3-31ec-ff01d2fbbe8e\",\n  \"publicationId\": \"4ea57df0-77b3-ccce-82ec-6e4f285e86e4\",\n  \"type\": \"FAVORITE\",\n  \"metadata\": \"string\",\n  \"createdAt\": \"1952-09-18T17:46:13.969Z\",\n  \"updatedAt\": \"1983-08-04T06:24:45.693Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-c1c8904e-b063-42e0-ba6d-8c21ab96fa39"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-8afbcf6d-26c6-4e5e-a4f0-e97f802da266"
-        },
-        {
-          "name": "find By Id 1",
-          "id": "809ba395-82e6-4095-892e-ce7f3130c573",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/interactions/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "interactions",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "8a766d86-9a3f-4643-88c6-aedc53d2dadf",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "68640c87-7126-4a9b-a1e5-f8ca6391ec19",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/interactions/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "interactions",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"50923c34-e381-695a-640d-64dec4c14065\",\n  \"userId\": \"ca12cedb-4032-70b3-31ec-ff01d2fbbe8e\",\n  \"publicationId\": \"4ea57df0-77b3-ccce-82ec-6e4f285e86e4\",\n  \"type\": \"FAVORITE\",\n  \"metadata\": \"string\",\n  \"createdAt\": \"1952-09-18T17:46:13.969Z\",\n  \"updatedAt\": \"1983-08-04T06:24:45.693Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-68640c87-7126-4a9b-a1e5-f8ca6391ec19"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-809ba395-82e6-4095-892e-ce7f3130c573"
-        },
-        {
-          "name": "delete",
-          "id": "b965d534-773e-4a09-9c98-844948ca8da7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/interactions/:id",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "interactions",
-                ":id"
-              ],
-              "variable": [
-                {
-                  "id": "1693e3a1-bbcd-4198-9c31-213c0650713b",
-                  "key": "id",
-                  "value": "<uuid>",
-                  "description": "(Required) "
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "19b4d1f7-e17e-4f9b-9e47-5020ccde76c3",
-              "name": "OK",
-              "originalRequest": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/api/interactions/:id",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "interactions",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "<uuid>",
-                      "description": "(Required) "
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-19b4d1f7-e17e-4f9b-9e47-5020ccde76c3"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-b965d534-773e-4a09-9c98-844948ca8da7"
-        }
-      ],
-      "id": "345846ae-88e2-4f9e-aabd-adfae8ad7dd4",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-345846ae-88e2-4f9e-aabd-adfae8ad7dd4"
-    },
-    {
-      "name": "auth-controller",
-      "item": [
-        {
-          "name": "register Entrepreneur",
-          "id": "7298570d-3a18-45eb-85a2-9749b3887203",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "*/*"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"nombreTienda\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "register",
-                "entrepreneur"
-              ]
-            }
-          },
-          "response": [
-            {
-              "id": "663a65a4-6803-4e97-b25a-e6504d713c76",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"nombreTienda\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "register",
-                    "entrepreneur"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"0b55ee53-55cf-a50d-175c-f9e88e9afa0e\",\n  \"tiendaId\": \"ffb6522c-c026-b130-122d-fa19382b76ad\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-663a65a4-6803-4e97-b25a-e6504d713c76"
-            }
-          ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-7298570d-3a18-45eb-85a2-9749b3887203"
-        },
-        {
-          "name": "register Customer",
-          "id": "17cf5447-61c9-4ddf-ba6b-9586f8fb61d8",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
               {
                 "key": "Accept",
                 "value": "*/*"
@@ -2173,74 +116,259 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "9e191c38-f760-4a2a-9e0f-4c1f20ddfb02",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/register/customer",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "register",
-                    "customer"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"32d31a63-ceb4-f0a7-0fca-0a965b7fedf8\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-9e191c38-f760-4a2a-9e0f-4c1f20ddfb02"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-17cf5447-61c9-4ddf-ba6b-9586f8fb61d8"
-        },
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"32d31a63-ceb4-f0a7-0fca-0a965b7fedf8\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-c6c6e5de-cf02-4684-9643-5dc607f538dd"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-36fa9e1d-38ca-4aba-877c-549d10194956"
+    },
+    {
+      "name": "register Entrepreneur",
+      "event": [
         {
-          "name": "register Admin",
-          "id": "22626317-d283-4854-9f02-e2f14c042240",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ REGISTER USER no devolvió JSON');",
+              "    }",
+              "",
+              "    const id =",
+              "        data?.id ||",
+              "        data?.data?.id ||",
+              "        data?.user?.id ||",
+              "        data?.data?.user?.id ||",
+              "        data?.result?.id ||",
+              "        null;",
+              "",
+              "    if (id) {",
+              "        pm.collectionVariables.set('createdUserId', id);",
+              "        console.log('🆔 createdUserId:', id);",
+              "    }",
+              "}",
+              "",
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ REGISTER ENTREPRENEUR no devolvió JSON');",
+              "    }",
+              "",
+              "    const storeId =",
+              "        data?.store?.id ||",
+              "        data?.data?.store?.id ||",
+              "        data?.entrepreneur?.store?.id ||",
+              "        data?.data?.entrepreneur?.store?.id ||",
+              "        data?.storeId ||",
+              "        data?.data?.storeId ||",
+              "        null;",
+              "",
+              "    if (storeId) {",
+              "        pm.collectionVariables.set('createdStoreId', storeId);",
+              "        console.log('🆔 createdStoreId:', storeId);",
+              "    }",
+              "}"
+            ],
+            "id": "77ab7ee2-a5c9-4fc7-b28f-7a7913c7e7bf"
+          }
+        }
+      ],
+      "id": "02022520-9689-48ed-914c-fd636c314ede",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           },
-          "request": {
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ru\": \"2026215525865\",\n  \"nombre\": \"Emprendedor\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"entrepreneur.testing.215525865@umss.edu.bo\",\n  \"celular\": \"70540835\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\",\n  \"nombreTienda\": \"Tienda Testing 215525865\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register",
+            "entrepreneur"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "ceac68f0-fdc1-4afd-a7ab-6d2b7a965fde",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"nombreTienda\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register/entrepreneur",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register",
+                "entrepreneur"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"0b55ee53-55cf-a50d-175c-f9e88e9afa0e\",\n  \"tiendaId\": \"ffb6522c-c026-b130-122d-fa19382b76ad\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-ceac68f0-fdc1-4afd-a7ab-6d2b7a965fde"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-02022520-9689-48ed-914c-fd636c314ede"
+    },
+    {
+      "name": "register Admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ REGISTER USER no devolvió JSON');",
+              "    }",
+              "",
+              "    const id =",
+              "        data?.id ||",
+              "        data?.data?.id ||",
+              "        data?.user?.id ||",
+              "        data?.data?.user?.id ||",
+              "        data?.result?.id ||",
+              "        null;",
+              "",
+              "    if (id) {",
+              "        pm.collectionVariables.set('createdUserId', id);",
+              "        console.log('🆔 createdUserId:', id);",
+              "    }",
+              "}"
+            ],
+            "id": "74a20401-dd3d-4789-88ab-68d88fae193e"
+          }
+        }
+      ],
+      "id": "c6987977-33eb-418a-bfdc-9f57379d4618",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ru\": \"2026215526852\",\n  \"nombre\": \"Administrador\",\n  \"apellidoPaterno\": \"Testing\",\n  \"apellidoMaterno\": \"UMSS\",\n  \"email\": \"admin.testing.215526852@umss.edu.bo\",\n  \"celular\": \"70487771\",\n  \"facultad\": \"Ciencias y Tecnologia\",\n  \"password\": \"12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register/admin",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register",
+            "admin"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "7150effb-796d-4585-adfb-8d891d405fba",
+          "name": "OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
               {
                 "key": "Accept",
                 "value": "*/*"
@@ -2268,140 +396,109 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "e8f6f827-c5e1-44fb-b0d2-dfad941c4662",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"password\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/register/admin",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "register",
-                    "admin"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"32d31a63-ceb4-f0a7-0fca-0a965b7fedf8\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-e8f6f827-c5e1-44fb-b0d2-dfad941c4662"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-22626317-d283-4854-9f02-e2f14c042240"
-        },
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"usuarioId\": \"32d31a63-ceb4-f0a7-0fca-0a965b7fedf8\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-7150effb-796d-4585-adfb-8d891d405fba"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-c6987977-33eb-418a-bfdc-9f57379d4618"
+    },
+    {
+      "name": "login",
+      "event": [
         {
-          "name": "logout",
-          "id": "1625e881-6ff6-45ab-b8bc-34741b9232e2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('POST /login - Login exitoso', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});",
+              "",
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    const data = pm.response.json();",
+              "",
+              "    const jwt =",
+              "        data?.token ||",
+              "        data?.accessToken ||",
+              "        data?.jwt ||",
+              "        data?.data?.token ||",
+              "        data?.data?.accessToken ||",
+              "        null;",
+              "",
+              "    if (!jwt) {",
+              "        throw new Error('LOGIN OK pero no se encontró JWT.');",
+              "    }",
+              "",
+              "    pm.collectionVariables.set('testToken', jwt);",
+              "    pm.collectionVariables.set('authToken', jwt);",
+              "    pm.collectionVariables.set('token', jwt);",
+              "",
+              "    console.log('✓ JWT DEL LOGIN CAPTURADO');",
+              "}"
+            ],
+            "id": "d0ade387-061f-4245-a29c-1b09dad86ef0"
+          }
+        }
+      ],
+      "id": "a9657cb4-e93d-41b6-8ade-eba560b7a1eb",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           },
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/logout",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "auth",
-                "logout"
-              ]
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"gabriela.rojas.test@umss.edu.bo\",\n  \"password\": \"12345678\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
             }
-          },
-          "response": [
-            {
-              "id": "1f0bc08b-ee55-4dab-a9a7-2d46f71081ed",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Authorization",
-                    "value": "string"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/logout",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "logout"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "text/plain"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-1f0bc08b-ee55-4dab-a9a7-2d46f71081ed"
-            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-1625e881-6ff6-45ab-b8bc-34741b9232e2"
-        },
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": [
         {
-          "name": "login",
-          "id": "46eb87d0-bdcb-4e65-b339-c34a214ef592",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
+          "id": "992f6b46-ad3d-4603-af5e-b83a8ac35788",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
               {
                 "key": "Accept",
                 "value": "*/*"
@@ -2428,67 +525,77 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "8becaf78-0ef2-4dfb-b815-03c79057ee36",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "login"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"token\": \"string\",\n  \"userId\": \"f47f0731-9da6-9db1-4aca-30d33e535ff5\",\n  \"email\": \"string\",\n  \"role\": \"string\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-8becaf78-0ef2-4dfb-b815-03c79057ee36"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-46eb87d0-bdcb-4e65-b339-c34a214ef592"
-        },
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"token\": \"string\",\n  \"userId\": \"f47f0731-9da6-9db1-4aca-30d33e535ff5\",\n  \"email\": \"string\",\n  \"role\": \"string\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-992f6b46-ad3d-4603-af5e-b83a8ac35788"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-a9657cb4-e93d-41b6-8ade-eba560b7a1eb"
+    },
+    {
+      "name": "me",
+      "event": [
         {
-          "name": "me",
-          "id": "36693d46-97e7-4152-9b52-f4f07d7a3f36",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('GET /me - Usuario autenticado', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});"
+            ],
+            "id": "bcde9641-4669-407b-8199-33ee5b9f9041"
+          }
+        }
+      ],
+      "id": "68254b07-e277-40de-b990-08662692f6e6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
           },
-          "request": {
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "me"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "3972fb5d-a52e-4369-a98d-9f2e8d886c69",
+          "name": "OK",
+          "originalRequest": {
             "method": "GET",
             "header": [
               {
@@ -2508,73 +615,1824 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "65c26ac8-739c-44b9-bd85-297366ca0520",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/auth/me",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "auth",
-                    "me"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-65c26ac8-739c-44b9-bd85-297366ca0520"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-36693d46-97e7-4152-9b52-f4f07d7a3f36"
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-3972fb5d-a52e-4369-a98d-9f2e8d886c69"
         }
       ],
-      "id": "e2bc9d8c-9bc3-454b-8003-00b09bcb7e39",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-e2bc9d8c-9bc3-454b-8003-00b09bcb7e39"
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-68254b07-e277-40de-b990-08662692f6e6"
     },
     {
-      "name": "ai-controller",
-      "item": [
-        {
-          "name": "generate Product Description",
-          "id": "376b8608-e9e5-4761-b529-70106b93c071",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+      "name": "get User By Id",
+      "id": "9f9b1d86-f636-4b47-838d-a43f22efd8d4",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
           },
-          "request": {
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/99a68ecc-858b-46fa-9678-c5829319d9a8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "99a68ecc-858b-46fa-9678-c5829319d9a8"
+          ],
+          "variable": [
+            {
+              "id": "59e15825-d8c8-4df0-848f-669864c26712",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "e42c0521-1fdc-437a-990e-01ed6b16a532",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-e42c0521-1fdc-437a-990e-01ed6b16a532"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-9f9b1d86-f636-4b47-838d-a43f22efd8d4"
+    },
+    {
+      "name": "update User",
+      "id": "cc4cd922-a0e0-43ce-bc69-7c9e3e1c2859",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Usuario Actualizado\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/99a68ecc-858b-46fa-9678-c5829319d9a8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "99a68ecc-858b-46fa-9678-c5829319d9a8"
+          ],
+          "variable": [
+            {
+              "id": "0a3e9488-d739-453f-8ab2-4fff1f0f4eac",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "79699543-f97a-4cf0-823c-5063925eec59",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apellidoPaterno\": \"<string>\",\n  \"celular\": \"<string>\",\n  \"email\": \"<string>\",\n  \"facultad\": \"<string>\",\n  \"nombre\": \"<string>\",\n  \"ru\": \"<string>\",\n  \"apellidoMaterno\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-79699543-f97a-4cf0-823c-5063925eec59"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-cc4cd922-a0e0-43ce-bc69-7c9e3e1c2859"
+    },
+    {
+      "name": "update User Status",
+      "id": "c90317b9-517a-43a1-b8f4-76cf951650ab",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/99a68ecc-858b-46fa-9678-c5829319d9a8/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "99a68ecc-858b-46fa-9678-c5829319d9a8",
+            "status"
+          ],
+          "variable": [
+            {
+              "id": "a748eea9-70cd-45e6-b4ad-35ac0162ea16",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "04fcf86f-9d18-4294-9e5c-cd69304bad86",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ":id",
+                "status"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"c98a7640-7e71-ab64-c0c5-228307f0eb5a\",\n  \"ru\": \"string\",\n  \"nombre\": \"string\",\n  \"apellidoPaterno\": \"string\",\n  \"apellidoMaterno\": \"string\",\n  \"email\": \"string\",\n  \"celular\": \"string\",\n  \"facultad\": \"string\",\n  \"role\": \"EMPRENDEDOR\",\n  \"status\": \"ACTIVE\",\n  \"ultimoLogin\": \"1957-06-18T20:32:35.554Z\",\n  \"createdAt\": \"1994-04-27T00:27:06.987Z\",\n  \"updatedAt\": \"1963-07-18T10:46:50.801Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-04fcf86f-9d18-4294-9e5c-cd69304bad86"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-c90317b9-517a-43a1-b8f4-76cf951650ab"
+    },
+    {
+      "name": "get All Users",
+      "id": "0b1ac810-d9a7-4591-aabd-48b263e8b74c",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "32a90702-e495-447c-9acd-8f6cc224328c",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "[\n  {\n    \"id\": \"4cd73b86-f016-7347-63a6-664491bf49ea\",\n    \"ru\": \"string\",\n    \"nombre\": \"string\",\n    \"apellidoPaterno\": \"string\",\n    \"apellidoMaterno\": \"string\",\n    \"email\": \"string\",\n    \"celular\": \"string\",\n    \"facultad\": \"string\",\n    \"role\": \"COMPRADOR\",\n    \"status\": \"ACTIVE\",\n    \"ultimoLogin\": \"1954-12-18T13:26:16.586Z\",\n    \"createdAt\": \"1960-10-04T06:21:53.593Z\",\n    \"updatedAt\": \"1996-03-19T19:51:07.564Z\"\n  },\n  {\n    \"id\": \"d72f9f45-31ee-e6e7-5e6c-0a9e80b1816a\",\n    \"ru\": \"string\",\n    \"nombre\": \"string\",\n    \"apellidoPaterno\": \"string\",\n    \"apellidoMaterno\": \"string\",\n    \"email\": \"string\",\n    \"celular\": \"string\",\n    \"facultad\": \"string\",\n    \"role\": \"COMPRADOR\",\n    \"status\": \"ACTIVE\",\n    \"ultimoLogin\": \"1966-01-02T18:23:31.177Z\",\n    \"createdAt\": \"1958-07-23T05:42:18.577Z\",\n    \"updatedAt\": \"2006-11-13T21:01:55.431Z\"\n  }\n]",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-32a90702-e495-447c-9acd-8f6cc224328c"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-0b1ac810-d9a7-4591-aabd-48b263e8b74c"
+    },
+    {
+      "name": "get Public Profile",
+      "id": "99c3f226-0f27-4858-b1a2-b802377de1c9",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/stores/42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stores",
+            "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+          ],
+          "variable": [
+            {
+              "id": "07fccfbe-7177-4b7e-9664-b44456629105",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "7789d5ae-214f-4077-ba60-574f1b6a9dbd",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"5f88f7c4-2eac-701a-6a54-240e8960c78a\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"INACTIVE\",\n  \"publicaciones\": [\n    {\n      \"id\": \"44a982e9-90f6-b9cb-3d01-6b91dd7ca247\",\n      \"nombre\": \"string\",\n      \"precio\": 1915.4962397562704,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 9987,\n      \"modalidadCobro\": \"COMPLETO\",\n      \"activa\": true\n    },\n    {\n      \"id\": \"f2f88858-10a7-b5f4-1417-d8289bb58ae6\",\n      \"nombre\": \"string\",\n      \"precio\": 5157.514604841838,\n      \"tipo\": \"SERVICIO\",\n      \"stock\": 252,\n      \"modalidadCobro\": \"COMPLETO\",\n      \"activa\": true\n    }\n  ]\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-7789d5ae-214f-4077-ba60-574f1b6a9dbd"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-99c3f226-0f27-4858-b1a2-b802377de1c9"
+    },
+    {
+      "name": "update Store",
+      "id": "f198e2a5-c4e7-4b20-97ed-50ac53dfcbba",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Tienda Actualizada\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/stores/42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stores",
+            "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+          ],
+          "variable": [
+            {
+              "id": "c5942a00-40cb-4c85-b65c-a927d85ad95d",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "0be47624-833a-4790-838d-543c9ccd48ab",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"3870bd4d-93f3-e820-8333-642488c937bf\",\n  \"userId\": \"104d8caa-0889-14ef-2613-584443dfbd64\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2004-10-10T01:19:24.630Z\",\n  \"updatedAt\": \"1971-01-27T02:35:06.266Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-0be47624-833a-4790-838d-543c9ccd48ab"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-f198e2a5-c4e7-4b20-97ed-50ac53dfcbba"
+    },
+    {
+      "name": "patch Store",
+      "id": "e3eff8bc-328c-4499-8133-d99a4fa3ef48",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/stores/42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stores",
+            "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+          ],
+          "variable": [
+            {
+              "id": "b9b14861-28a9-4b5d-8478-60564856a6d0",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "3615dce3-1ef3-485a-936f-b538e0d2887f",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"telefonoContacto\": \"<string>\",\n  \"emailContacto\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"3870bd4d-93f3-e820-8333-642488c937bf\",\n  \"userId\": \"104d8caa-0889-14ef-2613-584443dfbd64\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"categoria\": \"string\",\n  \"telefonoContacto\": \"string\",\n  \"emailContacto\": \"string\",\n  \"status\": \"ACTIVE\",\n  \"createdAt\": \"2004-10-10T01:19:24.630Z\",\n  \"updatedAt\": \"1971-01-27T02:35:06.266Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-3615dce3-1ef3-485a-936f-b538e0d2887f"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-e3eff8bc-328c-4499-8133-d99a4fa3ef48"
+    },
+    {
+      "name": "get All Stores",
+      "id": "6587fa9a-3c3e-45c0-965b-c9e8e879c1b1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/stores",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stores"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "18a3e1fd-9884-4a97-8ae8-aded135a12b2",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "[\n  {\n    \"id\": \"9e38b204-72ce-ee78-4fd2-e32dfcea1943\",\n    \"userId\": \"0dc54801-9fbd-cf53-2a91-2dc1d8732e67\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"categoria\": \"string\",\n    \"telefonoContacto\": \"string\",\n    \"emailContacto\": \"string\",\n    \"status\": \"ACTIVE\",\n    \"createdAt\": \"1964-05-03T17:01:58.008Z\",\n    \"updatedAt\": \"1963-12-04T18:10:15.655Z\"\n  },\n  {\n    \"id\": \"c0c15f45-7947-283c-dbd4-36eaf7f37bd4\",\n    \"userId\": \"957ebd38-26b4-1d47-6562-69c923e09881\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"categoria\": \"string\",\n    \"telefonoContacto\": \"string\",\n    \"emailContacto\": \"string\",\n    \"status\": \"INACTIVE\",\n    \"createdAt\": \"2014-11-06T09:07:53.045Z\",\n    \"updatedAt\": \"1966-05-06T16:07:16.460Z\"\n  }\n]",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-18a3e1fd-9884-4a97-8ae8-aded135a12b2"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-6587fa9a-3c3e-45c0-965b-c9e8e879c1b1"
+    },
+    {
+      "name": "find By Id",
+      "id": "fd9b7642-79de-4c19-8f43-22d587351e64",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/publications/ff9b9802-a554-419d-9abc-b647472da48a",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            "ff9b9802-a554-419d-9abc-b647472da48a"
+          ],
+          "variable": [
+            {
+              "id": "e24e19cf-dfcd-442f-ac31-3bfdb5dac38b",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "708a0709-134f-4371-8914-4358cd1170b1",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publications/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-708a0709-134f-4371-8914-4358cd1170b1"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-fd9b7642-79de-4c19-8f43-22d587351e64"
+    },
+    {
+      "name": "update Publication",
+      "id": "65f44ab2-8411-497f-b506-ffd4e6a93785",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Publicacion Actualizada\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/publications/ff9b9802-a554-419d-9abc-b647472da48a",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            "ff9b9802-a554-419d-9abc-b647472da48a"
+          ],
+          "variable": [
+            {
+              "id": "f45ec623-5a7d-4c4d-8bd1-647afeabae07",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "d0fb4ba7-8df6-4d72-84e5-64994a756906",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/publications/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-d0fb4ba7-8df6-4d72-84e5-64994a756906"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-65f44ab2-8411-497f-b506-ffd4e6a93785"
+    },
+    {
+      "name": "search",
+      "id": "2239efdb-60ef-436e-8809-94d34519091a",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/publications?texto=producto&tipo=PRODUCTO&precioMin=0&precioMax=10000&storeId=42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications"
+          ],
+          "query": [
+            {
+              "key": "texto",
+              "value": "producto",
+              "description": "(Required) "
+            },
+            {
+              "key": "tipo",
+              "value": "PRODUCTO",
+              "description": "(Required) "
+            },
+            {
+              "key": "precioMin",
+              "value": "0",
+              "description": "(Required) "
+            },
+            {
+              "key": "precioMax",
+              "value": "10000",
+              "description": "(Required) "
+            },
+            {
+              "key": "storeId",
+              "value": "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "613a8a3f-586d-4ad5-b5b0-3b008380da1c",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publications?texto=string&tipo=PRODUCTO&precioMin=524.5361547647165&precioMax=3928.6130487695937&storeId=5841fd7a-e076-e285-c1e7-05db46da5e50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications"
+              ],
+              "query": [
+                {
+                  "key": "texto",
+                  "value": "string"
+                },
+                {
+                  "key": "tipo",
+                  "value": "PRODUCTO"
+                },
+                {
+                  "key": "precioMin",
+                  "value": "524.5361547647165"
+                },
+                {
+                  "key": "precioMax",
+                  "value": "3928.6130487695937"
+                },
+                {
+                  "key": "storeId",
+                  "value": "5841fd7a-e076-e285-c1e7-05db46da5e50"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "[\n  {\n    \"id\": \"77eb2c8d-b67d-422f-0e41-98f577931b8d\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 9819.782436923953,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 9332,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"6db0cd59-40f6-d4a9-d52b-5901553b67da\",\n    \"nombreTienda\": \"string\",\n    \"activa\": true\n  },\n  {\n    \"id\": \"fefbf987-9c2a-440c-17a2-5def7d51f3aa\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8620.29331296693,\n    \"tipo\": \"PRODUCTO\",\n    \"stock\": 2004,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"ae3a6a0b-6b75-a904-0aab-56728436c19f\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-613a8a3f-586d-4ad5-b5b0-3b008380da1c"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-2239efdb-60ef-436e-8809-94d34519091a"
+    },
+    {
+      "name": "create Publication",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ POST publication no devolvió JSON');",
+              "    }",
+              "",
+              "    const id =",
+              "        data?.id ||",
+              "        data?.data?.id ||",
+              "        data?.publication?.id ||",
+              "        data?.data?.publication?.id ||",
+              "        data?.result?.id ||",
+              "        null;",
+              "",
+              "    if (id) {",
+              "        pm.collectionVariables.set('createdPublicationId', id);",
+              "        console.log('🆔 createdPublicationId:', id);",
+              "    }",
+              "}"
+            ],
+            "id": "6052c32a-fd0f-48ee-9d3a-a2af4ad5ab13"
+          }
+        }
+      ],
+      "id": "a0f42229-492c-4ed1-a5a0-09b27fc6f53c",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"storeId\": \"ff9b9802-a554-419d-9abc-b647472da48a\",\n  \"nombre\": \"Testing UMSS Market\",\n  \"descripcion\": \"Testing UMSS Market\",\n  \"precio\": \"100\",\n  \"tipo\": \"Testing UMSS Market\",\n  \"stock\": \"10\",\n  \"modalidadCobro\": \"Testing UMSS Market\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/publications",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "0769b51e-4317-4b8a-95d7-477cd6d5189d",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
               {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"<uuid>\",\n  \"nombre\": \"<string>\",\n  \"descripcion\": \"<string>\",\n  \"precio\": \"<number>\",\n  \"tipo\": \"<string>\",\n  \"stock\": \"<integer>\",\n  \"modalidadCobro\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/publications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"success\": false,\n  \"message\": \"string\",\n  \"publicationId\": \"7466ed53-9cdf-fff6-14d7-a6c1f5e022a9\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-0769b51e-4317-4b8a-95d7-477cd6d5189d"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-a0f42229-492c-4ed1-a5a0-09b27fc6f53c"
+    },
+    {
+      "name": "update Publication Status",
+      "id": "8765913b-dd64-422a-bacd-305daaff2d7e",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"INACTIVE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/publications/ff9b9802-a554-419d-9abc-b647472da48a/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            "ff9b9802-a554-419d-9abc-b647472da48a",
+            "status"
+          ],
+          "variable": [
+            {
+              "id": "49dcf292-5d14-4f44-b3b7-dfcee08cca4c",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "963a6450-6b69-419e-b6e2-f1437b442156",
+          "name": "OK",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activa\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/publications/:id/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications",
+                ":id",
+                "status"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"7e55ac43-6e9f-296c-8bd7-308504157eda\",\n  \"storeId\": \"501517dc-5d24-84bb-8eb7-4a935d569906\",\n  \"nombre\": \"string\",\n  \"descripcion\": \"string\",\n  \"precio\": 7699.83304459726,\n  \"tipo\": \"SERVICIO\",\n  \"stock\": 829,\n  \"modalidadCobro\": \"ANTICIPADO\",\n  \"activa\": false,\n  \"createdAt\": \"1966-05-16T08:25:37.858Z\",\n  \"updatedAt\": \"1958-06-02T20:59:43.780Z\",\n  \"embedding\": \"string\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-963a6450-6b69-419e-b6e2-f1437b442156"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-8765913b-dd64-422a-bacd-305daaff2d7e"
+    },
+    {
+      "name": "semantic Search",
+      "id": "e2c67505-1f15-4c75-bd8a-0ad3d643c4c8",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/publications/semantic?query=producto UMSS&topK=5",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            "semantic"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "producto UMSS",
+              "description": "(Required) "
+            },
+            {
+              "key": "topK",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "6925d3be-9f67-4b3a-8d5f-9c9cd48c8ca2",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/publications/semantic?query=<string>&topK=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications",
+                "semantic"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "<string>"
+                },
+                {
+                  "key": "topK",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "[\n  {\n    \"id\": \"77eb2c8d-b67d-422f-0e41-98f577931b8d\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 9819.782436923953,\n    \"tipo\": \"SERVICIO\",\n    \"stock\": 9332,\n    \"modalidadCobro\": \"CONTRA_ENTREGA\",\n    \"storeId\": \"6db0cd59-40f6-d4a9-d52b-5901553b67da\",\n    \"nombreTienda\": \"string\",\n    \"activa\": true\n  },\n  {\n    \"id\": \"fefbf987-9c2a-440c-17a2-5def7d51f3aa\",\n    \"nombre\": \"string\",\n    \"descripcion\": \"string\",\n    \"precio\": 8620.29331296693,\n    \"tipo\": \"PRODUCTO\",\n    \"stock\": 2004,\n    \"modalidadCobro\": \"ANTICIPADO\",\n    \"storeId\": \"ae3a6a0b-6b75-a904-0aab-56728436c19f\",\n    \"nombreTienda\": \"string\",\n    \"activa\": false\n  }\n]",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-6925d3be-9f67-4b3a-8d5f-9c9cd48c8ca2"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-e2c67505-1f15-4c75-bd8a-0ad3d643c4c8"
+    },
+    {
+      "name": "find All",
+      "id": "60625180-162e-4863-b0e7-6dd65dd1368e",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/interactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "interactions"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "1c9e4df3-8177-4393-8e9e-2f42fd3c38ec",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "[\n  {\n    \"id\": \"979d93b0-d2d1-1618-b35b-88e6195765d7\",\n    \"userId\": \"ab92e45c-eaba-8547-c687-dd5d003b2696\",\n    \"publicationId\": \"2665c697-d488-004a-a5e7-1a6fcb11746a\",\n    \"type\": \"PURCHASE\",\n    \"metadata\": \"string\",\n    \"createdAt\": \"2026-04-30T06:26:20.018Z\",\n    \"updatedAt\": \"1982-06-29T18:48:25.893Z\"\n  },\n  {\n    \"id\": \"028d7605-4298-346b-59dd-7b6deac73d2c\",\n    \"userId\": \"06ea5289-b0ff-10c7-24c1-b3d6d31f54a9\",\n    \"publicationId\": \"94e87ed6-4f0f-04a1-cf52-ec85b42d3f25\",\n    \"type\": \"LIKE\",\n    \"metadata\": \"string\",\n    \"createdAt\": \"2005-03-26T12:24:03.797Z\",\n    \"updatedAt\": \"1955-12-15T05:45:50.851Z\"\n  }\n]",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-1c9e4df3-8177-4393-8e9e-2f42fd3c38ec"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-60625180-162e-4863-b0e7-6dd65dd1368e"
+    },
+    {
+      "name": "create",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "    let data = {};",
+              "",
+              "    try {",
+              "        data = pm.response.json();",
+              "    } catch (e) {",
+              "        console.log('⚠️ POST interaction no devolvió JSON');",
+              "    }",
+              "",
+              "    const interactionId =",
+              "        data?.id ||",
+              "        data?.data?.id ||",
+              "        data?.interaction?.id ||",
+              "        data?.data?.interaction?.id ||",
+              "        data?.result?.id ||",
+              "        null;",
+              "",
+              "    if (interactionId) {",
+              "        pm.collectionVariables.set('createdInteractionId', interactionId);",
+              "        console.log('🆔 createdInteractionId:', interactionId);",
+              "    }",
+              "}"
+            ],
+            "id": "50c644f4-3e35-426d-a35e-989adc9a7b4a"
+          }
+        }
+      ],
+      "id": "f7850a51-9824-4575-b679-7ba563a45df8",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"publicationId\": \"ff9b9802-a554-419d-9abc-b647472da48a\",\n  \"type\": \"Testing UMSS Market\",\n  \"metadata\": \"Testing UMSS Market\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/interactions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "interactions"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "fcadff8d-e61e-4508-8781-60ac3a775e90",
+          "name": "OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"publicationId\": \"<uuid>\",\n  \"type\": \"<string>\",\n  \"metadata\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interactions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interactions"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"50923c34-e381-695a-640d-64dec4c14065\",\n  \"userId\": \"ca12cedb-4032-70b3-31ec-ff01d2fbbe8e\",\n  \"publicationId\": \"4ea57df0-77b3-ccce-82ec-6e4f285e86e4\",\n  \"type\": \"FAVORITE\",\n  \"metadata\": \"string\",\n  \"createdAt\": \"1952-09-18T17:46:13.969Z\",\n  \"updatedAt\": \"1983-08-04T06:24:45.693Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-fcadff8d-e61e-4508-8781-60ac3a775e90"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-f7850a51-9824-4575-b679-7ba563a45df8"
+    },
+    {
+      "name": "find By Id 1",
+      "id": "96fe1c38-b138-4176-8317-7fbcd7cf93e7",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/interactions/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "interactions",
+            ""
+          ],
+          "variable": [
+            {
+              "id": "b3c70a72-39be-4fda-af5f-2d3b910f2026",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "0a6ca37d-0030-4157-a601-0b5e8095e967",
+          "name": "OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interactions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interactions",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "*/*"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"id\": \"50923c34-e381-695a-640d-64dec4c14065\",\n  \"userId\": \"ca12cedb-4032-70b3-31ec-ff01d2fbbe8e\",\n  \"publicationId\": \"4ea57df0-77b3-ccce-82ec-6e4f285e86e4\",\n  \"type\": \"FAVORITE\",\n  \"metadata\": \"string\",\n  \"createdAt\": \"1952-09-18T17:46:13.969Z\",\n  \"updatedAt\": \"1983-08-04T06:24:45.693Z\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-0a6ca37d-0030-4157-a601-0b5e8095e967"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-96fe1c38-b138-4176-8317-7fbcd7cf93e7"
+    },
+    {
+      "name": "generate Product Description",
+      "id": "113f360e-e043-45ae-8e66-eddcaf05c0f1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Testing UMSS Market\",\n  \"categoria\": \"Testing UMSS Market\",\n  \"precio\": \"100\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/ai/product-description",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "ai",
+            "product-description"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "8fe2db0d-1b67-4725-9566-56e07928aa76",
+          "name": "OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
               {
                 "key": "Accept",
                 "value": "*/*"
@@ -2601,73 +2459,78 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "2c374d57-bb85-4cbe-b8fa-f99ddfa27afd",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"nombre\": \"<string>\",\n  \"categoria\": \"<string>\",\n  \"precio\": \"<number>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/ai/product-description",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "ai",
-                    "product-description"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"description\": \"string\"\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-2c374d57-bb85-4cbe-b8fa-f99ddfa27afd"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-376b8608-e9e5-4761-b529-70106b93c071"
-        },
-        {
-          "name": "chat",
-          "id": "04823b92-4523-48f6-bcc5-07f4badb8ad9",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"description\": \"string\"\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-8fe2db0d-1b67-4725-9566-56e07928aa76"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-113f360e-e043-45ae-8e66-eddcaf05c0f1"
+    },
+    {
+      "name": "chat",
+      "id": "eef08691-e69b-4536-82e8-50ccb91c3683",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
           },
-          "request": {
+          {
+            "key": "Accept",
+            "value": "*/*"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Testing UMSS Market\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/ai/chat",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "ai",
+            "chat"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "ca915b6b-d379-4a37-b6eb-5beb686bade7",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
               {
                 "key": "Accept",
                 "value": "*/*"
@@ -2694,76 +2557,64 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
             {
-              "id": "f3e09400-2484-4e81-9614-aa557fa68212",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"message\": \"<string>\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/api/ai/chat",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "ai",
-                    "chat"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "text",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "string",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-f3e09400-2484-4e81-9614-aa557fa68212"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-04823b92-4523-48f6-bcc5-07f4badb8ad9"
+          "cookie": [],
+          "responseTime": null,
+          "body": "string",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-ca915b6b-d379-4a37-b6eb-5beb686bade7"
         }
       ],
-      "id": "6743367d-bf5a-484f-b582-0df046c52cfa",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-6743367d-bf5a-484f-b582-0df046c52cfa"
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-eef08691-e69b-4536-82e8-50ccb91c3683"
     },
     {
-      "name": "embedding-admin-controller",
-      "item": [
-        {
-          "name": "reindex",
-          "id": "80548b88-c842-414b-9be0-0a9e91801d0f",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+      "name": "reindex",
+      "id": "52bc6c98-045d-48db-a7c6-c72757cc6d7b",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
           },
-          "request": {
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/embeddings/reindex",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "embeddings",
+            "reindex"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "4f1f569b-f20c-45dd-9c95-f29693bee618",
+          "name": "OK",
+          "originalRequest": {
             "method": "POST",
             "header": [
               {
@@ -2784,59 +2635,64 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "804564cc-6bb9-4964-93ce-df24014c3d3e",
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/admin/embeddings/reindex",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "admin",
-                    "embeddings",
-                    "reindex"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"total\": 2267,\n  \"processed\": 2458,\n  \"errors\": 3674\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-804564cc-6bb9-4964-93ce-df24014c3d3e"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-80548b88-c842-414b-9be0-0a9e91801d0f"
-        },
-        {
-          "name": "status",
-          "id": "500bf1c5-ede9-40ad-8721-f5c4bffecda7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"total\": 2267,\n  \"processed\": 2458,\n  \"errors\": 3674\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-4f1f569b-f20c-45dd-9c95-f29693bee618"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-52bc6c98-045d-48db-a7c6-c72757cc6d7b"
+    },
+    {
+      "name": "status",
+      "id": "e9765a6e-c20f-4aa3-97e6-a3970a0356f1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "*/*"
           },
-          "request": {
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/admin/embeddings/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "admin",
+            "embeddings",
+            "status"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "02c3c14d-0405-4f9c-ab2a-f0ade7f6167e",
+          "name": "OK",
+          "originalRequest": {
             "method": "GET",
             "header": [
               {
@@ -2857,64 +2713,506 @@
               ]
             }
           },
-          "response": [
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
             {
-              "id": "68b7c6c9-0eee-488d-a973-41269460b9af",
-              "name": "OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "*/*"
-                  }
-                ],
-                "url": {
-                  "raw": "{{baseUrl}}/api/admin/embeddings/status",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "api",
-                    "admin",
-                    "embeddings",
-                    "status"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "*/*"
-                }
-              ],
-              "cookie": [],
-              "responseTime": null,
-              "body": "{\n  \"totalPublications\": 5326,\n  \"withEmbeddings\": 9358,\n  \"withoutEmbeddings\": 9190\n}",
-              "createdAt": "2026-08-21T08:58:25.000Z",
-              "updatedAt": "2026-08-21T08:58:25.000Z",
-              "uid": "17497186-68b7c6c9-0eee-488d-a973-41269460b9af"
+              "key": "Content-Type",
+              "value": "*/*"
             }
           ],
-          "createdAt": "2026-08-21T08:58:25.000Z",
-          "updatedAt": "2026-08-21T08:58:25.000Z",
-          "uid": "17497186-500bf1c5-ede9-40ad-8721-f5c4bffecda7"
+          "cookie": [],
+          "responseTime": null,
+          "body": "{\n  \"totalPublications\": 5326,\n  \"withEmbeddings\": 9358,\n  \"withoutEmbeddings\": 9190\n}",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-02c3c14d-0405-4f9c-ab2a-f0ade7f6167e"
         }
       ],
-      "id": "b48fccce-8e08-4b3b-b54b-e8a408a9c451",
-      "createdAt": "2026-08-21T08:58:25.000Z",
-      "updatedAt": "2026-08-21T08:58:25.000Z",
-      "uid": "17497186-b48fccce-8e08-4b3b-b54b-e8a408a9c451"
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-e9765a6e-c20f-4aa3-97e6-a3970a0356f1"
+    },
+    {
+      "name": "delete",
+      "id": "99fece23-bab4-45f1-879c-69dc4ed2efcd",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/interactions/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "interactions",
+            ":id"
+          ],
+          "variable": [
+            {
+              "id": "a5b51534-fb4e-40ac-a199-25aa574f6314",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "1250f991-7552-4617-87ae-7c42132003e0",
+          "name": "OK",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interactions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interactions",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-1250f991-7552-4617-87ae-7c42132003e0"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-99fece23-bab4-45f1-879c-69dc4ed2efcd"
+    },
+    {
+      "name": "delete Publication",
+      "id": "9d6c2bd8-93fb-41fb-8da3-c6d5b4d885cf",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/publications/ff9b9802-a554-419d-9abc-b647472da48a",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "publications",
+            "ff9b9802-a554-419d-9abc-b647472da48a"
+          ],
+          "variable": [
+            {
+              "id": "69d5832b-8f7c-42bd-8d28-f02b97fa78fe",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "0aee41c8-b5cf-4909-aa12-94bbfe54e726",
+          "name": "OK",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/publications/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "publications",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-0aee41c8-b5cf-4909-aa12-94bbfe54e726"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-9d6c2bd8-93fb-41fb-8da3-c6d5b4d885cf"
+    },
+    {
+      "name": "delete Store",
+      "id": "32cbbb88-b7ed-48f2-928a-e9c593b120e8",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/stores/42b8cbff-36b9-4fa7-a2ae-4adca97d1de8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "stores",
+            "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+          ],
+          "variable": [
+            {
+              "id": "5bdc2ac8-486a-47eb-9c3d-87e39edb1efe",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "fb443020-ec6f-4a2b-b280-8942f4e8dc60",
+          "name": "OK",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/stores/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "stores",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-fb443020-ec6f-4a2b-b280-8942f4e8dc60"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-32cbbb88-b7ed-48f2-928a-e9c593b120e8"
+    },
+    {
+      "name": "delete User",
+      "id": "13f386f9-a157-47df-8bc2-5bcba32748a9",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/99a68ecc-858b-46fa-9678-c5829319d9a8",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "99a68ecc-858b-46fa-9678-c5829319d9a8"
+          ],
+          "variable": [
+            {
+              "id": "b21c2bd7-450c-4315-8c5b-be72496ee267",
+              "key": "id",
+              "value": "<uuid>",
+              "description": "(Required) "
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "699ffe2f-766a-4152-8fcd-d41d2974ce7c",
+          "name": "OK",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-699ffe2f-766a-4152-8fcd-d41d2974ce7c"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-13f386f9-a157-47df-8bc2-5bcba32748a9"
+    },
+    {
+      "name": "logout",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('POST /logout - Logout exitoso', function () {",
+              "    pm.expect(pm.response.code).to.be.within(200, 299);",
+              "});"
+            ],
+            "id": "ba635f05-975c-4518-a5ef-769949ed29c3"
+          }
+        }
+      ],
+      "id": "f57ca3ae-e6fd-4bce-9210-2f1a06228e47",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{testToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/logout",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": [
+        {
+          "id": "3eb0e16c-3b81-4446-97ea-016c5ed04f49",
+          "name": "OK",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "string"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "text",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "text/plain"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "",
+          "createdAt": "2026-08-22T00:12:06.000Z",
+          "updatedAt": "2026-08-22T00:12:06.000Z",
+          "uid": "56399228-3eb0e16c-3b81-4446-97ea-016c5ed04f49"
+        }
+      ],
+      "createdAt": "2026-08-22T00:12:06.000Z",
+      "updatedAt": "2026-08-22T00:12:06.000Z",
+      "uid": "56399228-f57ca3ae-e6fd-4bce-9210-2f1a06228e47"
     }
   ],
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:8080",
-      "type": "string"
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "userId",
+      "value": "99a68ecc-858b-46fa-9678-c5829319d9a8"
+    },
+    {
+      "key": "storeId",
+      "value": "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+    },
+    {
+      "key": "publicationId",
+      "value": "ff9b9802-a554-419d-9abc-b647472da48a"
+    },
+    {
+      "key": "interactionId",
+      "value": ""
+    },
+    {
+      "key": "createdUserId",
+      "value": "99a68ecc-858b-46fa-9678-c5829319d9a8"
+    },
+    {
+      "key": "createdStoreId",
+      "value": "42b8cbff-36b9-4fa7-a2ae-4adca97d1de8"
+    },
+    {
+      "key": "createdPublicationId",
+      "value": "ff9b9802-a554-419d-9abc-b647472da48a"
+    },
+    {
+      "key": "createdInteractionId",
+      "value": ""
+    },
+    {
+      "key": "discoveryToken",
+      "value": "{{json_web_token_1d1z}}"
+    },
+    {
+      "key": "testToken",
+      "value": ""
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "testEmail",
+      "value": "gabriela.rojas.test@umss.edu.bo"
+    },
+    {
+      "key": "testPassword",
+      "value": "12345678"
+    },
+    {
+      "key": "json_web_token_1d1z",
+      "secret": true
     }
   ]
 }

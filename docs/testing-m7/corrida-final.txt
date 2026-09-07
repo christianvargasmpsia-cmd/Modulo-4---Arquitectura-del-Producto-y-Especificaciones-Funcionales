@@ -1,0 +1,48 @@
+﻿[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.278 s -- in AIServiceImpl - Router de Herramientas (RAGs 1-5)
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.182 s -- in bo.umss.market.umss_market_api.application.usecases.CreatePublicationUseCaseTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in bo.umss.market.umss_market_api.application.usecases.GetAllPublicationsUseCaseTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in bo.umss.market.umss_market_api.application.usecases.GetPublicationByIdUseCaseTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.108 s -- in GetPublicationDetailSemanticUseCase - RAG #2
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in bo.umss.market.umss_market_api.application.usecases.GetPublicationDetailUseCaseTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in bo.umss.market.umss_market_api.application.usecases.GetStorePublicProfileUseCaseTest
+[ERROR] Tests run: 15, Failures: 0, Errors: 15, Skipped: 0, Time elapsed: 75.94 s <<< FAILURE! -- in OllamaAdapter - Tool Selection Tests
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.364 s -- in bo.umss.market.umss_market_api.application.usecases.RegisterEntrepreneurUseCaseTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.034 s <<< FAILURE! -- in bo.umss.market.umss_market_api.application.usecases.SearchCatalogSemanticTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s -- in bo.umss.market.umss_market_api.application.usecases.SearchCatalogUseCaseTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.426 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaPublicationRepositoryAdapterTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.210 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaStoreRepositoryAdapterTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s -- in bo.umss.market.umss_market_api.infrastructure.adapters.JpaUserRepositoryAdapterTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 5.014 s <<< FAILURE! -- in bo.umss.market.umss_market_api.infrastructure.adapters.OllamaAdapterEmbeddingTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.689 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.AuthControllerTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.GlobalExceptionHandlerConfigTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.021 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.PublicationControllerTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.682 s -- in bo.umss.market.umss_market_api.infrastructure.controllers.StoreControllerTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.PublicationMapperTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.StoreMapperTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in bo.umss.market.umss_market_api.infrastructure.persistence.mappers.UserMapperTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.655 s -- in bo.umss.market.umss_market_api.m7.ChatContractTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.997 s -- in bo.umss.market.umss_market_api.m7.HistoryFlowIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.047 s -- in bo.umss.market.umss_market_api.m7.HistoryUnitTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in bo.umss.market.umss_market_api.shared.GlobalExceptionHandlerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.621 s -- in bo.umss.market.umss_market_api.UmssMarketApiApplicationTests
+[ERROR]   OllamaAdapterToolSelectionTest.debeDevolverNoToolEnChiste:302 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeDevolverNoToolEnConsultaFueraDeAlcance:280 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerPublicationDetailEnCaracteristicas:120 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerPublicationDetailEnPrecioStock:138 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerRecommendationsEnProductosSimilares:258 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerRecommendationsEnRecomienda:240 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerSearchCatalogEnComputadoras:74 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerSearchCatalogEnConsultaProgramar:51 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerSearchCatalogEnMouse:99 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerSearchStoresEnEmprendimiento:177 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerSearchStoresEnTienda:159 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerUserInteractionsEnHistorial:199 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.debeReconocerUserInteractionsEnInteres:218 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.selectToolDebeDevolverEstructuraValida:339 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   OllamaAdapterToolSelectionTest.selectToolNoDebeDevolverNull:324 � ResourceAccess I/O error on POST request for "http://localhost:11434/api/generate": Read timed out
+[ERROR]   SearchCatalogSemanticTest.debeRealizarRetrievalSemantico:111 � IllegalState No fue posible generar el embedding con Ollama
+[ERROR]   OllamaAdapterEmbeddingTest.debeGenerarEmbeddingDesdeOllama:29 � IllegalState No fue posible generar el embedding con Ollama
+[ERROR] Tests run: 130, Failures: 0, Errors: 17, Skipped: 0
+[INFO] BUILD FAILURE
+[INFO] Total time:  02:05 min
+[INFO] Finished at: 2026-09-07T16:39:15-04:00

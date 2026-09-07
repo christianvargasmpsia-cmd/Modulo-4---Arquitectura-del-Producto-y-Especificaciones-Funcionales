@@ -4,5 +4,8 @@
   },
   "devDependencies": {
     "@playwright/test": "1.62.1"
-  }
+  },
+  "scripts": {
+  "db:seed": "mvnw spring-boot:run -Dspring-boot.run.arguments=\"--app.db.seed.enabled=true\""
+}
 }

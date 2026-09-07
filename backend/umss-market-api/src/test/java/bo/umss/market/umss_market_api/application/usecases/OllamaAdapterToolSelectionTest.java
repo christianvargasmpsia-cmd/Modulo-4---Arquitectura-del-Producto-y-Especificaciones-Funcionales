@@ -22,6 +22,7 @@ import bo.umss.market.umss_market_api.infrastructure.adapters.OllamaAdapter;
  * ejecutándose y debe existir el modelo configurado en el proyecto.
  */
 @DisplayName("OllamaAdapter - Tool Selection Tests")
+@org.junit.jupiter.api.Tag("ollama")
 class OllamaAdapterToolSelectionTest {
 
     private OllamaAdapter adapter;
@@ -29,7 +30,10 @@ class OllamaAdapterToolSelectionTest {
     @BeforeEach
     void setUp() {
 
-        RestTemplate restTemplate = new RestTemplate();
+        var requestFactory = new org.springframework.http.client.SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(5000);
+        requestFactory.setReadTimeout(Integer.getInteger("ollama.test.readTimeoutMillis", 60000));
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
 
         adapter = new OllamaAdapter(restTemplate);
     }

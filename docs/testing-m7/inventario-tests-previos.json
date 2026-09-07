@@ -1,0 +1,463 @@
+{
+  "method": "Cuerpos normalizados sin comentarios/espacios; candidatos semanticos revisados por separado. No demuestra ausencia absoluta de duplicados.",
+  "count": 114,
+  "exactBodyCandidates": [],
+  "tests": [
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/AIServiceImplTest.java",
+      "name": "chatDebeIdentificarSearchCatalog"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/AIServiceImplTest.java",
+      "name": "chatDebeRetornarNoToolParaConsultasFueraDeAlcance"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/AIServiceImplTest.java",
+      "name": "chatNoDebeDevolverNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/AIServiceImplTest.java",
+      "name": "chatDebeManejarMensajeVacio"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/CreatePublicationUseCaseTest.java",
+      "name": "shouldCreateProductSuccessfully"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/CreatePublicationUseCaseTest.java",
+      "name": "shouldThrowWhenProductStockIsInvalid"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/CreatePublicationUseCaseTest.java",
+      "name": "shouldCreateServiceSuccessfully"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetAllPublicationsUseCaseTest.java",
+      "name": "shouldReturnAllPublications"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetAllPublicationsUseCaseTest.java",
+      "name": "shouldReturnEmptyListWhenNoPublicationsExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationByIdUseCaseTest.java",
+      "name": "shouldReturnPublicationWhenFound"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationByIdUseCaseTest.java",
+      "name": "shouldThrowRuntimeExceptionWhenNotFound"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeObtenerDetallesYGenerarContexto"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeDevolverMensajeSiPublicacionNoExiste"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeIncluirPrecioEnContexto"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeIncluirStockEnContexto"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeBuscarSemanticamentePorDescripcion"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeDevolverMensajeSiNoHayPublicaciones"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailSemanticUseCaseTest.java",
+      "name": "debeGenerarEmbeddingDeLaConsulta"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailUseCaseTest.java",
+      "name": "shouldReturnDetailWhenPublicationExistsAndIsActive"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailUseCaseTest.java",
+      "name": "shouldReturnNullNombreTiendaWhenStoreNotFound"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailUseCaseTest.java",
+      "name": "shouldThrowPublicationNotFoundWhenIdDoesNotExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetPublicationDetailUseCaseTest.java",
+      "name": "shouldThrowPublicationNotFoundWhenPublicationIsInactive"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetStorePublicProfileUseCaseTest.java",
+      "name": "shouldReturnProfileWithPublicationsWhenStoreExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetStorePublicProfileUseCaseTest.java",
+      "name": "shouldReturnProfileWithAllStoreFields"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetStorePublicProfileUseCaseTest.java",
+      "name": "shouldReturnProfileWithEmptyPublicationsWhenNoneExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/GetStorePublicProfileUseCaseTest.java",
+      "name": "shouldThrowStoreNotFoundWhenIdDoesNotExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerSearchCatalogEnConsultaProgramar"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerSearchCatalogEnComputadoras"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerSearchCatalogEnMouse"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerPublicationDetailEnCaracteristicas"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerPublicationDetailEnPrecioStock"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerSearchStoresEnTienda"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerSearchStoresEnEmprendimiento"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerUserInteractionsEnHistorial"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerUserInteractionsEnInteres"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerRecommendationsEnRecomienda"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeReconocerRecommendationsEnProductosSimilares"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeDevolverNoToolEnConsultaFueraDeAlcance"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "debeDevolverNoToolEnChiste"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "selectToolNoDebeDevolverNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/OllamaAdapterToolSelectionTest.java",
+      "name": "selectToolDebeDevolverEstructuraValida"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/RegisterEntrepreneurUseCaseTest.java",
+      "name": "shouldRegisterEntrepreneurSuccessfully"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/RegisterEntrepreneurUseCaseTest.java",
+      "name": "shouldThrowWhenRuAlreadyExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/RegisterEntrepreneurUseCaseTest.java",
+      "name": "shouldThrowWhenEmailAlreadyExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogSemanticTest.java",
+      "name": "debeRealizarRetrievalSemantico"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldReturnAllPublicationsWhenNoFiltersApplied"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldReturnEmptyListWhenNoPublicationsFound"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldNormalizeWhitespaceInTextoFilter"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldHandleNullTextoFilter"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldFilterByTipoServicio"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldFilterByTipoProducto"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldFilterByPrecioMinAndPrecioMax"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldFilterByPrecioMinOnly"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldThrowInvalidPriceRangeWhenPrecioMinExceedsPrecioMax"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldNotThrowWhenPrecioMinEqualsPrecioMax"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/application/usecases/SearchCatalogUseCaseTest.java",
+      "name": "shouldFilterByStoreId"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaPublicationRepositoryAdapterTest.java",
+      "name": "shouldSavePublication"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaPublicationRepositoryAdapterTest.java",
+      "name": "shouldFindAll"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaPublicationRepositoryAdapterTest.java",
+      "name": "shouldFindById"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaStoreRepositoryAdapterTest.java",
+      "name": "shouldSaveStore"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaStoreRepositoryAdapterTest.java",
+      "name": "shouldFindById"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaStoreRepositoryAdapterTest.java",
+      "name": "shouldFindByUserId"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaStoreRepositoryAdapterTest.java",
+      "name": "shouldExistsByUserId"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldSaveUser"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldFindById"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldFindByRu"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldFindByEmail"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldExistsByRu"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/JpaUserRepositoryAdapterTest.java",
+      "name": "shouldExistsByEmail"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/adapters/OllamaAdapterEmbeddingTest.java",
+      "name": "debeGenerarEmbeddingDesdeOllama"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/AuthControllerTest.java",
+      "name": "shouldRegisterEntrepreneur"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/AuthControllerTest.java",
+      "name": "shouldRegisterCustomer"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/AuthControllerTest.java",
+      "name": "shouldRegisterAdmin"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/AuthControllerTest.java",
+      "name": "shouldLoginSuccessfully"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/AuthControllerTest.java",
+      "name": "shouldGetAuthenticatedUser"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/GlobaExceptionHandlerConfigTest.java",
+      "name": "shouldHandle_PublicationNotFound_with404"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/GlobaExceptionHandlerConfigTest.java",
+      "name": "shouldHandle_StoreAlreadyExists_with409"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/GlobaExceptionHandlerConfigTest.java",
+      "name": "shouldHandle_EmailAlreadyExists_with409"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/GlobaExceptionHandlerConfigTest.java",
+      "name": "shouldHandle_UserAlreadyExists_with409"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldCreatePublication"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldSearchCatalog"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldGetPublicationById"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldUpdatePublication"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldUpdatePublicationStatus"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldDeletePublication"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn200WithEmptyListWhenNoPublications"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn200WithResultsWhenPublicationsExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn200WithTextoParam"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn200WithTipoParam"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn200WithPrecioRangeParams"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/PublicationControllerTest.java",
+      "name": "shouldReturn400WhenPrecioMinExceedsPrecioMax"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldReturn200WithAllStores"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldReturn200WithStoreProfileWhenStoreExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldReturn200WithPublicacionesWhenStoreHasPublications"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldCreateStore"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldUpdateStore"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldPatchStore"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldDeleteStore"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/controllers/StoreControllerTest.java",
+      "name": "shouldReturn404WhenStoreDoesNotExist"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/PublicationMapperTest.java",
+      "name": "shouldMapDomainToEntity"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/PublicationMapperTest.java",
+      "name": "shouldMapEntityToDomain"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/StoreMapperTest.java",
+      "name": "shouldMapEntityToDomain"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/StoreMapperTest.java",
+      "name": "shouldMapDomainToEntity"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/StoreMapperTest.java",
+      "name": "shouldReturnNullWhenEntityIsNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/StoreMapperTest.java",
+      "name": "shouldReturnNullWhenDomainIsNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/UserMapperTest.java",
+      "name": "shouldMapEntityToDomain"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/UserMapperTest.java",
+      "name": "shouldMapDomainToEntity"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/UserMapperTest.java",
+      "name": "shouldReturnNullWhenEntityIsNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/infrastructure/persistence/mappers/UserMapperTest.java",
+      "name": "shouldReturnNullWhenDomainIsNull"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/shared/GlobalExceptionHandlerTest.java",
+      "name": "shouldHandleUserAlreadyExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/shared/GlobalExceptionHandlerTest.java",
+      "name": "shouldHandleEmailAlreadyExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/shared/GlobalExceptionHandlerTest.java",
+      "name": "shouldHandleStoreAlreadyExists"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/shared/GlobalExceptionHandlerTest.java",
+      "name": "shouldHandleGenericException"
+    },
+    {
+      "file": "backend/umss-market-api/src/test/java/bo/umss/market/umss_market_api/UmssMarketApiApplicationTests.java",
+      "name": "contextLoads"
+    }
+  ]
+}
