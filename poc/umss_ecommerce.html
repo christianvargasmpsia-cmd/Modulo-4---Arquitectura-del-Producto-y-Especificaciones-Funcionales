@@ -377,20 +377,20 @@
                     
                     <div class="form-group">
                         <h3 style="color: #667eea; margin: 20px 0; margin-top: 30px;">Mi Carrito</h3>
-                        <div id="carritoLista"></div>
-                        <div id="totalCarrito"></div>
+                        <div id="carritoLista" data-testid="carrito"></div>
+                        <div id="totalCarrito" data-testid="total-carrito"></div>
                     </div>
                     
                     <div class="form-group">
                         <h3 style="color: #667eea; margin: 20px 0; margin-top: 30px;">Realizar Pago</h3>
-                        <label>Monto a Pagar (Bs):</label>
+                        <label for="montoPago">Monto a Pagar (Bs):</label>
                         <div class="input-group">
                             <input type="number" id="montoPago" placeholder="Ingresa monto simulado QR" min="0" step="1">
                             <button onclick="realizarPedido()">💳 Pagar</button>
                         </div>
                     </div>
                     
-                    <div id="pedidosCliente"></div>
+                    <div id="pedidosCliente" data-testid="pedidos-cliente"></div>
                 </div>
                 
                 <!-- SECCIÓN EMPRENDEDOR -->
@@ -529,7 +529,7 @@
             for (const [id, prod] of Object.entries(sistema.productos)) {
                 const stock = prod.stock > 0 ? `✅ Stock: ${prod.stock}` : '❌ Agotado';
                 lista.innerHTML += `
-                    <div class="producto-card">
+                    <div class="producto-card" role="group" aria-label="${prod.nombre}">
                         <h3>${prod.nombre}</h3>
                         <div class="producto-info">
                             <span class="precio">Bs ${prod.precio}</span>
@@ -537,7 +537,7 @@
                         </div>
                         ${prod.stock > 0 ? `
                             <div style="margin-top: 10px;">
-                                <input type="number" id="cant_${id}" min="1" max="${prod.stock}" value="1" style="width: 80px;">
+                                <input type="number" id="cant_${id}" aria-label="Cantidad de ${prod.nombre}" min="1" max="${prod.stock}" value="1" style="width: 80px;">
                                 <button onclick="agregarAlCarrito('${id}')" style="margin-left: 10px;">Agregar</button>
                             </div>
                         ` : ''}
